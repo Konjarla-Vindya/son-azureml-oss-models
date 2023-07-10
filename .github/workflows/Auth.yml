@@ -1,19 +1,24 @@
-# File: .github/workflows/workflow.yml
-
-on: 
+name: Authenticate Azure
+on:
   workflow_dispatch:
-
-name: AzureLoginSample
+  pull_request:
+    branches:
+      - master
 
 jobs:
-
-  build-and-deploy:
+  publish:
     runs-on: ubuntu-latest
     steps:
-    
-    - uses: azure/vindhyakonjarla@live.com
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-    
-    - run: |
-        az webapp list --query "[?state=='Running']"
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: 'Log into Azure using github secret AZURE_CREDENTIALS'
+        uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+
+      - name: 'Run az commands'
+        run: |
+          az account show
+          az group list
