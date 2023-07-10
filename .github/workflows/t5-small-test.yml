@@ -18,7 +18,7 @@ jobs:
     - name: check-out-repo-step
       uses: actions/checkout@v2
     - name: azure-login-step
-      uses: azure/login@v1
+      uses: azure/actions/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: pip-install-azure-ai-ml
