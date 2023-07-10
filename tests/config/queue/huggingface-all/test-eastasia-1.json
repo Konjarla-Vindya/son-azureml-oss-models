@@ -3,7 +3,7 @@
     "models": [
         "t5-small"
     ],
-    "workspace": "eastasia",
+    "workspace": "AzureMachineLearning",
     "subscription": "04ce24d1-b77d-4a91-ae00-36ca018e2424",
     "resource_group": "rg_AzureMachineLearning",
     "registry": "HuggingFace"
