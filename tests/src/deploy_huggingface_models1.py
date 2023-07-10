@@ -292,7 +292,7 @@ def main():
 
 
     try:
-        credential = DefaultAzureCredential()
+        credential = AzureCliCredentials()
         credential.get_token("https://management.azure.com/.default")
     except Exception as ex:
         print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
