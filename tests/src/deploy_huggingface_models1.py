@@ -2,7 +2,7 @@
 from azure.ai.ml import MLClient
 from azure.identity import (
     DefaultAzureCredential,
-    InteractiveBrowserCredential,
+    InteractiveBrowserCredential,AzureCliCredential,
     ClientSecretCredential,
 )
 import time, sys
@@ -292,7 +292,7 @@ def main():
 
 
     try:
-        credential = DefaultAzureCredential()
+        credential = AzureCliCredential()
         credential.get_token("https://management.azure.com/.default")
     except Exception as ex:
         print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
