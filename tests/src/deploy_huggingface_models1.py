@@ -48,8 +48,8 @@ test_keep_looping = os.environ.get('test_keep_looping')
 # the queue file also contains the details of the workspace, registry, subscription, resource group
 def get_test_queue():
     config_name = test_queue+'-test'
-    queue_file = f"../config/queue/{test_set}/{config_name}.json"
-    # queue_file = f"../config/queue/{test_set}/{test_queue}.json"
+    queue_file1 = f"../config/queue/{test_set}/{config_name}.json"
+    queue_file = f"../config/queue/{test_set}/{test_queue}.json"
     with open(queue_file) as f:
         return json.load(f)
     
@@ -73,7 +73,7 @@ def set_next_trigger_model(queue):
     print (f"index of {test_model_name} in queue: {index}")
 # if index is not the last element in the list, get the next element in the list
     if index < len(queue['models']) - 1:
-        next_model = queue['models'][index + 1]
+        next_model = queue['models'][index + 1]+'-test'
     else:
         if (test_keep_looping == "true"):
             next_model = queue[0]
