@@ -73,7 +73,7 @@ def set_next_trigger_model(queue):
     print (f"index of {test_model_name} in queue: {index}")
 # if index is not the last element in the list, get the next element in the list
     if index < len(queue['models']) - 1:
-        next_model = queue['models'][index + 1]+'-test'
+        next_model = queue['models'][index + 1]
     else:
         if (test_keep_looping == "true"):
             next_model = queue[0]
