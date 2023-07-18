@@ -45,7 +45,7 @@ print(
     )
 )
 # Download a small sample of the dataset into the ./book-corpus-dataset directory
-%run ./book-corpus-dataset/download-dataset.py --download_dir ./book-corpus-dataset
+# %run ./book-corpus-dataset/download-dataset.py --download_dir ./book-corpus-dataset
 
 # load the ./book-corpus-dataset/train.jsonl file into a pandas dataframe and show the first 5 rows
 import pandas as pd
