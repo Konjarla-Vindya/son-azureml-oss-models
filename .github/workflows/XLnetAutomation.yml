@@ -1,0 +1,27 @@
+name: activebus-bert-review
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  deploy-model-job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check-out-repo-step
+      uses: actions/checkout@v2
+    - name: azure-login-step
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: pip-install-azure-ai-ml
+      run: pip install azure-ai-ml
+    - name: pip-install-transformers
+      run: pip install transformers
+    - name: pip-instal-mlflow
+      run: pip install mlflow
+    - name: pip-install-SentencePiece
+      run: pip install SentencePiece     
+    - name: Download-and-register-model
+      id: Download-and-register-model
+      run: python register_xlnet_models.py
+      working-directory: tests/src
