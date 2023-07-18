@@ -10,7 +10,7 @@ import time
 
 # try:
 #    credential = AzureCliCredential()
-    credential.get_token("https://management.azure.com/.default")
+#    credential.get_token("https://management.azure.com/.default")
 try:
         credential = DefaultAzureCredential()
         credential.get_token("https://management.azure.com/.default")
