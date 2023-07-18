@@ -8,18 +8,18 @@ from azure.identity import (
 from azure.ai.ml.entities import AmlCompute
 import time
 
-#try:
+# try:
 #    credential = AzureCliCredential()
-#    credential.get_token("https://management.azure.com/.default")
+    credential.get_token("https://management.azure.com/.default")
 try:
         credential = DefaultAzureCredential()
         credential.get_token("https://management.azure.com/.default")
-    except Exception as ex:
+except Exception as ex:
         print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
         exit (1)
 
     # connect to workspace
-    workspace_ml_client = MLClient(
+workspace_ml_client = MLClient(
         credential=credential, 
         subscription_id=queue['subscription'],
         resource_group_name=queue['resource_group'],
@@ -27,7 +27,7 @@ try:
     )
 
     # connect to registry
-    registry_ml_client = MLClient(
+registry_ml_client = MLClient(
         credential=credential, 
         registry_name=queue['registry']
     )
