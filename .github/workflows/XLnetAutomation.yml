@@ -1,4 +1,4 @@
-name: activebus-bert-review
+name: xlnet-register-model
 
 on: 
   workflow_dispatch:
