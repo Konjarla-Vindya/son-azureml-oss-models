@@ -26,11 +26,8 @@ workspace_ml_client = MLClient(
     workspace_name="sonata-test-ws",
 )
 
-    # connect to registry
-registry_ml_client = MLClient(
-        credential=credential, 
-        registry_name=queue['registry']
-    )
+# the models, fine tuning pipelines and environments are available in the AzureML system registry, "azureml"
+registry_ml_client = MLClient(credential, registry_name="azureml")
     
 model_name = "bert-base-uncased"
 version_list = list(registry_ml_client.models.list(model_name))
