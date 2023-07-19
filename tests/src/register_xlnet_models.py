@@ -2,6 +2,7 @@ from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential,AzureCliCredential 
 from azureml.core import Workspace
 from transformers import XLNetForSequenceClassification,XLNetTokenizer
+from azureml.mlflow import get_mlflow_tracking_uri
 import mlflow
 # Replace with your Azure ML workspace details
 # subscription_id = "bb9cf94f-f06a-49eb-a8e9-e63654d7257b"
@@ -19,7 +20,7 @@ def set_tracking_uri():
                     credential, subscription_id, resource_group, ws
                 )
 
-    #mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     #print("Reaching here in the set tracking uri method")
 
 def download_and_register_model():
@@ -28,7 +29,7 @@ def download_and_register_model():
     tokenizer = XLNetTokenizer.from_pretrained(checkpoint)
     mlflow.transformers.log_model(
             transformers_model = {"model" : model, "tokenizer":tokenizer},
-            task="Classification",
+            task="text-classification",
             artifact_path="XlNetClassification_artifact",
             registered_model_name="Xlnet_registered"
     )
