@@ -59,6 +59,6 @@ if __name__ == "__main__":
     # connect to registry
     registry_ml_client = MLClient(
         credential=credential, 
-        registry_name="azureml"
+        registry_name="sonata-test-reg"
     )
     latest_model = get_latest_version_model(registry_ml_client)
