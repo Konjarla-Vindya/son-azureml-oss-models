@@ -19,7 +19,7 @@ def set_tracking_uri():
                     credential, subscription_id, resource_group, ws
                 )
 
-    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+    #mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     #print("Reaching here in the set tracking uri method")
 
 def download_and_register_model():
