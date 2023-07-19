@@ -129,4 +129,4 @@ sample_df = df.sample(1)
 #     }
 # )
 # compare_df.head()
-# workspace_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
+workspace_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
