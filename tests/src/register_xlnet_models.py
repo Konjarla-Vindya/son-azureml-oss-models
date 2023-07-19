@@ -24,6 +24,7 @@ def set_tracking_uri(credential):
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     #print("Reaching here in the set tracking uri method")
 
+
 def download_and_register_model():
     model = XLNetForSequenceClassification.from_pretrained(checkpoint)
     tokenizer = XLNetTokenizer.from_pretrained(checkpoint)
