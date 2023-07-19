@@ -20,11 +20,11 @@ except Exception as ex:
 
     # connect to workspace
 workspace_ml_client = MLClient(
-        credential=credential, 
-        subscription_id=queue['subscription'],
-        resource_group_name=queue['resource_group'],
-        workspace_name=queue['workspace']
-    )
+    credential,
+    subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    resource_group_name="sonata-test-rg",
+    workspace_name="sonata-test-ws",
+)
 
     # connect to registry
 registry_ml_client = MLClient(
