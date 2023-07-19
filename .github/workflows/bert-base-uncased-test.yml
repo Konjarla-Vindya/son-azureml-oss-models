@@ -23,6 +23,8 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: pip-install-azure-ai-ml
       run: pip install azure-ai-ml 
+    - name: pip-install-numpy
+      run: pip install numpy 
     - name: deploy-model-step
       id: deploy-model-step
       run: python deploy_fillmask_models.py
