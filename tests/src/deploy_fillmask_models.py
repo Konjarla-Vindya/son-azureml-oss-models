@@ -113,20 +113,20 @@ df = pd.read_json("./book-corpus-dataset/masked_train.jsonl", lines=True)
 df["masked_text"] = df["masked_text"].str.replace("'", "\\'").str.replace('"', '\\"')
 # pick 1 random row
 sample_df = df.sample(1)
-# create a json object with the key as "inputs" and value as a list of values from the masked_text column of the sample_df dataframe
-test_json = {"inputs": {"input_string": sample_df["masked_text"].tolist()}}
-# save the json object to a file named sample_score.json in the ./book-corpus-dataset folder
-with open(os.path.join(".", "book-corpus-dataset", "sample_score.json"), "w") as f:
-    json.dump(test_json, f)
-sample_df.head()
-# compare the predicted squences with the ground truth sequence
-compare_df = pd.DataFrame(
-    {
-        "ground_truth_sequence": sample_df["text"].tolist(),
-        "predicted_sequence": [
-            sample_df["masked_text"].tolist()[0].replace(mask_token, response_df[0][0])
-        ],
-    }
-)
-compare_df.head()
-workspace_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
+# # create a json object with the key as "inputs" and value as a list of values from the masked_text column of the sample_df dataframe
+# test_json = {"inputs": {"input_string": sample_df["masked_text"].tolist()}}
+# # save the json object to a file named sample_score.json in the ./book-corpus-dataset folder
+# with open(os.path.join(".", "book-corpus-dataset", "sample_score.json"), "w") as f:
+#     json.dump(test_json, f)
+# sample_df.head()
+# # compare the predicted squences with the ground truth sequence
+# compare_df = pd.DataFrame(
+#     {
+#         "ground_truth_sequence": sample_df["text"].tolist(),
+#         "predicted_sequence": [
+#             sample_df["masked_text"].tolist()[0].replace(mask_token, response_df[0][0])
+#         ],
+#     }
+# )
+# compare_df.head()
+# workspace_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
