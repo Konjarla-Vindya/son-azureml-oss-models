@@ -1,7 +1,6 @@
 {
     "queue_name": "test-Xlnet",
     "models": [
-        "XLnet-base-uncased",
 	"XLnet-base-cased"
     ],
     "workspace": "sonata-test-ws",
