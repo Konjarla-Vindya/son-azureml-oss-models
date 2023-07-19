@@ -201,7 +201,7 @@ def main():
         exit (1)
 
     # connect to workspace
-    workspace_ml_client = MLClient(
+    ws = workspace_ml_client = MLClient(
         credential=credential, 
         subscription_id=queue['subscription'],
         resource_group_name=queue['resource_group'],
