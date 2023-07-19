@@ -53,7 +53,8 @@ def get_latest_version_model(registry_ml_client):
     return None
 
 if __name__ == "__main__":
-    credential = AzureCliCredential()
+    credential = DefaultAzureCredential()
+    #credential = AzureCliCredential()
     set_tracking_uri(credential)
     download_and_register_model()
     # connect to registry
