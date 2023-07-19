@@ -24,8 +24,8 @@ def download_and_register_model():
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
     mlflow.transformers.log_model(
             transformers_model = {"model" : model, "tokenizer":tokenizer},
-            task="sequence-classification",
-            artifact_path="BertClassification_artifact",
+            task="fill-mask",
+            artifact_path="Bert_artifact",
             registered_model_name=registered_model_name
     )
     
