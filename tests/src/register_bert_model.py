@@ -201,13 +201,13 @@ def main():
         exit (1)
 
     # connect to workspace
-    ws = workspace_ml_client = MLClient(
+      workspace_ml_client = MLClient(
         credential=credential, 
         subscription_id=queue['subscription'],
         resource_group_name=queue['resource_group'],
         workspace_name=queue['workspace']
     )
-mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+mlflow.set_tracking_uri(workspace_name.get_mlflow_tracking_uri())
 
 checkpoint = "bert-base-uncased"
 registered_model_name = "bert_registered"
