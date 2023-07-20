@@ -7,6 +7,11 @@ import mlflow
 import time, sys
 import json
 import os
+from azure.ai.ml.entities import (
+    ManagedOnlineEndpoint,
+    ManagedOnlineDeployment,
+    OnlineRequestSettings,
+)
 
 # checkpoint = "bert-base-uncased"
 # registered_model_name = "bert_registered"
