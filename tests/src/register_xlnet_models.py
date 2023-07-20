@@ -20,7 +20,11 @@ from box import ConfigBox
 # subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
 # resource_group = 'sonata-test-rg'
 # workspace_name = 'sonata-test-ws'
-
+def get_error_messages():
+    # load ../config/errors.json into a dictionary
+    with open('../config/errors.json') as f:
+        return json.load(f)
+        
 error_messages = get_error_messages()
 
 # model to test    
