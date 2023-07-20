@@ -211,7 +211,7 @@ def main():
         resource_group_name=queue['resource_group'],
         workspace_name=queue['workspace']
     )
-mlflow.set_tracking_uri(queue['workspace'].get_mlflow_tracking_uri())
+mlflow.set_tracking_uri(test_workspace_name.get_mlflow_tracking_uri())
 
 # checkpoint = "bert-base-uncased"
 # registered_model_name = "bert_registered"
