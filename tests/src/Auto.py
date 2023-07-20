@@ -223,7 +223,7 @@ def delete_online_endpoint(workspace_ml_client, online_endpoint_name):
         exit (0)    
 
 
-def download_and_register_model(registered_model_name):
+def download_and_register_model():
     model = AutoModelForSequenceClassification.from_pretrained(test_model_name)
     tokenizer = AutoTokenizer.from_pretrained(test_model_name)
     print("tokenizer:",tokenizer)
