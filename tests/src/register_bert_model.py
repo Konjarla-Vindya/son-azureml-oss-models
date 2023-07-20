@@ -167,6 +167,9 @@ def get_latest_version_model(registry_ml_client):
 
 
 def main():
+    
+checkpoint = "bert-base-uncased"
+registered_model_name = "bert_registered"
 
     # constants
     check_override = True
@@ -209,10 +212,10 @@ def main():
     )
 #mlflow.set_tracking_uri(workspace.get_mlflow_tracking_uri())
 
-checkpoint = "bert-base-uncased"
-registered_model_name = "bert_registered"
+# checkpoint = "bert-base-uncased"
+# registered_model_name = "bert_registered"
     # connect to registry
-registry_ml_client = MLClient(
+    registry_ml_client = MLClient(
         credential=credential, 
         registry_name="sonata-test-reg"
     )
