@@ -1,4 +1,4 @@
-name: automation_bert_v2
+name: automation_bert_v4
 
 on: 
   workflow_dispatch:
@@ -43,7 +43,7 @@ jobs:
       run: pip install numpy 
     - name: deploy-model-step
       id: deploy-model-step
-      run: python deploy_automation_v2.py
+      run: python automation_deployment.py
       working-directory: tests/src
     - name: trigger-next-model-step
       env:
