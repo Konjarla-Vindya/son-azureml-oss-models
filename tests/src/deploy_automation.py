@@ -10,6 +10,7 @@ from azure.ai.ml.entities import AmlCompute
 import time
 import json
 import os
+import pandas as pd
 
 test_model_name = os.environ.get('test_model_name')
 test_queue = os.environ.get('test_queue')
@@ -42,7 +43,35 @@ print(
 )
 
 
+def data_set():
 
+    
+
+pd.set_option(
+    "display.max_colwidth", 0
+)  # set the max column width to 0 to display the full text
+train_df = pd.read_json("./book-corpus-dataset/train.jsonl", lines=True)
+train_df.head()
+# Get the right mask token from huggingface
+import urllib.request, json
+
+with urllib.request.urlopen(f"https://huggingface.co/api/models/{test_model_name}") as url:
+    data = json.load(url)
+    mask_token = data["mask_token"]
+
+# take the value of the "text" column, replace a random word with the mask token and save the result in the "masked_text" column
+import random, os
+
+train_df["masked_text"] = train_df["text"].apply(
+    lambda x: x.replace(random.choice(x.split()), mask_token, 1)
+)
+# save the train_df dataframe to a jsonl file in the ./book-corpus-dataset folder with the masked_ prefix
+train_df.to_json(
+    os.path.join(".", "book-corpus-dataset", "masked_train.jsonl"),
+    orient="records",
+    lines=True,
+)
+train_df.head()
 
 def get_sku_override():
     try:
@@ -173,6 +202,7 @@ def main():
     create_online_endpoint()
     test_deploy()
     delete_endpoint()
+    data_set()
 # the models, fine tuning pipelines and environments are available in the AzureML system registry, "azureml"
 
 
