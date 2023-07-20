@@ -212,7 +212,47 @@ def data_for_inference():
     )
     train_df.head()
     print("data is ready")
+def create_online_endpoint(workspace_ml_client, endpoint):
+    print ("In create_online_endpoint...")
+    try:
+        workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
+    except Exception as e:
+        print (f"::error:: Could not create endpoint: \n")
+        print (f"{e}\n\n check logs:\n\n")
+        prase_logs(str(e))
+        exit (1)
 
+    print(workspace_ml_client.online_endpoints.get(name=endpoint.name))
+def create_online_deployment(workspace_ml_client, endpoint, latest_model):
+    print ("In create_online_deployment...")
+    demo_deployment = ManagedOnlineDeployment(
+        name="demo",
+        endpoint_name=endpoint.name,
+        model=latest_model.id,
+        instance_type="Standard_DS3_v2",
+        instance_count=1,
+    )
+    try:
+        workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+    except Exception as e:
+        print (f"::error:: Could not create deployment\n")
+        print (f"{e}\n\n check logs:\n\n")
+        prase_logs(str(e))
+        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
+        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
+        exit (1)
+    # online endpoints can have multiple deployments with traffic split or shadow traffic. Set traffic to 100% for demo deployment
+    endpoint.traffic = {"demo": 100}
+    try:
+        workspace_ml_client.begin_create_or_update(endpoint).result()
+    except Exception as e:
+        print (f"::error:: Could not create deployment\n")
+        print (f"{e}\n\n check logs:\n\n")
+        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
+        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
+        exit (1)
+    print(workspace_ml_client.online_deployments.get(name="demo", endpoint_name=endpoint.name))
+    
 def main():
     
     # constants
@@ -282,7 +322,17 @@ def main():
     #set_tracking_uri(credential)
     download_and_register_model()
     data_for_inference()
-    
+    # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
+
+    timestamp = int(time.time())
+    online_endpoint_name = "fill-auto" + str(timestamp)
+    print (f"online_endpoint_name: {online_endpoint_name}")
+    endpoint = ManagedOnlineEndpoint(
+        name=online_endpoint_name,
+        auth_mode="key",
+    )
+    create_online_endpoint(workspace_ml_client, endpoint)
+    create_online_deployment(workspace_ml_client, endpoint, latest_model)
 
 if __name__ == "__main__":
     main()
