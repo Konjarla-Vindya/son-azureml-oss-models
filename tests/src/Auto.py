@@ -1,5 +1,7 @@
 
 from azure.ai.ml import MLClient
+from azureml.core import Workspace
+from azureml.mlflow import get_mlflow_tracking_uri
 from azure.identity import (
     DefaultAzureCredential,
     InteractiveBrowserCredential,AzureCliCredential,
@@ -23,6 +25,7 @@ from azure.ai.ml.entities import (
 )
 import json
 import os
+import mlflow
 
 
 
@@ -359,6 +362,10 @@ def main():
     )
     print("reg: ",registry_ml_client)
     print("workspace ", workspace_ml_client)   
+    ws = Workspace(subscription_id=queue['subscription'],
+        resource_group=queue['resource_group'],
+        workspace_name=queue['workspace'])
+    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     download_and_register_model()
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     # instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
