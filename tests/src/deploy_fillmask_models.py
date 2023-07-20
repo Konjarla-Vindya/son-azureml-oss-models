@@ -8,29 +8,20 @@ from azure.identity import (
 from azure.ai.ml.entities import AmlCompute
 import time
 
-# try:
-#    credential = AzureCliCredential()
-#    credential.get_token("https://management.azure.com/.default")
 try:
-        credential = DefaultAzureCredential()
-        credential.get_token("https://management.azure.com/.default")
+    credential = AzureCliCredential()
+    credential.get_token("https://management.azure.com/.default")
 except Exception as ex:
-        print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
-        exit (1)
+    credential = InteractiveBrowserCredential()
 
-    # connect to workspace
 workspace_ml_client = MLClient(
     credential,
     subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
     resource_group_name="sonata-test-rg",
     workspace_name="sonata-test-ws",
 )
-
-# the models, fine tuning pipelines and environments are available in the AzureML system registry, "sonata-test-reg"
-registry_ml_client = MLClient(credential, subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
-        resource_group_name="sonata-test-rg",
-        workspace_name="sonata-test-ws")
-    
+# the models, fine tuning pipelines and environments are available in the AzureML system registry, "azureml"
+registry_ml_client = MLClient(credential, registry_name="azureml")
 model_name = "bert-base-uncased"
 version_list = list(registry_ml_client.models.list(model_name))
 if len(version_list) == 0:
@@ -107,14 +98,14 @@ demo_deployment = ManagedOnlineDeployment(
 workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
 endpoint.traffic = {"fillmask": 100}
 workspace_ml_client.begin_create_or_update(endpoint).result()
-import json
+# import json
 
-# read the ./book-corpus-dataset/masked_train.jsonl file into a pandas dataframe
-df = pd.read_json("./book-corpus-dataset/masked_train.jsonl", lines=True)
-# escape single and double quotes in the masked_text column
-df["masked_text"] = df["masked_text"].str.replace("'", "\\'").str.replace('"', '\\"')
-# pick 1 random row
-sample_df = df.sample(1)
+# # read the ./book-corpus-dataset/masked_train.jsonl file into a pandas dataframe
+# df = pd.read_json("./book-corpus-dataset/masked_train.jsonl", lines=True)
+# # escape single and double quotes in the masked_text column
+# df["masked_text"] = df["masked_text"].str.replace("'", "\\'").str.replace('"', '\\"')
+# # pick 1 random row
+# sample_df = df.sample(1)
 # # create a json object with the key as "inputs" and value as a list of values from the masked_text column of the sample_df dataframe
 # test_json = {"inputs": {"input_string": sample_df["masked_text"].tolist()}}
 # # save the json object to a file named sample_score.json in the ./book-corpus-dataset folder
@@ -131,4 +122,4 @@ sample_df = df.sample(1)
 #     }
 # )
 # compare_df.head()
-workspace_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
+# workspace_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
