@@ -223,7 +223,7 @@ def delete_online_endpoint(workspace_ml_client, online_endpoint_name):
         exit (0)    
 
 
-def download_and_register_model():
+def download_and_register_model(registered_model_name):
     model = AutoModelForSequenceClassification.from_pretrained(test_model_name)
     tokenizer = AutoTokenizer.from_pretrained(test_model_name)
     print("tokenizer:",tokenizer)
@@ -366,7 +366,7 @@ def main():
         resource_group=queue['resource_group'],
         workspace_name=queue['workspace'])
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
-    download_and_register_model()
+    download_and_register_model(registered_model_name)
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     # instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
     print("latest_model: ",latest_model)
