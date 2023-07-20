@@ -368,7 +368,7 @@ def main():
         workspace_name=queue['workspace'])
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     download_and_register_model()
-    latest_model = get_latest_model_version(registry_ml_client, test_model_name)
+    latest_model = get_latest_version_model(registry_ml_client)
     # instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
     print("latest_model: ",latest_model)
     # print("instance_type ", instance_type)   
