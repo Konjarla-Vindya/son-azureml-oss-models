@@ -186,17 +186,47 @@ if __name__ == "__main__":
     predictions = torch.nn.functional.softmax(output.logits, dim=-1)
     print(f'Predicted class: {predictions}')
     
+    # timestamp = int(time.time())
+    # online_endpoint_name = "hf-ep-" + str(timestamp)
+    # print (f"online_endpoint_name: {online_endpoint_name}")
+    # endpoint = ManagedOnlineEndpoint(
+    #     name=online_endpoint_name,
+    #     auth_mode="key",
+    # )
+    # sku_override = get_sku_override()
+    # # constants
+    # check_override = True
+    # instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
+    # create_online_endpoint(registry_ml_client, endpoint)
+    # create_online_deployment(registry_ml_client, endpoint, instance_type, latest_model)
+    
+    
+    # Create online endpoint - endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
     timestamp = int(time.time())
-    online_endpoint_name = "hf-ep-" + str(timestamp)
-    print (f"online_endpoint_name: {online_endpoint_name}")
+    online_endpoint_name = "fill-mask-" + str(timestamp)
+    # create an online endpoint
     endpoint = ManagedOnlineEndpoint(
         name=online_endpoint_name,
+        description="Online endpoint for "
+        + latest_model.name
+        + ", for fill-mask task",
         auth_mode="key",
     )
-    sku_override = get_sku_override()
-    # constants
-    check_override = True
-    instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
-    create_online_endpoint(registry_ml_client, endpoint)
-    create_online_deployment(registry_ml_client, endpoint, instance_type, latest_model)
+    workspace_ml_client.begin_create_or_update(endpoint).wait()
+    # create a deployment
+    demo_deployment = ManagedOnlineDeployment(
+        name="fillmask",
+        endpoint_name=online_endpoint_name,
+        model=latest_model.id,
+        instance_type="Standard_DS3_v2",
+        instance_count=1,
+        request_settings=OnlineRequestSettings(
+            request_timeout_ms=60000,
+        ),
+    )
+    workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+    endpoint.traffic = {"fillmask": 100}
+    workspace_ml_client.begin_create_or_update(endpoint).result()
+    
+    workspace_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
     
