@@ -220,7 +220,7 @@ registry_ml_client = MLClient(
 latest_model = get_latest_model_version(registry_ml_client, test_model_name)
 instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
 
-credential = DefaultAzureCredential()
+#credential = DefaultAzureCredential()
 #set_tracking_uri(credential)
 download_and_register_model()
     
