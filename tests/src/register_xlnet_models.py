@@ -5,6 +5,14 @@ from transformers import XLNetForSequenceClassification,XLNetTokenizer
 from azureml.mlflow import get_mlflow_tracking_uri
 import mlflow
 import torch
+import time, sys
+from azure.ai.ml.entities import (
+    ManagedOnlineEndpoint,
+    ManagedOnlineDeployment,
+    OnlineRequestSettings,
+)
+import json
+import os
 # Replace with your Azure ML workspace details
 # subscription_id = "bb9cf94f-f06a-49eb-a8e9-e63654d7257b"
 # resource_group = "Free"
