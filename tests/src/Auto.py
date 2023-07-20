@@ -210,30 +210,57 @@ def delete_online_endpoint(workspace_ml_client, online_endpoint_name):
         exit (0)    
 
 
-
-def get_latest_model_version(registry_ml_client, model_name):
-    print ("In get_latest_model_version...")
-    # Getting latest model version from registry is not working, so get all versions and find latest
-    model_versions=registry_ml_client.models.list(name=model_name)
-    version_list = list(registry_ml_client.models.list(model_name))
-    print("version_list",version_list)
-    print("model_name: ",model_name)
-    print("model_versions: ",model_versions)
-    model_version_count=0
-    # can't just check len(model_versions) because it is a iterator
-    models = []
-    for model in model_versions:
-        model_version_count = model_version_count + 1
-        models.append(model)
-        print("model:",model)
-    print("models:",models)
-    # Sort models by creation time and find the latest model
-    sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
-    print("sorted_models: ",sorted_models)
-    # latest_model = sorted_models[0]
-    # print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
-    # print(latest_model)
-    return model_name
+def download_and_register_model():
+    model = AutoModelForSequenceClassification.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    print("tokenizer:",tokenizer)
+    mlflow.transformers.log_model(
+            transformers_model = {"model" : model, "tokenizer":tokenizer},
+            task="fill-mask",
+            artifact_path="Bert_artifact",
+            registered_model_name=registered_model_name
+    )
+    print("downloaded and registered model:",registered_model_name)
+    
+def get_latest_model_version(registry_ml_client, test_model_name):
+    model_versions = list(registry_ml_client.models.list(registered_model_name))
+    if len(model_versions) == 0:
+        print("There is no previously registered model")
+    else:
+        models = []
+        for model in model_versions:
+            model_version_count = model_version_count + 1
+            models.append(model)
+        # Sort models by creation time and find the latest model
+        sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
+        latest_model = sorted_models[0]
+        print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
+        print(latest_model)
+        return latest_model
+        
+# def get_latest_model_version(registry_ml_client, model_name):
+#     print ("In get_latest_model_version...")
+#     # Getting latest model version from registry is not working, so get all versions and find latest
+#     model_versions=registry_ml_client.models.list(name=model_name)
+#     version_list = list(registry_ml_client.models.list(model_name))
+#     print("version_list",version_list)
+#     print("model_name: ",model_name)
+#     print("model_versions: ",model_versions)
+#     model_version_count=0
+#     # can't just check len(model_versions) because it is a iterator
+#     models = []
+#     for model in model_versions:
+#         model_version_count = model_version_count + 1
+#         models.append(model)
+#         print("model:",model)
+#     print("models:",models)
+#     # Sort models by creation time and find the latest model
+#     sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
+#     print("sorted_models: ",sorted_models)
+#     # latest_model = sorted_models[0]
+#     # print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
+#     # print(latest_model)
+#     return model_name
 
 
  
@@ -274,7 +301,7 @@ def main():
 
     # constants
     check_override = True
-
+    registered_model_name="Bert-Reg-Auto"
     # if any of the above are not set, exit with error
     # if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
     #     print ("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
@@ -322,6 +349,7 @@ def main():
     )
     print("reg: ",registry_ml_client)
     print("workspace ", workspace_ml_client)   
+    download_and_register_model()
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     # instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
     print("latest_model: ",latest_model)
