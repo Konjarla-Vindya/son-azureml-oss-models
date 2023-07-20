@@ -183,7 +183,35 @@ def download_and_register_model():
 # #set_tracking_uri(credential)
 # download_and_register_model()
     
+def data_for_inference():
+    import pandas as pd
 
+    pd.set_option(
+        "display.max_colwidth", 0
+    )  # set the max column width to 0 to display the full text
+    train_df = pd.read_json("./book-corpus-dataset/train.jsonl", lines=True)
+    train_df.head()
+    # Get the right mask token from huggingface
+    import urllib.request, json
+    
+    with urllib.request.urlopen(f"https://huggingface.co/api/models/{model_name}") as url:
+        data = json.load(url)
+        mask_token = data["mask_token"]
+    
+    # take the value of the "text" column, replace a random word with the mask token and save the result in the "masked_text" column
+    import random, os
+    
+    train_df["masked_text"] = train_df["text"].apply(
+        lambda x: x.replace(random.choice(x.split()), mask_token, 1)
+    )
+    # save the train_df dataframe to a jsonl file in the ./book-corpus-dataset folder with the masked_ prefix
+    train_df.to_json(
+        os.path.join(".", "book-corpus-dataset", "masked_train.jsonl"),
+        orient="records",
+        lines=True,
+    )
+    train_df.head()
+    print("data is ready")
 
 def main():
     
@@ -253,6 +281,7 @@ def main():
     #credential = DefaultAzureCredential()
     #set_tracking_uri(credential)
     download_and_register_model()
+    data_for_inference()
     
 
 if __name__ == "__main__":
