@@ -212,7 +212,7 @@ if __name__ == "__main__":
         + ", for fill-mask task",
         auth_mode="key",
     )
-    workspace_ml_client.begin_create_or_update(endpoint).wait()
+    registry_ml_client.begin_create_or_update(endpoint).wait()
     # create a deployment
     demo_deployment = ManagedOnlineDeployment(
         name="fillmask",
@@ -224,9 +224,9 @@ if __name__ == "__main__":
             request_timeout_ms=60000,
         ),
     )
-    workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+    registry_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
     endpoint.traffic = {"fillmask": 100}
-    workspace_ml_client.begin_create_or_update(endpoint).result()
-    
-    workspace_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
+    registry_ml_client.begin_create_or_update(endpoint).result()
+    print("Deployment started I think")
+    registry_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
     
