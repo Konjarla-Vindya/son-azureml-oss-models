@@ -230,7 +230,7 @@ def get_latest_model_version(registry_ml_client, model_name):
     # latest_model = sorted_models[0]
     # print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
     # print(latest_model)
-    return latest_model
+    return model_name
 
 
  
