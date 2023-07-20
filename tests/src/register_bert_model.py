@@ -133,6 +133,8 @@ def get_sku_override():
 
     
 def download_and_register_model():
+    checkpoint = "bert-base-uncased"
+    registered_model_name = "bert_registered"
     model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
     mlflow.transformers.log_model(
@@ -168,8 +170,7 @@ def get_latest_model_version(registry_ml_client, test_model_name):
 
 def main():
     
-    checkpoint = "bert-base-uncased"
-    registered_model_name = "bert_registered"
+    
 
     # constants
     check_override = True
