@@ -203,7 +203,7 @@ if __name__ == "__main__":
     
     # Create online endpoint - endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
     timestamp = int(time.time())
-    online_endpoint_name = "fill-mask-" + str(timestamp)
+    online_endpoint_name = "xlnet-deployment" + str(timestamp)
     # create an online endpoint
     endpoint = ManagedOnlineEndpoint(
         name=online_endpoint_name,
