@@ -235,23 +235,22 @@ def download_and_register_model():
     )
     print("downloaded and registered model:",registered_model_name)
     
-def get_latest_version_model(registry_ml_client):
-    model_versions = list(registry_ml_client.models.list(name=registered_model_name))
-    #print(f"Here are the registered model versions : {model_versions}")
+def get_latest_model_version(registry_ml_client, model_name):
+    print ("In get_latest_model_version...")
+    # Getting latest model version from registry is not working, so get all versions and find latest
+    model_versions=registry_ml_client.models.list(name=model_name)
     model_version_count=0
-    if len(model_versions) == 0:
-        print("There is no previously registered model")
-    else:
-        models = []
-        for model in model_versions:
-            model_version_count = model_version_count + 1
-            models.append(model)
-        # Sort models by creation time and find the latest model
-        sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
-        latest_model = sorted_models[0]
-        print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
-        print(latest_model)
-        return latest_model
+    # can't just check len(model_versions) because it is a iterator
+    models = []
+    for model in model_versions:
+        model_version_count = model_version_count + 1
+        models.append(model)
+    # Sort models by creation time and find the latest model
+    sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
+    latest_model = sorted_models[0]
+    print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
+    print(latest_model)
+    return latest_model
         
 # def get_latest_model_version(registry_ml_client, model_name):
 #     print ("In get_latest_model_version...")
@@ -368,7 +367,7 @@ def main():
         workspace_name=queue['workspace'])
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     download_and_register_model()
-    latest_model = get_latest_version_model(registry_ml_client)
+    latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     # instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
     print("latest_model: ",latest_model)
     # print("instance_type ", instance_type)   
