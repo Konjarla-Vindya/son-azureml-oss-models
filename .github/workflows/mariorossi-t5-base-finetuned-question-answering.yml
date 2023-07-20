@@ -1,4 +1,4 @@
-name: mariorossi-t5-base-finetuned-question-answering-test
+name: mariorossi-t5-base-finetuned-question-answering
 
 on: 
   workflow_dispatch:
