@@ -415,7 +415,6 @@ def main():
     print (f"test_queue: {test_queue}")
     print (f"test_set: {test_set}")
 
-
     try:
         credential = AzureCliCredential()
         credential.get_token("https://management.azure.com/.default")
@@ -437,23 +436,7 @@ def main():
         registry_name=queue['registry']
     )
     print("reg: ",registry_ml_client)
-    print("workspace ", workspace_ml_client)
-#     # latest_model = get_latest_model_version(registry_ml_client, test_model_name)
-    
-
-# # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
-
-#     timestamp = int(time.time())
-#     online_endpoint_name = "fill-" + str(timestamp)
-#     print (f"online_endpoint_name: {online_endpoint_name}")
-#     endpoint = ManagedOnlineEndpoint(
-#         name=online_endpoint_name,
-#         auth_mode="key",
-#     )
-#     create_online_endpoint(workspace_ml_client, endpoint)
-#     create_online_deployment(workspace_ml_client, endpoint, instance_type, latest_model)
-#     delete_online_endpoint(workspace_ml_client, online_endpoint_name)
-    
+    print("workspace ", workspace_ml_client)   
         
 if __name__ == "__main__":
     main()
