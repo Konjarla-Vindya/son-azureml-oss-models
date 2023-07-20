@@ -215,6 +215,8 @@ def get_latest_model_version(registry_ml_client, model_name):
     print ("In get_latest_model_version...")
     # Getting latest model version from registry is not working, so get all versions and find latest
     model_versions=registry_ml_client.models.list(name=model_name)
+    version_list = list(registry_ml_client.models.list(model_name))
+    print("version_list",version_list)
     print("model_name: ",model_name)
     print("model_versions: ",model_versions)
     model_version_count=0
