@@ -16,6 +16,7 @@ registered_model_name = "Xlnet_registered"
 subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
 resource_group = 'sonata-test-rg'
 workspace_name = 'sonata-test-ws'
+test_set = os.environ.get('test_set')
 
 def set_tracking_uri(credential):
 
@@ -61,6 +62,99 @@ def get_latest_version_model(registry_ml_client):
 def test_infernce(latest_model):
     pass
 
+def get_sku_override():
+    try:
+        with open(f'../config/sku-override/{test_set}.json') as json_file:
+            return json.load(json_file)
+    except Exception as e:
+        print (f"::warning:: Could not find sku-override file: \n{e}")
+        return None
+
+def get_instance_type(latest_model, sku_override, registry_ml_client, check_override):
+    # determine the instance_type from the sku templates available in the model properties
+    # 1. get the template name matching the sku_type
+    # 2. look up template-sku.json to find the instance_type
+    model_properties = str(latest_model.properties)
+    # escape double quotes in model_properties
+    model_properties = model_properties.replace('"', '\\"')
+    # replace single quotes with double quotes in model_properties
+    model_properties = model_properties.replace("'", '"')
+    # convert model_properties to dictionary
+    model_properties_dict=json.loads(model_properties)
+    sku_templates = model_properties_dict['skuBasedEngineIds']
+    # split sku_templates by comma into a list
+    sku_templates_list = sku_templates.split(",")
+    # find the sku_template that has sku_type as a substring
+    sku_template = next((s for s in sku_templates_list if checkpoint in s), None)
+    if sku_template is None:
+        print (f"::error:: Could not find sku_template for {checkpoint}")
+        exit (1)
+    print (f"sku_template: {sku_template}")
+    # split sku_template by / and get the 5th element into a variable called template_name
+    template_name = sku_template.split("/")[5]
+    print (f"template_name: {template_name}")
+    template_latest_version=get_latest_model_version(registry_ml_client, template_name)
+
+    #print (template_latest_version.properties) 
+    # split the properties by by the pattern "DefaultInstanceType": " and get 2nd element
+    # then again split by " and get the first element
+    instance_type = str(template_latest_version.properties).split('"DefaultInstanceType": "')[1].split('"')[0]
+    print (f"instance_type: {instance_type}")
+
+    if instance_type is None:
+        print (f"::error:: Could not find instance_type for {checkpoint}")
+        exit (1)
+
+    if check_override:
+        if latest_model.name in sku_override:
+            instance_type = sku_override[test_model_name]['sku']
+            print (f"overriding instance_type: {instance_type}")
+    
+    return instance_type
+
+
+def create_online_endpoint(workspace_ml_client, endpoint):
+    print ("In create_online_endpoint...")
+    try:
+        workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
+    except Exception as e:
+        print (f"::error:: Could not create endpoint: \n")
+        print (f"{e}\n\n check logs:\n\n")
+        prase_logs(str(e))
+        exit (1)
+
+    print(workspace_ml_client.online_endpoints.get(name=endpoint.name))
+
+def create_online_deployment(workspace_ml_client, endpoint, instance_type, latest_model):
+    print ("In create_online_deployment...")
+    demo_deployment = ManagedOnlineDeployment(
+        name="demo",
+        endpoint_name=endpoint.name,
+        model=latest_model.id,
+        instance_type=instance_type,
+        instance_count=1,
+    )
+    try:
+        workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+    except Exception as e:
+        print (f"::error:: Could not create deployment\n")
+        print (f"{e}\n\n check logs:\n\n")
+        prase_logs(str(e))
+        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
+        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
+        exit (1)
+    # online endpoints can have multiple deployments with traffic split or shadow traffic. Set traffic to 100% for demo deployment
+    endpoint.traffic = {"demo": 100}
+    try:
+        workspace_ml_client.begin_create_or_update(endpoint).result()
+    except Exception as e:
+        print (f"::error:: Could not create deployment\n")
+        print (f"{e}\n\n check logs:\n\n")
+        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
+        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
+        exit (1)
+    print(workspace_ml_client.online_deployments.get(name="demo", endpoint_name=endpoint.name))
+    
 if __name__ == "__main__":
     try:
         credential = DefaultAzureCredential()
@@ -83,4 +177,18 @@ if __name__ == "__main__":
     output = model(**inputs)
     predictions = torch.nn.functional.softmax(output.logits, dim=-1)
     print(f'Predicted class: {predictions}')
+    
+    timestamp = int(time.time())
+    online_endpoint_name = "hf-ep-" + str(timestamp)
+    print (f"online_endpoint_name: {online_endpoint_name}")
+    endpoint = ManagedOnlineEndpoint(
+        name=online_endpoint_name,
+        auth_mode="key",
+    )
+    sku_override = get_sku_override()
+    # constants
+    check_override = True
+    instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
+    create_online_endpoint(registry_ml_client, endpoint)
+    create_online_deployment(registry_ml_client, endpoint, instance_type, latest_model)
     

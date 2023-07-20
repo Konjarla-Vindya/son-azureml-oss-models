@@ -3,6 +3,9 @@ name: xlnet-register-model
 on: 
   workflow_dispatch:
 
+env:
+  test_set: huggingface-all
+  
 jobs:
   deploy-model-job:
     runs-on: ubuntu-latest
