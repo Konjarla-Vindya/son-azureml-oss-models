@@ -213,8 +213,7 @@ def main():
         workspace_name=queue['workspace']
     )
 #mlflow.set_tracking_uri(test_workspace_name.get_mlflow_tracking_uri())
-tracking_uri = workspace_ml_client.get_mlflow_tracking_uri() 
-mlflow.set_tracking_uri(tracking_uri)
+
 
 # checkpoint = "bert-base-uncased"
 # registered_model_name = "bert_registered"
@@ -224,6 +223,8 @@ registry_ml_client = MLClient(
         credential=credential, 
         registry_name="sonata-test-reg"
     )
+tracking_uri = registry_ml_client.get_mlflow_tracking_uri() 
+mlflow.set_tracking_uri(tracking_uri)
 
 latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     #instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
