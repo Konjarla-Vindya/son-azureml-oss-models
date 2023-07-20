@@ -29,7 +29,7 @@ import mlflow
 
 
 
-
+registered_model_name="Bert-Reg-Auto"
 # model to test    
 test_model_name = os.environ.get('test_model_name')
 
@@ -235,8 +235,10 @@ def download_and_register_model(registered_model_name):
     )
     print("downloaded and registered model:",registered_model_name)
     
-def get_latest_model_version(registry_ml_client, test_model_name):
-    model_versions = list(registry_ml_client.models.list(registered_model_name))
+def get_latest_version_model(registry_ml_client):
+    model_versions = list(registry_ml_client.models.list(name=registered_model_name))
+    #print(f"Here are the registered model versions : {model_versions}")
+    model_version_count=0
     if len(model_versions) == 0:
         print("There is no previously registered model")
     else:
@@ -314,8 +316,7 @@ def main():
 
     # constants
     check_override = True
-    registered_model_name="Bert-Reg-Auto"
-    # if any of the above are not set, exit with error
+        # if any of the above are not set, exit with error
     # if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
     #     print ("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
     #     exit (1)
@@ -366,7 +367,7 @@ def main():
         resource_group=queue['resource_group'],
         workspace_name=queue['workspace'])
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
-    download_and_register_model(registered_model_name)
+    download_and_register_model()
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     # instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
     print("latest_model: ",latest_model)
