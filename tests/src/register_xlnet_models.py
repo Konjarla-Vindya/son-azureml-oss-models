@@ -26,7 +26,7 @@ def set_tracking_uri(credential):
     #print("Reaching here in the set tracking uri method")
 
 
-def download_and_register_model():
+def download_and_register_model()->dict:
     model = XLNetForSequenceClassification.from_pretrained(checkpoint)
     tokenizer = XLNetTokenizer.from_pretrained(checkpoint)
     mlflow.transformers.log_model(
@@ -35,7 +35,9 @@ def download_and_register_model():
             artifact_path="XlNetClassification_artifact",
             registered_model_name=registered_model_name
     )
+    model_tokenizer = {"model":model, "tokenizer":tokenizer}
     #print("Reaching here in the download and register model methos")
+    return model_tokenizer
     
 def get_latest_version_model(registry_ml_client):
     model_versions = list(registry_ml_client.models.list(name=registered_model_name))
@@ -55,6 +57,8 @@ def get_latest_version_model(registry_ml_client):
         print(latest_model)
         return latest_model
     return None
+def test_infernce(latest_model):
+    pass
 
 if __name__ == "__main__":
     try:
@@ -64,7 +68,7 @@ if __name__ == "__main__":
     except Exception as e:
         print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
     set_tracking_uri(credential)
-    download_and_register_model()
+    model_tokenizer = download_and_register_model()
     # connect to registry
     # registry_ml_client = MLClient(
     #     credential=credential, 
@@ -72,3 +76,10 @@ if __name__ == "__main__":
     # )
     registry_ml_client = MLClient(credential, subscription_id, resource_group, workspace_name)
     latest_model = get_latest_version_model(registry_ml_client)
+    model = model_tokenizer["model"]
+    tokenizer = model_tokenizer["tokenizer"]
+    inputs = tokenizer("Hello, my dog is cute", "The movie was good", return_tensors="pt")
+    output = model(**inputs)
+    predictions = torch.nn.functional.softmax(output.logits, dim=-1)
+    print(f'Predicted class: {predictions}')
+    
