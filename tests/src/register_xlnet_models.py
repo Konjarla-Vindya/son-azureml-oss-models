@@ -12,10 +12,11 @@ import mlflow
 checkpoint = "xlnet-base-cased"
 registered_model_name = "Xlnet_registered"
 
+subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
+resource_group = 'sonata-test-rg'
+workspace_name = 'sonata-test-ws'
+
 def set_tracking_uri(credential):
-    subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
-    resource_group = 'sonata-test-rg'
-    workspace_name = 'sonata-test-ws'
 
     ws = Workspace(subscription_id, resource_group, workspace_name)
     workspace_ml_client = MLClient(
