@@ -138,35 +138,7 @@ def create_online_endpoint(workspace_ml_client, endpoint):
     print(workspace_ml_client.online_endpoints.get(name=endpoint.name))
 
 
-def create_online_deployment(workspace_ml_client, endpoint, latest_model):
-    print ("In create_online_deployment...")
-    demo_deployment = ManagedOnlineDeployment(
-        name="demo",
-        endpoint_name=endpoint.name,
-        model=latest_model.id,
-        # instance_type=instance_type,
-        # instance_count=1,
-    )
-    try:
-        workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
-    except Exception as e:
-        print (f"::error:: Could not create deployment\n")
-        print (f"{e}\n\n check logs:\n\n")
-        prase_logs(str(e))
-        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
-        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
-        exit (1)
-    # online endpoints can have multiple deployments with traffic split or shadow traffic. Set traffic to 100% for demo deployment
-    endpoint.traffic = {"demo": 100}
-    try:
-        workspace_ml_client.begin_create_or_update(endpoint).result()
-    except Exception as e:
-        print (f"::error:: Could not create deployment\n")
-        print (f"{e}\n\n check logs:\n\n")
-        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
-        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
-        exit (1)
-    print(workspace_ml_client.online_deployments.get(name="demo", endpoint_name=endpoint.name))
+
 
 
 def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint_name):
@@ -211,23 +183,23 @@ def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint
         print (f"{e}\n\n check logs:\n\n")
         get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
 
-def prase_logs(logs):
+# def prase_logs(logs):
 
-    # split logs by \n
-    logs_list = logs.split("\n")
-    # loop through each line in logs_list
-    for line in logs_list:
-        # loop through each error in errors
-        for error in error_messages:
-            # if error is found in line, print error message
-            if error['parse_string'] in line:
-                print (f"::error:: {error_messages['error_category']}: {line}")
+#     # split logs by \n
+#     logs_list = logs.split("\n")
+#     # loop through each line in logs_list
+#     for line in logs_list:
+#         # loop through each error in errors
+#         for error in error_messages:
+#             # if error is found in line, print error message
+#             if error['parse_string'] in line:
+#                 print (f"::error:: {error_messages['error_category']}: {line}")
 
-def get_online_endpoint_logs(workspace_ml_client, online_endpoint_name):
-    print("Deployment logs: \n\n")
-    logs=workspace_ml_client.online_deployments.get_logs(name="demo", endpoint_name=online_endpoint_name, lines=100000)
-    print(logs)
-    prase_logs(logs)
+# def get_online_endpoint_logs(workspace_ml_client, online_endpoint_name):
+#     print("Deployment logs: \n\n")
+#     logs=workspace_ml_client.online_deployments.get_logs(name="demo", endpoint_name=online_endpoint_name, lines=100000)
+#     print(logs)
+#     prase_logs(logs)
 
 
 def delete_online_endpoint(workspace_ml_client, online_endpoint_name):
@@ -239,80 +211,6 @@ def delete_online_endpoint(workspace_ml_client, online_endpoint_name):
 
 
 
-def main():
-
-    # constants
-    check_override = True
-
-    # if any of the above are not set, exit with error
-    # if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
-    #     print ("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
-    #     exit (1)
-
-    queue = get_test_queue()
-
-    sku_override = get_sku_override()
-    if sku_override is None:
-        check_override = False
-
-    # if test_trigger_next_model == "true":
-    #     set_next_trigger_model(queue)
-
-    # print values of all above variables
-    print (f"test_subscription_id: {queue['subscription']}")
-    print (f"test_resource_group: {queue['resource_group']}")
-    print (f"test_workspace_name: {queue['workspace']}")
-    print (f"test_model_name: {test_model_name}")
-    print (f"test_sku_type: {test_sku_type}")
-    print (f"test_registry: queue['registry']")
-    # print (f"test_trigger_next_model: {test_trigger_next_model}")
-    print (f"test_queue: {test_queue}")
-    print (f"test_set: {test_set}")
-
-
-    try:
-        credential = AzureCliCredential()
-        credential.get_token("https://management.azure.com/.default")
-    except Exception as ex:
-        print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
-        exit (1)
-
-    # connect to workspace
-    workspace_ml_client = MLClient(
-        credential=credential, 
-        subscription_id=queue['subscription'],
-        resource_group_name=queue['resource_group'],
-        workspace_name=queue['workspace']
-    )
-
-    # connect to registry
-    registry_ml_client = MLClient(
-        credential=credential, 
-        registry_name=queue['registry']
-    )
-
-    latest_model = get_latest_model_version(registry_ml_client, test_model_name)
-    # instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
-
-# endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
-
-    timestamp = int(time.time())
-    online_endpoint_name = "fill" + str(timestamp)
-    print (f"online_endpoint_name: {online_endpoint_name}")
-    endpoint = ManagedOnlineEndpoint(
-        name=online_endpoint_name,
-        auth_mode="key",
-    )
-    create_online_endpoint(workspace_ml_client, endpoint)
-    create_online_deployment(workspace_ml_client, endpoint, latest_model)
-    sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
-    get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
-    delete_online_endpoint(workspace_ml_client, online_endpoint_name)
-    
-        
-if __name__ == "__main__":
-    main()
-    
 def get_latest_model_version(registry_ml_client, model_name):
     print ("In get_latest_model_version...")
     # Getting latest model version from registry is not working, so get all versions and find latest
@@ -331,20 +229,7 @@ def get_latest_model_version(registry_ml_client, model_name):
     return latest_model
 
 
-    
-def create_online_endpoint(workspace_ml_client, endpoint):
-    print ("In create_online_endpoint...")
-    try:
-        workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
-    except Exception as e:
-        print (f"::error:: Could not create endpoint: \n")
-        print (f"{e}\n\n check logs:\n\n")
-        prase_logs(str(e))
-        exit (1)
-
-    print(workspace_ml_client.online_endpoints.get(name=endpoint.name))
-
-
+ 
 def create_online_deployment(workspace_ml_client, endpoint, instance_type, latest_model):
     print ("In create_online_deployment...")
     demo_deployment = ManagedOnlineDeployment(
@@ -375,13 +260,6 @@ def create_online_deployment(workspace_ml_client, endpoint, instance_type, lates
         exit (1)
     print(workspace_ml_client.online_deployments.get(name="demo", endpoint_name=endpoint.name))
 
-
-def delete_online_endpoint(workspace_ml_client, online_endpoint_name):
-    try:
-        workspace_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
-    except Exception as e:
-        print (f"::warning:: Could not delete endpoint: : \n{e}")
-        exit (0)    
 
 
 
