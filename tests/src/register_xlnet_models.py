@@ -13,32 +13,56 @@ from azure.ai.ml.entities import (
 )
 import json
 import os
-# Replace with your Azure ML workspace details
-# subscription_id = "bb9cf94f-f06a-49eb-a8e9-e63654d7257b"
-# resource_group = "Free"
-# workspace_name = "Trial"
-# credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
-checkpoint = "xlnet-base-cased"
-registered_model_name = "Xlnet_registered"
+from box import ConfigBox
+# checkpoint = "xlnet-base-cased"
+# registered_model_name = "Xlnet_registered"
 
-subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
-resource_group = 'sonata-test-rg'
-workspace_name = 'sonata-test-ws'
+# subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
+# resource_group = 'sonata-test-rg'
+# workspace_name = 'sonata-test-ws'
+
+error_messages = get_error_messages()
+
+# model to test    
+test_model_name = os.environ.get('test_model_name')
+
+# test cpu or gpu template
+test_sku_type = os.environ.get('test_sku_type')
+
+# bool to decide if we want to trigger the next model in the queue
+test_trigger_next_model = os.environ.get('test_trigger_next_model')
+
+# test queue name - the queue file contains the list of models to test with with a specific workspace
+test_queue = os.environ.get('test_queue')
+
+# test set - the set of queues to test with. a test queue belongs to a test set
 test_set = os.environ.get('test_set')
 
-def set_tracking_uri(credential):
+# bool to decide if we want to keep looping through the queue, 
+# which means that the first model in the queue is triggered again after the last model is tested
+test_keep_looping = os.environ.get('test_keep_looping')
 
-    ws = Workspace(subscription_id, resource_group, workspace_name)
+def get_test_queue()->ConfigBox:
+    #config_name = test_queue+'-test'
+    #queue_file1 = f"../config/queue/{test_set}/{config_name}.json"
+    queue_file = f"../config/queue/{test_set}/{test_queue}.json"
+    with open(queue_file) as f:
+        content = json.load(f)
+        return ConfigBox(content)
+
+def set_tracking_uri(credential, queue):
+
+    ws = Workspace(queue.subscription, queue.resource_group, queue.workspace)
     workspace_ml_client = MLClient(
-                        credential, subscription_id, resource_group, ws
+                        credential, queue.subscription, queue.resource_group, ws
                     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     #print("Reaching here in the set tracking uri method")
 
 
-def download_and_register_model()->dict:
-    model = XLNetForSequenceClassification.from_pretrained(checkpoint)
-    tokenizer = XLNetTokenizer.from_pretrained(checkpoint)
+def download_and_register_model(queue)->dict:
+    model = XLNetForSequenceClassification.from_pretrained(queue.models)
+    tokenizer = XLNetTokenizer.from_pretrained(queue.models)
     mlflow.transformers.log_model(
             transformers_model = {"model" : model, "tokenizer":tokenizer},
             task="text-classification",
@@ -67,8 +91,13 @@ def get_latest_version_model(registry_ml_client):
         print(latest_model)
         return latest_model
     return None
-def test_infernce(latest_model):
-    pass
+def test_infernce(model_tokenizer):
+    model = model_tokenizer["model"]
+    tokenizer = model_tokenizer["tokenizer"]
+    inputs = tokenizer("Hello, my dog is cute", "The movie was good", return_tensors="pt")
+    output = model(**inputs)
+    predictions = torch.nn.functional.softmax(output.logits, dim=-1)
+    print(f'Predicted class: {predictions}')
 
 def get_sku_override():
     try:
@@ -78,155 +107,80 @@ def get_sku_override():
         print (f"::warning:: Could not find sku-override file: \n{e}")
         return None
 
-def get_instance_type(latest_model, sku_override, registry_ml_client, check_override):
-    # determine the instance_type from the sku templates available in the model properties
-    # 1. get the template name matching the sku_type
-    # 2. look up template-sku.json to find the instance_type
-    model_properties = str(latest_model.properties)
-    # escape double quotes in model_properties
-    model_properties = model_properties.replace('"', '\\"')
-    # replace single quotes with double quotes in model_properties
-    model_properties = model_properties.replace("'", '"')
-    # convert model_properties to dictionary
-    model_properties_dict=json.loads(model_properties)
-    sku_templates = model_properties_dict['skuBasedEngineIds']
-    # split sku_templates by comma into a list
-    sku_templates_list = sku_templates.split(",")
-    # find the sku_template that has sku_type as a substring
-    sku_template = next((s for s in sku_templates_list if checkpoint in s), None)
-    if sku_template is None:
-        print (f"::error:: Could not find sku_template for {checkpoint}")
-        exit (1)
-    print (f"sku_template: {sku_template}")
-    # split sku_template by / and get the 5th element into a variable called template_name
-    template_name = sku_template.split("/")[5]
-    print (f"template_name: {template_name}")
-    template_latest_version=get_latest_model_version(registry_ml_client, template_name)
-
-    #print (template_latest_version.properties) 
-    # split the properties by by the pattern "DefaultInstanceType": " and get 2nd element
-    # then again split by " and get the first element
-    instance_type = str(template_latest_version.properties).split('"DefaultInstanceType": "')[1].split('"')[0]
-    print (f"instance_type: {instance_type}")
-
-    if instance_type is None:
-        print (f"::error:: Could not find instance_type for {checkpoint}")
-        exit (1)
-
-    if check_override:
-        if latest_model.name in sku_override:
-            instance_type = sku_override[test_model_name]['sku']
-            print (f"overriding instance_type: {instance_type}")
-    
-    return instance_type
-
-
-def create_online_endpoint(workspace_ml_client, endpoint):
+def create_online_endpoint(registry_ml_client, endpoint):
     print ("In create_online_endpoint...")
     try:
-        workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
+        registry_ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
     except Exception as e:
         print (f"::error:: Could not create endpoint: \n")
         print (f"{e}\n\n check logs:\n\n")
         prase_logs(str(e))
         exit (1)
 
-    print(workspace_ml_client.online_endpoints.get(name=endpoint.name))
-
-def create_online_deployment(workspace_ml_client, endpoint, instance_type, latest_model):
+    print(registry_ml_client.online_endpoints.get(name=endpoint.name))
+def create_online_deployment(registry_ml_client, endpoint, latest_model):
     print ("In create_online_deployment...")
     demo_deployment = ManagedOnlineDeployment(
         name="demo",
         endpoint_name=endpoint.name,
         model=latest_model.id,
-        instance_type=instance_type,
+        instance_type="Standard_DS3_v2",
         instance_count=1,
     )
     try:
-        workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+        registry_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
     except Exception as e:
         print (f"::error:: Could not create deployment\n")
         print (f"{e}\n\n check logs:\n\n")
         prase_logs(str(e))
-        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
-        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
+        get_online_endpoint_logs(registry_ml_client, endpoint.name)
+        registry_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
         exit (1)
     # online endpoints can have multiple deployments with traffic split or shadow traffic. Set traffic to 100% for demo deployment
     endpoint.traffic = {"demo": 100}
     try:
-        workspace_ml_client.begin_create_or_update(endpoint).result()
+        registry_ml_client.begin_create_or_update(endpoint).result()
     except Exception as e:
         print (f"::error:: Could not create deployment\n")
         print (f"{e}\n\n check logs:\n\n")
-        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
-        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
+        get_online_endpoint_logs(registry_ml_client, endpoint.name)
+        registry_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
         exit (1)
-    print(workspace_ml_client.online_deployments.get(name="demo", endpoint_name=endpoint.name))
+    print(registry_ml_client.online_deployments.get(name="demo", endpoint_name=endpoint.name))
     
 if __name__ == "__main__":
+    queue = get_test_queue()
+    sku_override = get_sku_override()
     try:
         credential = DefaultAzureCredential()
         credential.get_token("https://management.azure.com/.default")
     #credential = AzureCliCredential()
     except Exception as e:
         print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
-    set_tracking_uri(credential)
-    model_tokenizer = download_and_register_model()
+    set_tracking_uri(credential, queue)
+    model_tokenizer = download_and_register_model(queue)
     # connect to registry
     # registry_ml_client = MLClient(
     #     credential=credential, 
     #     registry_name="sonata-test-reg"
     # )
-    registry_ml_client = MLClient(credential, subscription_id, resource_group, workspace_name)
+    registry_ml_client = MLClient(
+        credential= credential,
+        subscription_id = queue.subscription, 
+        resource_group_name = queue.resource_group, 
+        workspace_name=queue.workspace
+    )
     latest_model = get_latest_version_model(registry_ml_client)
-    model = model_tokenizer["model"]
-    tokenizer = model_tokenizer["tokenizer"]
-    inputs = tokenizer("Hello, my dog is cute", "The movie was good", return_tensors="pt")
-    output = model(**inputs)
-    predictions = torch.nn.functional.softmax(output.logits, dim=-1)
-    print(f'Predicted class: {predictions}')
-    
-    # timestamp = int(time.time())
-    # online_endpoint_name = "hf-ep-" + str(timestamp)
-    # print (f"online_endpoint_name: {online_endpoint_name}")
-    # endpoint = ManagedOnlineEndpoint(
-    #     name=online_endpoint_name,
-    #     auth_mode="key",
-    # )
-    # sku_override = get_sku_override()
-    # # constants
-    # check_override = True
-    # instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
-    # create_online_endpoint(registry_ml_client, endpoint)
-    # create_online_deployment(registry_ml_client, endpoint, instance_type, latest_model)
-    
+    test_infernce(model_tokenizer)
     
     # Create online endpoint - endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
     timestamp = int(time.time())
-    online_endpoint_name = "xlnet-deployment" + str(timestamp)
-    # create an online endpoint
+    online_endpoint_name = "xlnet-classification" + str(timestamp)
+    print (f"online_endpoint_name: {online_endpoint_name}")
     endpoint = ManagedOnlineEndpoint(
         name=online_endpoint_name,
-        description="Online endpoint for "
-        + latest_model.name
-        + ", for fill-mask task",
         auth_mode="key",
     )
-    registry_ml_client.begin_create_or_update(endpoint).wait()
-    # create a deployment
-    demo_deployment = ManagedOnlineDeployment(
-        name="fillmask",
-        endpoint_name=online_endpoint_name,
-        model=latest_model.id,
-        instance_type="Standard_DS3_v2",
-        instance_count=1,
-        request_settings=OnlineRequestSettings(
-            request_timeout_ms=60000,
-        ),
-    )
-    registry_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
-    endpoint.traffic = {"fillmask": 100}
-    registry_ml_client.begin_create_or_update(endpoint).result()
-    print("Deployment started I think")
-    registry_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
+    create_online_endpoint(registry_ml_client, endpoint)
+    create_online_deployment(registry_ml_client, endpoint, latest_model)
     
