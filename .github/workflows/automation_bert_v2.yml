@@ -43,7 +43,7 @@ jobs:
       run: pip install numpy 
     - name: deploy-model-step
       id: deploy-model-step
-      run: python deploy_automation.py
+      run: python deploy_automation_v2.py
       working-directory: tests/src
     - name: trigger-next-model-step
       env:
