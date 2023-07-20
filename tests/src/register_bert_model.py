@@ -143,7 +143,7 @@ def download_and_register_model():
     )
     
 def get_latest_model_version(registry_ml_client, test_model_name):
-    model_versions = list(registry_ml_client.models.list(registered_model_name))
+    model_versions = list(registry_ml_client.models.list("bert_registered"))
     if len(model_versions) == 0:
         print("There is no previously registered model")
     else:
