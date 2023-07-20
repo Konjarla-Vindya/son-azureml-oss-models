@@ -37,7 +37,7 @@ def download_and_register_model():
     #print("Reaching here in the download and register model methos")
     
 def get_latest_version_model(registry_ml_client):
-    model_versions = registry_ml_client.models.list(registered_model_name)
+    model_versions = list(registry_ml_client.models.list(registered_model_name))
     print(f"Here are the registered model versions : {model_versions}")
     if len(model_versions) == 0:
         print("There is no previously registered model")
