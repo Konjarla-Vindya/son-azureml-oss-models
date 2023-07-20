@@ -138,14 +138,14 @@ def create_online_endpoint(workspace_ml_client, endpoint):
     print(workspace_ml_client.online_endpoints.get(name=endpoint.name))
 
 
-def create_online_deployment(workspace_ml_client, endpoint, instance_type, latest_model):
+def create_online_deployment(workspace_ml_client, endpoint, latest_model):
     print ("In create_online_deployment...")
     demo_deployment = ManagedOnlineDeployment(
         name="demo",
         endpoint_name=endpoint.name,
         model=latest_model.id,
-        instance_type=instance_type,
-        instance_count=1,
+        # instance_type=instance_type,
+        # instance_count=1,
     )
     try:
         workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
@@ -245,9 +245,9 @@ def main():
     check_override = True
 
     # if any of the above are not set, exit with error
-    if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
-        print ("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
-        exit (1)
+    # if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
+    #     print ("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
+    #     exit (1)
 
     queue = get_test_queue()
 
@@ -255,17 +255,17 @@ def main():
     if sku_override is None:
         check_override = False
 
-    if test_trigger_next_model == "true":
-        set_next_trigger_model(queue)
+    # if test_trigger_next_model == "true":
+    #     set_next_trigger_model(queue)
 
     # print values of all above variables
     print (f"test_subscription_id: {queue['subscription']}")
-    print (f"test_resource_group: {queue['subscription']}")
+    print (f"test_resource_group: {queue['resource_group']}")
     print (f"test_workspace_name: {queue['workspace']}")
     print (f"test_model_name: {test_model_name}")
     print (f"test_sku_type: {test_sku_type}")
     print (f"test_registry: queue['registry']")
-    print (f"test_trigger_next_model: {test_trigger_next_model}")
+    # print (f"test_trigger_next_model: {test_trigger_next_model}")
     print (f"test_queue: {test_queue}")
     print (f"test_set: {test_set}")
 
@@ -292,19 +292,19 @@ def main():
     )
 
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
-    instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
+    # instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
 
 # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
 
     timestamp = int(time.time())
-    online_endpoint_name = "hf-ep-" + str(timestamp)
+    online_endpoint_name = "fill" + str(timestamp)
     print (f"online_endpoint_name: {online_endpoint_name}")
     endpoint = ManagedOnlineEndpoint(
         name=online_endpoint_name,
         auth_mode="key",
     )
     create_online_endpoint(workspace_ml_client, endpoint)
-    create_online_deployment(workspace_ml_client, endpoint, instance_type, latest_model)
+    create_online_deployment(workspace_ml_client, endpoint, latest_model)
     sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
     get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
     delete_online_endpoint(workspace_ml_client, online_endpoint_name)
