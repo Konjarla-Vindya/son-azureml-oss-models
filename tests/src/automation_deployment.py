@@ -12,16 +12,9 @@ from azure.ai.ml.entities import (
 )
 import json
 import os
-import pandas as pd
 
 
 
-def get_error_messages():
-    # load ../config/errors.json into a dictionary
-    with open('../config/errors.json') as f:
-        return json.load(f)
-    
-error_messages = get_error_messages()
 
 # model to test    
 test_model_name = os.environ.get('test_model_name')
@@ -30,7 +23,7 @@ test_model_name = os.environ.get('test_model_name')
 test_sku_type = os.environ.get('test_sku_type')
 
 # bool to decide if we want to trigger the next model in the queue
-test_trigger_next_model = os.environ.get('test_trigger_next_model')
+# test_trigger_next_model = os.environ.get('test_trigger_next_model')
 
 # test queue name - the queue file contains the list of models to test with with a specific workspace
 test_queue = os.environ.get('test_queue')
@@ -40,14 +33,14 @@ test_set = os.environ.get('test_set')
 
 # bool to decide if we want to keep looping through the queue, 
 # which means that the first model in the queue is triggered again after the last model is tested
-test_keep_looping = os.environ.get('test_keep_looping')
+# test_keep_looping = os.environ.get('test_keep_looping')
 
 # function to load the workspace details from test queue file
 # even model we need to test belongs to a queue. the queue name is passed as environment variable test_queue
 # the queue file contains the list of models to test with with a specific workspace
 # the queue file also contains the details of the workspace, registry, subscription, resource group
 def get_test_queue():
-    config_name = test_queue+'-test'
+    config_name = 'test-bert'
     queue_file1 = f"../config/queue/{test_set}/{config_name}.json"
     queue_file = f"../config/queue/{test_set}/{test_queue}.json"
     with open(queue_file) as f:
@@ -85,24 +78,8 @@ def get_sku_override():
 #         print(f'NEXT_MODEL={next_model}')
 #         print(f'NEXT_MODEL={next_model}', file=fh)
 
-# we always test the latest version of the model
-def get_latest_model_version(registry_ml_client, model_name):
-    print ("In get_latest_model_version...")
-    # Getting latest model version from registry is not working, so get all versions and find latest
-    model_versions=registry_ml_client.models.list(name=model_name)
-    model_version_count=0
-    # can't just check len(model_versions) because it is a iterator
-    models = []
-    for model in model_versions:
-        model_version_count = model_version_count + 1
-        models.append(model)
-    # Sort models by creation time and find the latest model
-    sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
-    latest_model = sorted_models[0]
-    print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
-    print(latest_model)
-    return latest_model
-
+# # we always test the latest version of the model
+ 
 def get_instance_type(latest_model, sku_override, registry_ml_client, check_override):
     # determine the instance_type from the sku templates available in the model properties
     # 1. get the template name matching the sku_type
@@ -145,8 +122,11 @@ def get_instance_type(latest_model, sku_override, registry_ml_client, check_over
     
     return instance_type
 
-
-
+def get_error_messages():
+    # load ../config/errors.json into a dictionary
+    with open('../config/errors.json') as f:
+        return json.load(f)
+error_messages = get_error_messages()
     
 def create_online_endpoint(workspace_ml_client, endpoint):
     print ("In create_online_endpoint...")
@@ -161,6 +141,98 @@ def create_online_endpoint(workspace_ml_client, endpoint):
     print(workspace_ml_client.online_endpoints.get(name=endpoint.name))
 
 
+
+
+
+def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint_name):
+    # get the task tag from the latest_model.tags
+    tags = str(latest_model.tags)
+    # replace single quotes with double quotes in tags
+    tags = tags.replace("'", '"')
+    # convert tags to dictionary
+    tags_dict=json.loads(tags)
+    task = tags_dict['task']
+    print (f"task: {task}")
+    scoring_file = f"../config/sample_inputs/{registry}/{task}.json"
+    # check of scoring_file exists
+    try:
+        with open(scoring_file) as f:
+            scoring_input = json.load(f)
+            print (f"scoring_input file:\n\n {scoring_input}\n\n")
+    except Exception as e:
+        print (f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
+
+    # invoke the endpoint
+    try:
+        response = workspace_ml_client.online_endpoints.invoke(
+            endpoint_name=online_endpoint_name,
+            deployment_name="demo",
+            request_file=scoring_file,
+        )
+        response_json = json.loads(response)
+        output = json.dumps(response_json, indent=2)
+        print(f"response: \n\n{output}")
+        with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as fh:
+            print(f'####Sample input', file=fh)
+            print(f'```json', file=fh)
+            print(f'{scoring_input}', file=fh)
+            print(f'```', file=fh)
+            print(f'####Sample output', file=fh)
+            print(f'```json', file=fh)
+            print(f'{output}', file=fh)
+            print(f'```', file=fh)
+    except Exception as e:
+        print (f"::error:: Could not invoke endpoint: \n")
+        print (f"{e}\n\n check logs:\n\n")
+        get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
+
+def prase_logs(logs):
+
+    # split logs by \n
+    logs_list = logs.split("\n")
+    # loop through each line in logs_list
+    for line in logs_list:
+        # loop through each error in errors
+        for error in error_messages:
+            # if error is found in line, print error message
+            if error['parse_string'] in line:
+                print (f"::error:: {error_messages['error_category']}: {line}")
+
+def get_online_endpoint_logs(workspace_ml_client, online_endpoint_name):
+    print("Deployment logs: \n\n")
+    logs=workspace_ml_client.online_deployments.get_logs(name="demo", endpoint_name=online_endpoint_name, lines=100000)
+    print(logs)
+    prase_logs(logs)
+
+
+def delete_online_endpoint(workspace_ml_client, online_endpoint_name):
+    try:
+        workspace_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
+    except Exception as e:
+        print (f"::warning:: Could not delete endpoint: : \n{e}")
+        exit (0)    
+
+
+
+def get_latest_model_version(registry_ml_client, model_name):
+    print ("In get_latest_model_version...")
+    # Getting latest model version from registry is not working, so get all versions and find latest
+    model_versions=registry_ml_client.models.list(name=model_name)
+    model_version_count=0
+    # can't just check len(model_versions) because it is a iterator
+    models = []
+    for model in model_versions:
+        model_version_count = model_version_count + 1
+        models.append(model)
+    # Sort models by creation time and find the latest model
+    sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
+    latest_model = sorted_models[0]
+    print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
+    print(latest_model)
+    return latest_model
+
+
+ 
 def create_online_deployment(workspace_ml_client, endpoint, instance_type, latest_model):
     print ("In create_online_deployment...")
     demo_deployment = ManagedOnlineDeployment(
@@ -192,107 +264,6 @@ def create_online_deployment(workspace_ml_client, endpoint, instance_type, lates
     print(workspace_ml_client.online_deployments.get(name="demo", endpoint_name=endpoint.name))
 
 
-# def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint_name):
-#     # get the task tag from the latest_model.tags
-#     tags = str(latest_model.tags)
-#     # replace single quotes with double quotes in tags
-#     tags = tags.replace("'", '"')
-#     # convert tags to dictionary
-#     tags_dict=json.loads(tags)
-#     task = tags_dict['task']
-#     print (f"task: {task}")
-#     scoring_file = f"../config/sample_inputs/{registry}/{task}.json"
-#     # check of scoring_file exists
-#     try:
-#         with open(scoring_file) as f:
-#             scoring_input = json.load(f)
-#             print (f"scoring_input file:\n\n {scoring_input}\n\n")
-#     except Exception as e:
-#         print (f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
-
-#     # invoke the endpoint
-#     try:
-#         response = workspace_ml_client.online_endpoints.invoke(
-#             endpoint_name=online_endpoint_name,
-#             deployment_name="demo",
-#             request_file=scoring_file,
-#         )
-#         response_json = json.loads(response)
-#         output = json.dumps(response_json, indent=2)
-#         print(f"response: \n\n{output}")
-#         with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as fh:
-#             print(f'####Sample input', file=fh)
-#             print(f'```json', file=fh)
-#             print(f'{scoring_input}', file=fh)
-#             print(f'```', file=fh)
-#             print(f'####Sample output', file=fh)
-#             print(f'```json', file=fh)
-#             print(f'{output}', file=fh)
-#             print(f'```', file=fh)
-#     except Exception as e:
-#         print (f"::error:: Could not invoke endpoint: \n")
-#         print (f"{e}\n\n check logs:\n\n")
-#         get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
-
-def prase_logs(logs):
-
-    # split logs by \n
-    logs_list = logs.split("\n")
-    # loop through each line in logs_list
-    for line in logs_list:
-        # loop through each error in errors
-        for error in error_messages:
-            # if error is found in line, print error message
-            if error['parse_string'] in line:
-                print (f"::error:: {error_messages['error_category']}: {line}")
-
-def get_online_endpoint_logs(workspace_ml_client, online_endpoint_name):
-    print("Deployment logs: \n\n")
-    logs=workspace_ml_client.online_deployments.get_logs(name="demo", endpoint_name=online_endpoint_name, lines=100000)
-    print(logs)
-    prase_logs(logs)
-
-
-def delete_online_endpoint(workspace_ml_client, online_endpoint_name):
-    try:
-        workspace_ml_client.online_endpoints.begin_delete(name=online_endpoint_name).wait()
-    except Exception as e:
-        print (f"::warning:: Could not delete endpoint: : \n{e}")
-        exit (0)    
-
-
-
-def data_set():
-
-    import pandas as pd
-
-pd.set_option(
-    "display.max_colwidth", 0
-)  # set the max column width to 0 to display the full text
-train_df = pd.read_json("./book-corpus-dataset/train.jsonl", lines=True)
-train_df.head()
-# Get the right mask token from huggingface
-import urllib.request, json
-
-with urllib.request.urlopen(f"https://huggingface.co/api/models/{test_model_name}") as url:
-    data = json.load(url)
-    mask_token = data["mask_token"]
-
-# take the value of the "text" column, replace a random word with the mask token and save the result in the "masked_text" column
-import random, os
-
-train_df["masked_text"] = train_df["text"].apply(
-    lambda x: x.replace(random.choice(x.split()), mask_token, 1)
-)
-# save the train_df dataframe to a jsonl file in the ./book-corpus-dataset folder with the masked_ prefix
-train_df.to_json(
-    os.path.join(".", "book-corpus-dataset", "masked_train.jsonl"),
-    orient="records",
-    lines=True,
-)
-train_df.head()
-
-
 
 
 def main():
@@ -301,9 +272,9 @@ def main():
     check_override = True
 
     # if any of the above are not set, exit with error
-    if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
-        print ("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
-        exit (1)
+    # if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
+    #     print ("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
+    #     exit (1)
 
     queue = get_test_queue()
 
@@ -311,20 +282,19 @@ def main():
     if sku_override is None:
         check_override = False
 
-    if test_trigger_next_model == "true":
-        set_next_trigger_model(queue)
 
     # print values of all above variables
-    print (f"test_subscription_id: {queue['subscription']}")
-    print (f"test_resource_group: {queue['subscription']}")
+    print (f"subscription: {queue['subscription']}")
+    # print (f"test_subscription_id: {queue['subscription']}")
+    print (f"test_resource_group: {queue['resource_group']}")
     print (f"test_workspace_name: {queue['workspace']}")
     print (f"test_model_name: {test_model_name}")
     print (f"test_sku_type: {test_sku_type}")
-    print (f"test_registry: queue['registry']")
-    print (f"test_trigger_next_model: {test_trigger_next_model}")
+    # print (f"test_registry: queue['registry']")
+    print (f"registry: {queue['registry']}")
+    # print (f"test_trigger_next_model: {test_trigger_next_model}")
     print (f"test_queue: {test_queue}")
     print (f"test_set: {test_set}")
-
 
     try:
         credential = AzureCliCredential()
@@ -346,27 +316,8 @@ def main():
         credential=credential, 
         registry_name=queue['registry']
     )
-
-    latest_model = get_latest_model_version(registry_ml_client, test_model_name)
-    instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
-
-# endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
-
-    timestamp = int(time.time())
-    online_endpoint_name = "hf-ep-" + str(timestamp)
-    print (f"online_endpoint_name: {online_endpoint_name}")
-    endpoint = ManagedOnlineEndpoint(
-        name=online_endpoint_name,
-        auth_mode="key",
-    )
-      
-    data_set()
-    create_online_endpoint(workspace_ml_client, endpoint)
-    create_online_deployment(workspace_ml_client, endpoint, instance_type, latest_model)
-    #sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
-    get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
-    delete_online_endpoint(workspace_ml_client, online_endpoint_name)
-    
+    print("reg: ",registry_ml_client)
+    print("workspace ", workspace_ml_client)   
         
 if __name__ == "__main__":
     main()
