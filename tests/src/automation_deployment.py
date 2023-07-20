@@ -12,6 +12,7 @@ from azure.ai.ml.entities import (
 )
 import json
 import os
+import pandas as pd
 
 
 
@@ -263,6 +264,36 @@ def create_online_deployment(workspace_ml_client, endpoint, instance_type, lates
         exit (1)
     print(workspace_ml_client.online_deployments.get(name="demo", endpoint_name=endpoint.name))
 
+def data_set():
+
+    
+
+pd.set_option(
+    "display.max_colwidth", 0
+)  # set the max column width to 0 to display the full text
+train_df = pd.read_json("./book-corpus-dataset/train.jsonl", lines=True)
+train_df.head()
+# Get the right mask token from huggingface
+import urllib.request, json
+
+with urllib.request.urlopen(f"https://huggingface.co/api/models/{test_model_name}") as url:
+    data = json.load(url)
+    mask_token = data["mask_token"]
+
+# take the value of the "text" column, replace a random word with the mask token and save the result in the "masked_text" column
+import random, os
+
+train_df["masked_text"] = train_df["text"].apply(
+    lambda x: x.replace(random.choice(x.split()), mask_token, 1)
+)
+# save the train_df dataframe to a jsonl file in the ./book-corpus-dataset folder with the masked_ prefix
+train_df.to_json(
+    os.path.join(".", "book-corpus-dataset", "masked_train.jsonl"),
+    orient="records",
+    lines=True,
+)
+train_df.head()
+
 
 
 
@@ -316,8 +347,15 @@ def main():
         credential=credential, 
         registry_name=queue['registry']
     )
+
+ 
+    create_online_deployment()
+    
+    data_set()
     print("reg: ",registry_ml_client)
     print("workspace ", workspace_ml_client)   
+
+
         
 if __name__ == "__main__":
     main()
