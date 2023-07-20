@@ -39,7 +39,7 @@ def download_and_register_model():
     
 def get_latest_version_model(registry_ml_client):
     model_versions = list(registry_ml_client.models.list(name=registered_model_name))
-    print(f"Here are the registered model versions : {model_versions}")
+    #print(f"Here are the registered model versions : {model_versions}")
     model_version_count=0
     if len(model_versions) == 0:
         print("There is no previously registered model")
@@ -52,7 +52,7 @@ def get_latest_version_model(registry_ml_client):
         sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
         latest_model = sorted_models[0]
         print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
-        print(latest_model.config)
+        print(latest_model)
         return latest_model
     return None
 
