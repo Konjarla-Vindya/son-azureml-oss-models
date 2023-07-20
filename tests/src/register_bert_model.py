@@ -8,8 +8,8 @@ import time, sys
 import json
 import os
 
-checkpoint = "bert-base-uncased"
-registered_model_name = "bert_registered"
+# checkpoint = "bert-base-uncased"
+# registered_model_name = "bert_registered"
 
 def get_error_messages():
     # load ../config/errors.json into a dictionary
@@ -24,8 +24,8 @@ test_model_name = os.environ.get('test_model_name')
 # test cpu or gpu template
 test_sku_type = os.environ.get('test_sku_type')
 
-# # bool to decide if we want to trigger the next model in the queue
-# test_trigger_next_model = os.environ.get('test_trigger_next_model')
+# bool to decide if we want to trigger the next model in the queue
+test_trigger_next_model = os.environ.get('test_trigger_next_model')
 
 # test queue name - the queue file contains the list of models to test with with a specific workspace
 test_queue = os.environ.get('test_queue')
@@ -58,20 +58,37 @@ def get_sku_override():
         print (f"::warning:: Could not find sku-override file: \n{e}")
         return None
 
-
+def set_next_trigger_model(queue):
+    print ("In set_next_trigger_model...")
+# file the index of test_model_name in models list queue dictionary
+    index = queue['models'].index(test_model_name)
+    print (f"index of {test_model_name} in queue: {index}")
+# if index is not the last element in the list, get the next element in the list
+    if index < len(queue['models']) - 1:
+        next_model = queue['models'][index + 1]
+    else:
+        if (test_keep_looping == "true"):
+            next_model = queue[0]
+        else:
+            print ("::warning:: finishing the queue")
+            next_model = ""
+# write the next model to github step output
+    with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+        print(f'NEXT_MODEL={next_model}')
+        print(f'NEXT_MODEL={next_model}', file=fh)
 
 
 # we always test the latest version of the model
-# def get_latest_model_version(registry_ml_client, model_name):
-#     print ("In get_latest_model_version...")
-#     # Getting latest model version from registry is not working, so get all versions and find latest
-#     model_versions=registry_ml_client.models.list(name=model_name)
-#     model_version_count=0
-#     # can't just check len(model_versions) because it is a iterator
-#     models = []
-#     for model in model_versions:
-#         model_version_count = model_version_count + 1
-#         models.append(model)
+def get_latest_model_version(registry_ml_client, model_name):
+    print ("In get_latest_model_version...")
+    # Getting latest model version from registry is not working, so get all versions and find latest
+    model_versions=registry_ml_client.models.list(name=model_name)
+    model_version_count=0
+    # can't just check len(model_versions) because it is a iterator
+    models = []
+    for model in model_versions:
+        model_version_count = model_version_count + 1
+        models.append(model)
     # Sort models by creation time and find the latest model
     sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
     latest_model = sorted_models[0]
@@ -114,10 +131,10 @@ def get_sku_override():
     #     print (f"::error:: Could not find instance_type for {test_sku_type}")
     #     exit (1)
 
-    # if check_override:
-    #     if latest_model.name in sku_override:
-    #         instance_type = sku_override[test_model_name]['sku']
-    #         print (f"overriding instance_type: {instance_type}")
+    if check_override:
+        if latest_model.name in sku_override:
+            instance_type = sku_override[test_model_name]['sku']
+            print (f"overriding instance_type: {instance_type}")
     
     # return instance_type
 
@@ -135,30 +152,30 @@ def get_sku_override():
 
     
 def download_and_register_model():
-    model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
-    tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+    model = AutoModelForSequenceClassification.from_pretrained(models)
+    tokenizer = AutoTokenizer.from_pretrained(models)
     mlflow.transformers.log_model(
             transformers_model = {"model" : model, "tokenizer":tokenizer},
             task="fill-mask",
             artifact_path="Bert_artifact",
-            registered_model_name=registered_model_name
+            registered_model_name=models
     )
     
-def get_latest_model_version(registry_ml_client, test_model_name):
-    model_versions = list(registry_ml_client.models.list("bert_registered"))
-    if len(model_versions) == 0:
-        print("There is no previously registered model")
-    else:
-        models = []
-        for model in model_versions:
-            model_version_count = model_version_count + 1
-            models.append(model)
-        # Sort models by creation time and find the latest model
-        sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
-        latest_model = sorted_models[0]
-        print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
-        print(latest_model)
-        return latest_model
+# def get_latest_model_version(registry_ml_client, test_model_name):
+#     model_versions = list(registry_ml_client.models.list("bert_registered"))
+#     if len(model_versions) == 0:
+#         print("There is no previously registered model")
+#     else:
+#         models = []
+#         for model in model_versions:
+#             model_version_count = model_version_count + 1
+#             models.append(model)
+#         # Sort models by creation time and find the latest model
+#         sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
+#         latest_model = sorted_models[0]
+#         print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
+#         print(latest_model)
+#         return latest_model
 
 
 
@@ -170,14 +187,12 @@ def get_latest_model_version(registry_ml_client, test_model_name):
 
 def main():
     
-    
-
     # constants
     check_override = True
 
     # if any of the above are not set, exit with error
-    if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_keep_looping is None:
-        print ("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_keep_looping are not set")
+    if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
+        print ("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
         exit (1)
 
     queue = get_test_queue()
@@ -186,6 +201,9 @@ def main():
     if sku_override is None:
         check_override = False
 
+    if test_trigger_next_model == "true":
+        set_next_trigger_model(queue)
+
     # print values of all above variables
     print (f"test_subscription_id: {queue['subscription']}")
     print (f"test_resource_group: {queue['subscription']}")
@@ -193,7 +211,7 @@ def main():
     print (f"test_model_name: {test_model_name}")
     print (f"test_sku_type: {test_sku_type}")
     print (f"test_registry: queue['registry']")
-    #print (f"test_trigger_next_model: {test_trigger_next_model}")
+    print (f"test_trigger_next_model: {test_trigger_next_model}")
     print (f"test_queue: {test_queue}")
     print (f"test_set: {test_set}")
     
@@ -212,26 +230,29 @@ def main():
         resource_group_name=queue['resource_group'],
         workspace_name=queue['workspace']
     )
-#mlflow.set_tracking_uri(test_workspace_name.get_mlflow_tracking_uri())
+    ws = Workspace(subscription_id=queue['subscription'],
+        resource_group=queue['resource_group'],
+        workspace_name=queue['workspace'])
+    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 
 
 # checkpoint = "bert-base-uncased"
 # registered_model_name = "bert_registered"
     # connect to registry
     
-registry_ml_client = MLClient(
+    registry_ml_client = MLClient(
         credential=credential, 
-        registry_name="sonata-test-reg"
+        registry_name=queue['registry']
     )
-tracking_uri = registry_ml_client.get_mlflow_tracking_uri() 
-mlflow.set_tracking_uri(tracking_uri)
+# tracking_uri = registry_ml_client.get_mlflow_tracking_uri() 
+# mlflow.set_tracking_uri(tracking_uri)
 
-latest_model = get_latest_model_version(registry_ml_client, test_model_name)
+    latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     #instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
 
     #credential = DefaultAzureCredential()
     #set_tracking_uri(credential)
-download_and_register_model()
+    download_and_register_model()
     
 
 if __name__ == "__main__":
