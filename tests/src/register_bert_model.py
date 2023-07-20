@@ -60,16 +60,16 @@ def get_sku_override():
 
 
 # we always test the latest version of the model
-def get_latest_model_version(registry_ml_client, model_name):
-    print ("In get_latest_model_version...")
-    # Getting latest model version from registry is not working, so get all versions and find latest
-    model_versions=registry_ml_client.models.list(name=model_name)
-    model_version_count=0
-    # can't just check len(model_versions) because it is a iterator
-    models = []
-    for model in model_versions:
-        model_version_count = model_version_count + 1
-        models.append(model)
+# def get_latest_model_version(registry_ml_client, model_name):
+#     print ("In get_latest_model_version...")
+#     # Getting latest model version from registry is not working, so get all versions and find latest
+#     model_versions=registry_ml_client.models.list(name=model_name)
+#     model_version_count=0
+#     # can't just check len(model_versions) because it is a iterator
+#     models = []
+#     for model in model_versions:
+#         model_version_count = model_version_count + 1
+#         models.append(model)
     # Sort models by creation time and find the latest model
     sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
     latest_model = sorted_models[0]
