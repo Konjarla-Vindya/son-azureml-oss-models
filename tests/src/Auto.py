@@ -170,6 +170,8 @@ def main():
 
 
     # print values of all above variables
+    print(queue)
+    print(queue[])
     print (f"test_subscription_id: {queue['subscription']}")
     print (f"test_resource_group: {queue['resource_group']}")
     print (f"test_workspace_name: {queue['workspace']}")
@@ -201,7 +203,8 @@ def main():
         credential=credential, 
         registry_name=queue['registry']
     )
-
+    print(registry_ml_client)
+    print(workspace_ml_client)
     # latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     
 
