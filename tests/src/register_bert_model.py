@@ -152,8 +152,8 @@ def get_latest_model_version(registry_ml_client, model_name):
 
     
 def download_and_register_model():
-    model = AutoModelForSequenceClassification.from_pretrained(queue['models'])
-    tokenizer = AutoTokenizer.from_pretrained(queue['models'])
+    model = AutoModelForSequenceClassification.from_pretrained(test_model_name)
+    tokenizer = AutoTokenizer.from_pretrained(test_model_name)
     mlflow.transformers.log_model(
             transformers_model = {"model" : model, "tokenizer":tokenizer},
             task="fill-mask",
