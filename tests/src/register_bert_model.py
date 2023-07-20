@@ -8,6 +8,8 @@ import time, sys
 import json
 import os
 
+checkpoint = "bert-base-uncased"
+registered_model_name = "bert_registered"
 
 def get_error_messages():
     # load ../config/errors.json into a dictionary
@@ -133,8 +135,6 @@ def get_sku_override():
 
     
 def download_and_register_model():
-    checkpoint = "bert-base-uncased"
-    registered_model_name = "bert_registered"
     model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
     tokenizer = AutoTokenizer.from_pretrained(checkpoint)
     mlflow.transformers.log_model(
