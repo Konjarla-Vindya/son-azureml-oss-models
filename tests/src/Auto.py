@@ -170,8 +170,7 @@ def main():
 
 
     # print values of all above variables
-    print(queue)
-    print(queue[])
+    queue
     print (f"test_subscription_id: {queue['subscription']}")
     print (f"test_resource_group: {queue['resource_group']}")
     print (f"test_workspace_name: {queue['workspace']}")
