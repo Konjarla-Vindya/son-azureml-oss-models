@@ -194,7 +194,7 @@ def data_for_inference():
     # Get the right mask token from huggingface
     import urllib.request, json
     
-    with urllib.request.urlopen(f"https://huggingface.co/api/models/{model_name}") as url:
+    with urllib.request.urlopen(f"https://huggingface.co/api/models/{test_model_name}") as url:
         data = json.load(url)
         mask_token = data["mask_token"]
     
