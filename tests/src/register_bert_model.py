@@ -168,8 +168,8 @@ def get_latest_version_model(registry_ml_client):
 
 def main():
     
-checkpoint = "bert-base-uncased"
-registered_model_name = "bert_registered"
+    checkpoint = "bert-base-uncased"
+    registered_model_name = "bert_registered"
 
     # constants
     check_override = True
