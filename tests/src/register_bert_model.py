@@ -215,17 +215,18 @@ def main():
 # checkpoint = "bert-base-uncased"
 # registered_model_name = "bert_registered"
     # connect to registry
+    
     registry_ml_client = MLClient(
         credential=credential, 
         registry_name="sonata-test-reg"
     )
 
-latest_model = get_latest_model_version(registry_ml_client, test_model_name)
-instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
+    latest_model = get_latest_model_version(registry_ml_client, test_model_name)
+    instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
 
-#credential = DefaultAzureCredential()
-#set_tracking_uri(credential)
-download_and_register_model()
+    #credential = DefaultAzureCredential()
+    #set_tracking_uri(credential)
+    download_and_register_model()
     
 
 if __name__ == "__main__":
