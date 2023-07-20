@@ -36,7 +36,9 @@ jobs:
     - name: pip-install-mlflow
       run: pip install mlflow
     - name: pip-install-SentencePiece
-      run: pip install SentencePiece     
+      run: pip install SentencePiece
+    - name: pip-install-python-box
+      run: pip install python-box      
     - name: Download-and-register-model
       id: Download-and-register-model
       run: python register_xlnet_models.py
