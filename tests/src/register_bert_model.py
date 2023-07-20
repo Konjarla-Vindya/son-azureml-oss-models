@@ -158,7 +158,7 @@ def download_and_register_model():
             transformers_model = {"model" : model, "tokenizer":tokenizer},
             task="fill-mask",
             artifact_path="Bert_artifact",
-            registered_model_name=models
+            registered_model_name=test_model_name
     )
     
 # def get_latest_model_version(registry_ml_client, test_model_name):
