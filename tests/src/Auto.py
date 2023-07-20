@@ -5,6 +5,16 @@ from azure.identity import (
     InteractiveBrowserCredential,AzureCliCredential,
     ClientSecretCredential,
 )
+from transformers import (
+    BertForSequenceClassification,
+    AutoModelForSequenceClassification,
+    AutoTokenizer,
+    BertTokenizerFast,
+    BertModel,
+    TrainingArguments,
+    Trainer,
+    EvalPrediction,
+)
 import time, sys
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
@@ -211,8 +221,8 @@ def delete_online_endpoint(workspace_ml_client, online_endpoint_name):
 
 
 def download_and_register_model():
-    model = AutoModelForSequenceClassification.from_pretrained(model_name)
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSequenceClassification.from_pretrained(test_model_name)
+    tokenizer = AutoTokenizer.from_pretrained(test_model_name)
     print("tokenizer:",tokenizer)
     mlflow.transformers.log_model(
             transformers_model = {"model" : model, "tokenizer":tokenizer},
