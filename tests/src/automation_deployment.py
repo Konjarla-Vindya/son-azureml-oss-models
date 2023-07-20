@@ -66,24 +66,24 @@ def get_sku_override():
 
 # finds the next model in the queue and sends it to github step output 
 # so that the next step in this job can pick it up and trigger the next model using 'gh workflow run' cli command
-def set_next_trigger_model(queue):
-    print ("In set_next_trigger_model...")
-# file the index of test_model_name in models list queue dictionary
-    index = queue['models'].index(test_model_name)
-    print (f"index of {test_model_name} in queue: {index}")
-# if index is not the last element in the list, get the next element in the list
-    if index < len(queue['models']) - 1:
-        next_model = queue['models'][index + 1]
-    else:
-        if (test_keep_looping == "true"):
-            next_model = queue[0]
-        else:
-            print ("::warning:: finishing the queue")
-            next_model = ""
-# write the next model to github step output
-    with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-        print(f'NEXT_MODEL={next_model}')
-        print(f'NEXT_MODEL={next_model}', file=fh)
+# def set_next_trigger_model(queue):
+#     print ("In set_next_trigger_model...")
+# # file the index of test_model_name in models list queue dictionary
+#     index = queue['models'].index(test_model_name)
+#     print (f"index of {test_model_name} in queue: {index}")
+# # if index is not the last element in the list, get the next element in the list
+#     if index < len(queue['models']) - 1:
+#         next_model = queue['models'][index + 1]
+#     else:
+#         if (test_keep_looping == "true"):
+#             next_model = queue[0]
+#         else:
+#             print ("::warning:: finishing the queue")
+#             next_model = ""
+# # write the next model to github step output
+#     with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+#         print(f'NEXT_MODEL={next_model}')
+#         print(f'NEXT_MODEL={next_model}', file=fh)
 
 # we always test the latest version of the model
 def get_latest_model_version(registry_ml_client, model_name):
