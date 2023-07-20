@@ -80,47 +80,47 @@ def get_sku_override():
 #         print(f'NEXT_MODEL={next_model}', file=fh)
 
 # # we always test the latest version of the model
-def get_instance_type(latest_model, sku_override, registry_ml_client, check_override):
-    # determine the instance_type from the sku templates available in the model properties
-    # 1. get the template name matching the sku_type
-    # 2. look up template-sku.json to find the instance_type
-    model_properties = str(latest_model.properties)
-    # escape double quotes in model_properties
-    model_properties = model_properties.replace('"', '\\"')
-    # replace single quotes with double quotes in model_properties
-    model_properties = model_properties.replace("'", '"')
-    # convert model_properties to dictionary
-    model_properties_dict=json.loads(model_properties)
-    sku_templates = model_properties_dict['skuBasedEngineIds']
-    # split sku_templates by comma into a list
-    sku_templates_list = sku_templates.split(",")
-    # find the sku_template that has sku_type as a substring
-    sku_template = next((s for s in sku_templates_list if test_sku_type in s), None)
-    if sku_template is None:
-        print (f"::error:: Could not find sku_template for {test_sku_type}")
-        exit (1)
-    print (f"sku_template: {sku_template}")
-    # split sku_template by / and get the 5th element into a variable called template_name
-    template_name = sku_template.split("/")[5]
-    print (f"template_name: {template_name}")
-    template_latest_version=get_latest_model_version(registry_ml_client, template_name)
+# def get_instance_type(latest_model, sku_override, registry_ml_client, check_override):
+#     # determine the instance_type from the sku templates available in the model properties
+#     # 1. get the template name matching the sku_type
+#     # 2. look up template-sku.json to find the instance_type
+#     model_properties = str(latest_model.properties)
+#     # escape double quotes in model_properties
+#     model_properties = model_properties.replace('"', '\\"')
+#     # replace single quotes with double quotes in model_properties
+#     model_properties = model_properties.replace("'", '"')
+#     # convert model_properties to dictionary
+#     model_properties_dict=json.loads(model_properties)
+#     sku_templates = model_properties_dict['skuBasedEngineIds']
+#     # split sku_templates by comma into a list
+#     sku_templates_list = sku_templates.split(",")
+#     # find the sku_template that has sku_type as a substring
+#     sku_template = next((s for s in sku_templates_list if test_sku_type in s), None)
+#     if sku_template is None:
+#         print (f"::error:: Could not find sku_template for {test_sku_type}")
+#         exit (1)
+#     print (f"sku_template: {sku_template}")
+#     # split sku_template by / and get the 5th element into a variable called template_name
+#     template_name = sku_template.split("/")[5]
+#     print (f"template_name: {template_name}")
+#     template_latest_version=get_latest_model_version(registry_ml_client, template_name)
 
-    #print (template_latest_version.properties) 
-    # split the properties by by the pattern "DefaultInstanceType": " and get 2nd element
-    # then again split by " and get the first element
-    instance_type = str(template_latest_version.properties).split('"DefaultInstanceType": "')[1].split('"')[0]
-    print (f"instance_type: {instance_type}")
+#     #print (template_latest_version.properties) 
+#     # split the properties by by the pattern "DefaultInstanceType": " and get 2nd element
+#     # then again split by " and get the first element
+#     instance_type = str(template_latest_version.properties).split('"DefaultInstanceType": "')[1].split('"')[0]
+#     print (f"instance_type: {instance_type}")
 
-    if instance_type is None:
-        print (f"::error:: Could not find instance_type for {test_sku_type}")
-        exit (1)
+#     if instance_type is None:
+#         print (f"::error:: Could not find instance_type for {test_sku_type}")
+#         exit (1)
 
-    if check_override:
-        if latest_model.name in sku_override:
-            instance_type = sku_override[test_model_name]['sku']
-            print (f"overriding instance_type: {instance_type}")
+#     if check_override:
+#         if latest_model.name in sku_override:
+#             instance_type = sku_override[test_model_name]['sku']
+#             print (f"overriding instance_type: {instance_type}")
     
-    return instance_type
+#     return instance_type
 
 
 
@@ -215,6 +215,7 @@ def get_latest_model_version(registry_ml_client, model_name):
     print ("In get_latest_model_version...")
     # Getting latest model version from registry is not working, so get all versions and find latest
     model_versions=registry_ml_client.models.list(name=model_name)
+    print("model_name: ",model_name)
     print("model_versions: ",model_versions)
     model_version_count=0
     # can't just check len(model_versions) because it is a iterator
@@ -234,13 +235,13 @@ def get_latest_model_version(registry_ml_client, model_name):
 
 
  
-def create_online_deployment(workspace_ml_client, endpoint, instance_type, latest_model):
+def create_online_deployment(workspace_ml_client, endpoint, latest_model):
     print ("In create_online_deployment...")
     demo_deployment = ManagedOnlineDeployment(
         name="demo",
         endpoint_name=endpoint.name,
         model=latest_model.id,
-        instance_type=instance_type,
+        instance_type="Standard_DS3_v2",
         instance_count=1,
     )
     try:
