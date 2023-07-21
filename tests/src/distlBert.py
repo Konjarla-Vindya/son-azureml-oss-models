@@ -96,6 +96,7 @@ def get_latest_model_version(registry_ml_client, model_name):
         models.append(model)
     # Sort models by creation time and find the latest model
     sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
+    print(sorted_models)
     latest_model = sorted_models[0]
     print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
     print(latest_model)
@@ -136,10 +137,10 @@ def get_latest_model_version(registry_ml_client, model_name):
     #     print (f"::error:: Could not find instance_type for {test_sku_type}")
     #     exit (1)
 
-    if check_override:
-        if latest_model.name in sku_override:
-            instance_type = sku_override[test_model_name]['sku']
-            print (f"overriding instance_type: {instance_type}")
+    # if check_override:
+    #     if latest_model.name in sku_override:
+    #         instance_type = sku_override[test_model_name]['sku']
+    #         print (f"overriding instance_type: {instance_type}")
     
     # return instance_type
 
