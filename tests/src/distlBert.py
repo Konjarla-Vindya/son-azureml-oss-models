@@ -96,7 +96,7 @@ def get_latest_model_version(registry_ml_client, model_name):
         models.append(model)
     # Sort models by creation time and find the latest model
     sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
-    print(sorted_models)
+    print("sorted_models",sorted_models)
     latest_model = sorted_models[0]
     print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
     print(latest_model)
