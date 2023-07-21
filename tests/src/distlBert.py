@@ -317,9 +317,9 @@ def main():
     
     registry_ml_client = MLClient(
         credential= credential,
-        subscription_id = queue.subscription, 
-        resource_group_name = queue.resource_group, 
-        workspace_name=queue.workspace
+        subscription_id=queue['subscription'],
+        resource_group_name=queue['resource_group'],
+        workspace_name=queue['workspace']
     )
 # tracking_uri = registry_ml_client.get_mlflow_tracking_uri() 
 # mlflow.set_tracking_uri(tracking_uri)
