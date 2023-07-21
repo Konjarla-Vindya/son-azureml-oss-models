@@ -13,6 +13,8 @@ from azure.ai.ml.entities import (
     OnlineRequestSettings,
 )
 
+# checkpoint = "bert-base-uncased"
+# registered_model_name = "bert_registered"
 
 def get_error_messages():
     # load ../config/errors.json into a dictionary
@@ -99,6 +101,60 @@ def get_latest_model_version(registry_ml_client, model_name):
     print(latest_model)
     return latest_model
 
+# def get_instance_type(latest_model, sku_override, registry_ml_client, check_override):
+#     # determine the instance_type from the sku templates available in the model properties
+#     # 1. get the template name matching the sku_type
+#     # 2. look up template-sku.json to find the instance_type
+#     model_properties = str(latest_model.properties)
+#     # escape double quotes in model_properties
+#     model_properties = model_properties.replace('"', '\\"')
+#     # replace single quotes with double quotes in model_properties
+#     model_properties = model_properties.replace("'", '"')
+#     # convert model_properties to dictionary
+#     model_properties_dict=json.loads(model_properties)
+#     sku_templates = model_properties_dict['skuBasedEngineIds']
+#     # split sku_templates by comma into a list
+#     sku_templates_list = sku_templates.split(",")
+#     # find the sku_template that has sku_type as a substring
+#     sku_template = next((s for s in sku_templates_list if test_sku_type in s), None)
+#     if sku_template is None:
+#         print (f"::error:: Could not find sku_template for {test_sku_type}")
+#         exit (1)
+#     print (f"sku_template: {sku_template}")
+#     # split sku_template by / and get the 5th element into a variable called template_name
+#     template_name = sku_template.split("/")[5]
+#     print (f"template_name: {template_name}")
+#     template_latest_version=get_latest_model_version(registry_ml_client, template_name)
+
+    #print (template_latest_version.properties) 
+    # split the properties by by the pattern "DefaultInstanceType": " and get 2nd element
+    # then again split by " and get the first element
+    # instance_type = str(template_latest_version.properties).split('"DefaultInstanceType": "')[1].split('"')[0]
+    # print (f"instance_type: {instance_type}")
+
+    # if instance_type is None:
+    #     print (f"::error:: Could not find instance_type for {test_sku_type}")
+    #     exit (1)
+
+    if check_override:
+        if latest_model.name in sku_override:
+            instance_type = sku_override[test_model_name]['sku']
+            print (f"overriding instance_type: {instance_type}")
+    
+    # return instance_type
+
+
+
+# def set_tracking_uri(credential):
+#     subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
+#     resource_group = 'sonata-test-rg'
+#     workspace_name = 'sonata-test-ws'
+
+#     ws = Workspace(subscription_id, resource_group, workspace_name)
+#     workspace_ml_client = MLClient(
+#                         credential, subscription_id, resource_group, ws
+#                    )
+
     
 def download_and_register_model():
     model = AutoModelForSequenceClassification.from_pretrained(test_model_name)
@@ -110,6 +166,27 @@ def download_and_register_model():
             registered_model_name=test_model_name
     )
     
+# def get_latest_model_version(registry_ml_client, test_model_name):
+#     model_versions = list(registry_ml_client.models.list("bert_registered"))
+#     if len(model_versions) == 0:
+#         print("There is no previously registered model")
+#     else:
+#         models = []
+#         for model in model_versions:
+#             model_version_count = model_version_count + 1
+#             models.append(model)
+#         # Sort models by creation time and find the latest model
+#         sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
+#         latest_model = sorted_models[0]
+#         print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
+#         print(latest_model)
+#         return latest_model
+
+
+
+# credential = DefaultAzureCredential()
+# #set_tracking_uri(credential)
+# download_and_register_model()
     
 def data_for_inference():
     import pandas as pd
@@ -232,13 +309,14 @@ def main():
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 
 
+# checkpoint = "bert-base-uncased"
+# registered_model_name = "bert_registered"
     # connect to registry
     
     registry_ml_client = MLClient(
         credential=credential, 
         registry_name=queue['registry']
     )
-	
 # tracking_uri = registry_ml_client.get_mlflow_tracking_uri() 
 # mlflow.set_tracking_uri(tracking_uri)
 
