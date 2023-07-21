@@ -163,7 +163,7 @@ def download_and_register_model():
             transformers_model = {"model" : model, "tokenizer":tokenizer},
             task="fill-mask",
             artifact_path="Bert_artifact",
-            registered_model_name=test_model_name
+            registered_model_name=test_model_name+"Reg"
     )
     
 # def get_latest_model_version(registry_ml_client, test_model_name):
@@ -319,13 +319,13 @@ def main():
     )
 # tracking_uri = registry_ml_client.get_mlflow_tracking_uri() 
 # mlflow.set_tracking_uri(tracking_uri)
-
+    download_and_register_model()
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     #instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
 
     #credential = DefaultAzureCredential()
     #set_tracking_uri(credential)
-    download_and_register_model()
+    
     data_for_inference()
     # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
 
