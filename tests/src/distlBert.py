@@ -101,6 +101,7 @@ def get_latest_model_version(registry_ml_client, model_name):
         print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
         print(latest_model)
         return latest_model
+    return none
 
 # def get_instance_type(latest_model, sku_override, registry_ml_client, check_override):
 #     # determine the instance_type from the sku templates available in the model properties
