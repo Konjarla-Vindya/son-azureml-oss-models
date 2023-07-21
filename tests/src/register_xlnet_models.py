@@ -71,14 +71,14 @@ def download_and_register_model(queue)->dict:
             transformers_model = {"model" : model, "tokenizer":tokenizer},
             task="text-classification",
             artifact_path="XlNetClassification_artifact",
-            registered_model_name=registered_model_name
+            registered_model_name=queue.registered_model_name
     )
     model_tokenizer = {"model":model, "tokenizer":tokenizer}
     #print("Reaching here in the download and register model methos")
     return model_tokenizer
     
-def get_latest_version_model(registry_ml_client):
-    model_versions = list(registry_ml_client.models.list(name=registered_model_name))
+def get_latest_version_model(registry_ml_client, queue):
+    model_versions = list(registry_ml_client.models.list(name=queue.registered_model_name))
     #print(f"Here are the registered model versions : {model_versions}")
     model_version_count=0
     if len(model_versions) == 0:
@@ -174,7 +174,7 @@ if __name__ == "__main__":
         resource_group_name = queue.resource_group, 
         workspace_name=queue.workspace
     )
-    latest_model = get_latest_version_model(registry_ml_client)
+    latest_model = get_latest_version_model(registry_ml_client, queue)
     test_infernce(model_tokenizer)
     
     # Create online endpoint - endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
