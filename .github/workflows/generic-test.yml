@@ -20,7 +20,7 @@ jobs:
     - name: azure-login-step
       uses: azure/login@v1
       with:
-        creds: ${{secrets.AZ_CRED}}
+        creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: deploy-model-step
       id: deploy-model-step
       run: python generic_test.py
