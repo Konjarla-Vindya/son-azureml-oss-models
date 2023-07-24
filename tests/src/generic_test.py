@@ -20,7 +20,7 @@ test_keep_looping = os.environ.get('test_keep_looping')
 
 
 
-def get_test_queue()->ConfigBox:
+def get_test_queue():
     #config_name = test_queue+'-test'
     #queue_file1 = f"../config/queue/{test_set}/{config_name}.json"
     queue_file = f"../config/queue/{test_set}/{test_queue}"
