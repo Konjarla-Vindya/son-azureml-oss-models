@@ -1,0 +1,32 @@
+name: test-generic-trigger-activity
+
+on: 
+  workflow_dispatch:
+
+env:
+  test_model_name: idea-ccnl-erlangshen-unimc-albert-235m-english
+  test_sku_type: cpu
+  test_trigger_next_model: true
+  test_queue: generic-test.json
+  test_set: huggingface-all
+  test_keep_looping: false
+
+jobs:
+  deploy-model-job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check-out-repo-step
+      uses: actions/checkout@v2
+    - name: azure-login-step
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZ_CRED}}
+    - name: deploy-model-step
+      id: deploy-model-step
+      run: python generic_test.py
+      working-directory: tests/src
+    - name: trigger-next-model-step
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: ${{ env.test_trigger_next_model == 'true' && (success() || failure())}}
+      run: gh workflow run ${{ steps.deploy-model-step }} --ref ${{ github.ref_name }}
