@@ -1,4 +1,4 @@
-name: test-generic-trigger-activity
+name: generic-test
 
 on: 
   workflow_dispatch:

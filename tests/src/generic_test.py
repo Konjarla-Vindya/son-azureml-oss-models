@@ -60,7 +60,7 @@ if __name__ == "__main__":
             with open(env_file, "a") as myfile:
                 myfile.write(f"test_model_name={next_model}")
                 #os.environ["test_model_name"] = 
-    res = os.environ["test_model_name"]
-    trigger_next_model = os.environ["test_trigger_next_model"]
+    res = os.environ.get("test_model_name")
+    trigger_next_model = os.environ.get("test_trigger_next_model")
     print(f"Here is the next model to proceed with : {res} and the trigger_next_model value is {trigger_next_model}")
     
