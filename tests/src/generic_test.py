@@ -49,6 +49,9 @@ def set_next_trigger_model(queue):
         env_file = os.getenv('GITHUB_ENV')
         with open(env_file, "a") as myfile:
             myfile.write(f"test_trigger_next_model={test_trigger_next_model}")
+    with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+        print(f'NEXT_MODEL={next_model}')
+        print(f'NEXT_MODEL={next_model}', file=fh)
     return next_model
 
 if __name__ == "__main__":
