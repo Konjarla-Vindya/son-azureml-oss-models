@@ -1,5 +1,5 @@
 {
-    "queue_name": "test-bert-large-uncased",
+    "queue_name": "test-bert-base-chinese",
     "models": [
         "bert-large-uncased"
     ],
