@@ -84,8 +84,8 @@ def set_tracking_uri(credential, queue):
 
 
 def download_and_register_model(queue)->dict:
-    model = XLNetForSequenceClassification.from_pretrained(queue.models)
-    tokenizer = XLNetTokenizer.from_pretrained(queue.models)
+    model = DistilBertModel.from_pretrained(queue.models)
+    tokenizer = DistilBertTokenizer.from_pretrained(queue.models)
     mlflow.transformers.log_model(
             transformers_model = {"model" : model, "tokenizer":tokenizer},
             task="text-classification",
