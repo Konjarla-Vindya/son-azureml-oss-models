@@ -6,7 +6,7 @@ workspace = "sonata-test-ws"
 subscription = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
 resource_group = "sonata-test-rg"
 registry = "HuggingFace"
-path = "tests/src/1bert_testing.py"
+path = "tests/src/Register_bert_model.py"
 
 test_model_name = os.environ.get('test_model_name')
 
