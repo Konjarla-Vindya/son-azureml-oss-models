@@ -22,9 +22,9 @@ model_name="t5-small"
 
 
 def set_tracking_uri(credential):
-    ws = Workspace(subscription, resource_group, workspace)
+    ws = Workspace(subscription_id = subscription, resource_group = resource_group, workspace_name = workspace)
     workspace_ml_client = MLClient(
-                        credential, queue.subscription, queue.resource_group, ws
+                        credential, subscription, resource_group, ws
                     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     #print("Reaching here in the set tracking uri method")
@@ -44,7 +44,7 @@ def download_and_register_model()->dict:
 
 if __name__ == "__main__":
     try:
-        credential = DefaultAzureCredential()
+        credential = AzureCliCredential()
         credential.get_token("https://management.azure.com/.default")
     
     except Exception as e:
