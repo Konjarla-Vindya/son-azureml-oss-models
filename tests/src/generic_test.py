@@ -67,8 +67,8 @@ if __name__ == "__main__":
     queue = get_test_queue()
     azureml_workspace = Workspace(subscription, resource_group, workspace)
     script_config = ScriptRunConfig(
-                            source_directory='./src',
-                            script='hello.py',
+                            source_directory='./tests/src/',
+                            script='register_xlnet_models.py',
                             compute_target='cpu-cluster',
                             
                             )
