@@ -49,7 +49,7 @@ jobs:
       run: pip install numpy
     - name: deploy-model-step
       id: deploy-model-step
-      run: python import_&_registor.py
+      run: python 1-test.py
       working-directory: tests/src
     - name: trigger-next-model-step
       env:
