@@ -1,7 +1,7 @@
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential,AzureCliCredential 
 from azureml.core import Workspace
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM,AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from azureml.mlflow import get_mlflow_tracking_uri
 import mlflow
 import torch
