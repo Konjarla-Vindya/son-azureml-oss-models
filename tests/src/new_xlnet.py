@@ -59,12 +59,6 @@ def prase_logs(logs):
             if error['parse_string'] in line:
                 print (f"::error:: {error_messages['error_category']}: {line}")
 
-def get_online_endpoint_logs(workspace_ml_client, online_endpoint_name):
-    print("Deployment logs: \n\n")
-    logs=workspace_ml_client.online_deployments.get_logs(name="demo", endpoint_name=online_endpoint_name, lines=100000)
-    print(logs)
-    prase_logs(logs)
-
 def get_test_queue()->ConfigBox:
     #config_name = test_queue+'-test'
     #queue_file1 = f"../config/queue/{test_set}/{config_name}.json"
