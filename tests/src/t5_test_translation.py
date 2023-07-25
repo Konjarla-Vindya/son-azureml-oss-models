@@ -13,7 +13,6 @@ from azure.ai.ml.entities import (
 )
 import json
 import os
-from box import ConfigBox
 
 workspace = "sonata-test-ws"
 subscription = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
