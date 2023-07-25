@@ -29,8 +29,8 @@ jobs:
       id: deploy-model-step
       run: python generic_test.py
       working-directory: tests/src
-    - name: trigger-next-model-step
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
-      run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
+    # - name: trigger-next-model-step
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
+    #   run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
