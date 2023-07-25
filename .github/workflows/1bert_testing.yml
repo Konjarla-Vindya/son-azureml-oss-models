@@ -43,7 +43,7 @@ jobs:
       run: pip install numpy
     - name: deploy-model-step
       id: deploy-model-step
-      run: python 1bert_testing.py
+      run: python testing_bart.py
       working-directory: tests/src
     - name: trigger-next-model-step
       env:
