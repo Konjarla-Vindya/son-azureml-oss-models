@@ -25,7 +25,7 @@ jobs:
       run: pip install azure-ai-ml 
     - name: deploy-model-step
       id: deploy-model-step
-      run: python deploy_huggingface_models1.py
+      run: python deploy_huggingface_models3.py
       working-directory: tests/src
     - name: trigger-next-model-step
       env:
