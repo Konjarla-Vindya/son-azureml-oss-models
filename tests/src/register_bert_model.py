@@ -308,6 +308,8 @@ def main():
         workspace_name=queue['workspace'])
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 
+# tracking_uri = registry_ml_client.get_mlflow_tracking_uri() 
+# mlflow.set_tracking_uri(tracking_uri)
 
 # checkpoint = "bert-base-uncased"
 # registered_model_name = "bert_registered"
