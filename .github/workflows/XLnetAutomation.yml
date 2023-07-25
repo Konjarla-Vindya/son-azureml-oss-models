@@ -42,5 +42,5 @@ jobs:
     - name: Download-and-register-model
       id: Download-and-register-model
       #run: python register_xlnet_models.py
-      run: python t5_test_translation
+      run: python t5_test_translation.py
       working-directory: tests/src
