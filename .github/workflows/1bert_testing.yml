@@ -1,4 +1,4 @@
-name: bert-base-uncased-test_model
+name: testing_bert_model
 
 on:
   workflow_dispatch:
