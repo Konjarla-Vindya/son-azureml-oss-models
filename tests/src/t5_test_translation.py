@@ -36,7 +36,7 @@ def download_and_register_model()->dict:
             transformers_model = {"model" : model, "tokenizer":tokenizer},
             task="translation_en_to_fr",
             artifact_path="t5_translation_artifact",
-            registered_model_name="t5_for_translation"
+            registered_model_name="t5_small_for_translation"
     )
     model_tokenizer = {"model":model, "tokenizer":tokenizer}
     #print("Reaching here in the download and register model methos")
