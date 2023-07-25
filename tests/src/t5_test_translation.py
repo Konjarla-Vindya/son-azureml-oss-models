@@ -29,7 +29,7 @@ def set_tracking_uri(credential):
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     #print("Reaching here in the set tracking uri method")
 
-def download_and_register_model(queue)->dict:
+def download_and_register_model()->dict:
     model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     mlflow.transformers.log_model(
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     
     except Exception as e:
         print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
-    set_tracking_uri(credential, queue)
-    model_tokenizer = download_and_register_model(queue)
+    set_tracking_uri(credential)
+    model_tokenizer = download_and_register_model()
     print("Sterps completed")
     
