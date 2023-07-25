@@ -42,7 +42,7 @@ def submit_azuremljob():
 if __name__ == "__main__":
     queue = get_test_queue()
     azureml_workspace = Workspace(subscription, resource_group, workspace)
-    env = Environment.from_pip_requirements(name='bert_environment', file_path='configuration.txt')
+    env = Environment.from_pip_requirements(name='bert_environment', file_path='requirements/t5_requirements.txt')
 
     # Register the environment in your workspace
     env.register(workspace=azureml_workspace)
