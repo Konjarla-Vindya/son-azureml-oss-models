@@ -1,6 +1,7 @@
 azure-ai-ml
 azureml-core
 azureml-mlflow
+azure-cli
 transformers
 transformers[torch]
 torchvision
