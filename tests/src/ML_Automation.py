@@ -120,7 +120,7 @@ if __name__ == "__main__":
         exit (1)
 
     # connect to workspace
-    workspace_ml_client = MLClient(
+    azureml_workspace = MLClient(
         credential=credential, 
         subscription_id=queue['subscription'],
         resource_group_name=queue['resource_group'],
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     env = Environment.from_pip_requirements(name='t5_environment', file_path='requirements/t5_requirements.txt')
 
     # Register the environment in your workspace
-    env.register(workspace=workspace_ml_client)
+    env.register(workspace=azureml_workspace)
     script_config = ScriptRunConfig(
                             source_directory='.',
                             script='t5_test_translation.py',
@@ -144,7 +144,7 @@ if __name__ == "__main__":
                             environment=env
                             )
     # Create an Experiment
-    experiment = Experiment(workspace_ml_client, 'my_test_experiment_for_t5_1')
+    experiment = Experiment(azureml_workspace, 'my_test_experiment_for_t5_1')
     # Submit the script for execution
     run = experiment.submit(script_config)
     print(run)
