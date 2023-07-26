@@ -18,7 +18,7 @@ from azure.ai.ml.entities import (
 # subscription = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
 # resource_group = "sonata-test-rg"
 # registry = "HuggingFace"
-# path = "tests/src/Register_bert_model.py"
+# path = "tests/src/register_xlnet_models.py"
 
 test_model_name = os.environ.get('test_model_name')
 
@@ -132,20 +132,30 @@ if __name__ == "__main__":
         credential=credential, 
         registry_name=queue['registry']
     )
-    
-    env = Environment.from_pip_requirements(name='bert_environment', file_path='requirements/t5_requirements.txt')
+    # or create a new Pip environment from the requirements.txt file
+    env = Environment.from_pip_requirements(name='t5_environment', file_path='requirements/t5_requirements.txt')
 
     # Register the environment in your workspace
     env.register(workspace=workspace_ml_client)
     script_config = ScriptRunConfig(
                             source_directory='.',
-                            script='bert.py',
+                            script='t5_test_translation.py',
                             compute_target='cpu-cluster',
                             environment=env
                             )
     # Create an Experiment
-    experiment = Experiment(workspace_ml_client, 'testing_bert')
+    experiment = Experiment(workspace_ml_client, 'my_test_experiment_for_t5_1')
     # Submit the script for execution
     run = experiment.submit(script_config)
     print(run)
     run.wait_for_completion(show_output=True)
+    # next_model = set_next_trigger_model(queue)
+    # if test_trigger_next_model:
+    #     if next_model is not None:
+    #         env_file = os.getenv('GITHUB_ENV')
+    #         with open(env_file, "a") as myfile:
+    #             myfile.write(f"test_model_name={next_model}")
+    #             #os.environ["test_model_name"] = 
+    # res = os.environ.get("test_model_name")
+    # trigger_next_model = os.environ.get("test_trigger_next_model")
+    # print(f"Here is the next model to proceed with : {res} and the trigger_next_model value is {trigger_next_model}")
