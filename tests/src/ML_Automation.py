@@ -18,7 +18,7 @@ from azure.ai.ml.entities import (
 # subscription = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
 # resource_group = "sonata-test-rg"
 # registry = "HuggingFace"
-# path = "tests/src/register_xlnet_models.py"
+path = "tests/src/register_xlnet_models.py"
 
 test_model_name = os.environ.get('test_model_name')
 
