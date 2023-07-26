@@ -25,6 +25,8 @@ def specify_compute(ml_client):
     cpu_compute_target = "cpu-cluster"
 
     try:
+        compute = ml_client.compute.get(cpu_compute_target)
+        print(compute)
         ml_client.compute.get(cpu_compute_target)
     except Exception:
         print("Creating a new cpu compute target...")
