@@ -6,7 +6,7 @@ workspace = "sonata-test-ws"
 subscription = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
 resource_group = "sonata-test-rg"
 registry = "HuggingFace"
-path = "tests/src/register_xlnet_models.py"
+#path = "tests/src/register_xlnet_models.py"
 
 test_model_name = os.environ.get('test_model_name')
 
@@ -29,15 +29,11 @@ test_keep_looping = os.environ.get('test_keep_looping')
 
 
 def get_test_queue():
-    #config_name = test_queue+'-test'
-    #queue_file1 = f"../config/queue/{test_set}/{config_name}.json"
     queue_file = f"../config/queue/{test_set}/{test_queue}"
     with open(queue_file) as f:
         content = json.load(f)
         return content
 
-def submit_azuremljob():
-    pass
 # def set_next_trigger_model(queue):
 #     print ("In set_next_trigger_model...")
 #     # file the index of test_model_name in models list queue dictionary
@@ -67,13 +63,13 @@ if __name__ == "__main__":
     queue = get_test_queue()
     azureml_workspace = Workspace(subscription, resource_group, workspace)
     # or create a new Pip environment from the requirements.txt file
-    env = Environment.from_pip_requirements(name='t5_environment', file_path='requirements/t5_requirements.txt')
+    env = Environment.from_pip_requirements(name='bert_environment', file_path='requirements/bert_requirements.txt')
 
     # Register the environment in your workspace
     env.register(workspace=azureml_workspace)
     script_config = ScriptRunConfig(
-                            source_directory='.',
-                            script='t5_test_translation.py',
+                            source_directory='./AIMLjob',
+                            script='BertJob.py',
                             compute_target='cpu-cluster',
                             environment=env
                             )
