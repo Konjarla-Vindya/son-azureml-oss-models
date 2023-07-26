@@ -18,7 +18,7 @@ def connect_to_workspace():
 
     ws = Workspace(subscription_id, resource_group, workspace)
 
-    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+    #mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 
 def specify_compute(ml_client):
     # specify aml compute name.
@@ -73,8 +73,8 @@ if __name__ == "__main__":
     #         resource_group_name="sonata-test-rg",
     #         workspace_name="sonata-test-ws",
     #     )
-    # connect_to_workspace()
-    # specify_compute(ml_client)
+    connect_to_workspace()
+    specify_compute(ml_client)
     # command_job = define_command()
     # # submit the command
     # returned_job = ml_client.jobs.create_or_update(command_job)
