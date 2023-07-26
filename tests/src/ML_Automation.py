@@ -2,6 +2,11 @@ from azureml.core import Experiment, ScriptRunConfig, Workspace, Environment
 import os
 import json
 from azure.ai.ml import MLClient
+from azure.identity import (
+    DefaultAzureCredential,
+    InteractiveBrowserCredential,AzureCliCredential,
+    ClientSecretCredential,
+)
 
 
 # workspace = "sonata-test-ws"
@@ -83,6 +88,12 @@ if __name__ == "__main__":
 
     queue = get_test_queue()
     azureml_workspace = Workspace(queue['subscription'], queue['resource_group'], queue['workspace'])
+    try:
+        credential = AzureCliCredential()
+        credential.get_token("https://management.azure.com/.default")
+    except Exception as ex:
+        print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
+        exit (1)
 
     sku_override = get_sku_override()
     if sku_override is None:
