@@ -52,7 +52,7 @@ def define_command():
 
 if __name__ == "__main__":
     try:
-        credential = DefaultAzureCredential()
+        credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
         credential.get_token("https://management.azure.com/.default")
     #credential = AzureCliCredential()
     except Exception as e:
