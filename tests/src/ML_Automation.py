@@ -3,6 +3,7 @@ import os
 import json
 from azure.ai.ml import MLClient
 from azure.identity import (
+    AzureCliCredential,
     DefaultAzureCredential,
     InteractiveBrowserCredential,AzureCliCredential,
     ClientSecretCredential,
