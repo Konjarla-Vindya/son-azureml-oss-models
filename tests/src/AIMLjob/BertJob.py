@@ -1,6 +1,6 @@
 #import required libraries
 from azure.ai.ml import MLClient
-from azure.identity import DefaultAzureCredential
+from azure.identity import DefaultAzureCredential, AzureCliCredential
 from azureml.core import Workspace
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command, Input
@@ -52,7 +52,8 @@ def define_command():
 
 if __name__ == "__main__":
     try:
-        credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
+        #credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
+        credential = AzureCliCredential()
         credential.get_token("https://management.azure.com/.default")
     #credential = AzureCliCredential()
     except Exception as e:
