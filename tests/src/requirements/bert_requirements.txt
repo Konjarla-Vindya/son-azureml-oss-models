@@ -1,0 +1,9 @@
+azure-ai-ml
+azureml-core
+azureml-mlflow
+transformers
+transformers[torch]
+torchvision
+mlflow
+SentencePiece
+evaluate
