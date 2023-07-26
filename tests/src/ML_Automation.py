@@ -2,17 +2,7 @@ from azureml.core import Experiment, ScriptRunConfig, Workspace, Environment
 import os
 import json
 from azure.ai.ml import MLClient
-from azure.identity import (
-    DefaultAzureCredential,
-    InteractiveBrowserCredential,AzureCliCredential,
-    ClientSecretCredential,
-)
-import time, sys
-from azure.ai.ml.entities import (
-    ManagedOnlineEndpoint,
-    ManagedOnlineDeployment,
-    OnlineRequestSettings,
-)
+
 
 # workspace = "sonata-test-ws"
 # subscription = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
@@ -92,6 +82,7 @@ if __name__ == "__main__":
         exit (1)
 
     queue = get_test_queue()
+    azureml_workspace = Workspace(queue['subscription'], queue['resource_group'], queue['workspace'])
 
     sku_override = get_sku_override()
     if sku_override is None:
@@ -112,26 +103,7 @@ if __name__ == "__main__":
     print (f"test_set: {test_set}")
 
 
-    try:
-        credential = AzureCliCredential()
-        credential.get_token("https://management.azure.com/.default")
-    except Exception as ex:
-        print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
-        exit (1)
-
-    # connect to workspace
-    azureml_workspace = MLClient(
-        credential=credential, 
-        subscription_id=queue['subscription'],
-        resource_group_name=queue['resource_group'],
-        workspace_name=queue['workspace']
-    )
-
-    # connect to registry
-    registry_ml_client = MLClient(
-        credential=credential, 
-        registry_name=queue['registry']
-    )
+  
     # or create a new Pip environment from the requirements.txt file
     env = Environment.from_pip_requirements(name='t5_environment', file_path='requirements/t5_requirements.txt')
 
