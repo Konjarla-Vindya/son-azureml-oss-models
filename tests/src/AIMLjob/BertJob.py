@@ -60,7 +60,9 @@ if __name__ == "__main__":
     # #credential = AzureCliCredential()
     # except Exception as e:
     #     print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
-    ml_client = MLClient(DefaultAzureCredential(), subscription_id, resource_group, workspace)
+    credential = DefaultAzureCredential()
+    print(credential)
+    #ml_client = MLClient(DefaultAzureCredential(), subscription_id, resource_group, workspace)
     # try:
     #     ml_client = MLClient.from_config(credential=credential)
     # except:
@@ -70,10 +72,10 @@ if __name__ == "__main__":
     #         resource_group_name="sonata-test-rg",
     #         workspace_name="sonata-test-ws",
     #     )
-    connect_to_workspace()
-    specify_compute(ml_client)
-    command_job = define_command()
-    # submit the command
-    returned_job = ml_client.jobs.create_or_update(command_job)
-    # get a URL for the status of the job
-    returned_job.studio_url
+    # connect_to_workspace()
+    # specify_compute(ml_client)
+    # command_job = define_command()
+    # # submit the command
+    # returned_job = ml_client.jobs.create_or_update(command_job)
+    # # get a URL for the status of the job
+    # returned_job.studio_url
