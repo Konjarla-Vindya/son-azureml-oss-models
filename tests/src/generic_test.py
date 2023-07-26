@@ -74,7 +74,7 @@ if __name__ == "__main__":
                             environment=env
                             )
     # Create an Experiment
-    experiment = Experiment(azureml_workspace, 'my_test_experiment_for_t5_1')
+    experiment = Experiment(azureml_workspace, 'my_test_experiment_for_bert_1')
     # Submit the script for execution
     run = experiment.submit(script_config)
     print(run)
