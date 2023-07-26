@@ -1,5 +1,6 @@
 azure-ai-ml
 azureml-core
+azureml-sdk
 azureml-mlflow
 azure-cli
 transformers
