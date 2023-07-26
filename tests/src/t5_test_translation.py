@@ -27,7 +27,6 @@ def set_tracking_uri(credential):
                         credential, subscription, resource_group, ws
                     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
-    #print("Reaching here in the set tracking uri method")
 
 def download_and_register_model()->dict:
     model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
@@ -39,7 +38,6 @@ def download_and_register_model()->dict:
             registered_model_name="t5_small_for_translation"
     )
     model_tokenizer = {"model":model, "tokenizer":tokenizer}
-    #print("Reaching here in the download and register model methos")
     return model_tokenizer
 
 if __name__ == "__main__":
