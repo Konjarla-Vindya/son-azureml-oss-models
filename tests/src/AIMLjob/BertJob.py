@@ -51,7 +51,13 @@ def define_command():
     return command_job
 
 if __name__ == "__main__":
-    ml_client = MLClient(DefaultAzureCredential(), subscription_id, resource_group, workspace)
+    try:
+        credential = DefaultAzureCredential()
+        credential.get_token("https://management.azure.com/.default")
+    #credential = AzureCliCredential()
+    except Exception as e:
+        print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
+    ml_client = MLClient(credential, subscription_id, resource_group, workspace)
     connect_to_workspace()
     specify_compute(ml_client)
     command_job = define_command()
