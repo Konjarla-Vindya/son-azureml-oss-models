@@ -62,7 +62,8 @@ if __name__ == "__main__":
     #     print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
     credential = DefaultAzureCredential()
     print(credential)
-    #ml_client = MLClient(DefaultAzureCredential(), subscription_id, resource_group, workspace)
+    ml_client = MLClient(credential, subscription_id, resource_group, workspace)
+    print(ml_client)
     # try:
     #     ml_client = MLClient.from_config(credential=credential)
     # except:
