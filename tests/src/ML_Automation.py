@@ -47,24 +47,24 @@ def get_sku_override():
         return None
     
 
-def set_next_trigger_model(queue):
-    print ("In set_next_trigger_model...")
-# file the index of test_model_name in models list queue dictionary
-    index = queue['models'].index(test_model_name)
-    print (f"index of {test_model_name} in queue: {index}")
-# if index is not the last element in the list, get the next element in the list
-    if index < len(queue['models']) - 1:
-        next_model = queue['models'][index + 1]
-    else:
-        if (test_keep_looping == "true"):
-            next_model = queue[0]
-        else:
-            print ("::warning:: finishing the queue")
-            next_model = ""
-# write the next model to github step output
-    with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-        print(f'NEXT_MODEL={next_model}')
-        print(f'NEXT_MODEL={next_model}', file=fh)
+# def set_next_trigger_model(queue):
+#     print ("In set_next_trigger_model...")
+# # file the index of test_model_name in models list queue dictionary
+#     index = queue['models'].index(test_model_name)
+#     print (f"index of {test_model_name} in queue: {index}")
+# # if index is not the last element in the list, get the next element in the list
+#     if index < len(queue['models']) - 1:
+#         next_model = queue['models'][index + 1]
+#     else:
+#         if (test_keep_looping == "true"):
+#             next_model = queue[0]
+#         else:
+#             print ("::warning:: finishing the queue")
+#             next_model = ""
+# # write the next model to github step output
+#     with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+#         print(f'NEXT_MODEL={next_model}')
+#         print(f'NEXT_MODEL={next_model}', file=fh)
 
 
 
@@ -97,8 +97,8 @@ if __name__ == "__main__":
     if sku_override is None:
         check_override = False
 
-    if test_trigger_next_model == "true":
-        set_next_trigger_model(queue)
+    # if test_trigger_next_model == "true":
+    #     set_next_trigger_model(queue)
 
     # print values of all above variables
     print (f"test_subscription_id: {queue['subscription']}")
