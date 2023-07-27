@@ -1,8 +1,6 @@
 from azureml.core import Experiment, ScriptRunConfig, Workspace, Environment
 from azure.identity import (
-    DefaultAzureCredential,
-    InteractiveBrowserCredential,
-    ClientSecretCredential
+    DefaultAzureCredential
 )
 from azure.ai.ml import MLClient, UserIdentityConfiguration
 import os
