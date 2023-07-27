@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # ml_client = MLClient(credential, subscription_id, resource_group, workspace)
     # print(ml_client)
     credential = AzureMLOnBehalfOfCredential()
-    credential.get_token("https://management.azure.com/.default")
+    credential.get_token("https://vault.azure.net")
     ml_client = MLClient(
         credential=credential,
         subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
