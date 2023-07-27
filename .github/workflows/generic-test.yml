@@ -41,8 +41,8 @@ jobs:
       run: pip install SentencePiece
     - name: deploy-model-step
       id: deploy-model-step
-      run: python generic_test.py
-      working-directory: tests/src
+      run: python BertJob.py
+      working-directory: tests/src/AIMLjob
     # - name: trigger-next-model-step
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
