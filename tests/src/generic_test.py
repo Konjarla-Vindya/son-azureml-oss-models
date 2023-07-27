@@ -63,7 +63,7 @@ if __name__ == "__main__":
     queue = get_test_queue()
     azureml_workspace = Workspace(subscription, resource_group, workspace)
     # or create a new Pip environment from the requirements.txt file
-    myenv = Environment.get(workspace=azureml_workspace.from_config(), name="bert_environment")
+    myenv = Environment.get(workspace=azureml_workspace, name="bert_environment")
     env = myenv.from_pip_requirements(file_path='requirements/bert_requirements.txt')
 
     # Register the environment in your workspace
