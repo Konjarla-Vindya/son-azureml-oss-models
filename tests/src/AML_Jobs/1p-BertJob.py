@@ -1,10 +1,11 @@
 #import required libraries
 from azure.ai.ml import MLClient
-from azure.identity import (
-    DefaultAzureCredential,
-    InteractiveBrowserCredential,
-    ClientSecretCredential
-)
+# from azure.identity import (
+#     DefaultAzureCredential,
+#     InteractiveBrowserCredential,
+#     ClientSecretCredential
+# )
+from azure.identity import DefaultAzureCredential,AzureCliCredential 
 from azureml.core import Workspace
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command, Input
