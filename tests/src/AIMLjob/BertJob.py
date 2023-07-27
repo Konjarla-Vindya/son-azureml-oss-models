@@ -75,8 +75,8 @@ if __name__ == "__main__":
     #     )
     connect_to_workspace()
     #specify_compute(ml_client)
-    # command_job = define_command()
+    command_job = define_command()
     # # submit the command
-    # returned_job = ml_client.jobs.create_or_update(command_job)
+    returned_job = ml_client.jobs.create_or_update(command_job)
     # # get a URL for the status of the job
     # returned_job.studio_url
