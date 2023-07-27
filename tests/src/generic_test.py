@@ -75,8 +75,8 @@ if __name__ == "__main__":
     azureml_workspace = Workspace(
         subscription_id = subscription,
         resource_group = resource_group,
-        workspace_name = workspace,
-        auth = credential)
+        workspace_name = workspace
+    )
     ml_client = MLClient(
         credential=credential,
         subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
