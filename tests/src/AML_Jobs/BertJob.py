@@ -1,6 +1,6 @@
 #import required libraries
 from azure.ai.ml import MLClient
-from azure.ml.identity import AzureMLOnBehalfOfCredential
+from azure.identity import AzureMLOnBehalfOfCredential
 from azureml.core import Workspace
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command, Input
