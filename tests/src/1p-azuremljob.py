@@ -7,10 +7,10 @@ import json
 # )
 from azure.identity import DefaultAzureCredential,AzureCliCredential 
 
-workspace = "sonata-test-ws"
-subscription = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
-resource_group = "sonata-test-rg"
-registry = "HuggingFace"
+# workspace = "sonata-test-ws"
+# subscription = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
+# resource_group = "sonata-test-rg"
+# registry = "HuggingFace"
 
 test_model_name = os.environ.get('test_model_name')
 
@@ -44,14 +44,25 @@ if __name__ == "__main__":
     except Exception as ex:
         print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
         exit (1)
-        
-    azureml_workspace = Workspace(subscription, resource_group, workspace)
+
+    # workspace_ml_client = MLClient(
+    #     credential=credential, 
+    #     subscription_id=queue['subscription'],
+    #     resource_group_name=queue['resource_group'],
+    #     workspace_name=queue['workspace']
+    # )
+    ws = Workspace(subscription_id=queue['subscription'],
+        resource_group=queue['resource_group'],
+        workspace_name=queue['workspace'])
+    #mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri()
+    
+    #azureml_workspace = Workspace(subscription, resource_group, workspace)
     # or create a new Pip environment from the requirements.txt file
-    myenv = Environment.get(workspace=azureml_workspace, name="bert_environment")
+    myenv = Environment.get(workspace=ws, name="bert_environment")
     env = myenv.from_pip_requirements(name="bert_environment", file_path='requirements/bert_requirements.txt')
 
     # Register the environment in your workspace
-    env.register(workspace=azureml_workspace)
+    env.register(workspace=ws)
     script_config = ScriptRunConfig(
                             source_directory='./AML_Jobs',
                             script='BertJob.py',
@@ -59,7 +70,7 @@ if __name__ == "__main__":
                             environment=env
                             )
     # Create an Experiment
-    experiment = Experiment(azureml_workspace, 'my_experiment_for_bertp')
+    experiment = Experiment(ws, 'my_experiment_for_bertp')
     # Submit the script for execution
     run = experiment.submit(script_config)
     print(run)
