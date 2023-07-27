@@ -57,26 +57,24 @@ def define_command():
     return command_job
 
 if __name__ == "__main__":
-    # try:
-    #     #credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
-    #     #credential = AzureCliCredential()
-    #     #credential.get_token("https://management.azure.com/.default")
+     try:
+         credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
+    #     credential = AzureCliCredential()
+         credential.get_token("https://management.azure.com/.default")
     # #credential = AzureCliCredential()
-    # except Exception as e:
-    #     print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
-    credential = DefaultAzureCredential()
-    print(credential)
-    ml_client = MLClient(credential, subscription_id, resource_group, workspace)
-    print(ml_client)
-    # try:
-    #     ml_client = MLClient.from_config(credential=credential)
-    # except:
-    #     ml_client = MLClient(
-    #         credential,
-    #         subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
-    #         resource_group_name="sonata-test-rg",
-    #         workspace_name="sonata-test-ws",
-    #     )
+     except Exception as e:
+         print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
+    # credential = DefaultAzureCredential()
+    # print(credential)
+    # ml_client = MLClient(credential, subscription_id, resource_group, workspace)
+    # print(ml_client)
+
+         ml_client = MLClient(
+             credential,
+             subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
+             resource_group_name="sonata-test-rg",
+             workspace_name="sonata-test-ws",
+         )
     connect_to_workspace()
     #specify_compute(ml_client)
     command_job = define_command()
