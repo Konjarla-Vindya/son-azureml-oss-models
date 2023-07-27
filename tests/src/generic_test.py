@@ -82,7 +82,7 @@ if __name__ == "__main__":
     # or create a new Pip environment from the requirements.txt file
     myenv = Environment.get(workspace=azureml_workspace, name="bert_environment")
     env = myenv.from_pip_requirements(name="bert_environment", file_path='requirements/bert_requirements.txt')
-    env = ml_client.environments.create_or_update(env)
+    #env = ml_client.environments.create_or_update(env)
 
     # Register the environment in your workspace
     env.register(workspace=azureml_workspace)
