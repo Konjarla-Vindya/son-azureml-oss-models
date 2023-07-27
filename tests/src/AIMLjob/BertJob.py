@@ -17,7 +17,7 @@ def connect_to_workspace():
     #ml_client = MLClient(DefaultAzureCredential(), Workspace.from_config())
 
     ws = Workspace(subscription_id, resource_group, workspace)
-
+    print('workspace :', ws)
     #mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 
 def specify_compute(ml_client):
@@ -74,7 +74,7 @@ if __name__ == "__main__":
     #         workspace_name="sonata-test-ws",
     #     )
     connect_to_workspace()
-    specify_compute(ml_client)
+    #specify_compute(ml_client)
     # command_job = define_command()
     # # submit the command
     # returned_job = ml_client.jobs.create_or_update(command_job)
