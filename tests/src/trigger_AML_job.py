@@ -45,7 +45,7 @@ if __name__ == "__main__":
         print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
         exit (1)
         
-    azureml_workspace = Workspace(subscription, resource_group, workspace,auth=credential)
+    azureml_workspace = Workspace(subscription, resource_group, workspace)
     # or create a new Pip environment from the requirements.txt file
     myenv = Environment.get(workspace=azureml_workspace, name="bert_environment")
     env = myenv.from_pip_requirements(name="bert_environment", file_path='requirements/bert_requirements.txt')
