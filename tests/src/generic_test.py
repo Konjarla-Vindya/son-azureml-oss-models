@@ -1,4 +1,10 @@
 from azureml.core import Experiment, ScriptRunConfig, Workspace, Environment
+from azure.identity import (
+    DefaultAzureCredential,
+    InteractiveBrowserCredential,
+    ClientSecretCredential
+)
+from azure.ai.ml import MLClient, UserIdentityConfiguration
 import os
 import json
 
@@ -61,10 +67,24 @@ def get_test_queue():
 
 if __name__ == "__main__":
     queue = get_test_queue()
+    try:
+        credential = DefaultAzureCredential()
+         #credential = AzureCliCredential()
+        credential.get_token("https://management.azure.com/.default")
+        # #credential = AzureCliCredential()
+    except Exception as e:
+        print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
     azureml_workspace = Workspace(subscription, resource_group, workspace)
+    ml_client = MLClient(
+        credential=credential,
+        subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
+        resource_group_name="sonata-test-rg",
+        workspace_name="sonata-test-ws"
+        )
     # or create a new Pip environment from the requirements.txt file
     myenv = Environment.get(workspace=azureml_workspace, name="bert_environment")
     env = myenv.from_pip_requirements(name="bert_environment", file_path='requirements/bert_requirements.txt')
+    env = ml_client.environments.create_or_update(env)
 
     # Register the environment in your workspace
     env.register(workspace=azureml_workspace)

@@ -8,6 +8,8 @@ from azure.identity import (
 from azureml.core import Workspace
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command, Input
+from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
+from azure.ai.ml import MLClient, UserIdentityConfiguration
 import mlflow
 
 #Enter details of your Azure Machine Learning workspace
@@ -54,20 +56,22 @@ def define_command():
         # },
         compute="cpu-cluster",
     )
+    command_job.identity = UserIdentityConfiguration()
     return command_job
 
 if __name__ == "__main__":
-    try:
-        credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
-         #credential = AzureCliCredential()
-        credential.get_token("https://management.azure.com/.default")
-        # #credential = AzureCliCredential()
-    except Exception as e:
-        print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
+    # try:
+    #     credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
+    #      #credential = AzureCliCredential()
+    #     credential.get_token("https://management.azure.com/.default")
+    #     # #credential = AzureCliCredential()
+    # except Exception as e:
+    #     print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
     # credential = DefaultAzureCredential()
     # print(credential)
     # ml_client = MLClient(credential, subscription_id, resource_group, workspace)
     # print(ml_client)
+    credential = AzureMLOnBehalfOfCredential()
     ml_client = MLClient(
         credential=credential,
         subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
@@ -75,7 +79,7 @@ if __name__ == "__main__":
         workspace_name="sonata-test-ws"
         )
     connect_to_workspace()
-    #specify_compute(ml_client)
+    specify_compute(ml_client)
     command_job = define_command()
     # # submit the command
     returned_job = ml_client.jobs.create_or_update(command_job)
