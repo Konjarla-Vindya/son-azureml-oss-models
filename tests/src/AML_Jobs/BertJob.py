@@ -1,10 +1,6 @@
 #import required libraries
 from azure.ai.ml import MLClient
-from azure.identity import (
-    DefaultAzureCredential,
-    InteractiveBrowserCredential,
-    ClientSecretCredential
-)
+from azure.ml.identity import AzureMLOnBehalfOfCredential
 from azureml.core import Workspace
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command, Input
@@ -40,21 +36,15 @@ def define_command():
     command_job = command(
         code="./",
         command="python Bert.py",
-        #--cnn_dailymail ${{inputs.cnn_dailymail}}",
-        environment="gpt2-venv:6", #"EnvTest:1",
-        # inputs={
-        #     "cnn_dailymail": Input(
-        #         type="uri_file",
-        #         path="https://datasets-server.huggingface.co/rows?dataset=cnn_dailymail&config=3.0.0&split=validation&offset=0&limit=5",
-        #     )
-        # },
+        environment="gpt2-venv:6",
         compute="cpu-cluster",
     )
+    command_job.identity = UserIdentityConfiguration()
     return command_job
 
 if __name__ == "__main__":
     try:
-        credential = DefaultAzureCredential()
+        credential = AzureMLOnBehalfOfCredential()()
         credential.get_token("https://management.azure.com/.default")
     except Exception as e:
         print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
