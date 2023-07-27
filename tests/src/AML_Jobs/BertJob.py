@@ -14,15 +14,11 @@ import mlflow
 subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
 resource_group = 'sonata-test-rg'
 workspace = 'sonata-test-ws'
-#ws = Workspace.from_config()
 
 def connect_to_workspace():
     #connect to the workspace
-    #ml_client = MLClient(DefaultAzureCredential(), Workspace.from_config())
-
     ws = Workspace(subscription_id, resource_group, workspace)
-    print('workspace :', ws)
-    #mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 
 def specify_compute(ml_client):
     # specify aml compute name.
@@ -58,24 +54,20 @@ def define_command():
 
 if __name__ == "__main__":
     try:
-        credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
-         #credential = AzureCliCredential()
+        credential = DefaultAzureCredential()
         credential.get_token("https://management.azure.com/.default")
-        # #credential = AzureCliCredential()
     except Exception as e:
         print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
-    # credential = DefaultAzureCredential()
-    # print(credential)
-    # ml_client = MLClient(credential, subscription_id, resource_group, workspace)
-    # print(ml_client)
+
     ml_client = MLClient(
         credential=credential,
         subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
         resource_group_name="sonata-test-rg",
         workspace_name="sonata-test-ws"
         )
+    
     connect_to_workspace()
-    #specify_compute(ml_client)
+    specify_compute(ml_client)
     command_job = define_command()
     # # submit the command
     returned_job = ml_client.jobs.create_or_update(command_job)
