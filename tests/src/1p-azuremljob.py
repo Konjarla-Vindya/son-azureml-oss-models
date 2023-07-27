@@ -65,7 +65,7 @@ if __name__ == "__main__":
     env.register(workspace=ws)
     script_config = ScriptRunConfig(
                             source_directory='./AML_Jobs',
-                            script='BertJob.py',
+                            script='1p-BertJob.py',
                             compute_target='cpu-cluster',
                             environment=env
                             )
