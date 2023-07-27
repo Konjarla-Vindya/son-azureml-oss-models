@@ -107,13 +107,13 @@ def get_test_queue():
         return json.load(f)
     
 
-def get_sku_override():
-    try:
-        with open(f'../config/sku-override/{test_set}.json') as json_file:
-            return json.load(json_file)
-    except Exception as e:
-        print (f"::warning:: Could not find sku-override file: \n{e}")
-        return None
+# def get_sku_override():
+#     try:
+#         with open(f'../config/sku-override/{test_set}.json') as json_file:
+#             return json.load(json_file)
+#     except Exception as e:
+#         print (f"::warning:: Could not find sku-override file: \n{e}")
+#         return None
 
 def set_next_trigger_model(queue):
     print ("In set_next_trigger_model...")
@@ -186,17 +186,17 @@ def create_and_get_job_studio_url(command_job):
 
 def main():
     
-    check_override = True
+    # check_override = True
 
-    if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
-        print ("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
-        exit (1)
+    # if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
+    #     print ("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
+    #     exit (1)
 
     queue = get_test_queue()
 
-    sku_override = get_sku_override()
-    if sku_override is None:
-        check_override = False
+    # sku_override = get_sku_override()
+    # if sku_override is None:
+    #     check_override = False
 
     if test_trigger_next_model == "true":
         set_next_trigger_model(queue)
@@ -229,7 +229,7 @@ def main():
         resource_group=queue['resource_group'],
         workspace_name=queue['workspace'])
 
-    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+    #mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 
     registry_ml_client = MLClient(
         credential=credential, 
