@@ -38,7 +38,7 @@ def get_test_queue():
 if __name__ == "__main__":
     queue = get_test_queue()
     try:
-        credential = DefaultAzureCredential()
+        credential = AzureCliCredential()
         credential.get_token("https://management.azure.com/.default")
     except Exception as ex:
         print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
