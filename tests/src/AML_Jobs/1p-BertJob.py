@@ -54,7 +54,7 @@ def define_command():
 
 if __name__ == "__main__":
     try:
-        credential = DefaultAzureCredential()
+        credential = AzureCliCredential()
         credential.get_token("https://management.azure.com/.default")
     except Exception as e:
         print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
