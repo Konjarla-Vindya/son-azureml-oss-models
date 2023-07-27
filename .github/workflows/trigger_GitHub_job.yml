@@ -30,7 +30,7 @@ jobs:
     - name: submit-model-step
       id: submit-model-step
       run: python BertJob.py
-      working-directory: tests/src/AML_Job
+      working-directory: tests/src/AML_Jobs
     # - name: trigger-next-model-step
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
