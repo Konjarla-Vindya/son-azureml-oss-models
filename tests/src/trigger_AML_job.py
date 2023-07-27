@@ -3,7 +3,6 @@ import os
 import json
 from azure.identity import (
     DefaultAzureCredential,
-    InteractiveBrowserCredential,
     ClientSecretCredential
 )
 
