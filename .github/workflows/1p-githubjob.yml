@@ -29,7 +29,7 @@ jobs:
       run: pip install azureml-sdk
     - name: submit-model-step
       id: submit-model-step
-      run: python 1p-azuremljob.py
+      run: python 1p-BertJob.py
       working-directory: tests/src
     # - name: trigger-next-model-step
     #   env:
