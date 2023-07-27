@@ -68,13 +68,12 @@ if __name__ == "__main__":
     # print(credential)
     # ml_client = MLClient(credential, subscription_id, resource_group, workspace)
     # print(ml_client)
-
-         ml_client = MLClient(
-             credential,
-             subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
-             resource_group_name="sonata-test-rg",
-             workspace_name="sonata-test-ws",
-         )
+    ml_client = MLClient(
+            credential,
+            subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
+            resource_group_name="sonata-test-rg",
+            workspace_name="sonata-test-ws"
+    )
     connect_to_workspace()
     #specify_compute(ml_client)
     command_job = define_command()
