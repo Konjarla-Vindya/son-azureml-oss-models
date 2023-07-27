@@ -72,7 +72,7 @@ if __name__ == "__main__":
         # #credential = AzureCliCredential()
     except Exception as e:
         print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
-    azureml_workspace = Workspace.get(subscription, resource_group, workspace)
+    azureml_workspace = Workspace(subscription, resource_group, workspace)
     ml_client = MLClient(
         credential=credential,
         subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
@@ -86,19 +86,12 @@ if __name__ == "__main__":
 
     # Register the environment in your workspace
     env.register(workspace=azureml_workspace)
-    # script_config = ScriptRunConfig(
-    #                         source_directory='./AIMLjob',
-    #                         script='BertJob.py',
-    #                         compute_target='cpu-cluster',
-    #                         environment=env
-    #                         )
     script_config = ScriptRunConfig(
                             source_directory='./AIMLjob',
-                            script='BertJob.py'
+                            script='BertJob.py',
+                            compute_target='cpu-cluster',
+                            environment=env
                             )
-    script_config.run_config.environment = env
-    compute_target = azureml_workspace.compute_targets["cpu-cluster"]
-    script_config.run_config.target = compute_target
     # Create an Experiment
     experiment = Experiment(azureml_workspace, 'my_test_experiment_for_bert_1')
     # Submit the script for execution

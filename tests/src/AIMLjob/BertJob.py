@@ -60,20 +60,19 @@ def define_command():
     return command_job
 
 if __name__ == "__main__":
-    try:
-        credential = DefaultAzureCredential()
-        #credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
-         #credential = AzureCliCredential()
-        credential.get_token("https://management.azure.com/.default")
-        # #credential = AzureCliCredential()
-    except Exception as e:
-        print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
+    # try:
+    #     credential = DefaultAzureCredential(exclude_shared_token_cache_credential=True)
+    #      #credential = AzureCliCredential()
+    #     credential.get_token("https://management.azure.com/.default")
+    #     # #credential = AzureCliCredential()
+    # except Exception as e:
+    #     print (f"::warning:: Getting Exception in the default azure credential and here is the exception log : \n{e}")
     # credential = DefaultAzureCredential()
     # print(credential)
     # ml_client = MLClient(credential, subscription_id, resource_group, workspace)
     # print(ml_client)
-    #credential = AzureMLOnBehalfOfCredential()
-    #credential.get_token("https://vault.azure.net")
+    credential = AzureMLOnBehalfOfCredential()
+    credential.get_token("https://vault.azure.net")
     ml_client = MLClient(
         credential=credential,
         subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
