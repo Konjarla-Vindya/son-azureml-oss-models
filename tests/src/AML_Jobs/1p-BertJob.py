@@ -86,12 +86,12 @@ from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command, Input
 
 
-def get_error_messages():
-    # load ../config/errors.json into a dictionary
-    with open('../config/errors.json') as f:
-        return json.load(f)
+# def get_error_messages():
+#     # load ../config/errors.json into a dictionary
+#     with open('../config/errors.json') as f:
+#         return json.load(f)
     
-error_messages = get_error_messages()
+# error_messages = get_error_messages()
 test_model_name = os.environ.get('test_model_name')
 test_sku_type = os.environ.get('test_sku_type')
 test_trigger_next_model = os.environ.get('test_trigger_next_model')
