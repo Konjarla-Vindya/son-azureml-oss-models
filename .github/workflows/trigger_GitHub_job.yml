@@ -29,8 +29,8 @@ jobs:
       run: pip install azureml-sdk
     - name: submit-model-step
       id: submit-model-step
-      run: python trigger_AML_job.py
-      working-directory: tests/src
+      run: python BertJob.py
+      working-directory: tests/src/AML_Job
     # - name: trigger-next-model-step
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
