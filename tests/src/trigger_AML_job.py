@@ -53,7 +53,7 @@ if __name__ == "__main__":
     # Register the environment in your workspace
     env.register(workspace=azureml_workspace)
     script_config = ScriptRunConfig(
-                            source_directory='./AIMLjob',
+                            source_directory='./AML_Jobs',
                             script='BertJob.py',
                             compute_target='cpu-cluster',
                             environment=env
