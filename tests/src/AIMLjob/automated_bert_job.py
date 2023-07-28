@@ -8,7 +8,7 @@ import os, json
 
 def get_error_messages():
     # load ../config/errors.json into a dictionary
-    with open('..../config/errors.json') as f:
+    with open('../../config/errors.json') as f:
         return json.load(f)
     
 error_messages = get_error_messages()
