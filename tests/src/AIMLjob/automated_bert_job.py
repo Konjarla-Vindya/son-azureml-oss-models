@@ -86,10 +86,10 @@ def create_or_get_compute_target(ml_client):
     return compute
 
 
-def run_azure_ml_job(code, command, environment, compute):
+def run_azure_ml_job(code, command_to_run, environment, compute):
     command_job = command(
         code=code,
-        command=command,
+        command=command_to_run,
         environment=environment,
         compute=compute,
     )
@@ -161,7 +161,7 @@ def main():
     #download_and_register_model()
     
     compute_target = create_or_get_compute_target(workspace_ml_client)
-    command_job = run_azure_ml_job(code=".", command="python automated_bert.py", environment="gpt2-venv:6", compute="cpu-cluster")
+    command_job = run_azure_ml_job(code="./", command="python automated_bert.py", environment="gpt2-venv:6", compute="cpu-cluster")
     create_and_get_job_studio_url(command_job)
     
 
