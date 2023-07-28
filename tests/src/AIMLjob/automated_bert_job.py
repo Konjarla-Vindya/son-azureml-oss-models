@@ -95,10 +95,10 @@ def run_azure_ml_job(code, command_to_run, environment, compute):
     )
     return command_job
 
-def create_and_get_job_studio_url(command_job):
+def create_and_get_job_studio_url(command_job, workspace_ml_client):
    
-    ml_client = mlflow.tracking.MlflowClient()
-    returned_job = ml_client.jobs.create_or_update(command_job)
+    #ml_client = mlflow.tracking.MlflowClient()
+    returned_job = workspace_ml_client.jobs.create_or_update(command_job)
     return returned_job.studio_url
 # studio_url = create_and_get_job_studio_url(command_job)
 # print("Studio URL for the job:", studio_url)
@@ -162,7 +162,7 @@ def main():
     
     compute_target = create_or_get_compute_target(workspace_ml_client)
     command_job = run_azure_ml_job(code="./", command_to_run="python automated_bert.py", environment="gpt2-venv:6", compute="cpu-cluster")
-    create_and_get_job_studio_url(command_job)
+    create_and_get_job_studio_url(command_job, workspace_ml_client)
     
 
 if __name__ == "__main__":
