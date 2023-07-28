@@ -93,12 +93,12 @@ import json
 import os
 
 
-# def get_error_messages():
-#     # load ../config/errors.json into a dictionary
-#     with open('../config/errors.json') as f:
-#         return json.load(f)
+def get_error_messages():
+    # load ../config/errors.json into a dictionary
+    with open('../config/errors.json') as f:
+        return json.load(f)
     
-# error_messages = get_error_messages()
+error_messages = get_error_messages()
 test_model_name = os.environ.get('test_model_name')
 test_sku_type = os.environ.get('test_sku_type')
 test_trigger_next_model = os.environ.get('test_trigger_next_model')
@@ -114,13 +114,13 @@ def get_test_queue():
         return json.load(f)
     
 
-# def get_sku_override():
-#     try:
-#         with open(f'../config/sku-override/{test_set}.json') as json_file:
-#             return json.load(json_file)
-#     except Exception as e:
-#         print (f"::warning:: Could not find sku-override file: \n{e}")
-#         return None
+def get_sku_override():
+    try:
+        with open(f'../config/sku-override/{test_set}.json') as json_file:
+            return json.load(json_file)
+    except Exception as e:
+        print (f"::warning:: Could not find sku-override file: \n{e}")
+        return None
 
 def set_next_trigger_model(queue):
     print ("In set_next_trigger_model...")
