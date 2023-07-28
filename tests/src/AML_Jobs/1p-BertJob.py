@@ -180,11 +180,11 @@ def run_azure_ml_job(code, command, environment, compute):
         environment=environment,
         compute=compute,
     )
-
+    return command_job
 
 def create_and_get_job_studio_url(command_job):
    
-    ml_client = mlflow.tracking.MlflowClient()
+    #ml_client = mlflow.tracking.MlflowClient()
     returned_job = ml_client.jobs.create_or_update(command_job)
     return returned_job.studio_url
 # studio_url = create_and_get_job_studio_url(command_job)
@@ -236,7 +236,7 @@ def main():
         resource_group=queue['resource_group'],
         workspace_name=queue['workspace'])
 
-    #mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 
     registry_ml_client = MLClient(
         credential=credential, 
