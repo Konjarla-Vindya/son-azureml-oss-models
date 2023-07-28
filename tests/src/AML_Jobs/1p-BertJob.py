@@ -160,7 +160,7 @@ def get_latest_model_version(registry_ml_client, model_name):
 
 
 def create_or_get_compute_target(cpu_compute_target):
-    cpu_compute_target = "cpu-cluster"
+    #cpu_compute_target = "cpu-cluster"
     try:
         compute = ml_client.compute.get(cpu_compute_target)
     except Exception:
@@ -192,7 +192,7 @@ def create_and_get_job_studio_url(command_job):
 
 
 def main():
-    
+    cpu_compute_target = "cpu-cluster"
     # check_override = True
 
     # if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
