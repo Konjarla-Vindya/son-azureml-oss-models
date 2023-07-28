@@ -93,7 +93,7 @@ def run_azure_ml_job(code, command, environment, compute):
         environment=environment,
         compute=compute,
     )
-
+    return command_job
 
 def create_and_get_job_studio_url(command_job):
    
