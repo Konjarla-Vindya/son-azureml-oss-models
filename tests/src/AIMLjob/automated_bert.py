@@ -43,7 +43,8 @@ import json
 def create_mlflow_experiment(model_name):
     mlflow.create_experiment(model_name)
 
-config_file_path = "test-bert_model.json"  #"config.json"
+#config_file_path = "test-bert_model.json"  #"config.json"
+config_file_path = f'../../config/queue/huggingface-all/test-bert_model.json'
 
 def read_config_file(file_path):
     with open(file_path, 'r') as f:
