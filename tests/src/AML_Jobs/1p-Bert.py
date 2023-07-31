@@ -21,7 +21,7 @@ from tensorflow.keras import Model
 import time
 import json
 import mlflow.pytorch
-#import huggingface_hub.login
+import huggingface_hub.login
 print("imported")
 
 # subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
@@ -87,6 +87,7 @@ from transformers import (
 # checkpoint = "bert-base-uncased"
 # model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
 # tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+huggingface_hub.login( token = "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")
 test_model_name = os.environ.get('test_model_name')
 print(test_model_name)
 model = AutoModelForSequenceClassification.from_pretrained(test_model_name,use_auth_token=True)
