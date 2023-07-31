@@ -1,5 +1,8 @@
 print("py started")
 import os 
+# Set the Hugging Face token as an environment variable
+os.environ["HF_TOKEN"] = os.environ.get('test_model_name')
+
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 import mlflow
 import pandas as pd
@@ -17,6 +20,8 @@ from tensorflow.keras import Model
 #from azure.ai.ml.entities import AmlCompute
 import time
 import json
+import mlflow.pytorch
+#import huggingface_hub.login
 print("imported")
 
 # subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
