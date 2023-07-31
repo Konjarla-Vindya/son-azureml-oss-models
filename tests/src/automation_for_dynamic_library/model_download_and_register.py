@@ -30,7 +30,7 @@ class Model:
         mlflow.set_tracking_uri(workspace.get_mlflow_tracking_uri())
         mlflow.transformers.log_model(
             transformers_model = model_and_tokenizer,
-            task=task,
+            #task=task,
             artifact_path=artifact_path,
             registered_model_name=registered_model_name
         )
