@@ -21,6 +21,7 @@ from tensorflow.keras import Model
 import time
 import json
 import mlflow.pytorch
+import huggingface_hub
 import huggingface_hub.login
 print("imported")
 
