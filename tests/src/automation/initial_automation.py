@@ -93,4 +93,4 @@ if __name__ == "__main__":
     print("Here is my test model name : ",test_model_name)
     model = Model(model_name=test_model_name, queue=queue)
     model_and_tokenizer = model.download_and_register_model()
-    print("Model config : "model_and_tokenizer["model"].config)
+    print("Model config : ", model_and_tokenizer["model"].config)
