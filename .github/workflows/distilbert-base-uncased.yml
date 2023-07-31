@@ -25,7 +25,7 @@ jobs:
       run: pip install azure-ai-ml 
     - name: deploy-model-step
       id: deploy-model-step
-      run: python bert-base-uncased.py
+      run: python initial_automation.py
       working-directory: tests/src/automation
     - name: trigger-next-model-step
       env:
