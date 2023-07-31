@@ -1,4 +1,4 @@
-from transformers import AutoModelForSequenceClassification,AutoTokenizer
+from transformers import AutoModel,AutoTokenizer
 #import transformers
 from azureml.core import Workspace
 #from azureml.core import Workspace
@@ -14,7 +14,7 @@ class Model:
         self.model_name = model_name
     
     def download_model_and_tokenizer(self)->dict:
-        model = AutoModelForSequenceClassification.from_pretrained(self.model_name)
+        model = AutoModel.from_pretrained(self.model_name)
         tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         model_and_tokenizer = {"model":model, "tokenizer":tokenizer}
         return model_and_tokenizer
@@ -23,11 +23,6 @@ class Model:
         task = self.queue.models[self.model_name].task
         artifact_path = self.model_name + "_artifact"
         registered_model_name = self.model_name + "_registered"
-        # ws = Workspace(
-        #         subscription_id = self.queue.subscription,
-        #         resource_group_name = self.queue.resource_group,
-        #         workspace_name = self.queue.workspace
-        #     )
         mlflow.set_tracking_uri(workspace.get_mlflow_tracking_uri())
         mlflow.transformers.log_model(
             transformers_model = model_and_tokenizer,
