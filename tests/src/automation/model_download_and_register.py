@@ -10,10 +10,11 @@ class Model:
         self.queue = queue
     
     def download_model_and_tokenizer(self)->dict:
-        model_library = self.queue.models[self.model_name].model_library
-        tokenizer_library = self.queue.models[self.model_name].tokenizer_library
-        model = transformers.model_library.from_pretrained(self.model_name)
-        tokenizer = transformers.tokenizer_library.from_pretrained(self.model_name)
+        model_library = getattr(transformers, str(self.queue.models[self.model_name].model_library))
+        tokenizer_library = getattr(transformers, str(self.queue.models[self.model_name].tokenizer_library))
+        #print("Model_library", )
+        model = model_library.from_pretrained(self.model_name)
+        tokenizer = tokenizer_library.from_pretrained(self.model_name)
         model_and_tokenizer = {"model":model, "tokenizer":tokenizer}
         return model_and_tokenizer
     
