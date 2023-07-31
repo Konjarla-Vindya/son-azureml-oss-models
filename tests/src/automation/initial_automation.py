@@ -1,6 +1,7 @@
 from model_download_and_register import Model
 import json
 import os
+from box import ConfigBox
 
 # constants
 check_override = True
@@ -36,15 +37,15 @@ test_keep_looping = os.environ.get('test_keep_looping')
 # even model we need to test belongs to a queue. the queue name is passed as environment variable test_queue
 # the queue file contains the list of models to test with with a specific workspace
 # the queue file also contains the details of the workspace, registry, subscription, resource group
-def get_test_queue():
+def get_test_queue() -> ConfigBox:
     queue_file = f"../../config/queue/{test_set}/{test_queue}.json"
     with open(queue_file) as f:
-        return json.load(f)
+        return ConfigBox(json.load(f))
 # function to load the sku override details from sku-override file
 # this is useful if you want to force a specific sku for a model   
 def get_sku_override():
     try:
-        with open('../config/sku-override/{test_set}.json') as json_file:
+        with open('../../config/sku-override/{test_set}.json') as json_file:
             return json.load(json_file)
     except Exception as e:
         print (f"::warning:: Could not find sku-override file: \n{e}")
@@ -56,11 +57,13 @@ def get_sku_override():
 def set_next_trigger_model(queue):
     print ("In set_next_trigger_model...")
 # file the index of test_model_name in models list queue dictionary
-    index = queue['models'].index(test_model_name)
+    model_list = list(queue.models.keys())
+    #index = queue['models'].index(test_model_name)
+    index = model_list.index(test_model_name)
     print (f"index of {test_model_name} in queue: {index}")
 # if index is not the last element in the list, get the next element in the list
-    if index < len(queue['models']) - 1:
-        next_model = queue['models'][index + 1]
+    if index < len(model_list) - 1:
+        next_model = model_list[index + 1]
     else:
         if (test_keep_looping == "true"):
             next_model = queue[0]
@@ -72,9 +75,6 @@ def set_next_trigger_model(queue):
         print(f'NEXT_MODEL={next_model}')
         print(f'NEXT_MODEL={next_model}', file=fh)
     
-
-model = Model()
-
 
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -91,3 +91,6 @@ if __name__ == "__main__":
     if test_trigger_next_model == "true":
         set_next_trigger_model(queue)
     print("Here is my test model name : ",test_model_name)
+    model = Model(model_name=test_model_name, queue=queue)
+    model_and_tokenizer = model.download_and_register_model()
+    print("Model config : "model_and_tokenizer["model"].config)
