@@ -94,7 +94,7 @@ if __name__ == "__main__":
     print("Here is my test model name : ",test_model_name)
     ws = Workspace(
                 subscription_id = queue.subscription,
-                resource_group_name = queue.resource_group,
+                resource_group = queue.resource_group,
                 workspace_name = queue.workspace
             )
     model = Model(model_name=test_model_name, queue=queue)
