@@ -7,7 +7,7 @@ env:
   test_model_name: bert-base-uncased
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-norwayeast-2
+  test_queue: bert-base-uncased
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -25,7 +25,7 @@ jobs:
       run: pip install azure-ai-ml 
     - name: deploy-model-step
       id: deploy-model-step
-      run: python deploy_huggingface_models.py
+      run: python bert-base-uncased.py
       working-directory: tests/src
     - name: trigger-next-model-step
       env:
