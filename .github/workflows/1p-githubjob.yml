@@ -43,6 +43,8 @@ jobs:
       run: pip install pandas
     - name: pip-install-numpy
       run: pip install numpy
+    - name: pip-install-huggingface-hub
+      run: pip install huggingface-hub
     - name: setup-huggingface-token
       env:
         HUGGING_FACE_TOKEN: ${{ secrets.HUGGING_FACE_TOKEN }}
