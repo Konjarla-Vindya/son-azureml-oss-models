@@ -1,0 +1,24 @@
+{
+    "queue_name": "bert-base-uncased",
+    "models": {
+        "xlnet-base-cased": {
+            "model_library": "XLNetForSequenceClassification",
+            "tokenizer_library": "XLNetTokenizer",
+            "task": "text-classification"
+          },
+          "google/pegasus-multi_news": {
+            "model_library": "PegasusForConditionalGeneration",
+            "tokenizer_library": "PegasusTokenizer",
+            "task": "summarization"
+          },
+          "gpt2-medium": {
+            "model_library": "AutoModelForCausalLM",
+            "tokenizer_library": "AutoTokenizer",
+            "task": "text-generation"
+          }
+    },
+    "workspace": "sonata-test-ws",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "sonata-test-rg",
+    "registry": "HuggingFace"
+}

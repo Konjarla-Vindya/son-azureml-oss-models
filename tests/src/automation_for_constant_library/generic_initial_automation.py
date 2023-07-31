@@ -1,5 +1,9 @@
 from azureml.core import Workspace
 from generic_model_download_and_register import Model
+from azure.identity import DefaultAzureCredential
+from azure.ai.ml.entities import AmlCompute
+from azure.ai.ml import command, Input
+from azure.ai.ml import MLClient
 import json
 import os
 from box import ConfigBox
@@ -75,7 +79,37 @@ def set_next_trigger_model(queue):
     with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
         print(f'NEXT_MODEL={next_model}')
         print(f'NEXT_MODEL={next_model}', file=fh)
+
+def create_or_get_compute_target(ml_client):
+    cpu_compute_target = "cpu-cluster"
+    try:
+        compute = ml_client.compute.get(cpu_compute_target)
+    except Exception:
+        print("Creating a new cpu compute target...")
+        compute = AmlCompute(
+            name=cpu_compute_target, size="STANDARD_D2_V2", min_instances=0, max_instances=4
+        )
+        ml_client.compute.begin_create_or_update(compute).result()
     
+    return compute
+
+
+def run_azure_ml_job(code, command_to_run, environment, compute):
+    command_job = command(
+        code=code,
+        command=command_to_run,
+        environment=environment,
+        compute=compute,
+    )
+    return command_job
+
+def create_and_get_job_studio_url(command_job, workspace_ml_client):
+   
+    #ml_client = mlflow.tracking.MlflowClient()
+    returned_job = workspace_ml_client.jobs.create_or_update(command_job)
+    return returned_job.studio_url
+# studio_url = create_and_get_job_studio_url(command_job)
+# print("Studio URL for the job:", studio_url)
 
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -92,11 +126,26 @@ if __name__ == "__main__":
     if test_trigger_next_model == "true":
         set_next_trigger_model(queue)
     print("Here is my test model name : ",test_model_name)
+    try:
+        credential = DefaultAzureCredential()
+        credential.get_token("https://management.azure.com/.default")
+    except Exception as ex:
+        print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
+        exit (1)
+    workspace_ml_client = MLClient(
+        credential=credential, 
+        subscription_id=queue.subscription,
+        resource_group_name=queue.resource_group,
+        workspace_name=queue.workspace
+    )
     ws = Workspace(
                 subscription_id = queue.subscription,
                 resource_group = queue.resource_group,
                 workspace_name = queue.workspace
             )
-    model = Model(model_name=test_model_name, queue=queue)
-    model_and_tokenizer = model.download_and_register_model(workspace=ws)
-    print("Model config : ", model_and_tokenizer["model"].config)
+    compute_target = create_or_get_compute_target(workspace_ml_client)
+    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="gpt2-venv:6", compute="cpu-cluster")
+    create_and_get_job_studio_url(command_job, workspace_ml_client)
+    # model = Model(model_name=test_model_name, queue=queue)
+    # model_and_tokenizer = model.download_and_register_model(workspace=ws)
+    # print("Model config : ", model_and_tokenizer["model"].config)
