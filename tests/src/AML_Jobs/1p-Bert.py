@@ -83,6 +83,7 @@ from transformers import (
 # model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
 # tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 test_model_name = os.environ.get('test_model_name')
+print(test_model_name)
 model = AutoModelForSequenceClassification.from_pretrained(test_model_name,use_auth_token=True)
 tokenizer = AutoTokenizer.from_pretrained(test_model_name)
 raw_ds= load_dataset("glue", "mrpc")
