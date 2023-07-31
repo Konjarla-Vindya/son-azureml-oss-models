@@ -26,7 +26,7 @@ jobs:
     - name: deploy-model-step
       id: deploy-model-step
       run: python bert-base-uncased.py
-      working-directory: tests/src
+      working-directory: tests/src/automation
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
