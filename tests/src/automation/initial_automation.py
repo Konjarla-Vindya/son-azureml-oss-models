@@ -1,3 +1,4 @@
+from azureml.core import Workspace
 from model_download_and_register import Model
 import json
 import os
@@ -91,6 +92,11 @@ if __name__ == "__main__":
     if test_trigger_next_model == "true":
         set_next_trigger_model(queue)
     print("Here is my test model name : ",test_model_name)
+    ws = Workspace(
+                subscription_id = queue.subscription,
+                resource_group_name = queue.resource_group,
+                workspace_name = queue.workspace
+            )
     model = Model(model_name=test_model_name, queue=queue)
-    model_and_tokenizer = model.download_and_register_model()
+    model_and_tokenizer = model.download_and_register_model(workspace=ws)
     print("Model config : ", model_and_tokenizer["model"].config)
