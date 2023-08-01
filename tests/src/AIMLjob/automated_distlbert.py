@@ -1,5 +1,8 @@
 print("py started")
 import os 
+# Set the Hugging Face token as an environment variable
+#os.environ["HF_TOKEN"] = os.environ.get('test_model_name')
+
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 import mlflow
 import pandas as pd
@@ -17,33 +20,41 @@ from tensorflow.keras import Model
 #from azure.ai.ml.entities import AmlCompute
 import time
 import json
+# import mlflow.pytorch
+# import huggingface_hub
+# import huggingface_hub.login
 print("imported")
-import os
-import json
-import os
-import json
 
-def create_mlflow_experiment(model_name):
-    mlflow.create_experiment(model_name)
+test_model_name = os.environ.get('test_model_name')
+subscription = os.environ.get('subscription')
+resource_group = os.environ.get('resource_group')
+workspace_name = os.environ.get('workspace')
 
-#config_file_path = "test-distl-bert_model.json"  #"config.json"
-file_path = f"../../../config/queue/huggingface-all/test-distl-bert_model.json"
+# import os
+# import json
 
-def read_config_file(file_path):
-    with open(file_path, 'r') as f:
-        config = json.load(f)
-    return config
+# def create_mlflow_experiment(model_name):
+#     mlflow.create_experiment(model_name)
 
-config = read_config_file(file_path)
+# config_file_path = "test-distl-bert_model.json"  #"config.json"
 
-if "models" in config and isinstance(config["models"], list):
-    for model_name in config["models"]:
-        os.environ["MLFLOW_EXPERIMENT_NAME"] = model_name
-        create_mlflow_experiment(model_name)
-        print(f"Created MLflow experiment for model: {model_name}")
-else:
-    print("Error: 'models' key not found in the config file or not a list.")
+# def read_config_file(file_path):
+#     with open(file_path, 'r') as f:
+#         config = json.load(f)
+#     return config
 
+# config = read_config_file(config_file_path)
+
+# if "models" in config and isinstance(config["models"], list):
+#     for model_name in config["models"]:
+#         os.environ["MLFLOW_EXPERIMENT_NAME"] = model_name
+#         create_mlflow_experiment(model_name)
+#         print(f"Created MLflow experiment for model: {model_name}")
+# else:
+#     print("Error: 'models' key not found in the config file or not a list.")
+
+os.environ["MLFLOW_EXPERIMENT_NAME"] = "DistlBertBaseUncased"
+print("error fixed")
 
 #MLFLOW_TRACKING_URI
 #mlflow.set_registry_uri(EXPERIMENT_NAME)
@@ -62,10 +73,9 @@ from transformers import (
     EvalPrediction,
 )
 
-test_model_name = os.environ.get('test_model_name')
-
-model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
-tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+print(test_model_name)
+model = AutoModelForSequenceClassification.from_pretrained(test_model_name)
+tokenizer = AutoTokenizer.from_pretrained(test_model_name)
 raw_ds= load_dataset("glue", "mrpc")
 raw_ds['train'] = raw_ds['train'].shuffle().select(range(100))
 raw_ds['test']= raw_ds['test'].shuffle().select(range(20))
@@ -95,13 +105,6 @@ def compute_metrics(eval_preds: EvalPrediction):
 
 print("metrics done")
 
-# timestamp_uuid = datetime.datetime.now().strftime("%m%d%H%M%f")
-# model_name = f"model-{timestamp_uuid}"
-# with mlflow.start_run():
-#     model_info = mlflow.transformers.log_model(
-#         transformers_model=model_pipeline,
-#         artifact_path=model_name
-#     )
 
     
 mlflow.transformers.save_model(
@@ -116,9 +119,9 @@ print("saved model")
 #registered_model = mlflow.register_model(model_info.model_uri, model_name)
 
 with mlflow.start_run():
-    # registered_model_name="distl bert"
+   
     model_local_path = os.path.abspath("./savedmodel")
-    mlflow.register_model(f"file://{model_local_path}", "test_model_name")
+    mlflow.register_model(f"file://{model_local_path}", test_model_name)
 
 print("registered saved model")
 	
