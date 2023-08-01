@@ -2,7 +2,6 @@
     "queue_name": "test-bert_model",
     "models": [
         "bert-base-uncased",
-        "distilbert-base-uncased",
         "xlnet-base-cased"
     ],
     "workspace": "test-eastus",
