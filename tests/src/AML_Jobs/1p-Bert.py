@@ -149,7 +149,7 @@ print("saved model")
 with mlflow.start_run():
     # registered_model_name="bert"
     model_local_path = os.path.abspath("./savedmodel")
-    mlflow.register_model(f"file://{model_local_path}", 'test_model_name')
+    mlflow.register_model(f"file://{model_local_path}", test_model_name)
 
 print("registered saved model")
 	
