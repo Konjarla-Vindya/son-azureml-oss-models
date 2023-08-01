@@ -3,7 +3,7 @@ from generic_model_download_and_register import Model
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command, Input
-from azure.ai.ml import MLClient
+from azure.ai.ml import MLClient, UserIdentityConfiguration
 import json
 import os
 from box import ConfigBox
@@ -102,6 +102,7 @@ def run_azure_ml_job(code, command_to_run, environment, compute, environment_var
         compute=compute,
         environment_variables=environment_variables
     )
+    command_job.identity = UserIdentityConfiguration()
     return command_job
 
 def create_and_get_job_studio_url(command_job, workspace_ml_client):
