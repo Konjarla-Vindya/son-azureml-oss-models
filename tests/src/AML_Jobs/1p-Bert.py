@@ -20,11 +20,15 @@ from tensorflow.keras import Model
 #from azure.ai.ml.entities import AmlCompute
 import time
 import json
-import mlflow.pytorch
-import huggingface_hub
-import huggingface_hub.login
+# import mlflow.pytorch
+# import huggingface_hub
+# import huggingface_hub.login
 print("imported")
 
+test_model_name = os.environ.get('test_model_name')
+subscription = os.environ.get('subscription')
+resource_group = os.environ.get('resource_group')
+workspace_name = os.environ.get('workspace')
 # subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
 # resource_group = 'sonata-test-rg'
 # workspace_name = 'sonata-test-ws'
@@ -88,10 +92,10 @@ from transformers import (
 # checkpoint = "bert-base-uncased"
 # model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
 # tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-huggingface_hub.login( token = "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")
-test_model_name = os.environ.get('test_model_name')
+#huggingface_hub.login( token = "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")
+#test_model_name = os.environ.get('test_model_name')
 print(test_model_name)
-model = AutoModelForSequenceClassification.from_pretrained(test_model_name,use_auth_token=True)
+model = AutoModelForSequenceClassification.from_pretrained(test_model_name)
 tokenizer = AutoTokenizer.from_pretrained(test_model_name)
 raw_ds= load_dataset("glue", "mrpc")
 raw_ds['train'] = raw_ds['train'].shuffle().select(range(100))
