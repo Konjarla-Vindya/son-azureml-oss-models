@@ -8,7 +8,7 @@ import mlflow
 test_model_name = os.environ.get('test_model_name')
 subscription = os.environ.get('subscription')
 resource_group = os.environ.get('resource_group')
-workspace = os.environ.get('workspace')
+workspace_name = os.environ.get('workspace')
 class Model:
     def __init__(self, model_name) -> None:
         self.model_name = model_name
@@ -36,7 +36,7 @@ class Model:
         workspace = Workspace(
                 subscription_id = subscription,
                 resource_group = resource_group,
-                workspace_name = workspace
+                workspace_name = workspace_name
             )
         self.register_model_in_workspace(model_and_tokenizer, workspace)
         return model_and_tokenizer
