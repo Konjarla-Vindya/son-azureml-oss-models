@@ -43,6 +43,8 @@ jobs:
       run: pip install pandas
     - name: pip-install-numpy
       run: pip install numpy
+    - name: pip-install-python-box
+      run: pip install python-box 
     - name: pip-install-huggingface-hub
       run: pip install huggingface-hub
 #    - name: setup-huggingface-token
@@ -55,8 +57,8 @@ jobs:
 #         HF_TOKEN: ${{ secrets.HUGGING_FACE_TOKEN }}
       run: python 1p-BertJob.py
       working-directory: tests/src/AML_Jobs
-    # - name: trigger-next-model-step
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
-    #   run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
+    - name: trigger-next-model-step
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
+      run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
