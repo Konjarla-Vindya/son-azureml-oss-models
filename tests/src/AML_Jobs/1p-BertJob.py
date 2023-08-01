@@ -168,7 +168,7 @@ def main():
            "subscription": queue['subscription'],
            "resource_group": queue['resource_group'],
            "workspace": queue['workspace']}
-    command_job = run_azure_ml_job(code="./", command_to_run="python 1p-Bert.py", environment="gpt2-venv:8", compute="cpu-cluster",environment_variables=environment_variables)
+    command_job = run_azure_ml_job(code="./", command_to_run="python 1p-Bert.py", environment="penv:1", compute="cpu-cluster",environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     
 
