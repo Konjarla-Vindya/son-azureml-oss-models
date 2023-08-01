@@ -81,13 +81,13 @@ def set_next_trigger_model(queue):
         print(f'NEXT_MODEL={next_model}', file=fh)
 
 def create_or_get_compute_target(ml_client):
-    cpu_compute_target = "cpu-cluster"
+    cpu_compute_target = "STANDARD-D12"
     try:
         compute = ml_client.compute.get(cpu_compute_target)
     except Exception:
         print("Creating a new cpu compute target...")
         compute = AmlCompute(
-            name=cpu_compute_target, size="STANDARD_D12", min_instances=0, max_instances=4
+            name=cpu_compute_target, size="STANDARD-D12", min_instances=0, max_instances=4
         )
         ml_client.compute.begin_create_or_update(compute).result()
     
