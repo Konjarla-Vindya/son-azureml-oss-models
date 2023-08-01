@@ -54,7 +54,7 @@ jobs:
 #       env:
 #         HF_TOKEN: ${{ secrets.HUGGING_FACE_TOKEN }}
       run: python automated_distlbert_job.py
-      working-directory: tests/src/AIMLJobs
+      working-directory: tests/src/AIMLjob
     # - name: trigger-next-model-step
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
