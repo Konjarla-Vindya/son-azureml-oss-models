@@ -161,7 +161,7 @@ def main():
     #download_and_register_model()
     
     compute_target = create_or_get_compute_target(workspace_ml_client)
-    command_job = run_azure_ml_job(code="./", command_to_run="python automated_distlbert.py", environment="env:1", compute="cpu-cluster")
+    command_job = run_azure_ml_job(code="./", command_to_run="python automated_distlbert.py", environment="env:2", compute="cpu-cluster")
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     
 
