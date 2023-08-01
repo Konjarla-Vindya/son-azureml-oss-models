@@ -120,8 +120,9 @@ def main():
     if sku_override is None:
         check_override = False
 
-    # if test_trigger_next_model == "true":
-    #     set_next_trigger_model(queue)
+    if test_trigger_next_model == "true":
+        set_next_trigger_model(queue)
+    print("Present test model name : ",test_model_name)
 
     print (f"test_subscription_id: {queue['subscription']}")
     print (f"test_resource_group: {queue['subscription']}")
@@ -164,9 +165,9 @@ def main():
     
     compute_target = create_or_get_compute_target(workspace_ml_client)
     environment_variables = {"test_model_name": test_model_name, 
-           "subscription": queue.subscription,
-           "resource_group": queue.resource_group,
-           "workspace": queue.workspace}
+           "subscription": queue['subscription'],
+           "resource_group": queue['resource_group'],
+           "workspace": queue['workspace']}
     command_job = run_azure_ml_job(code="./", command_to_run="python 1p-Bert.py", environment="gpt2-venv:8", compute="cpu-cluster",environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     
