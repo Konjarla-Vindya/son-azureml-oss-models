@@ -79,19 +79,20 @@ def create_or_get_compute_target(ml_client):
     except Exception:
         print("Creating a new cpu compute target...")
         compute = AmlCompute(
-            name=cpu_compute_target, size="STANDARD_D11_V2", min_instances=0, max_instances=4
+            name=cpu_compute_target, size="STANDARD_D2_V2", min_instances=0, max_instances=4
         )
         ml_client.compute.begin_create_or_update(compute).result()
     
     return compute
 
 
-def run_azure_ml_job(code, command_to_run, environment, compute):
+def run_azure_ml_job(code, command_to_run, environment, compute,environment_variables):
     command_job = command(
         code=code,
         command=command_to_run,
         environment=environment,
         compute=compute,
+        environment_variables=environment_variables
     )
     return command_job
 
@@ -99,6 +100,7 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
    
     #ml_client = mlflow.tracking.MlflowClient()
     returned_job = workspace_ml_client.jobs.create_or_update(command_job)
+    workspace_ml_client.jobs.stream(returned_job.name)
     return returned_job.studio_url
 # studio_url = create_and_get_job_studio_url(command_job)
 # print("Studio URL for the job:", studio_url)
@@ -118,8 +120,9 @@ def main():
     if sku_override is None:
         check_override = False
 
-    # if test_trigger_next_model == "true":
-    #     set_next_trigger_model(queue)
+    if test_trigger_next_model == "true":
+        set_next_trigger_model(queue)
+    print("Present test model name : ",test_model_name)
 
     print (f"test_subscription_id: {queue['subscription']}")
     print (f"test_resource_group: {queue['subscription']}")
@@ -161,9 +164,14 @@ def main():
     #download_and_register_model()
     
     compute_target = create_or_get_compute_target(workspace_ml_client)
-    command_job = run_azure_ml_job(code="./", command_to_run="python automated_distlbert.py", environment="env:2", compute="cpu-cluster")
+    environment_variables = {"test_model_name": test_model_name, 
+           "subscription": queue['subscription'],
+           "resource_group": queue['resource_group'],
+           "workspace": queue['workspace']}
+    command_job = run_azure_ml_job(code="./", command_to_run="python automated_distlbert.py", environment="env:2", compute="cpu-cluster",environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     
 
 if __name__ == "__main__":
     main()
+    
