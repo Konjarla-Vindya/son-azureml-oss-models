@@ -20,7 +20,7 @@ class Model:
         return model_and_tokenizer
     
     def register_model_in_workspace(self, model_and_tokenizer, workspace):
-        task = self.queue.models[self.model_name].task
+        #task = self.queue.models[self.model_name].task
         artifact_path = self.model_name + "_artifact"
         registered_model_name = self.model_name + "_registered"
         mlflow.set_tracking_uri(workspace.get_mlflow_tracking_uri())
