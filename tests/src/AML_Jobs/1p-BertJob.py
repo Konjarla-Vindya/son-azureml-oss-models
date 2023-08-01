@@ -86,12 +86,13 @@ def create_or_get_compute_target(ml_client):
     return compute
 
 
-def run_azure_ml_job(code, command_to_run, environment, compute):
+def run_azure_ml_job(code, command_to_run, environment, compute,environment_variables):
     command_job = command(
         code=code,
         command=command_to_run,
         environment=environment,
         compute=compute,
+        environment_variables=environment_variables
     )
     return command_job
 
@@ -99,6 +100,7 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
    
     #ml_client = mlflow.tracking.MlflowClient()
     returned_job = workspace_ml_client.jobs.create_or_update(command_job)
+    workspace_ml_client.jobs.stream(returned_job.name)
     return returned_job.studio_url
 # studio_url = create_and_get_job_studio_url(command_job)
 # print("Studio URL for the job:", studio_url)
@@ -161,7 +163,11 @@ def main():
     #download_and_register_model()
     
     compute_target = create_or_get_compute_target(workspace_ml_client)
-    command_job = run_azure_ml_job(code="./", command_to_run="python 1p-Bert.py", environment="gpt2-venv:8", compute="cpu-cluster")
+    environment_variables = {"test_model_name": test_model_name, 
+           "subscription": queue.subscription,
+           "resource_group": queue.resource_group,
+           "workspace": queue.workspace}
+    command_job = run_azure_ml_job(code="./", command_to_run="python 1p-Bert.py", environment="gpt2-venv:8", compute="cpu-cluster",environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     
 
