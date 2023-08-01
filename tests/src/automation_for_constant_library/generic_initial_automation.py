@@ -100,6 +100,7 @@ def run_azure_ml_job(code, command_to_run, environment, compute):
         command=command_to_run,
         environment=environment,
         compute=compute,
+        environment_variables={"test_model_name": test_model_name}
     )
     return command_job
 
@@ -107,6 +108,8 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
    
     #ml_client = mlflow.tracking.MlflowClient()
     returned_job = workspace_ml_client.jobs.create_or_update(command_job)
+    # wait for the job to complete
+    workspace_ml_client.jobs.stream(returned_job.name)
     return returned_job.studio_url
 # studio_url = create_and_get_job_studio_url(command_job)
 # print("Studio URL for the job:", studio_url)
