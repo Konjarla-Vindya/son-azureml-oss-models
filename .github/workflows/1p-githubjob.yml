@@ -47,6 +47,9 @@ jobs:
       run: pip install python-box 
     - name: pip-install-huggingface-hub
       run: pip install huggingface-hub
+    - name: pip-install-datasets
+      run: pip install datasets
+
 #    - name: setup-huggingface-token
 #       env:
 #         HUGGING_FACE_TOKEN: ${{ secrets.HUGGING_FACE_TOKEN }}
