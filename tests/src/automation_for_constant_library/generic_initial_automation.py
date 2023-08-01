@@ -154,7 +154,7 @@ if __name__ == "__main__":
            "workspace": queue.workspace,
            "workspcae_object": ws
            }
-    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="gpt2-venv:1", compute="cpu-cluster", environment_variables=environment_variables)
+    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="custom-venv:1", compute="cpu-cluster", environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     # model = Model(model_name=test_model_name, queue=queue)
     # model_and_tokenizer = model.download_and_register_model(workspace=ws)
