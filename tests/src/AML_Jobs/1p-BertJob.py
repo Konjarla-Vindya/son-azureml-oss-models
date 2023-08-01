@@ -37,6 +37,7 @@ def get_sku_override():
 
 def set_next_trigger_model(queue):
     print ("In set_next_trigger_model...")
+    model_list = list(queue.models)
     index = queue['models'].index(test_model_name)
     print (f"index of {test_model_name} in queue: {index}")
     if index < len(queue['models']) - 1:
