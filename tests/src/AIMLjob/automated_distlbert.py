@@ -34,7 +34,7 @@ def read_config_file(file_path):
         config = json.load(f)
     return config
 
-# config = read_config_file(config_file_path)
+config = read_config_file(file_path)
 
 if "models" in config and isinstance(config["models"], list):
     for model_name in config["models"]:
