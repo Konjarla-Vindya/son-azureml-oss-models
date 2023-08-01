@@ -94,13 +94,13 @@ def create_or_get_compute_target(ml_client):
     return compute
 
 
-def run_azure_ml_job(code, command_to_run, environment, compute):
+def run_azure_ml_job(code, command_to_run, environment, compute, environment_variables):
     command_job = command(
         code=code,
         command=command_to_run,
         environment=environment,
         compute=compute,
-        environment_variables={"test_model_name": test_model_name}
+        environment_variables=environment_variables
     )
     return command_job
 
@@ -147,7 +147,11 @@ if __name__ == "__main__":
                 workspace_name = queue.workspace
             )
     compute_target = create_or_get_compute_target(workspace_ml_client)
-    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="gpt2-venv:6", compute="cpu-cluster")
+    environment_variables = {"test_model_name": test_model_name, 
+           "subscription": queue.subscription,
+           "resource_group": queue.resource_group,
+           "workspace": queue.workspace}
+    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="gpt2-venv:6", compute="cpu-cluster", environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     # model = Model(model_name=test_model_name, queue=queue)
     # model_and_tokenizer = model.download_and_register_model(workspace=ws)

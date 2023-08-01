@@ -6,9 +6,9 @@ from azureml.core import Workspace
 import os 
 import mlflow
 test_model_name = os.environ.get('test_model_name')
-subscription = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
-resource_group = "sonata-test-rg"
-workspace = "sonata-test-ws"
+subscription = os.environ.get('subscription')
+resource_group = os.environ.get('resource_group')
+workspace = os.environ.get('workspace')
 class Model:
     def __init__(self, model_name) -> None:
         self.model_name = model_name
