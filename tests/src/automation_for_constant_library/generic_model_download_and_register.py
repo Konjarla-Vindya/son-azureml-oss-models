@@ -9,6 +9,7 @@ test_model_name = os.environ.get('test_model_name')
 subscription = os.environ.get('subscription')
 resource_group = os.environ.get('resource_group')
 workspace_name = os.environ.get('workspace')
+workspace_obj = os.environ.get("workspcae_object")
 class Model:
     def __init__(self, model_name) -> None:
         self.model_name = model_name
@@ -33,12 +34,12 @@ class Model:
 
     def download_and_register_model(self)->dict :
         model_and_tokenizer = self.download_model_and_tokenizer()
-        workspace = Workspace(
-                subscription_id = subscription,
-                resource_group = resource_group,
-                workspace_name = workspace_name
-            )
-        self.register_model_in_workspace(model_and_tokenizer, workspace)
+        # workspace = Workspace(
+        #         subscription_id = subscription,
+        #         resource_group = resource_group,
+        #         workspace_name = workspace_name
+        #     )
+        self.register_model_in_workspace(model_and_tokenizer, workspace=workspace_obj)
         return model_and_tokenizer
 
 if __name__ == "__main__":
