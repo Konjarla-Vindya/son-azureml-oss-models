@@ -10,7 +10,7 @@ import numpy as np
 from datasets import load_dataset
 import evaluate
 from azureml.core import Workspace
-from transformers import AutoModelForSequenceClassification,AutoTokenizer,TrainingArguments,Trainer
+from transformers import AutoModelForSequenceClassification,AutoTokenizer,TrainingArguments,Trainer,DistilBertForMaskedLM
 import pickle
 #from azure.ai.ml import MLClient
 #from azureml.core import MLClient
