@@ -63,8 +63,9 @@ from transformers import (
 )
 
 test_model_name = os.environ.get('test_model_name')
-model = AutoModelForSequenceClassification.from_pretrained(test_model_name)
-tokenizer = AutoTokenizer.from_pretrained(test_model_name)
+
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 raw_ds= load_dataset("glue", "mrpc")
 raw_ds['train'] = raw_ds['train'].shuffle().select(range(100))
 raw_ds['test']= raw_ds['test'].shuffle().select(range(20))
