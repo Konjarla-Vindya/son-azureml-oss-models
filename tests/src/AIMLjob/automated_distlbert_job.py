@@ -138,26 +138,10 @@ def create_online_deployment(workspace_ml_client, endpoint, latest_model):
         instance_type="Standard_DS11_v2",
         instance_count=1,
     )
-    try:
-        workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
-    except Exception as e:
-        print (f"::error:: Could not create deployment\n")
-        print (f"{e}\n\n check logs:\n\n")
-        prase_logs(str(e))
-        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
-        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
-        exit (1)
-    # online endpoints can have multiple deployments with traffic split or shadow traffic. Set traffic to 100% for demo deployment
+    workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
     endpoint.traffic = {"demo": 100}
-    try:
-        workspace_ml_client.begin_create_or_update(endpoint).result()
-    except Exception as e:
-        print (f"::error:: Could not create deployment\n")
-        print (f"{e}\n\n check logs:\n\n")
-        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
-        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
-        exit (1)
-    print(workspace_ml_client.online_deployments.get(name="demo", endpoint_name=endpoint.name))
+    workspace_ml_client.begin_create_or_update(endpoint).result()
+   
 
 
 def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint_name):
@@ -200,7 +184,7 @@ def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint
     except Exception as e:
         print (f"::error:: Could not invoke endpoint: \n")
         print (f"{e}\n\n check logs:\n\n")
-        get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
+        # get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
     
 def main():
     
