@@ -4,7 +4,6 @@
         "bert-base-uncased",
         "distilbert-base-uncased",
         "albert-base-v2",
-        "xlnet-base-cased",
         "gpt2-medium",
         "t5-small",
         "roberta-base",
