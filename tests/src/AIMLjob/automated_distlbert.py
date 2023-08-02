@@ -15,7 +15,6 @@ import pickle
 #from azure.ai.ml import MLClient
 #from azureml.core import MLClient
 from azure.identity import DefaultAzureCredential,AzureCliCredential 
-import mlflow
 from tensorflow.keras import Model
 #from azure.ai.ml.entities import AmlCompute
 import time
@@ -23,6 +22,8 @@ import json
 import mlflow.pytorch
 import torch
 tensor_1 = torch.rand (4,4)
+import transformers, yaml, mlflow, os,shutil
+from transformers import AutoTokenizer,AutoConfig,TrainingArguments,Trainer
 # import huggingface_hub
 # import huggingface_hub.login
 print("imported")
