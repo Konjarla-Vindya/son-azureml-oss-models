@@ -128,13 +128,13 @@ with mlflow.start_run():
 
 print("registered saved model")
 
-import transformers
-from transformers import AutoConfig
-config = AutoConfig.from_pretrained(test_model_name)
-config_dict = config.to_dict()
-task_dict = config_dict["task_specific_params"]
-task=list(task_dict.keys())[0]
-print("the task is:",task)
+# import transformers
+# from transformers import AutoConfig
+# config = AutoConfig.from_pretrained(test_model_name)
+# config_dict = config.to_dict()
+# task_dict = config_dict["task_specific_params"]
+# task=list(task_dict.keys())[0]
+# print("the task is:",task)
 	
 # trainer = Trainer(
 #     model=model,
@@ -159,24 +159,24 @@ mlflow.end_run()
 
 print("Ended")
 
-model_tokenizer = {"model":model, "tokenizer":tokenizer}
+# model_tokenizer = {"model":model, "tokenizer":tokenizer}
 
-model = model_tokenizer["model"]
-# Move the model to the CPU model = model.to('cpu')
+# model = model_tokenizer["model"]
+# # Move the model to the CPU model = model.to('cpu')
 
-# inputs = {k: v.to('cuda:0') for k, v in inputs.items()}
+# # inputs = {k: v.to('cuda:0') for k, v in inputs.items()}
 
-# model = DistilBertForMaskedLM.from_pretrained("distilbert-base-uncased").to('cuda:0') 
-# Prepare the input text with masked token and move it to GPU 
-input_text = "I love using [MASK]'s transformers library!" 
-# inputs = tokenizer(input_text, return_tensors="pt").to('cuda:0')
-inputs = tokenizer(input_text, return_tensors="pt")
-output=model(**inputs)
-# print(output)
-predictions = torch.nn.functional.softmax(output.logits, dim=-1)
-print(f'Predicted class output: {predictions}')
-logits = output.logits
-print(logits)
-predicted_token_ids = torch.argmax(logits, dim=-1)
-predicted_words = tokenizer.batch_decode(predicted_token_ids, skip_special_tokens=True)
-predicted_words
+# # model = DistilBertForMaskedLM.from_pretrained("distilbert-base-uncased").to('cuda:0') 
+# # Prepare the input text with masked token and move it to GPU 
+# input_text = "I love using [MASK]'s transformers library!" 
+# # inputs = tokenizer(input_text, return_tensors="pt").to('cuda:0')
+# inputs = tokenizer(input_text, return_tensors="pt")
+# output=model(**inputs)
+# # print(output)
+# predictions = torch.nn.functional.softmax(output.logits, dim=-1)
+# print(f'Predicted class output: {predictions}')
+# logits = output.logits
+# print(logits)
+# predicted_token_ids = torch.argmax(logits, dim=-1)
+# predicted_words = tokenizer.batch_decode(predicted_token_ids, skip_special_tokens=True)
+# predicted_words
