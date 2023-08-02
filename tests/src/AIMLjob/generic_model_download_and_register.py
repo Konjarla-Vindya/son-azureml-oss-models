@@ -187,5 +187,5 @@ if __name__ == "__main__":
     print("endpoint name:",endpoint)
     create_online_endpoint(workspace_ml_client, endpoint)
     create_online_deployment(workspace_ml_client, endpoint, latest_model)
-    sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
+    sample_inference(latest_model,registry, workspace_ml_client, online_endpoint_name)
     
