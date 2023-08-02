@@ -105,7 +105,33 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
 # studio_url = create_and_get_job_studio_url(command_job)
 # print("Studio URL for the job:", studio_url)
 
+def create_online_endpoint(workspace_ml_client, endpoint):
+    print ("In create_online_endpoint...")
+    try:
+        workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
+    except Exception as e:
+        print (f"::error:: Could not create endpoint: \n")
+        print (f"{e}\n\n check logs:\n\n")
+        prase_logs(str(e))
+        exit (1)
 
+    print(workspace_ml_client.online_endpoints.get(name=endpoint.name))
+
+
+def create_online_deployment(workspace_ml_client, endpoint, latest_model):
+    print ("In create_online_deployment...")
+    demo_deployment = ManagedOnlineDeployment(
+        name="demo",
+        endpoint_name=endpoint.name,
+        model=latest_model.id,
+        instance_type="Standard_DS11_v2",
+        instance_count=1,
+    )
+    workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+    # ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+    endpoint.traffic = {"DistlBert": 100}
+    ml_client.begin_create_or_update(endpoint).result()
+    
 def main():
     
     check_override = True
@@ -163,6 +189,7 @@ def main():
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     #download_and_register_model()
     
+    
     compute_target = create_or_get_compute_target(workspace_ml_client)
     environment_variables = {"test_model_name": test_model_name, 
            "subscription": queue['subscription'],
@@ -170,7 +197,19 @@ def main():
            "workspace": queue['workspace']}
     command_job = run_azure_ml_job(code="./", command_to_run="python automated_distlbert.py", environment="env:2", compute="cpu-cluster",environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
-    
+    # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
+
+    timestamp = int(time.time())
+    online_endpoint_name = "hf-ep-" + str(timestamp)
+    print (f"online_endpoint_name: {online_endpoint_name}")
+    endpoint = ManagedOnlineEndpoint(
+        name=online_endpoint_name,
+        auth_mode="key",
+    )
+    print("latest_model:",latest_model)
+    print("endpoint name:",endpoint)
+    create_online_endpoint(workspace_ml_client, endpoint)
+    create_online_deployment(workspace_ml_client, endpoint, latest_model)
 
 if __name__ == "__main__":
     main()
