@@ -1,5 +1,5 @@
 {
-    "queue_name": "test-xlnet",
+    "queue_name": "test-automation",
     "models": [
         "bert-base-uncased",
         "distilbert-base-uncased",
@@ -9,7 +9,8 @@
         "roberta-base",
         "xlm-mlm-en-2048",
         "t5-large",
-        "bert-large-cased"
+        "bert-large-cased",
+        "xlnet-large-cased"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
