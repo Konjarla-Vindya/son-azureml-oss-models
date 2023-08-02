@@ -49,15 +49,8 @@ jobs:
       run: pip install huggingface-hub
     - name: pip-install-datasets
       run: pip install datasets
-
-#    - name: setup-huggingface-token
-#       env:
-#         HUGGING_FACE_TOKEN: ${{ secrets.HUGGING_FACE_TOKEN }}
-#       run: echo $HUGGING_FACE_TOKEN > ~/.huggingface/token
     - name: submit-model-step
       id: submit-model-step
-#       env:
-#         HF_TOKEN: ${{ secrets.HUGGING_FACE_TOKEN }}
       run: python 1p-BertJob.py
       working-directory: tests/src/AML_Jobs
     - name: trigger-next-model-step
