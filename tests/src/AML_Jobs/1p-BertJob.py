@@ -84,7 +84,7 @@ def create_or_get_compute_target(ml_client):
     except Exception:
         print("Creating a new cpu compute target...")
         compute = AmlCompute(
-            name=cpu_compute_target, size="Standard_E4ds_v4", min_instances=0, max_instances=4
+            name=cpu_compute_target, size="Standard_DS2_v2", min_instances=0, max_instances=4
         )
         ml_client.compute.begin_create_or_update(compute).result()
     
@@ -173,7 +173,7 @@ def main():
            "subscription": queue['subscription'],
            "resource_group": queue['resource_group'],
            "workspace": queue['workspace']}
-    command_job = run_azure_ml_job(code="./", command_to_run="python 1p-Bert.py", environment="pr_env:1", compute="cpu-cluster",environment_variables=environment_variables)
+    command_job = run_azure_ml_job(code="./", command_to_run="python 1p-IOED.py", environment="pr_env:1", compute="cpu-cluster",environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     
 
