@@ -1,3 +1,4 @@
+from azure.ai.ml import MLClient
 from transformers import AutoModel,AutoTokenizer
 #import transformers
 from azureml.core import Workspace
@@ -127,6 +128,12 @@ def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint
         # get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
 if __name__ == "__main__":
     model = Model(model_name=test_model_name)
+    workspace_ml_client = MLClient(
+        credential=credential, 
+        subscription_id=queue['subscription'],
+        resource_group_name=queue['resource_group'],
+        workspace_name=queue['workspace']
+    )
     registry_ml_client = MLClient(
         credential=credential, 
         registry_name=registry
