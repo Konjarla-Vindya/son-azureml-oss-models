@@ -4,21 +4,21 @@ on:
   workflow_dispatch:
       inputs:
       GROUP:
-        default: "rg-contoso-819prod"
+        default: "sonata-test-rg"
       LOCATION:
-        default: "eastus"
+        default: "southcentralus"
       WORKSPACE:
-        default: "mlw-contoso-819prod"
+        default: "sonata-test-ws"
   workflow_call:
     inputs:
       GROUP:
-        default: "rg-contoso-819prod"
+        default: "sonata-test-rg"
         type: string
       LOCATION:
-        default: "eastus"
+        default: "southcentralus"
         type: string
       WORKSPACE:
-        default: "mlw-contoso-819prod"
+        default: "sonata-test-ws"
         type: string
     secrets:
       AZ_CREDS1:
