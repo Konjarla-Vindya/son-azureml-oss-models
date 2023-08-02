@@ -102,7 +102,6 @@ def run_azure_ml_job(code, command_to_run, environment, compute, environment_var
         compute=compute,
         environment_variables=environment_variables
     )
-    command_job.identity = UserIdentityConfiguration()
     return command_job
 
 def create_and_get_job_studio_url(command_job, workspace_ml_client):
@@ -132,6 +131,7 @@ if __name__ == "__main__":
     print("Here is my test model name : ",test_model_name)
     try:
         credential = AzureCliCredential()
+        credential.get_token("https://management.azure.com/.default")
     except Exception as ex:
         print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
         exit (1)
