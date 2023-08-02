@@ -10,11 +10,11 @@ az extension add -n ml -y  || {
 
 # Use defaults if not passed by workflow inputs
 
-GROUP1=${GROUP:-"rg-contoso-819prod"}
+GROUP1=${GROUP:-"sonata-test-rg"}
 
-LOCATION1=${LOCATION:-"eastus"}
+LOCATION1=${LOCATION:-"southcentralus"}
 
-WORKSPACE1=${WORKSPACE:-"mlw-contoso-819prod"}
+WORKSPACE1=${WORKSPACE:-"sonata-test-ws"}
 
 az configure --defaults group=$GROUP1 workspace=$WORKSPACE1 location=$LOCATION1
 
