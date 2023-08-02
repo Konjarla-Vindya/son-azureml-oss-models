@@ -4,8 +4,26 @@ from transformers import AutoModel,AutoTokenizer
 from azureml.core import Workspace
 #from azureml.core import Workspace
 #from azureml.mlflow import get_mlflow_tracking_uri
-import os 
 import mlflow
+from azure.ai.ml import MLClient
+from azure.identity import DefaultAzureCredential
+from azureml.core import Workspace
+import mlflow
+from azure.ai.ml.entities import AmlCompute
+from azure.ai.ml import command, Input
+import os, json
+from azure.identity import (
+    DefaultAzureCredential,
+    InteractiveBrowserCredential,
+    ClientSecretCredential,
+)
+import time, sys
+from azure.ai.ml.entities import (
+    ManagedOnlineEndpoint,
+    ManagedOnlineDeployment,
+    OnlineRequestSettings,
+)
+
 test_model_name = os.environ.get('test_model_name')
 subscription = os.environ.get('subscription')
 resource_group = os.environ.get('resource_group')
@@ -128,6 +146,12 @@ def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint
         # get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
 if __name__ == "__main__":
     model = Model(model_name=test_model_name)
+    try:
+        credential = DefaultAzureCredential()
+        credential.get_token("https://management.azure.com/.default")
+    except Exception as ex:
+        print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
+        exit (1)
     workspace_ml_client = MLClient(
         credential=credential, 
         subscription_id=queue['subscription'],
