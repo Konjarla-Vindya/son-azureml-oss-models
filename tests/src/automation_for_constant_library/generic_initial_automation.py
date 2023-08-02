@@ -136,6 +136,7 @@ if __name__ == "__main__":
     except Exception as ex:
         print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
         exit (1)
+    print("workspace_name : ", queue.workspace)
     workspace_ml_client = MLClient(
         credential=credential, 
         subscription_id=queue.subscription,
