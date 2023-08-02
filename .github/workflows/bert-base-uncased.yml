@@ -2,32 +2,8 @@ name: bert-base-uncased
 
 on: 
   workflow_dispatch:
-      inputs:
-      GROUP:
-        default: "sonata-test-rg"
-      LOCATION:
-        default: "southcentralus"
-      WORKSPACE:
-        default: "sonata-test-ws"
-  workflow_call:
-    inputs:
-      GROUP:
-        default: "sonata-test-rg"
-        type: string
-      LOCATION:
-        default: "southcentralus"
-        type: string
-      WORKSPACE:
-        default: "sonata-test-ws"
-        type: string
-    secrets:
-      AZURE_CREDENTIALS:
-        required: true
 
 env:
-  GROUP: ${{ github.event.inputs.name.GROUP }}
-  LOCATION: ${{ github.event.inputs.name.LOCATION }}
-  WORKSPACE: ${{ github.event.inputs.name.WORKSPACE }}  
   test_model_name: bert-base-uncased
   test_sku_type: cpu
   test_trigger_next_model: true
@@ -45,9 +21,6 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: set-azureml-ws-context-step
-      run: bash setup.sh 
-      working-directory: tests/setup
     - name: pip-install-azure-ai-ml
       run: pip install azure-ai-ml
     - name: pip-install-azureml-core
