@@ -40,7 +40,7 @@ class Model:
         #         resource_group = resource_group,
         #         workspace_name = workspace_name
         #     )
-        self.register_model_in_workspace(model_and_tokenizer, workspace=workspace_obj)
+        self.register_model_in_workspace(model_and_tokenizer, workspace=Workspace(workspace_obj))
         return model_and_tokenizer
 
 if __name__ == "__main__":
