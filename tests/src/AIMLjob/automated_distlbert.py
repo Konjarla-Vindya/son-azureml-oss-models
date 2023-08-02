@@ -148,22 +148,23 @@ mlflow.end_run()
 
 print("Ended")
 
-# model_tokenizer = {"model":model, "tokenizer":tokenizer}
+model_tokenizer = {"model":model, "tokenizer":tokenizer}
 
-# model = model_tokenizer["model"]
-# # Move the model to the CPU model = model.to('cpu')
+model = model_tokenizer["model"]
+# Move the model to the CPU model = model.to('cpu')
 
-# # inputs = {k: v.to('cuda:0') for k, v in inputs.items()}
+# inputs = {k: v.to('cuda:0') for k, v in inputs.items()}
 
 # model = DistilBertForMaskedLM.from_pretrained("distilbert-base-uncased").to('cuda:0') 
-# # Prepare the input text with masked token and move it to GPU 
-# input_text = "I love using [MASK]'s transformers library!" 
+# Prepare the input text with masked token and move it to GPU 
+input_text = "I love using [MASK]'s transformers library!" 
 # inputs = tokenizer(input_text, return_tensors="pt").to('cuda:0')
-# output=model(**inputs)
-# print(output)
-# predictions = torch.nn.functional.softmax(output.logits, dim=-1)
-# print(f'Predicted class: {predictions}')
-# logits = output.logits
-# predicted_token_ids = torch.argmax(logits, dim=-1)
-# predicted_words = tokenizer.batch_decode(predicted_token_ids, skip_special_tokens=True)
-# predicted_words
+inputs = tokenizer(input_text, return_tensors="pt")
+output=model(**inputs)
+print(output)
+predictions = torch.nn.functional.softmax(output.logits, dim=-1)
+print(f'Predicted class: {predictions}')
+logits = output.logits
+predicted_token_ids = torch.argmax(logits, dim=-1)
+predicted_words = tokenizer.batch_decode(predicted_token_ids, skip_special_tokens=True)
+predicted_words
