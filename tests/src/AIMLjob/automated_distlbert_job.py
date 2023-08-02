@@ -258,16 +258,16 @@ def main():
            "workspace": queue['workspace']}
     command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="env:2", compute="cpu-cluster",environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
-    # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
-# generic_model_download_and_register
-    # automated_distlbert
-    timestamp = int(time.time())
-    online_endpoint_name = task + str(timestamp)
-    print (f"online_endpoint_name: {online_endpoint_name}")
-    endpoint = ManagedOnlineEndpoint(
-        name=online_endpoint_name,
-        auth_mode="key",
-    )
+#     # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
+# # generic_model_download_and_register
+#     # automated_distlbert
+#     timestamp = int(time.time())
+#     online_endpoint_name = task + str(timestamp)
+#     print (f"online_endpoint_name: {online_endpoint_name}")
+#     endpoint = ManagedOnlineEndpoint(
+#         name=online_endpoint_name,
+#         auth_mode="key",
+#     )
    
     # print("latest_model:",latest_model)
     # print("endpoint name:",endpoint)
