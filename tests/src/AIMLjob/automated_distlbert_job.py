@@ -6,6 +6,17 @@ from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command, Input
 import os, json
 import time, sys
+from azure.identity import (
+    DefaultAzureCredential,
+    InteractiveBrowserCredential,
+    ClientSecretCredential,
+)
+import time, sys
+from azure.ai.ml.entities import (
+    ManagedOnlineEndpoint,
+    ManagedOnlineDeployment,
+    OnlineRequestSettings,
+)
 def get_error_messages():
     # load ../config/errors.json into a dictionary
     with open('../../config/errors.json') as f:
