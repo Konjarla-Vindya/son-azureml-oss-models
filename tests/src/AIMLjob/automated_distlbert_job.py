@@ -251,19 +251,19 @@ def main():
     #        "workspace": queue['workspace']}
     # command_job = run_azure_ml_job(code="./", command_to_run="python automated_distlbert.py", environment="env:2", compute="cpu-cluster",environment_variables=environment_variables)
     # create_and_get_job_studio_url(command_job, workspace_ml_client)
-    # # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
+    # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
 
-    # timestamp = int(time.time())
-    # online_endpoint_name = "hf-ep-" + str(timestamp)
-    # print (f"online_endpoint_name: {online_endpoint_name}")
-    # endpoint = ManagedOnlineEndpoint(
-    #     name=online_endpoint_name,
-    #     auth_mode="key",
-    # )
-    endpoint ="hf-ep-1690977077"
+    timestamp = int(time.time())
+    online_endpoint_name = "hf-ep-" + str(timestamp)
+    print (f"online_endpoint_name: {online_endpoint_name}")
+    endpoint = ManagedOnlineEndpoint(
+        name=online_endpoint_name,
+        auth_mode="key",
+    )
+   
     print("latest_model:",latest_model)
     print("endpoint name:",endpoint)
-    # create_online_endpoint(workspace_ml_client, endpoint)
+    create_online_endpoint(workspace_ml_client, endpoint)
     create_online_deployment(workspace_ml_client, endpoint, latest_model)
     sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
 
