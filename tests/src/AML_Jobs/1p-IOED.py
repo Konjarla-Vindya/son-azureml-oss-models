@@ -175,8 +175,8 @@ def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint
 
 def main():
     
-    model = Model(model_name=test_model_name)
-    print (model)
+    # model = Model(model_name=test_model_name)
+    # print (model)
     print (f"test_subscription_id: {queue['subscription']}")
     print (f"test_resource_group: {queue['subscription']}")
     print (f"test_workspace_name: {queue['workspace']}")
