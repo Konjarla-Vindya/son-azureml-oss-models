@@ -138,10 +138,69 @@ def create_online_deployment(workspace_ml_client, endpoint, latest_model):
         instance_type="Standard_DS11_v2",
         instance_count=1,
     )
-    workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
-    # ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
-    endpoint.traffic = {"DistlBert": 100}
-    ml_client.begin_create_or_update(endpoint).result()
+    try:
+        workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+    except Exception as e:
+        print (f"::error:: Could not create deployment\n")
+        print (f"{e}\n\n check logs:\n\n")
+        prase_logs(str(e))
+        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
+        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
+        exit (1)
+    # online endpoints can have multiple deployments with traffic split or shadow traffic. Set traffic to 100% for demo deployment
+    endpoint.traffic = {"demo": 100}
+    try:
+        workspace_ml_client.begin_create_or_update(endpoint).result()
+    except Exception as e:
+        print (f"::error:: Could not create deployment\n")
+        print (f"{e}\n\n check logs:\n\n")
+        get_online_endpoint_logs(workspace_ml_client, endpoint.name)
+        workspace_ml_client.online_endpoints.begin_delete(name=endpoint.name).wait()
+        exit (1)
+    print(workspace_ml_client.online_deployments.get(name="demo", endpoint_name=endpoint.name))
+
+
+def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint_name):
+    # get the task tag from the latest_model.tags
+    tags = str(latest_model.tags)
+    # replace single quotes with double quotes in tags
+    tags = tags.replace("'", '"')
+    # convert tags to dictionary
+    tags_dict=json.loads(tags)
+    task = tags_dict['task']
+    print (f"task: {task}")
+    scoring_file = f"../config/sample_inputs/{registry}/{task}.json"
+    # check of scoring_file exists
+    try:
+        with open(scoring_file) as f:
+            scoring_input = json.load(f)
+            print (f"scoring_input file:\n\n {scoring_input}\n\n")
+    except Exception as e:
+        print (f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
+
+    # invoke the endpoint
+    try:
+        response = workspace_ml_client.online_endpoints.invoke(
+            endpoint_name=online_endpoint_name,
+            deployment_name="demo",
+            request_file=scoring_file,
+        )
+        response_json = json.loads(response)
+        output = json.dumps(response_json, indent=2)
+        print(f"response: \n\n{output}")
+        with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as fh:
+            print(f'####Sample input', file=fh)
+            print(f'```json', file=fh)
+            print(f'{scoring_input}', file=fh)
+            print(f'```', file=fh)
+            print(f'####Sample output', file=fh)
+            print(f'```json', file=fh)
+            print(f'{output}', file=fh)
+            print(f'```', file=fh)
+    except Exception as e:
+        print (f"::error:: Could not invoke endpoint: \n")
+        print (f"{e}\n\n check logs:\n\n")
+        get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
     
 def main():
     
@@ -210,17 +269,18 @@ def main():
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
 
-    # timestamp = int(time.time())
-    # online_endpoint_name = "hf-ep-" + str(timestamp)
-    # print (f"online_endpoint_name: {online_endpoint_name}")
-    # endpoint = ManagedOnlineEndpoint(
-    #     name=online_endpoint_name,
-    #     auth_mode="key",
-    # )
-    # print("latest_model:",latest_model)
-    # print("endpoint name:",endpoint)
-    # create_online_endpoint(workspace_ml_client, endpoint)
-    # create_online_deployment(workspace_ml_client, endpoint, latest_model)
+    timestamp = int(time.time())
+    online_endpoint_name = "hf-ep-" + str(timestamp)
+    print (f"online_endpoint_name: {online_endpoint_name}")
+    endpoint = ManagedOnlineEndpoint(
+        name=online_endpoint_name,
+        auth_mode="key",
+    )
+    print("latest_model:",latest_model)
+    print("endpoint name:",endpoint)
+    create_online_endpoint(workspace_ml_client, endpoint)
+    create_online_deployment(workspace_ml_client, endpoint, latest_model)
+    sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
 
 if __name__ == "__main__":
     main()
