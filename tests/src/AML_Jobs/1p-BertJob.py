@@ -66,10 +66,15 @@ def get_latest_model_version(registry_ml_client, model_name):
         model_version_count = model_version_count + 1
         models.append(model)
     sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
-    latest_model = sorted_models[0]
-    print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
-    print(latest_model)
-    return latest_model
+    if len(sorted_models) > 0:
+        latest_model = sorted_models[0]
+        print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
+        print(latest_model)
+        return latest_model
+    else:
+        print("No models found.")
+        return None
+        
 
     if check_override:
         if latest_model.name in sku_override:
