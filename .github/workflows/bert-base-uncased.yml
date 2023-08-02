@@ -21,7 +21,7 @@ on:
         default: "sonata-test-ws"
         type: string
     secrets:
-      AZ_CREDS1:
+      AZURE_CREDENTIALS:
         required: true
 
 env:
