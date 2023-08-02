@@ -9,6 +9,7 @@ test_model_name = os.environ.get('test_model_name')
 subscription = os.environ.get('subscription')
 resource_group = os.environ.get('resource_group')
 workspace_name = os.environ.get('workspace')
+registry=os.environ.get('registry')
 
 class Model:
     def __init__(self, model_name) -> None:
@@ -126,6 +127,10 @@ def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint
         # get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
 if __name__ == "__main__":
     model = Model(model_name=test_model_name)
+    registry_ml_client = MLClient(
+        credential=credential, 
+        registry_name=registry
+    )
     model.download_and_register_model()
 
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
