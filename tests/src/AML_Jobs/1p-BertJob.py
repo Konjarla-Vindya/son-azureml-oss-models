@@ -84,7 +84,7 @@ def create_or_get_compute_target(ml_client):
     except Exception:
         print("Creating a new cpu compute target...")
         compute = AmlCompute(
-            name=cpu_compute_target, size="STANDARD_D2_V2", min_instances=0, max_instances=4
+            name=cpu_compute_target, size="Standard_E4ds_v4", min_instances=0, max_instances=4
         )
         ml_client.compute.begin_create_or_update(compute).result()
     
