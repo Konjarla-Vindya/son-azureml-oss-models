@@ -153,7 +153,7 @@ def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint
     tags_dict=json.loads(tags)
     task = tags_dict['task']
     print (f"task: {task}")
-    scoring_file = f"../config/sample_inputs/{registry}/{task}.json"
+    scoring_file = f"../../config/sample_inputs/{registry}/{task}.json"
     # check of scoring_file exists
     try:
         with open(scoring_file) as f:
@@ -239,10 +239,17 @@ def main():
         registry_name=queue['registry']
     )
 
-
+    
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     #download_and_register_model()
-    
+     # get the task tag from the latest_model.tags
+    tags = str(latest_model.tags)
+    # replace single quotes with double quotes in tags
+    tags = tags.replace("'", '"')
+    # convert tags to dictionary
+    tags_dict=json.loads(tags)
+    task = tags_dict['task']
+    print("the task is:",task)
     
     # compute_target = create_or_get_compute_target(workspace_ml_client)
     # environment_variables = {"test_model_name": test_model_name, 
@@ -254,7 +261,7 @@ def main():
     # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
 
     timestamp = int(time.time())
-    online_endpoint_name = "hf-ep-" + str(timestamp)
+    online_endpoint_name = task + str(timestamp)
     print (f"online_endpoint_name: {online_endpoint_name}")
     endpoint = ManagedOnlineEndpoint(
         name=online_endpoint_name,
