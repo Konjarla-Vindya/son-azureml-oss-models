@@ -260,7 +260,7 @@ def main():
     #     name=online_endpoint_name,
     #     auth_mode="key",
     # )
-    online_endpoint_name ="hf-ep-1690977077"
+    endpoint ="hf-ep-1690977077"
     print("latest_model:",latest_model)
     print("endpoint name:",endpoint)
     # create_online_endpoint(workspace_ml_client, endpoint)
