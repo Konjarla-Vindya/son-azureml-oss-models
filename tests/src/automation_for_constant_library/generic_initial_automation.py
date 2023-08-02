@@ -2,8 +2,9 @@ from azureml.core import Workspace
 from generic_model_download_and_register import Model
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.entities import AmlCompute
-from azure.ai.ml import command, Input
-from azure.ai.ml import MLClient, UserIdentityConfiguration
+from azure.ai.ml import command
+from azure.ai.ml import MLClient
+import mlflow
 import json
 import os
 from box import ConfigBox
@@ -122,9 +123,9 @@ if __name__ == "__main__":
 
     queue = get_test_queue()
 
-    sku_override = get_sku_override()
-    if sku_override is None:
-        check_override = False
+    # sku_override = get_sku_override()
+    # if sku_override is None:
+    #     check_override = False
 
     if test_trigger_next_model == "true":
         set_next_trigger_model(queue)
@@ -146,12 +147,12 @@ if __name__ == "__main__":
                 resource_group = queue.resource_group,
                 workspace_name = queue.workspace
             )
+    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(workspace_ml_client)
     environment_variables = {"test_model_name": test_model_name, 
            "subscription": queue.subscription,
            "resource_group": queue.resource_group,
-           "workspace": queue.workspace,
-           "workspcae_object": ws
+           "workspace": queue.workspace
            }
     command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="gpt2-venv:6", compute="STANDARD-D12", environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
