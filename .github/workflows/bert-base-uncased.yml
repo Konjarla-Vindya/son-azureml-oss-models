@@ -26,17 +26,9 @@ jobs:
     - name: pip-install-azureml-core
       run: pip install azureml-core
     - name: pip-install-azureml-mlflow
-      run: pip install azureml-mlflow
-    - name: pip-install-transformers
-      run: pip install transformers
-    - name: pip-install-transformers[torch]
-      run: pip install transformers[torch]
-    - name: pip-install-torchvision
-      run: pip install torchvision 
+      run: pip install azureml-mlflow 
     - name: pip-install-mlflow
       run: pip install mlflow
-    - name: pip-install-SentencePiece
-      run: pip install SentencePiece
     - name: pip-install-python-box
       run: pip install python-box 
     - name: deploy-model-step
