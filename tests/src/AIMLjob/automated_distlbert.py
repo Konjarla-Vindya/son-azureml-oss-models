@@ -20,7 +20,7 @@ from tensorflow.keras import Model
 #from azure.ai.ml.entities import AmlCompute
 import time
 import json
-# import mlflow.pytorch
+import mlflow.pytorch
 # import huggingface_hub
 # import huggingface_hub.login
 print("imported")
