@@ -1,6 +1,6 @@
 from azureml.core import Workspace
 from generic_model_download_and_register import Model
-from azure.identity import DefaultAzureCredential
+from azure.identity import DefaultAzureCredential,AzureCliCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command, Input
 from azure.ai.ml import MLClient, UserIdentityConfiguration
@@ -131,7 +131,7 @@ if __name__ == "__main__":
         set_next_trigger_model(queue)
     print("Here is my test model name : ",test_model_name)
     try:
-        credential = DefaultAzureCredential()
+        credential = AzureCliCredential()
     except Exception as ex:
         print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
         exit (1)
