@@ -42,7 +42,7 @@ class Model:
         self.register_model_in_workspace(model_and_tokenizer)
         return model_and_tokenizer
 
-    def get_latest_model_version(registry_ml_client, model_name):
+def get_latest_model_version(registry_ml_client, model_name):
     print ("In get_latest_model_version...")
     model_versions=registry_ml_client.models.list(name=model_name)
     model_version_count=0
