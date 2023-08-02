@@ -251,15 +251,16 @@ def main():
     task = tags_dict['task']
     print("the task is:",task)
     
-    # compute_target = create_or_get_compute_target(workspace_ml_client)
-    # environment_variables = {"test_model_name": test_model_name, 
-    #        "subscription": queue['subscription'],
-    #        "resource_group": queue['resource_group'],
-    #        "workspace": queue['workspace']}
-    # command_job = run_azure_ml_job(code="./", command_to_run="python automated_distlbert.py", environment="env:2", compute="cpu-cluster",environment_variables=environment_variables)
-    # create_and_get_job_studio_url(command_job, workspace_ml_client)
-    # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
-
+    compute_target = create_or_get_compute_target(workspace_ml_client)
+    environment_variables = {"test_model_name": test_model_name, 
+           "subscription": queue['subscription'],
+           "resource_group": queue['resource_group'],
+           "workspace": queue['workspace']}
+    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="env:2", compute="cpu-cluster",environment_variables=environment_variables)
+    create_and_get_job_studio_url(command_job, workspace_ml_client)
+    endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
+# generic_model_download_and_register
+    # automated_distlbert
     timestamp = int(time.time())
     online_endpoint_name = task + str(timestamp)
     print (f"online_endpoint_name: {online_endpoint_name}")
@@ -268,11 +269,11 @@ def main():
         auth_mode="key",
     )
    
-    print("latest_model:",latest_model)
-    print("endpoint name:",endpoint)
-    create_online_endpoint(workspace_ml_client, endpoint)
-    create_online_deployment(workspace_ml_client, endpoint, latest_model)
-    sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
+    # print("latest_model:",latest_model)
+    # print("endpoint name:",endpoint)
+    # create_online_endpoint(workspace_ml_client, endpoint)
+    # create_online_deployment(workspace_ml_client, endpoint, latest_model)
+    # sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
 
 if __name__ == "__main__":
     main()
