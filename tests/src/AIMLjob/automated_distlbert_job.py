@@ -210,17 +210,17 @@ def main():
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
 
-    timestamp = int(time.time())
-    online_endpoint_name = "hf-ep-" + str(timestamp)
-    print (f"online_endpoint_name: {online_endpoint_name}")
-    endpoint = ManagedOnlineEndpoint(
-        name=online_endpoint_name,
-        auth_mode="key",
-    )
-    print("latest_model:",latest_model)
-    print("endpoint name:",endpoint)
-    create_online_endpoint(workspace_ml_client, endpoint)
-    create_online_deployment(workspace_ml_client, endpoint, latest_model)
+    # timestamp = int(time.time())
+    # online_endpoint_name = "hf-ep-" + str(timestamp)
+    # print (f"online_endpoint_name: {online_endpoint_name}")
+    # endpoint = ManagedOnlineEndpoint(
+    #     name=online_endpoint_name,
+    #     auth_mode="key",
+    # )
+    # print("latest_model:",latest_model)
+    # print("endpoint name:",endpoint)
+    # create_online_endpoint(workspace_ml_client, endpoint)
+    # create_online_deployment(workspace_ml_client, endpoint, latest_model)
 
 if __name__ == "__main__":
     main()
