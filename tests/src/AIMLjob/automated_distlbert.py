@@ -127,24 +127,24 @@ with mlflow.start_run():
 
 print("registered saved model")
 	
-trainer = Trainer(
-    model=model,
-    tokenizer=tokenizer,
-    args=trainer_args,
-    compute_metrics=compute_metrics,
-    train_dataset=dataset["train"],
-    eval_dataset=dataset["validation"]
-    # test_dataset=dataset["test"]
-)
+# trainer = Trainer(
+#     model=model,
+#     tokenizer=tokenizer,
+#     args=trainer_args,
+#     compute_metrics=compute_metrics,
+#     train_dataset=dataset["train"],
+#     eval_dataset=dataset["validation"]
+#     # test_dataset=dataset["test"]
+# )
 
-result = trainer.train()
+# result = trainer.train()
 
-print("trainer done")
+# print("trainer done")
 
-#retrieve trained model
+# #retrieve trained model
 
-trained_model = trainer.model
-trained_model.config
+# trained_model = trainer.model
+# trained_model.config
 
 mlflow.end_run()	
 
