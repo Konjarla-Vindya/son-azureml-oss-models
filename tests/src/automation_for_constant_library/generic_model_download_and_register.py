@@ -24,8 +24,8 @@ class Model:
         #task = self.queue.models[self.model_name].task
         artifact_path = self.model_name + "_artifact"
         registered_model_name = self.model_name + "_registered"
-        ws = Workspace(subscription, resource_group, workspace_name)
-        mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+        #ws = Workspace(subscription, resource_group, workspace_name)
+        mlflow.set_tracking_uri(workspace.get_mlflow_tracking_uri())
         mlflow.transformers.log_model(
             transformers_model = model_and_tokenizer,
             #task=task,
