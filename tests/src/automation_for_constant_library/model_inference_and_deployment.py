@@ -1,4 +1,4 @@
-import time, json 
+import time, json, os 
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
     ManagedOnlineDeployment
