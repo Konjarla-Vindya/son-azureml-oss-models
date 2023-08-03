@@ -206,30 +206,30 @@ def main():
 
 
 
-try:
-    credential = DefaultAzureCredential()
-    token = credential.get_token("https://management.azure.com/.default")
-except Exception as ex:
-    print(f"::error:: Auth failed, DefaultAzureCredential not working: \n{ex}")
-    sys.exit(1)
-
-try:
-    workspace_ml_client = MLClient(
-        credential=credential,
-        subscription_id=queue['subscription'],
-        resource_group_name=queue['resource_group'],
-        workspace_name=queue['workspace']
-    )
-
-except Exception as ex:
-    print(f"Error creating MLClient: {ex}")
-    sys.exit(1)
-
-
-    registry_ml_client = MLClient(
-         credential=credential, 
-         registry_name=registry
-     )
+    try:
+        credential = DefaultAzureCredential()
+        token = credential.get_token("https://management.azure.com/.default")
+    except Exception as ex:
+        print(f"::error:: Auth failed, DefaultAzureCredential not working: \n{ex}")
+        sys.exit(1)
+    
+    try:
+        workspace_ml_client = MLClient(
+            credential=credential,
+            subscription_id=queue['subscription'],
+            resource_group_name=queue['resource_group'],
+            workspace_name=queue['workspace']
+        )
+    
+    except Exception as ex:
+        print(f"Error creating MLClient: {ex}")
+        sys.exit(1)
+    
+    
+        registry_ml_client = MLClient(
+             credential=credential, 
+             registry_name=registry
+         )
 
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     instance_type = get_instance_type(latest_model, sku_override, registry_ml_client, check_override)
