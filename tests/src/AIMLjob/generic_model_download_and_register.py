@@ -51,7 +51,12 @@ class Model:
             artifact_path=artifact_path,
             registered_model_name=registered_model_name
         )
-
+        mlflow.transformers.save_model(model_and_tokenizer,path=artifact_path)
+        registered_model = mlflow.transformers.load_model(artifact_path)
+        
+        shutil.rmtree(artifact_path)
+        return registered_model
+    
     def download_and_register_model(self)->dict :
         model_and_tokenizer = self.download_model_and_tokenizer()
         # workspace = Workspace(
@@ -102,7 +107,46 @@ def create_online_deployment(workspace_ml_client, endpoint, latest_model):
     workspace_ml_client.begin_create_or_update(endpoint).result()
    
 
+def inference(self,download_model_and_tokenizer):
 
+        if self.task_name in ("text-generation","translation","summarization"):   
+            input_ids = download_model_and_tokenizer["tokenizer"](self.input_text, return_tensors="pt").input_ids 
+            ids = download_model_and_tokenizer["model"].generate(input_ids)
+            prediction  = download_model_and_tokenizer["tokenizer"].decode(ids[0], skip_special_tokens=True)
+
+        elif self.task_name=="text-classification":
+            inputs = download_model_and_tokenizer["tokenizer"](self.input_text, return_tensors="pt")
+            logits = download_model_and_tokenizer["model"](**inputs).logits
+            predicted_class_id = logits.argmax(axis=-1).item()
+            prediction=download_model_and_tokenizer["model"].config.id2label[predicted_class_id]
+        
+        elif self.task_name=="fill-mask":
+            inputs = download_model_and_tokenizer["tokenizer"](self.input_text, return_tensors="pt") 
+            logits = download_model_and_tokenizer["model"](**inputs).logits
+            mask_token_index = torch.where(inputs["input_ids"] == download_model_and_tokenizer["tokenizer"].mask_token_id)[1]
+            mask_token_logits = logits[0, mask_token_index, :]
+            top_1_tokens = torch.topk(mask_token_logits, 1, dim=1).indices[0].tolist()
+            prediction  = self.input_text.replace(download_model_and_tokenizer["tokenizer"].mask_token, download_model_and_tokenizer["tokenizer"].decode([top_1_tokens[0]]))
+
+        elif self.task_name=="question-answering":
+            inputs = download_model_and_tokenizer["tokenizer"](self.input_text,self.context, return_tensors="pt") 
+            outputs = download_model_and_tokenizer["model"](**inputs)
+            answer_start_index = outputs.start_logits.argmax()
+            answer_end_index = outputs.end_logits.argmax()
+            predict_answer_tokens = inputs.input_ids[0, answer_start_index : answer_end_index + 1]
+            prediction = download_model_and_tokenizer["tokenizer"].decode(predict_answer_tokens)
+        
+        elif self.task_name == "token-classification":
+            inputs = download_model_and_tokenizer["tokenizer"](self.input_text, return_tensors="pt")
+            logits = download_model_and_tokenizer["model"](**inputs).logits
+            predicted_ids = torch.argmax(logits, dim=2)
+            prediction=[download_model_and_tokenizer["model"].config.id2label[t.item()] for t in predicted_ids[0]]
+
+        else:
+            prediction = None
+
+        return prediction
+    
 def local_inference(latest_model,registry, workspace_ml_client, online_endpoint_name):
     # get the task tag from the latest_model.tags
     tags = str(latest_model.tags)
@@ -162,7 +206,7 @@ if __name__ == "__main__":
         credential=credential, 
         registry_name=registry
     )
-    model.download_and_register_model()
+    download_model_and_tokenizer=model.download_and_register_model()
 
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     #download_and_register_model()
@@ -185,7 +229,9 @@ if __name__ == "__main__":
    
     print("latest_model:",latest_model)
     print("endpoint name:",endpoint)
+    prediction = inference(Model_Tokenziner)
+    print(prediction)
     # create_online_endpoint(workspace_ml_client, endpoint)
     # create_online_deployment(workspace_ml_client, endpoint, latest_model)
-    local_inference(latest_model,registry, workspace_ml_client, online_endpoint_name)
+    # local_inference(latest_model,registry, workspace_ml_client, online_endpoint_name)
     
