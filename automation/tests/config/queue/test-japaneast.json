@@ -1,0 +1,21 @@
+{
+    "queue_name": "test-japaneast",
+    "models": [
+        "shobhank-iiitdwd-bert-summary",
+        "idea-ccnl-randeng-t5-784m-multitask-chinese",
+        "wikidepia-indot5-base-paraphrase",
+        "gchhablani-fnet-base-finetuned-cola",
+        "ctu-aic-mbart25-multilingual-summarization-multilarge-cs",
+        "inu-ai-dolly-japanese-gpt-1b",
+        "codeparrot-codeparrot-small-multi",
+        "koboldai-gpt-j-6b-adventure",
+        "helsinki-nlp-opus-mt-de-nl",
+        "klue-roberta-small"
+        
+    
+    ],
+    "workspace": "test-japaneast",
+    "subscription": "c11df4e4-eb38-4e11-b3dd-e8874de77d0a",
+    "resource_group": "huggingface-registry-test",
+    "registry": "HuggingFace"
+}
