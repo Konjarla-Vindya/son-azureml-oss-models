@@ -1,7 +1,9 @@
 import time, json, os 
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
-    ManagedOnlineDeployment
+    ManagedOnlineDeployment,
+    OnlineRequestSettings,
+    ProbeSettings
 )
 
 class ModelInferenceAndDeployemnt:
@@ -82,16 +84,43 @@ class ModelInferenceAndDeployemnt:
 
     def create_online_deployment(self, workspace_ml_client, endpoint, latest_model):
         print ("In create_online_deployment...")
+        # demo_deployment = ManagedOnlineDeployment(
+        #     name="demo",
+        #     endpoint_name=endpoint.name,
+        #     model=latest_model.id,
+        #     instance_type="Standard_DS4_v2",
+        #     instance_count=1,
+        # )
         demo_deployment = ManagedOnlineDeployment(
-            name="demo",
+            name="default",
             endpoint_name=endpoint.name,
-            model=latest_model.id,
-            instance_type="Standard_DS4_v2",
-            instance_count=1,
+            model="your_model_id",
+            instance_type="instance_type",
+            instance_count="1",
+            request_settings=OnlineRequestSettings(
+                max_concurrent_requests_per_instance=1,
+                request_timeout_ms=50000,
+                max_queue_wait_ms=500,
+            ),
+            liveness_probe=ProbeSettings(
+                failure_threshold=10,
+                timeout=10,
+                period=10,
+                initial_delay=480,
+            ),
+            readiness_probe=ProbeSettings(
+                failure_threshold=10,
+                success_threshold=1,
+                timeout=10,
+                period=10,
+                initial_delay=10,
+            ),
         )
         workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
         endpoint.traffic = {"demo": 100}
         workspace_ml_client.begin_create_or_update(endpoint).result()
+
+        
     
     def model_infernce_deployment(self):
         latest_model = self.get_latest_model_version(self.registry_ml_client, self.test_model_name)
