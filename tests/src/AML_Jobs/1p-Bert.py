@@ -148,7 +148,7 @@ with mlflow.start_run() as run:
         registered_model_name=test_model_name,
         run_id=run_id  # Associate the model with the current run
     )
-    print(path)
+    #print(path)
     print("Saved Model Directory Contents:", os.listdir("./savedmodel"))
 
     print("Saved model")
