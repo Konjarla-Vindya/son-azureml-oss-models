@@ -229,7 +229,7 @@ if __name__ == "__main__":
    
     # print("latest_model:",latest_model)
     # print("endpoint name:",endpoint)
-    prediction = inference(Model_Tokenziner)
+    prediction = inference(download_model_and_tokenizer)
     print(prediction)
     # create_online_endpoint(workspace_ml_client, endpoint)
     # create_online_deployment(workspace_ml_client, endpoint, latest_model)
