@@ -18,29 +18,29 @@ class Model:
         model = AutoModel.from_pretrained(self.model_name)
         tokenizer = AutoTokenizer.from_pretrained(self.model_name)
 
-        config = AutoConfig.from_pretrained(self.model_name)
-        config_dict = config.to_dict()
-        task_dict = config_dict["task_specific_params"]
-        task=list(task_dict.keys())[0]
+        # config = AutoConfig.from_pretrained(self.model_name)
+        # config_dict = config.to_dict()
+        # task_dict = config_dict["task_specific_params"]
+        # task=list(task_dict.keys())[0]
 
         model_and_tokenizer = {"model":model, "tokenizer":tokenizer}
-        return model_and_tokenizer, task
+        return model_and_tokenizer
     
-    def register_model_in_workspace(self, model_and_tokenizer, task):
+    def register_model_in_workspace(self, model_and_tokenizer):
         #task = self.queue.models[self.model_name].task
         artifact_path = self.model_name + "-artifact"
         registered_model_name = self.model_name
         # mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
         mlflow.transformers.log_model(
             transformers_model = model_and_tokenizer,
-            task=task,
+            #task=task,
             artifact_path=artifact_path,
             registered_model_name=registered_model_name
         )
 
     def download_and_register_model(self)->dict :
-        model_and_tokenizer, task = self.download_model_and_tokenizer()
-        self.register_model_in_workspace(model_and_tokenizer, task)
+        model_and_tokenizer = self.download_model_and_tokenizer()
+        self.register_model_in_workspace(model_and_tokenizer)
         return model_and_tokenizer
 
 if __name__ == "__main__":
