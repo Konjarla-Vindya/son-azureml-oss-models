@@ -134,27 +134,28 @@ print("metrics done")
 #         artifact_path=model_name
 #     )
 
-    
-mlflow.transformers.save_model(
-    transformers_model={"model": model, "tokenizer": tokenizer },
-    path="./savedmodel",
-    task="fill-mask",
-    registered_model_name=test_model_name,
-    run_id=run_id
-    # signature=signature,
-    # input_example=data,
-)
-print("saved model")
-#registered_model = mlflow.register_model(model_info.model_uri, model_name)
+
+
 
 with mlflow.start_run() as run:
-    # registered_model_name="bert"
     run_id = run.info.run_id
     print("MLflow Run ID:", run_id)
+
+    mlflow.transformers.save_model(
+        transformers_model={"model": model, "tokenizer": tokenizer },
+        path="./savedmodel",
+        task="fill-mask",
+        registered_model_name=test_model_name,
+        run_id=run_id  # Associate the model with the current run
+    )
+    print("Saved model")
+
+with mlflow.start_run(run_id=run_id):
     model_local_path = os.path.abspath("./savedmodel")
     mlflow.register_model(f"file://{model_local_path}", test_model_name)
 
-print("registered saved model")
+print("Registered saved model")
+
 	
 trainer = Trainer(
     model=model,
