@@ -66,14 +66,10 @@ def get_latest_model_version(registry_ml_client, model_name):
         model_version_count = model_version_count + 1
         models.append(model)
     sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
-    if len(sorted_models) > 0:
-        latest_model = sorted_models[0]
-        print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
-        print(latest_model)
-        return latest_model
-    else:
-        print("No models found.")
-        return None
+    latest_model = sorted_models[0]
+    print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
+    print(latest_model)
+    return latest_model
         
 
     if check_override:
@@ -178,7 +174,7 @@ def main():
            "subscription": queue['subscription'],
            "resource_group": queue['resource_group'],
            "workspace": queue['workspace']}
-    command_job = run_azure_ml_job(code="./", command_to_run="python 1p-IOED.py", environment="gpt2-venv:7", compute="cpu-cluster",environment_variables=environment_variables)
+    command_job = run_azure_ml_job(code="./", command_to_run="python 1p-Bert.py", environment="gpt2-venv:7", compute="cpu-cluster",environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     
 
