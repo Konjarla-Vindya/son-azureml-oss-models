@@ -1,0 +1,37 @@
+{
+
+    "queue_name": "test-koreacental",
+
+    "models": [
+
+        "sxie3333-roberta",
+
+        "shibing624-macbert4csc-base-chinese",
+
+        "helsinki-nlp-opus-mt-pl-en",
+
+        "helsinki-nlp-opus-mt-nl-en",
+
+        "helsinki-nlp-opus-mt-it-en",
+
+        "helsinki-nlp-opus-mt-de-en",
+
+        "l3cube-pune-mahahate-bert",
+
+        "google-pegasus-x-large",
+
+        "zixtrauce-johnbot",
+
+        "shitao-retromae-msmarco"
+
+    ],
+
+    "workspace": "test-koreacental",
+
+    "subscription": "c11df4e4-eb38-4e11-b3dd-e8874de77d0a",
+
+    "resource_group": "huggingface-registry-test",
+
+    "registry": "HuggingFace"
+
+}

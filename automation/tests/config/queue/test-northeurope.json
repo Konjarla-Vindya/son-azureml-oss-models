@@ -1,0 +1,41 @@
+{
+
+    "queue_name": "test-northeurope",
+
+    "models": [
+
+       
+
+        "idea-ccnl-erlangshen-roberta-110m-nli",
+
+        "unitary-unbiased-toxic-roberta",
+
+        "sonnenblume-bert-base-uncased-ancient-greek-v4",
+
+        "idea-ccnl-wenzhong-gpt2-110m",
+
+        "eleutherai-pythia-1.4b-deduped-v0",
+
+        "yarongef-distilprotbert",
+
+        "eleutherai-pythia-1b",
+
+        "microsoft-minilm-l12-h384-uncased",
+
+        "dbmdz-bert-base-italian-cased",
+
+        "milanlproc-feel-it-italian-sentiment"
+
+       
+
+    ],
+
+    "workspace": "test-northeurope",
+
+    "subscription": "c11df4e4-eb38-4e11-b3dd-e8874de77d0a",
+
+    "resource_group": "huggingface-registry-test",
+
+    "registry": "HuggingFace"
+
+}
