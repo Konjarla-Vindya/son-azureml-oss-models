@@ -43,7 +43,9 @@ class Model:
         return model_and_tokenizer
 
 if __name__ == "__main__":
-    model = Model(model_name=test_model_name)
-    model.download_and_register_model()
+    # model = Model(model_name=test_model_name)
+    # model.download_and_register_model()
+    workspace = Workspace.from_config()
+    print(workspace)
 
     

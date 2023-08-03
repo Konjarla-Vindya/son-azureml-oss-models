@@ -1,5 +1,5 @@
 from azureml.core import Workspace
-from generic_model_download_and_register import Model
+#from generic_model_download_and_register import Model
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
