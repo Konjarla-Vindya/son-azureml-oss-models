@@ -12,49 +12,149 @@ env:
   test_keep_looping: false
 
 jobs:
-  deploy-model-job:
+  train:
     runs-on: ubuntu-latest
     steps:
-    - name: check-out-repo-step
-      uses: actions/checkout@v2
-    - name: azure-login-step
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: pip-install-azure-ai-ml
-      run: pip install azure-ai-ml
-    - name: pip-install-azureml-core
-      run: pip install azureml-core
-    - name: pip-install-azureml-sdk
-      run: pip install azureml-sdk
-    - name: pip-install-azureml-mlflow
-      run: pip install azureml-mlflow
-    - name: pip-install-transformers
-      run: pip install transformers
-    - name: pip-install-transformers[torch]
-      run: pip install transformers[torch]
-    - name: pip-install-torchvision
-      run: pip install torchvision
-    - name: pip-install-mlflow
-      run: pip install mlflow
-    - name: pip-install-SentencePiece
-      run: pip install SentencePiece  
-    - name: pip-install-pandas
-      run: pip install pandas
-    - name: pip-install-numpy
-      run: pip install numpy
-    - name: pip-install-python-box
-      run: pip install python-box 
-    - name: pip-install-huggingface-hub
-      run: pip install huggingface-hub
-    - name: pip-install-datasets
-      run: pip install datasets
-    - name: submit-model-step
-      id: submit-model-step
-      run: python 1p-BertJob.py
-      working-directory: tests/src/AML_Jobs
-    - name: trigger-next-model-step
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
-      run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9  
+
+      - name: Install dependencies
+        run: |
+          pip install azure-ai-ml
+          pip install azureml-core
+          pip install azureml-sdk
+          pip install azureml-mlflow
+          pip install transformers
+          pip install transformers[torch]
+          pip install torchvision
+          pip install mlflow
+          pip install SentencePiece
+          pip install pandas
+          pip install numpy
+          pip install python-box 
+          pip install huggingface-hub
+          pip install datasets 
+
+      - name: Train the model
+        run: |
+          python 1p-BertJob.py
+        working-directory: tests/src/AML_Jobs
+
+      - name: Archive the model
+        uses: actions/upload-artifact@v2
+        with:
+          name: trained_model
+          path: ./savedmodel
+
+  inference_and_deploy:
+    needs: train
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        run: |
+          pip install azure-ai-ml
+          pip install azureml-core
+          pip install azureml-sdk
+          pip install azureml-mlflow
+          pip install transformers
+          pip install transformers[torch]
+          pip install torchvision
+          pip install mlflow
+          pip install SentencePiece
+          pip install pandas
+          pip install numpy
+          pip install python-box 
+          pip install huggingface-hub
+          pip install datasets 
+
+      - name: Download trained model artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: trained_model
+          path: ./savedmodel
+
+      - name: Inference and Deployment
+        run: |
+          python inference_and_deploy.py
+
+
+
+
+
+
+
+
+
+# name: bert-base-uncased
+
+# on: 
+#   workflow_dispatch:
+
+# env:
+#   test_model_name: bert-base-uncased
+#   test_sku_type: cpu
+#   test_trigger_next_model: true
+#   test_queue: test-bert_model
+#   test_set: huggingface-all
+#   test_keep_looping: false
+
+# jobs:
+#   deploy-model-job:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: check-out-repo-step
+#       uses: actions/checkout@v2
+#     - name: azure-login-step
+#       uses: azure/login@v1
+#       with:
+#         creds: ${{secrets.AZURE_CREDENTIALS}}
+#     - name: pip-install-azure-ai-ml
+#       run: pip install azure-ai-ml
+#     - name: pip-install-azureml-core
+#       run: pip install azureml-core
+#     - name: pip-install-azureml-sdk
+#       run: pip install azureml-sdk
+#     - name: pip-install-azureml-mlflow
+#       run: pip install azureml-mlflow
+#     - name: pip-install-transformers
+#       run: pip install transformers
+#     - name: pip-install-transformers[torch]
+#       run: pip install transformers[torch]
+#     - name: pip-install-torchvision
+#       run: pip install torchvision
+#     - name: pip-install-mlflow
+#       run: pip install mlflow
+#     - name: pip-install-SentencePiece
+#       run: pip install SentencePiece  
+#     - name: pip-install-pandas
+#       run: pip install pandas
+#     - name: pip-install-numpy
+#       run: pip install numpy
+#     - name: pip-install-python-box
+#       run: pip install python-box 
+#     - name: pip-install-huggingface-hub
+#       run: pip install huggingface-hub
+#     - name: pip-install-datasets
+#       run: pip install datasets
+#     - name: submit-model-step
+#       id: submit-model-step
+#       run: python 1p-BertJob.py
+#       working-directory: tests/src/AML_Jobs
+#     - name: trigger-next-model-step
+#       env:
+#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#       if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
+#       run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
