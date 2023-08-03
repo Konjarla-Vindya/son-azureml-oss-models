@@ -51,10 +51,10 @@ if __name__ == "__main__":
     result = client.get_registered_model(test_model_name)
     print(result)
     print("Type of result : ", type(result))
+    print("tags : ", str(result.tags))
     registered_model = client.get_latest_versions(test_model_name, stages=["None"])
     print("registered_model : ",registered_model)
     print(" Type of registered_model : ", type(registered_model))
     #client.get_model_version(test_model_name, version=latest)
     # model = client.get_latest_versions(test_model_name, stages=None)
     # print(model)
-    
