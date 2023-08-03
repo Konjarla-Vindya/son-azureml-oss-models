@@ -97,16 +97,18 @@ class ModelInferenceAndDeployemnt:
         latest_model = self.get_latest_model_version(self.registry_ml_client, self.test_model_name)
         #download_and_register_model()
         # get the task tag from the latest_model.tags
-        tags = str(latest_model.tags)
-        # replace single quotes with double quotes in tags
-        tags = tags.replace("'", '"')
-        # convert tags to dictionary
-        tags_dict=json.loads(tags)
-        task = tags_dict['task']
-        print("the task is:",task)
+        # tags = str(latest_model.tags)
+        # # replace single quotes with double quotes in tags
+        # tags = tags.replace("'", '"')
+        # # convert tags to dictionary
+        # tags_dict=json.loads(tags)
+        # print("the tags_dict is this one :",task)
+        # task = tags_dict['task']
+        # print("the task is:",task)
         # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
         timestamp = int(time.time())
-        online_endpoint_name = task + str(timestamp)
+        #online_endpoint_name = task + str(timestamp)
+        online_endpoint_name = "Testing" + str(timestamp)
         print (f"online_endpoint_name: {online_endpoint_name}")
         endpoint = ManagedOnlineEndpoint(
             name=online_endpoint_name,
@@ -117,4 +119,4 @@ class ModelInferenceAndDeployemnt:
         print("endpoint name:",endpoint)
         self.create_online_endpoint(self.workspace_ml_client, endpoint)
         self.create_online_deployment(self.workspace_ml_client, endpoint, latest_model)
-        self.sample_inference(latest_model, self.registry, self.workspace_ml_client, online_endpoint_name)
+        #self.sample_inference(latest_model, self.registry, self.workspace_ml_client, online_endpoint_name)
