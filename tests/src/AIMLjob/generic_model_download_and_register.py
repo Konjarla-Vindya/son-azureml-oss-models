@@ -103,7 +103,7 @@ def create_online_deployment(workspace_ml_client, endpoint, latest_model):
    
 
 
-def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint_name):
+def local_inference(latest_model,registry, workspace_ml_client, online_endpoint_name):
     # get the task tag from the latest_model.tags
     tags = str(latest_model.tags)
     # replace single quotes with double quotes in tags
@@ -187,5 +187,5 @@ if __name__ == "__main__":
     print("endpoint name:",endpoint)
     # create_online_endpoint(workspace_ml_client, endpoint)
     # create_online_deployment(workspace_ml_client, endpoint, latest_model)
-    sample_inference(latest_model,registry, workspace_ml_client, online_endpoint_name)
+    local_inference(latest_model,registry, workspace_ml_client, online_endpoint_name)
     
