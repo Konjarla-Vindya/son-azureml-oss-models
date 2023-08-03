@@ -54,7 +54,7 @@ class Model:
         mlflow.transformers.save_model(model_and_tokenizer,path=artifact_path)
         registered_model = mlflow.transformers.load_model(artifact_path)
         
-        shutil.rmtree(artifact_path)
+        # shutil.rmtree(artifact_path)
         return registered_model
     
     def download_and_register_model(self)->dict :
