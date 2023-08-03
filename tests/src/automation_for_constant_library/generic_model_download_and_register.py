@@ -1,6 +1,6 @@
 from transformers import AutoModel,AutoTokenizer
 #import transformers
-from azureml.core import Workspace
+#from azureml.core import Workspace
 #from azureml.core import Workspace
 #from azureml.mlflow import get_mlflow_tracking_uri
 import os 
@@ -45,7 +45,9 @@ class Model:
 if __name__ == "__main__":
     # model = Model(model_name=test_model_name)
     # model.download_and_register_model()
-    workspace = Workspace.from_config()
-    print(workspace)
-
+    # workspace = Workspace.from_config()
+    # print(workspace)
+    client = mlflow.tracking.MlflowClient()
+    result = client.get_registered_model(test_model_name)
+    print(result)
     
