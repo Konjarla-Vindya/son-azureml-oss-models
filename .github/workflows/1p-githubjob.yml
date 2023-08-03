@@ -17,6 +17,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -85,6 +90,11 @@ jobs:
         with:
           name: trained_model
           path: ./savedmodel
+          
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Inference and Deployment
         run: |
