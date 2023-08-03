@@ -4,7 +4,7 @@ from azure.ai.ml.entities import (
     ManagedOnlineDeployment
 )
 
-class ModelInfernceAndDeployemnt:
+class ModelInferenceAndDeployemnt:
     def __init__(self, test_model_name, workspace_ml_client, registry_ml_client, registry) -> None:
         self.test_model_name = test_model_name
         self.workspace_ml_client = workspace_ml_client
@@ -115,6 +115,6 @@ class ModelInfernceAndDeployemnt:
     
         print("latest_model:",latest_model)
         print("endpoint name:",endpoint)
-        # create_online_endpoint(workspace_ml_client, endpoint)
-        # create_online_deployment(workspace_ml_client, endpoint, latest_model)
+        self.create_online_endpoint(self.workspace_ml_client, endpoint)
+        self.create_online_deployment(self.workspace_ml_client, endpoint, latest_model)
         self.sample_inference(latest_model, self.registry, self.workspace_ml_client, online_endpoint_name)

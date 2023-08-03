@@ -1,6 +1,6 @@
 from azureml.core import Workspace
 #from generic_model_download_and_register import Model
-from model_infernce_and_deployment import ModelInfernceAndDeployemnt
+from model_inference_and_deployment import ModelInferenceAndDeployemnt
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
@@ -162,13 +162,13 @@ if __name__ == "__main__":
            }
     command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:1", compute="STANDARD-D13", environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
-    InfernceAndDeployment = ModelInfernceAndDeployemnt(
+    InferenceAndDeployment = ModelInferenceAndDeployemnt(
         test_model_name=test_model_name,
         workspace_ml_client=workspace_ml_client,
         registry_ml_client=registry_ml_client,
         registry=queue.registry
         )
-    InfernceAndDeployment.model_infernce_deployment()
+    InferenceAndDeployment.model_infernce_deployment()
 
     # model = Model(model_name=test_model_name, queue=queue)
     # model_and_tokenizer = model.download_and_register_model(workspace=ws)
