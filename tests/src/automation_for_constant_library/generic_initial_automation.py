@@ -165,7 +165,7 @@ if __name__ == "__main__":
     InferenceAndDeployment = ModelInferenceAndDeployemnt(
         test_model_name=test_model_name,
         workspace_ml_client=workspace_ml_client,
-        registry_ml_client=registry_ml_client,
+        registry_ml_client=workspace_ml_client,
         registry=queue.registry
         )
     InferenceAndDeployment.model_infernce_deployment()
