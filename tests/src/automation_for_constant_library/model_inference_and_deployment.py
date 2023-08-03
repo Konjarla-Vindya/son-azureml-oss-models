@@ -17,15 +17,23 @@ class ModelInferenceAndDeployemnt:
     def get_latest_model_version(self, registry_ml_client, model_name):
         print ("In get_latest_model_version...")
         model_versions=registry_ml_client.models.list(name=model_name)
-        model_version_count=0
-        models = []
-        for model in model_versions:
-            model_version_count = model_version_count + 1
-            models.append(model)
-        sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
-        latest_model = sorted_models[0]
-        print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
-        print(latest_model)
+        #version_list = list(ml_client.models.list(model_name))
+        # model_version_count=0
+        # models = []
+        # for model in model_versions:
+        #     model_version_count = model_version_count + 1
+        #     models.append(model)
+        # sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
+        # latest_model = sorted_models[0]
+        # print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
+        # print(latest_model)
+        latest_model = ""
+        if len(model_versions) == 0:
+            print("Model not found in registry")
+        else:
+            model_version = model_versions[0].version
+            latest_model = model_versions.models.get(model_name, model_version)
+                #return latest_model
         return latest_model
     
     def sample_inference(self, latest_model, registry, workspace_ml_client, online_endpoint_name):
