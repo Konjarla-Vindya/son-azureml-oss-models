@@ -16,7 +16,7 @@ class ModelInferenceAndDeployemnt:
 
     def get_latest_model_version(self, registry_ml_client, model_name):
         print ("In get_latest_model_version...")
-        model_versions=list(registry_ml_client.models.list(name=model_name))
+        model_versions=registry_ml_client.models.list(name=model_name)
         #version_list = list(ml_client.models.list(model_name))
         # model_version_count=0
         # models = []
