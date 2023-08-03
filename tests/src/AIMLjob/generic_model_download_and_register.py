@@ -190,45 +190,45 @@ def local_inference(latest_model,registry, workspace_ml_client, online_endpoint_
         # get_online_endpoint_logs(workspace_ml_client, online_endpoint_name)
 if __name__ == "__main__":
     model = Model(model_name=test_model_name)
-    try:
-        credential = DefaultAzureCredential()
-        credential.get_token("https://management.azure.com/.default")
-    except Exception as ex:
-        print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
-        exit (1)
-    workspace_ml_client = MLClient(
-        credential=credential, 
-        subscription_id=queue['subscription'],
-        resource_group_name=queue['resource_group'],
-        workspace_name=queue['workspace']
-    )
-    registry_ml_client = MLClient(
-        credential=credential, 
-        registry_name=registry
-    )
+    # try:
+    #     credential = DefaultAzureCredential()
+    #     credential.get_token("https://management.azure.com/.default")
+    # except Exception as ex:
+    #     print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
+    #     exit (1)
+    # workspace_ml_client = MLClient(
+    #     credential=credential, 
+    #     subscription_id=queue['subscription'],
+    #     resource_group_name=queue['resource_group'],
+    #     workspace_name=queue['workspace']
+    # )
+    # registry_ml_client = MLClient(
+    #     credential=credential, 
+    #     registry_name=registry
+    # )
     download_model_and_tokenizer=model.download_and_register_model()
 
-    latest_model = get_latest_model_version(registry_ml_client, test_model_name)
-    #download_and_register_model()
-     # get the task tag from the latest_model.tags
-    tags = str(latest_model.tags)
-    # replace single quotes with double quotes in tags
-    tags = tags.replace("'", '"')
-    # convert tags to dictionary
-    tags_dict=json.loads(tags)
-    task = tags_dict['task']
-    print("the task is:",task)
-    # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
-    timestamp = int(time.time())
-    online_endpoint_name = task + str(timestamp)
-    print (f"online_endpoint_name: {online_endpoint_name}")
-    endpoint = ManagedOnlineEndpoint(
-        name=online_endpoint_name,
-        auth_mode="key",
-    )
+    # latest_model = get_latest_model_version(registry_ml_client, test_model_name)
+    # #download_and_register_model()
+    #  # get the task tag from the latest_model.tags
+    # tags = str(latest_model.tags)
+    # # replace single quotes with double quotes in tags
+    # tags = tags.replace("'", '"')
+    # # convert tags to dictionary
+    # tags_dict=json.loads(tags)
+    # task = tags_dict['task']
+    # print("the task is:",task)
+    # # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
+    # timestamp = int(time.time())
+    # online_endpoint_name = task + str(timestamp)
+    # print (f"online_endpoint_name: {online_endpoint_name}")
+    # endpoint = ManagedOnlineEndpoint(
+    #     name=online_endpoint_name,
+    #     auth_mode="key",
+    # )
    
-    print("latest_model:",latest_model)
-    print("endpoint name:",endpoint)
+    # print("latest_model:",latest_model)
+    # print("endpoint name:",endpoint)
     prediction = inference(Model_Tokenziner)
     print(prediction)
     # create_online_endpoint(workspace_ml_client, endpoint)
