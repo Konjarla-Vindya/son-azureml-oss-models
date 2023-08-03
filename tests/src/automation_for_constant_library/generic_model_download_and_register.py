@@ -43,11 +43,13 @@ class Model:
         return model_and_tokenizer
 
 if __name__ == "__main__":
-    # model = Model(model_name=test_model_name)
-    # model.download_and_register_model()
+    model = Model(model_name=test_model_name)
+    model.download_and_register_model()
     # workspace = Workspace.from_config()
     # print(workspace)
     client = mlflow.tracking.MlflowClient()
     result = client.get_registered_model(test_model_name)
     print(result)
+    # model = client.get_latest_versions(test_model_name, stages=None)
+    # print(model)
     
