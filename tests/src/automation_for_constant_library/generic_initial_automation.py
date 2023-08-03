@@ -146,7 +146,7 @@ if __name__ == "__main__":
     )
     registry_ml_client = MLClient(
         credential=credential, 
-        registry_name=queue.registry
+        registry_name=queue.destination_registry
     )
     ws = Workspace(
                 subscription_id = queue.subscription,
