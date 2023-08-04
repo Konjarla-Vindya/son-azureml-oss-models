@@ -251,7 +251,9 @@ def main():
     # tags_dict=json.loads(tags)
     # task = tags_dict['task']
     # print("the task is:",task)
+
     
+    task=latest_model.flavors["transformers"]["task"]
     # compute_target = create_or_get_compute_target(workspace_ml_client)
     # environment_variables = {"test_model_name": test_model_name, 
     #        "subscription": queue['subscription'],
@@ -265,7 +267,7 @@ def main():
 #     # automated_distlbert
     timestamp = int(time.time())
     online_endpoint_name ="fillmask1691140714"
-    # "fillmask" + str(timestamp)
+    # task + str(timestamp)
     print (f"online_endpoint_name: {online_endpoint_name}")
     endpoint = ManagedOnlineEndpoint(
         name=online_endpoint_name,
