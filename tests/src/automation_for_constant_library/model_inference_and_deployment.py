@@ -1,4 +1,5 @@
 import time, json, os 
+#from azure.ai.ml.constants import AssetTypes
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
     ManagedOnlineDeployment,
@@ -39,7 +40,7 @@ class ModelInferenceAndDeployemnt:
         # version = sorted(version, reverse=True)
         # latest_model = registry_ml_client.models.get(model_name, version[0])
         print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}")
-        print(f"Model Config : {latest_model.config}") 
+        #print(f"Model Config : {latest_model.config}") 
         return latest_model
     
     def sample_inference(self, latest_model, registry, workspace_ml_client, online_endpoint_name):
@@ -108,8 +109,8 @@ class ModelInferenceAndDeployemnt:
         demo_deployment = ManagedOnlineDeployment(
             name="default",
             endpoint_name=endpoint.name,
-            model="your_model_id",
-            instance_type="instance_type",
+            model=latest_model.id,
+            instance_type="Standard_DS4_v2",
             instance_count="1",
             request_settings=OnlineRequestSettings(
                 max_concurrent_requests_per_instance=1,
@@ -148,18 +149,26 @@ class ModelInferenceAndDeployemnt:
         # print("the tags_dict is this one :",task)
         # task = tags_dict['task']
         # print("the task is:",task)
-        # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
-        # timestamp = int(time.time())
-        # #online_endpoint_name = task + str(timestamp)
-        # online_endpoint_name = "Testing" + str(timestamp)
-        # print (f"online_endpoint_name: {online_endpoint_name}")
-        # endpoint = ManagedOnlineEndpoint(
-        #     name=online_endpoint_name,
-        #     auth_mode="key",
-        # )
+        #endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
+        timestamp = int(time.time())
+        #online_endpoint_name = task + str(timestamp)
+        online_endpoint_name = "Testing" + str(timestamp)
+        print (f"online_endpoint_name: {online_endpoint_name}")
+        endpoint = ManagedOnlineEndpoint(
+            name=online_endpoint_name,
+            auth_mode="key",
+        )
     
-        # print("latest_model:",latest_model)
-        # print("endpoint name:",endpoint)
-        # self.create_online_endpoint(self.workspace_ml_client, endpoint)
-        #self.create_online_deployment(self.workspace_ml_client, endpoint, latest_model)
+        print("latest_model:",latest_model)
+        print("endpoint name:",endpoint)
+        self.create_online_endpoint(self.workspace_ml_client, endpoint)
+        self.create_online_deployment(self.workspace_ml_client, endpoint, latest_model)
         #self.sample_inference(latest_model, self.registry, self.workspace_ml_client, online_endpoint_name)
+        # model_for_package = Model(name=latest_model.name, version=latest_model.version, type=AssetTypes.MLFLOW_MODEL)
+        # model_configuration = ModelConfiguration(mode="download")
+        # package_name = f"package-v2-{model_name}"
+        # package_config = ModelPackage(
+        #                 target_environment_name=package_name,
+        #                 inferencing_server=AzureMLOnlineInferencingServer(),
+        #                 model_configuration=model_configuration
+        #     )
