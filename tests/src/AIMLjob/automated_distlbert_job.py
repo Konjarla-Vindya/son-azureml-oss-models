@@ -270,8 +270,7 @@ def main():
 # # generic_model_download_and_register
 #     # automated_distlbert
     timestamp = int(time.time())
-    online_endpoint_name ="fillmask1691140714"
-    # task + str(timestamp)
+    online_endpoint_name =task + str(timestamp)
     print (f"online_endpoint_name: {online_endpoint_name}")
     endpoint = ManagedOnlineEndpoint(
         name=online_endpoint_name,
@@ -282,7 +281,7 @@ def main():
     print(latest_model.flavors["transformers"]["task"])
     
     # print("endpoint name:",endpoint)
-    # create_online_endpoint(workspace_ml_client, endpoint)
+    create_online_endpoint(workspace_ml_client, endpoint)
     # create_online_deployment(workspace_ml_client, endpoint, latest_model)
     sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
 
