@@ -206,7 +206,7 @@ if __name__ == "__main__":
     #     credential=credential, 
     #     registry_name=registry
     # )
-    download_model_and_tokenizer=model.download_and_register_model()
+    model.download_and_register_model()
 
     # latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     # #download_and_register_model()
@@ -229,8 +229,8 @@ if __name__ == "__main__":
    
     # print("latest_model:",latest_model)
     # print("endpoint name:",endpoint)
-    prediction = inference(download_model_and_tokenizer)
-    print(prediction)
+    # prediction = inference(download_model_and_tokenizer)
+    # print(prediction)
     # create_online_endpoint(workspace_ml_client, endpoint)
     # create_online_deployment(workspace_ml_client, endpoint, latest_model)
     # local_inference(latest_model,registry, workspace_ml_client, online_endpoint_name)
