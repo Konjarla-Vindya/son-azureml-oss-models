@@ -38,7 +38,8 @@ class ModelInferenceAndDeployemnt:
         #     version.append(model.version)
         # version = sorted(version, reverse=True)
         # latest_model = registry_ml_client.models.get(model_name, version[0])
-        print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
+        print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}")
+        print(f"Model Config : {latest_model.config}") 
         return latest_model
     
     def sample_inference(self, latest_model, registry, workspace_ml_client, online_endpoint_name):
