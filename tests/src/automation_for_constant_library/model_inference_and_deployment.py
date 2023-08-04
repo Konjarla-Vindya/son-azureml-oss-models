@@ -21,31 +21,20 @@ class ModelInferenceAndDeployemnt:
 
     def get_latest_model_version(self, registry_ml_client, model_name):
         print ("In get_latest_model_version...")
-        model_versions=registry_ml_client.models.list(name=model_name)
-        #version_list = list(ml_client.models.list(model_name))
-        model_version_count=0
-        models = []
-        for model in model_versions:
-            model_version_count = model_version_count + 1
-            models.append(model)
-        sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
-        latest_model = sorted_models[0]
-        # print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
-        # print(latest_model)
-        #latest_model = ""
-        # model_version = model_versions[0].version
-        # latest_model = model_versions.models.get(model_name, model_version)
-        #     #return latest_model
-        # return latest_model
-        # model_list=list(registry_ml_client.models.list(name=model_name))
-        # version = []
-        # for model in model_list:
-        #     version.append(model.version)
-        # version = sorted(version, reverse=True)
-        # latest_model = registry_ml_client.models.get(model_name, version[0])
-        print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}")
+        version_list = list(registry_ml_client.models.list(model_name))
+        if len(version_list) == 0:
+            print("Model not found in registry")
+        else:
+            model_version = version_list[0].version
+            foundation_model = registry_ml_client.models.get(model_name, model_version)
+            print(
+                "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
+                    foundation_model.name, foundation_model.version, foundation_model.id
+                )
+            )
+        print (f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
         #print(f"Model Config : {latest_model.config}") 
-        return latest_model
+        return foundation_model
     
     def sample_inference(self, latest_model, registry, workspace_ml_client, online_endpoint_name):
         # get the task tag from the latest_model.tags
@@ -167,34 +156,56 @@ class ModelInferenceAndDeployemnt:
         # print("endpoint name:",endpoint)
         # self.create_online_endpoint(self.workspace_ml_client, endpoint)
         # self.create_online_deployment(self.workspace_ml_client, endpoint, latest_model)
-        #self.sample_inference(latest_model, self.registry, self.workspace_ml_client, online_endpoint_name)
-        model_for_package = Model(name=latest_model.name, version=latest_model.version, type=AssetTypes.MLFLOW_MODEL)
-        model_configuration = ModelConfiguration(mode="download")
-        package_name = f"package-v2-{latest_model.name}"
-        package_config = ModelPackage(
-                        target_environment_name=package_name,
-                        inferencing_server=AzureMLOnlineInferencingServer(),
-                        model_configuration=model_configuration
-            )
-        model_package = self.workspace_ml_client.models.package(
-                            latest_model.name, 
-                            latest_model.version, 
-                            package_config
-                        )
+        # task = latest_model.flavors["transformers"]["task"][0]
+        # model_for_package = Model(name=latest_model.name, version=latest_model.version, type=AssetTypes.MLFLOW_MODEL)
+        # model_configuration = ModelConfiguration(mode="download")
+        # package_name = f"package-v2-{latest_model.name}"
+        # package_config = ModelPackage(
+        #                 target_environment_name=package_name,
+        #                 inferencing_server=AzureMLOnlineInferencingServer(),
+        #                 model_configuration=model_configuration
+        #     )
+        # model_package = self.workspace_ml_client.models.package(
+        #                     latest_model.name, 
+        #                     latest_model.version, 
+        #                     package_config
+        #                 )
+        # timestamp = int(time.time())
+        # online_endpoint_name = "Testing" + str(timestamp)
+        # print (f"online_endpoint_name: {online_endpoint_name}")
+        # endpoint = ManagedOnlineEndpoint(
+        #     name=online_endpoint_name,
+        #     auth_mode="key",
+        # )
+        # self.workspace_ml_client.begin_create_or_update(endpoint).result()
+        # deployment_name = latest_model.name
+        # deployment_config = ManagedOnlineDeployment(
+        #         name = deployment_name,
+        #         model=latest_model.id,
+        #         endpoint_name=online_endpoint_name,
+        #         environment=model_package,
+        #         instance_count=1
+        #     )
+        # deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(deployment_config).result()
         timestamp = int(time.time())
-        online_endpoint_name = "Testing" + str(timestamp)
-        print (f"online_endpoint_name: {online_endpoint_name}")
+        online_endpoint_name = "fill-mask" + str(timestamp)
         endpoint = ManagedOnlineEndpoint(
             name=online_endpoint_name,
+            description="Online endpoint for "
+            + latest_model.name
+            + ", for fill-mask task",
             auth_mode="key",
         )
+        demo_deployment = ManagedOnlineDeployment(
+            name="demo",
+            endpoint_name=online_endpoint_name,
+            model=latest_model.id,
+            instance_type="Standard_DS2_v2",
+            instance_count=1,
+            request_settings=OnlineRequestSettings(
+                request_timeout_ms=60000,
+            ),
+        )
+        self.workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+        endpoint.traffic = {"demo": 100}
         self.workspace_ml_client.begin_create_or_update(endpoint).result()
-        deployment_name = f"deployment-{latest_model.name}"
-        deployment_config = ManagedOnlineDeployment(
-                name = deployment_name,
-                model=latest_model.id,
-                endpoint_name=online_endpoint_name,
-                environment=model_package,
-                instance_count=1
-            )
-        deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(deployment_config).result()
