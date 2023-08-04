@@ -96,14 +96,14 @@ class ModelInferenceAndDeployemnt:
         #     name="demo",
         #     endpoint_name=endpoint.name,
         #     model=latest_model.id,
-        #     instance_type="Standard_DS4_v2",
+        #     instance_type="Standard_D13",
         #     instance_count=1,
         # )
         demo_deployment = ManagedOnlineDeployment(
             name="default",
             endpoint_name=endpoint.name,
             model=latest_model.id,
-            instance_type="Standard_DS4_v2",
+            instance_type="Standard-D13",
             instance_count="1",
             request_settings=OnlineRequestSettings(
                 max_concurrent_requests_per_instance=1,
@@ -210,7 +210,7 @@ class ModelInferenceAndDeployemnt:
         #     name="demo",
         #     endpoint_name=online_endpoint_name,
         #     model=latest_model.id,
-        #     #instance_type="Standard-D12",
+        #     #instance_type="Standard-D13",
         #     instance_count=1,
         #     request_settings=OnlineRequestSettings(
         #         request_timeout_ms=60000,
