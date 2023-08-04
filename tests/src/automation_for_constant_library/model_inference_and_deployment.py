@@ -196,17 +196,17 @@ class ModelInferenceAndDeployemnt:
             + ", for fill-mask task",
             auth_mode="key",
         )
-        self.workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
+        self.workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).result()
         demo_deployment = ManagedOnlineDeployment(
             name="demo",
             endpoint_name=online_endpoint_name,
             model=latest_model.id,
-            instance_type="Standard_D12",
+            instance_type="Standard_DS2_v2",
             instance_count=1,
             request_settings=OnlineRequestSettings(
                 request_timeout_ms=60000,
             ),
         )
-        self.workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+        self.workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).result()
         endpoint.traffic = {"demo": 100}
         self.workspace_ml_client.begin_create_or_update(endpoint).result()
