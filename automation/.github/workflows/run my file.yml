@@ -12,4 +12,4 @@ name: run main.py
   run: pip install python-box 
 - name: execute py script # run main.py
   run: python run my file.py
-  working-directory: automatio/tests/src
+  working-directory: automation/tests/src
