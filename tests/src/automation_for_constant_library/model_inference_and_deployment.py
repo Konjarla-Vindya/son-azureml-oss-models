@@ -103,7 +103,7 @@ class ModelInferenceAndDeployemnt:
             name="default",
             endpoint_name=endpoint.name,
             model=latest_model.id,
-            instance_type="Standard-D13",
+            instance_type="Standard_D32a_v4",
             instance_count="1",
             request_settings=OnlineRequestSettings(
                 max_concurrent_requests_per_instance=1,
