@@ -18,11 +18,7 @@ from azure.ai.ml.entities import (
     OnlineRequestSettings,
 )
 import transformers
-from datasets import load_dataset
-import mlflow
 import datetime
-from azure.ai.ml import MLClient
-from azure.identity import DefaultAzureCredential
 from azure.ai.ml.constants import AssetTypes
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
