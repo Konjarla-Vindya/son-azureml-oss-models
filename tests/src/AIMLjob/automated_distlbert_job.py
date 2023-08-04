@@ -154,7 +154,7 @@ def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint
     # tags_dict=json.loads(tags)
     # task = tags_dict['task']
     # print (f"task: {task}")
-    # task=latest_model.flavors["transformers"]["task"]
+    task=latest_model.flavors["transformers"]["task"]
     scoring_file = f"../../config/sample_inputs/{registry}/{task}.json"
     # check of scoring_file exists
     try:
@@ -280,7 +280,7 @@ def main():
    
     print("latest_model---------------------------------------------:",latest_model,"-----------------------------")
     print(latest_model.flavors["transformers"]["task"])
-    scoring_file = f"../../config/sample_inputs/{registry}/{task}.json"
+    
     # print("endpoint name:",endpoint)
     # create_online_endpoint(workspace_ml_client, endpoint)
     # create_online_deployment(workspace_ml_client, endpoint, latest_model)
