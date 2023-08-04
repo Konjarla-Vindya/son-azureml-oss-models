@@ -196,6 +196,7 @@ class ModelInferenceAndDeployemnt:
             + ", for fill-mask task",
             auth_mode="key",
         )
+        self.workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
         demo_deployment = ManagedOnlineDeployment(
             name="demo",
             endpoint_name=online_endpoint_name,
