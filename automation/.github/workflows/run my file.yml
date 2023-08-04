@@ -2,3 +2,4 @@ name: run main.py
 
       - name: execute py script # run main.py
         run: python run my file.py
+        working-directory: automatio/tests/src
