@@ -264,7 +264,7 @@ def main():
 # # generic_model_download_and_register
 #     # automated_distlbert
     timestamp = int(time.time())
-    online_endpoint_name = task + str(timestamp)
+    online_endpoint_name = "fillmask" + str(timestamp)
     print (f"online_endpoint_name: {online_endpoint_name}")
     endpoint = ManagedOnlineEndpoint(
         name=online_endpoint_name,
