@@ -31,18 +31,18 @@ jobs:
       run: pip install azureml-mlflow
     - name: pip-install-transformers
       run: pip install transformers
-    - name: pip-install-transformers[torch]
-      run: pip install transformers[torch]
-    - name: pip-install-torchvision
-      run: pip install torchvision
+    # - name: pip-install-transformers[torch]
+    #   run: pip install transformers[torch]
+    # - name: pip-install-torchvision
+    #   run: pip install torchvision
     - name: pip-install-mlflow
       run: pip install mlflow
-    - name: pip-install-SentencePiece
-      run: pip install SentencePiece  
-    - name: pip-install-pandas
-      run: pip install pandas
-    - name: pip-install-numpy
-      run: pip install numpy
+    # - name: pip-install-SentencePiece
+    #   run: pip install SentencePiece  
+    # - name: pip-install-pandas
+    #   run: pip install pandas
+    # - name: pip-install-numpy
+    #   run: pip install numpy
 #     - name: pip-install-torch
 #       run: pip install torch
 #     - name: pip-install-huggingface-hub
