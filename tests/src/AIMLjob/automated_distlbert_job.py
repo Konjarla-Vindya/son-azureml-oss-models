@@ -65,16 +65,17 @@ def set_next_trigger_model(queue):
 
 def get_latest_model_version(registry_ml_client, model_name):
     print ("In get_latest_model_version...")
-    model_versions=registry_ml_client.models.list(name=model_name)
-    model_version_count=0
-    models = []
-    for model in model_versions:
-        model_version_count = model_version_count + 1
-        models.append(model)
-    sorted_models = sorted(models, key=lambda x: x.creation_context.created_at, reverse=True)
-    latest_model = sorted_models[0]
-    print (f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}") 
-    print(latest_model)
+    version_list = list(registry_ml_client.models.list(model_name))
+    if len(version_list) == 0:
+        print("Model not found in registry")
+    else:
+        model_version = version_list[0].version
+    latest_model = registry_ml_client.models.get(model_name, model_version)
+    print(
+    "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
+        latest_model.name, latest_model.version, latest_model.id
+        )
+        )
     return latest_model
 
     if check_override:
@@ -242,14 +243,14 @@ def main():
     
     latest_model = get_latest_model_version(registry_ml_client, test_model_name)
     #download_and_register_model()
-     # get the task tag from the latest_model.tags
-    tags = str(latest_model.tags)
-    # replace single quotes with double quotes in tags
-    tags = tags.replace("'", '"')
-    # convert tags to dictionary
-    tags_dict=json.loads(tags)
-    task = tags_dict['task']
-    print("the task is:",task)
+    #  # get the task tag from the latest_model.tags
+    # tags = str(latest_model.tags)
+    # # replace single quotes with double quotes in tags
+    # tags = tags.replace("'", '"')
+    # # convert tags to dictionary
+    # tags_dict=json.loads(tags)
+    # task = tags_dict['task']
+    # print("the task is:",task)
     
     compute_target = create_or_get_compute_target(workspace_ml_client)
     environment_variables = {"test_model_name": test_model_name, 
@@ -269,7 +270,7 @@ def main():
 #         auth_mode="key",
 #     )
    
-    # print("latest_model:",latest_model)
+    print("latest_model---------------------------------------------:",latest_model)
     # print("endpoint name:",endpoint)
     # create_online_endpoint(workspace_ml_client, endpoint)
     # create_online_deployment(workspace_ml_client, endpoint, latest_model)
