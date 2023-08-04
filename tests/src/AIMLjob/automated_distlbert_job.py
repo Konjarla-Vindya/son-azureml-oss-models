@@ -244,13 +244,13 @@ def main():
     latest_model = get_latest_model_version(workspace_ml_client, test_model_name)
     #download_and_register_model()
     #  # get the task tag from the latest_model.tags
-    tags = str(latest_model.tags)
-    # replace single quotes with double quotes in tags
-    tags = tags.replace("'", '"')
-    # convert tags to dictionary
-    tags_dict=json.loads(tags)
-    task = tags_dict['task']
-    print("the task is:",task)
+    # tags = str(latest_model.tags)
+    # # replace single quotes with double quotes in tags
+    # tags = tags.replace("'", '"')
+    # # convert tags to dictionary
+    # tags_dict=json.loads(tags)
+    # task = tags_dict['task']
+    # print("the task is:",task)
     
     # compute_target = create_or_get_compute_target(workspace_ml_client)
     # environment_variables = {"test_model_name": test_model_name, 
