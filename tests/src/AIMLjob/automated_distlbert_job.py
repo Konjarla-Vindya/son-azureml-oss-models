@@ -139,9 +139,9 @@ def create_online_deployment(workspace_ml_client, endpoint, latest_model):
         instance_type="Standard_DS4_v2",
         instance_count=1,
     )
-    workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
-    endpoint.traffic = {"demo": 100}
-    workspace_ml_client.begin_create_or_update(endpoint).result()
+    workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).result()
+    # endpoint.traffic = {"demo": 100}
+    # workspace_ml_client.begin_create_or_update(endpoint).result()
    
 
 
@@ -282,7 +282,7 @@ def main():
     
     # print("endpoint name:",endpoint)
     create_online_endpoint(workspace_ml_client, endpoint)
-    # create_online_deployment(workspace_ml_client, endpoint, latest_model)
+    create_online_deployment(workspace_ml_client, endpoint, latest_model)
     sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
 
 if __name__ == "__main__":
