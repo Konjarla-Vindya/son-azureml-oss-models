@@ -206,7 +206,7 @@ def main():
     print("Present test model name : ",test_model_name)
 
     print (f"test_subscription_id: {queue['subscription']}")
-    print (f"test_resource_group: {queue['subscription']}")
+    print (f"test_resource_group: {queue['resource_group']}")
     print (f"test_workspace_name: {queue['workspace']}")
     print (f"test_model_name: {test_model_name}")
     print (f"test_sku_type: {test_sku_type}")
@@ -264,7 +264,8 @@ def main():
 # # generic_model_download_and_register
 #     # automated_distlbert
     timestamp = int(time.time())
-    online_endpoint_name = "fillmask" + str(timestamp)
+    online_endpoint_name ="fillmask1691140714"
+    # "fillmask" + str(timestamp)
     print (f"online_endpoint_name: {online_endpoint_name}")
     endpoint = ManagedOnlineEndpoint(
         name=online_endpoint_name,
@@ -273,7 +274,7 @@ def main():
    
     print("latest_model---------------------------------------------:",latest_model)
     # print("endpoint name:",endpoint)
-    create_online_endpoint(workspace_ml_client, endpoint)
+    # create_online_endpoint(workspace_ml_client, endpoint)
     create_online_deployment(workspace_ml_client, endpoint, latest_model)
     # sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
 
