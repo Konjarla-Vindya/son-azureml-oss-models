@@ -1,10 +1,14 @@
 import time, json, os 
-#from azure.ai.ml.constants import AssetTypes
+from azure.ai.ml.constants import AssetTypes
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
     ManagedOnlineDeployment,
     OnlineRequestSettings,
-    ProbeSettings
+    ProbeSettings,
+    Model,
+    ModelConfiguration,
+    ModelPackage,
+    AzureMLOnlineInferencingServer
 )
 
 class ModelInferenceAndDeployemnt:
@@ -150,25 +154,46 @@ class ModelInferenceAndDeployemnt:
         # task = tags_dict['task']
         # print("the task is:",task)
         #endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
+        # timestamp = int(time.time())
+        # #online_endpoint_name = task + str(timestamp)
+        # online_endpoint_name = "Testing" + str(timestamp)
+        # print (f"online_endpoint_name: {online_endpoint_name}")
+        # endpoint = ManagedOnlineEndpoint(
+        #     name=online_endpoint_name,
+        #     auth_mode="key",
+        # )
+    
+        # print("latest_model:",latest_model)
+        # print("endpoint name:",endpoint)
+        # self.create_online_endpoint(self.workspace_ml_client, endpoint)
+        # self.create_online_deployment(self.workspace_ml_client, endpoint, latest_model)
+        #self.sample_inference(latest_model, self.registry, self.workspace_ml_client, online_endpoint_name)
+        model_for_package = Model(name=latest_model.name, version=latest_model.version, type=AssetTypes.MLFLOW_MODEL)
+        model_configuration = ModelConfiguration(mode="download")
+        package_name = f"package-v2-{latest_model.name}"
+        package_config = ModelPackage(
+                        target_environment_name=package_name,
+                        inferencing_server=AzureMLOnlineInferencingServer(),
+                        model_configuration=model_configuration
+            )
+        model_package = self.workspace_ml_client.models.package(
+                            latest_model.name, 
+                            latest_model.version, 
+                            package_config
+                        )
         timestamp = int(time.time())
-        #online_endpoint_name = task + str(timestamp)
         online_endpoint_name = "Testing" + str(timestamp)
         print (f"online_endpoint_name: {online_endpoint_name}")
         endpoint = ManagedOnlineEndpoint(
             name=online_endpoint_name,
             auth_mode="key",
         )
-    
-        print("latest_model:",latest_model)
-        print("endpoint name:",endpoint)
-        self.create_online_endpoint(self.workspace_ml_client, endpoint)
-        self.create_online_deployment(self.workspace_ml_client, endpoint, latest_model)
-        #self.sample_inference(latest_model, self.registry, self.workspace_ml_client, online_endpoint_name)
-        # model_for_package = Model(name=latest_model.name, version=latest_model.version, type=AssetTypes.MLFLOW_MODEL)
-        # model_configuration = ModelConfiguration(mode="download")
-        # package_name = f"package-v2-{model_name}"
-        # package_config = ModelPackage(
-        #                 target_environment_name=package_name,
-        #                 inferencing_server=AzureMLOnlineInferencingServer(),
-        #                 model_configuration=model_configuration
-        #     )
+        self.workspace_ml_client.begin_create_or_update(endpoint).result()
+        deployment_name = f"deployment-{latest_model.name}"
+        deployment_config = ManagedOnlineDeployment(
+                name = deployment_name,
+                endpoint_name=online_endpoint_name,
+                environment=model_package,
+                instance_count=1
+            )
+        deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(deployment_config).result()
