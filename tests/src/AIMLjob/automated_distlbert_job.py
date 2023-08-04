@@ -17,6 +17,23 @@ from azure.ai.ml.entities import (
     ManagedOnlineDeployment,
     OnlineRequestSettings,
 )
+import transformers
+from datasets import load_dataset
+import mlflow
+import datetime
+from azure.ai.ml import MLClient
+from azure.identity import DefaultAzureCredential
+from azure.ai.ml.constants import AssetTypes
+from azure.ai.ml.entities import (
+    ManagedOnlineEndpoint,
+    ManagedOnlineDeployment,
+    Model,
+    ModelConfiguration,
+    ModelPackage,
+    Environment,
+    CodeConfiguration,
+    AzureMLOnlineInferencingServer
+)
 def get_error_messages():
     # load ../config/errors.json into a dictionary
     with open('../../config/errors.json') as f:
@@ -132,16 +149,49 @@ def create_online_endpoint(workspace_ml_client, endpoint):
 
 def create_online_deployment(workspace_ml_client, endpoint, latest_model):
     print ("In create_online_deployment...")
-    demo_deployment = ManagedOnlineDeployment(
-        name="demo",
-        endpoint_name=endpoint.name,
-        model=latest_model.id,
-        instance_type="Standard_DS4_v2",
-        instance_count=1,
-    )
-    workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).result()
-    # endpoint.traffic = {"demo": 100}
-    # workspace_ml_client.begin_create_or_update(endpoint).result()
+    model_for_package = Model(name=latest_model.name, version=latest_model.version, type=AssetTypes.MLFLOW_MODEL)
+    model_configuration = ModelConfiguration(mode="download")
+    package_name = f"package-v2-{latest_model.name}"
+    package_config = ModelPackage(
+                        target_environment_name=package_name,
+                        inferencing_server=AzureMLOnlineInferencingServer(),
+                        model_configuration=model_configuration
+            )
+
+    model_package = workspace_ml_client.models.package(
+                            latest_model.name,
+                            latest_model.version,
+                            package_config
+                        )
+
+        
+
+    workspace_ml_client.begin_create_or_update(endpoint).result()
+    deployment_name = latest_model.name
+
+    deployment_config = ManagedOnlineDeployment(
+                name = deployment_name,
+                model=latest_model.id,
+                endpoint_name=online_endpoint_name,
+                environment=model_package,
+                instance_count=1
+            )
+
+    deployment = workspace_ml_client.online_deployments.begin_create_or_update(deployment_config).result()
+
+
+
+
+    # demo_deployment = ManagedOnlineDeployment(
+    #     name="demo",
+    #     endpoint_name=endpoint.name,
+    #     model=latest_model.id,
+    #     instance_type="Standard_DS4_v2",
+    #     instance_count=1,
+    # )
+    # workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).result()
+    # # endpoint.traffic = {"demo": 100}
+    # # workspace_ml_client.begin_create_or_update(endpoint).result()
    
 
 
@@ -283,7 +333,7 @@ def main():
     # print("endpoint name:",endpoint)
     create_online_endpoint(workspace_ml_client, endpoint)
     create_online_deployment(workspace_ml_client, endpoint, latest_model)
-    sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
+    # sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
 
 if __name__ == "__main__":
     main()
