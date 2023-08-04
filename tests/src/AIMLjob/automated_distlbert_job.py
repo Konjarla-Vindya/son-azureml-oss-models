@@ -174,7 +174,8 @@ def create_online_deployment(workspace_ml_client, endpoint, latest_model):
             )
 
     deployment = workspace_ml_client.online_deployments.begin_create_or_update(deployment_config).result()
-
+    endpoint.traffic = {latest_model.name: 100}
+    workspace_ml_client.begin_create_or_update(endpoint).result()
 
 
 
@@ -214,7 +215,7 @@ def sample_inference(latest_model,registry, workspace_ml_client, online_endpoint
     try:
         response = workspace_ml_client.online_endpoints.invoke(
             endpoint_name=online_endpoint_name,
-            deployment_name="demo",
+            deployment_name=latest_model.name,
             request_file=scoring_file,
         )
         response_json = json.loads(response)
@@ -327,9 +328,9 @@ def main():
     print(latest_model.flavors["transformers"]["task"])
     
     # print("endpoint name:",endpoint)
-    create_online_endpoint(workspace_ml_client, endpoint)
-    create_online_deployment(workspace_ml_client, endpoint, latest_model)
-    # sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
+    # create_online_endpoint(workspace_ml_client, endpoint)
+    # create_online_deployment(workspace_ml_client, endpoint, latest_model)
+    sample_inference(latest_model,queue['registry'], workspace_ml_client, online_endpoint_name)
 
 if __name__ == "__main__":
     main()
