@@ -168,7 +168,7 @@ def create_online_deployment(workspace_ml_client, endpoint, latest_model):
     deployment_config = ManagedOnlineDeployment(
                 name = deployment_name,
                 model=latest_model.id,
-                endpoint_name=online_endpoint_name,
+                endpoint_name=endpoint.name,
                 environment=model_package,
                 instance_count=1
             )
