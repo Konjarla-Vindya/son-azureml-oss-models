@@ -63,14 +63,14 @@ def set_next_trigger_model(queue):
         print(f'NEXT_MODEL={next_model}', file=fh)
 
 
-def get_latest_model_version(registry_ml_client, model_name):
+def get_latest_model_version(workspace_ml_client, model_name):
     print ("In get_latest_model_version...")
-    version_list = list(registry_ml_client.models.list(model_name))
+    version_list = list(workspace_ml_client.models.list(model_name))
     if len(version_list) == 0:
         print("Model not found in registry")
     else:
         model_version = version_list[0].version
-    latest_model = registry_ml_client.models.get(model_name, model_version)
+    latest_model = workspace_ml_client.models.get(model_name, model_version)
     print(
     "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
         latest_model.name, latest_model.version, latest_model.id
@@ -241,7 +241,7 @@ def main():
     )
 
     
-    latest_model = get_latest_model_version(registry_ml_client, test_model_name)
+    latest_model = get_latest_model_version(workspace_ml_client, test_model_name)
     #download_and_register_model()
     #  # get the task tag from the latest_model.tags
     # tags = str(latest_model.tags)
@@ -252,13 +252,14 @@ def main():
     # task = tags_dict['task']
     # print("the task is:",task)
     
-    compute_target = create_or_get_compute_target(workspace_ml_client)
-    environment_variables = {"test_model_name": test_model_name, 
-           "subscription": queue['subscription'],
-           "resource_group": queue['resource_group'],
-           "workspace": queue['workspace']}
-    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="env:5", compute="cpu-cluster",environment_variables=environment_variables)
-    create_and_get_job_studio_url(command_job, workspace_ml_client)
+    # compute_target = create_or_get_compute_target(workspace_ml_client)
+    # environment_variables = {"test_model_name": test_model_name, 
+    #        "subscription": queue['subscription'],
+    #        "resource_group": queue['resource_group'],
+    #        "workspace": queue['workspace']}
+    # command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="env:5", compute="cpu-cluster",environment_variables=environment_variables)
+    # create_and_get_job_studio_url(command_job, workspace_ml_client)
+    
 #     # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
 # # generic_model_download_and_register
 #     # automated_distlbert
