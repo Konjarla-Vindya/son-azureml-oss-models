@@ -132,6 +132,15 @@ class ModelInferenceAndDeployemnt:
     
     def model_infernce_deployment(self):
         latest_model = self.get_latest_model_version(self.registry_ml_client, self.test_model_name)
+        # task = latest_model.flavors["transformers"]["task"]
+        # scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
+        # # check of scoring_file exists
+        # try:
+        #     with open(scoring_file) as f:
+        #         scoring_input = json.load(f)
+        #         print (f"scoring_input file:\n\n {scoring_input}\n\n")
+        # except Exception as e:
+        #     print (f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
         #download_and_register_model()
         # get the task tag from the latest_model.tags
         # tags = str(latest_model.tags)
@@ -143,20 +152,20 @@ class ModelInferenceAndDeployemnt:
         # task = tags_dict['task']
         # print("the task is:",task)
         #endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
-        # timestamp = int(time.time())
+        timestamp = int(time.time())
         # #online_endpoint_name = task + str(timestamp)
-        # online_endpoint_name = "Testing" + str(timestamp)
-        # print (f"online_endpoint_name: {online_endpoint_name}")
-        # endpoint = ManagedOnlineEndpoint(
-        #     name=online_endpoint_name,
-        #     auth_mode="key",
-        # )
+        online_endpoint_name = "Testing" + str(timestamp)
+        print (f"online_endpoint_name: {online_endpoint_name}")
+        endpoint = ManagedOnlineEndpoint(
+            name=online_endpoint_name,
+            auth_mode="key",
+        )
     
         # print("latest_model:",latest_model)
         # print("endpoint name:",endpoint)
-        # self.create_online_endpoint(self.workspace_ml_client, endpoint)
-        # self.create_online_deployment(self.workspace_ml_client, endpoint, latest_model)
-        # task = latest_model.flavors["transformers"]["task"][0]
+        self.create_online_endpoint(self.workspace_ml_client, endpoint)
+        self.create_online_deployment(self.workspace_ml_client, endpoint, latest_model)
+        # task = latest_model.flavors["transformers"]["task"]
         # model_for_package = Model(name=latest_model.name, version=latest_model.version, type=AssetTypes.MLFLOW_MODEL)
         # model_configuration = ModelConfiguration(mode="download")
         # package_name = f"package-v2-{latest_model.name}"
@@ -187,26 +196,26 @@ class ModelInferenceAndDeployemnt:
         #         instance_count=1
         #     )
         # deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(deployment_config).result()
-        timestamp = int(time.time())
-        online_endpoint_name = "fill-mask" + str(timestamp)
-        endpoint = ManagedOnlineEndpoint(
-            name=online_endpoint_name,
-            description="Online endpoint for "
-            + latest_model.name
-            + ", for fill-mask task",
-            auth_mode="key",
-        )
-        self.workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).result()
-        demo_deployment = ManagedOnlineDeployment(
-            name="demo",
-            endpoint_name=online_endpoint_name,
-            model=latest_model.id,
-            #instance_type="Standard_DS2_v2",
-            instance_count=1,
-            request_settings=OnlineRequestSettings(
-                request_timeout_ms=60000,
-            ),
-        )
-        self.workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).result()
-        endpoint.traffic = {"demo": 100}
-        self.workspace_ml_client.begin_create_or_update(endpoint).result()
+        # timestamp = int(time.time())
+        # online_endpoint_name = "fill-mask" + str(timestamp)
+        # endpoint = ManagedOnlineEndpoint(
+        #     name=online_endpoint_name,
+        #     description="Online endpoint for "
+        #     + latest_model.name
+        #     + ", for fill-mask task",
+        #     auth_mode="key",
+        # )
+        # self.workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).result()
+        # demo_deployment = ManagedOnlineDeployment(
+        #     name="demo",
+        #     endpoint_name=online_endpoint_name,
+        #     model=latest_model.id,
+        #     #instance_type="Standard_DS2_v2",
+        #     instance_count=1,
+        #     request_settings=OnlineRequestSettings(
+        #         request_timeout_ms=60000,
+        #     ),
+        # )
+        # self.workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).result()
+        # endpoint.traffic = {"demo": 100}
+        # self.workspace_ml_client.begin_create_or_update(endpoint).result()
