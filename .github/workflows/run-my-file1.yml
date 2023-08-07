@@ -1,5 +1,4 @@
 name: run main.py
-
 - name: pip-install-azure-ai-ml
   run: pip install azure-ai-ml
 - name: pip-install-azureml-core
