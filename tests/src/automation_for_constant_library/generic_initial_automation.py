@@ -166,7 +166,7 @@ if __name__ == "__main__":
            }
     #command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:1", compute="STANDARD-D13", environment_variables=environment_variables)
     #create_and_get_job_studio_url(command_job, workspace_ml_client)
-    ml_client_registry = MLClient(credential, registry_name=queue.HuggingFace)
+    ml_client_registry = MLClient(credential, registry_name=queue.registry)
     import_model = ml_client_registry.components.get(name="import_model", label="latest")
     pipeline = Pipeline(import_model=import_model)
     pipeline_object = pipeline.create_pipeline(model_id=test_model_name, compute="STANDARD-D13")
@@ -179,7 +179,7 @@ if __name__ == "__main__":
     )
     # wait for the pipeline job to complete
     workspace_ml_client.jobs.stream(pipeline_job.name)
-    
+
     InferenceAndDeployment = ModelInferenceAndDeployemnt(
         test_model_name=test_model_name,
         workspace_ml_client=workspace_ml_client,
