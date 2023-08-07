@@ -123,10 +123,10 @@ def get_pipeline(import_model, model_id, compute):
     # Set job to not continue on failure
     import_model_job.settings.continue_on_step_failure = False 
 
-    # return {
-    # "model_registration_details": import_model_job.outputs.model_registration_details
-    # }
-    return import_model_job.outputs.model_registration_details
+    return {
+    "model_registration_details": import_model_job.outputs.model_registration_details
+    }
+    #return import_model_job.outputs.model_registration_details
 
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
