@@ -6,6 +6,7 @@ from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
 from azure.ai.ml import MLClient, UserIdentityConfiguration
+from azure.ai.ml.dsl import pipeline
 import mlflow
 import json
 import os

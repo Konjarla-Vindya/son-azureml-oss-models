@@ -1,7 +1,9 @@
+from azure.ai.ml.dsl import pipeline
 class Pipeline:
     def __init__(self, import_model ) -> None :
         self.import_model  = import_model
 
+    @pipeline
     def create_pipeline(self, model_id, compute) -> dict :
         import_model_job = self.import_model(model_id=model_id, compute=compute)
         # Set job to not continue on failure

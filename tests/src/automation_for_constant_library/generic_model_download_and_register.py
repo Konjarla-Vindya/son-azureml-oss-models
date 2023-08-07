@@ -15,7 +15,7 @@ class Model:
         self.model_name = model_name
     
     def download_model_and_tokenizer(self)->dict:
-        model_detail = AutoConfig.from_pretrained("bert-base-uncased")
+        model_detail = AutoConfig.from_pretrained(self.model_name)
         model_library_name = model_detail.to_dict()["architectures"][0]
         model_library = getattr(transformers, model_library_name)
         model = model_library.from_pretrained(self.model_name)
