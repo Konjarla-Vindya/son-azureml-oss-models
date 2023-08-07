@@ -1,0 +1,15 @@
+name: run main.py
+
+- name: pip-install-azure-ai-ml
+  run: pip install azure-ai-ml
+- name: pip-install-azureml-core
+  run: pip install azureml-core
+- name: pip-install-azureml-mlflow
+  run: pip install azureml-mlflow
+- name: pip-install-mlflow
+  run: pip install mlflow
+- name: pip-install-python-box
+  run: pip install python-box 
+- name: execute py script # run main.py
+  run: python run-my-file.py
+  working-directory: automation/tests/src
