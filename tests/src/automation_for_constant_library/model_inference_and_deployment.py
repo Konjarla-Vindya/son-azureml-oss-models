@@ -193,7 +193,7 @@ class ModelInferenceAndDeployemnt:
         # deployment_name = latest_model.name
         # deployment_config = ManagedOnlineDeployment(
         #         name = deployment_name,
-        #         model=latest_model.id,
+        #         model=latest_model,
         #         endpoint_name=online_endpoint_name,
         #         environment=model_package,
         #         instance_count=1
