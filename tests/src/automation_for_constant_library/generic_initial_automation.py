@@ -1,10 +1,11 @@
 from azureml.core import Workspace
 #from generic_model_download_and_register import Model
 from model_inference_and_deployment import ModelInferenceAndDeployemnt
+from create_pipeline import Pipeline
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
-from azure.ai.ml import MLClient
+from azure.ai.ml import MLClient, UserIdentityConfiguration
 import mlflow
 import json
 import os
@@ -165,6 +166,20 @@ if __name__ == "__main__":
            }
     #command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:1", compute="STANDARD-D13", environment_variables=environment_variables)
     #create_and_get_job_studio_url(command_job, workspace_ml_client)
+    ml_client_registry = MLClient(credential, registry_name=queue.HuggingFace)
+    import_model = ml_client_registry.components.get(name="import_model", label="latest")
+    pipeline = Pipeline(import_model=import_model)
+    pipeline_object = pipeline.create_pipeline(model_id=test_model_name, compute="STANDARD-D13")
+    pipeline_object.identity = UserIdentityConfiguration()
+    pipeline_object.settings.force_rerun = True
+
+    # submit the pipeline job
+    pipeline_job = workspace_ml_client.jobs.create_or_update(
+        pipeline_object, experiment_name=f"Import Model Pipeline"
+    )
+    # wait for the pipeline job to complete
+    workspace_ml_client.jobs.stream(pipeline_job.name)
+    
     InferenceAndDeployment = ModelInferenceAndDeployemnt(
         test_model_name=test_model_name,
         workspace_ml_client=workspace_ml_client,
