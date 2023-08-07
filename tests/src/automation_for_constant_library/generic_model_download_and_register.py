@@ -1,5 +1,5 @@
 from transformers import AutoModel,AutoTokenizer,AutoConfig
-#import transformers
+import transformers
 #from azureml.core import Workspace
 #from azureml.core import Workspace
 #from azureml.mlflow import get_mlflow_tracking_uri
@@ -15,7 +15,10 @@ class Model:
         self.model_name = model_name
     
     def download_model_and_tokenizer(self)->dict:
-        model = AutoModel.from_pretrained(self.model_name)
+        model_detail = AutoConfig.from_pretrained("bert-base-uncased")
+        model_library_name = model_detail.to_dict()["architectures"][0]
+        model_library = getattr(transformers, model_library_name)
+        model = model_library.from_pretrained(self.model_name)
         tokenizer = AutoTokenizer.from_pretrained(self.model_name)
 
         # config = AutoConfig.from_pretrained(self.model_name)

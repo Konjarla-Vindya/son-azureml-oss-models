@@ -1,7 +1,7 @@
 from azureml.core import Workspace
 #from generic_model_download_and_register import Model
 from model_inference_and_deployment import ModelInferenceAndDeployemnt
-from azure.identity import DefaultAzureCredential
+from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
 from azure.ai.ml import MLClient
@@ -135,19 +135,22 @@ if __name__ == "__main__":
         credential = DefaultAzureCredential()
         credential.get_token("https://management.azure.com/.default")
     except Exception as ex:
-        print ("::error:: Auth failed, DefaultAzureCredential not working: \n{e}")
-        exit (1)
+        # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
+        credential = InteractiveBrowserCredential()
     print("workspace_name : ", queue.workspace)
-    workspace_ml_client = MLClient(
-        credential=credential, 
-        subscription_id=queue.subscription,
-        resource_group_name=queue.resource_group,
-        workspace_name=queue.workspace
-    )
-    registry_ml_client = MLClient(
-        credential=credential, 
-        registry_name=queue.registry
-    )
+    try:
+        workspace_ml_client = MLClient.from_config(credential=credential)
+    except:
+        workspace_ml_client = MLClient(
+            credential=credential, 
+            subscription_id=queue.subscription,
+            resource_group_name=queue.resource_group,
+            workspace_name=queue.workspace
+        )
+    # registry_ml_client = MLClient(
+    #     credential=credential, 
+    #     registry_name=queue.registry
+    # )
     ws = Workspace(
                 subscription_id = queue.subscription,
                 resource_group = queue.resource_group,
@@ -160,8 +163,8 @@ if __name__ == "__main__":
            "resource_group": queue.resource_group,
            "workspace": queue.workspace
            }
-    #command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:1", compute="STANDARD-D13", environment_variables=environment_variables)
-    #create_and_get_job_studio_url(command_job, workspace_ml_client)
+    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:1", compute="STANDARD-D13", environment_variables=environment_variables)
+    create_and_get_job_studio_url(command_job, workspace_ml_client)
     InferenceAndDeployment = ModelInferenceAndDeployemnt(
         test_model_name=test_model_name,
         workspace_ml_client=workspace_ml_client,
