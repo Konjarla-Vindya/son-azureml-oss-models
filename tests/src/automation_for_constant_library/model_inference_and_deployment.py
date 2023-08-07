@@ -176,35 +176,35 @@ class ModelInferenceAndDeployemnt:
         #model_for_package = Model(name=latest_model.name, version=latest_model.version, type=AssetTypes.MLFLOW_MODEL)
         
         
-        # model_configuration = ModelConfiguration(mode="download")
-        # package_name = f"package-v2-{latest_model.name}"
-        # package_config = ModelPackage(
-        #                  target_environment_name=package_name,
-        #                  inferencing_server=AzureMLOnlineInferencingServer(),
-        #                  model_configuration=model_configuration
-        #      )
-        # model_package = self.workspace_ml_client.models.package(
-        #                      latest_model.name, 
-        #                      latest_model.version, 
-        #                      package_config
-        #                  )
-        # # timestamp = int(time.time())
-        # # online_endpoint_name = "Testing" + str(timestamp)
-        # # print (f"online_endpoint_name: {online_endpoint_name}")
-        # endpoint = ManagedOnlineEndpoint(
-        #      name=online_endpoint_name,
-        #      auth_mode="key",
-        #  )
-        # self.workspace_ml_client.begin_create_or_update(endpoint).result()
-        # deployment_name = latest_model.name
-        # deployment_config = ManagedOnlineDeployment(
-        #         name = deployment_name,
-        #         model=latest_model,
-        #         endpoint_name=online_endpoint_name,
-        #         environment=model_package,
-        #         instance_count=1
-        #     )
-        # deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(deployment_config).result()
+        model_configuration = ModelConfiguration(mode="download")
+        package_name = f"package-v2-{latest_model.name}"
+        package_config = ModelPackage(
+                         target_environment_name=package_name,
+                         inferencing_server=AzureMLOnlineInferencingServer(),
+                         model_configuration=model_configuration
+             )
+        model_package = self.workspace_ml_client.models.package(
+                             latest_model.name, 
+                             latest_model.version, 
+                             package_config
+                         )
+        # timestamp = int(time.time())
+        # online_endpoint_name = "Testing" + str(timestamp)
+        # print (f"online_endpoint_name: {online_endpoint_name}")
+        endpoint = ManagedOnlineEndpoint(
+             name=online_endpoint_name,
+             auth_mode="key",
+         )
+        self.workspace_ml_client.begin_create_or_update(endpoint).result()
+        deployment_name = latest_model.name
+        deployment_config = ManagedOnlineDeployment(
+                name = deployment_name,
+                model=latest_model,
+                endpoint_name=online_endpoint_name,
+                environment=model_package,
+                instance_count=1
+            )
+        deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(deployment_config).result()
         
         
         # timestamp = int(time.time())

@@ -1,6 +1,9 @@
 {
     "queue_name": "test-automation",
     "models": [
+        "bert-base-uncased",
+        "distilbert-base-uncased",
+        "albert-base-v2",
         "gpt2-medium"
     ],
     "workspace": "test-northeurope",
