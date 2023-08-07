@@ -4,7 +4,7 @@ class Pipeline:
         self.import_model  = import_model
 
     @pipeline
-    def create_pipeline(self, model_id, compute) -> dict :
+    def create_pipeline(self, model_id, compute):
         import_model_job = self.import_model(model_id=model_id, compute=compute)
         # Set job to not continue on failure
         import_model_job.settings.continue_on_step_failure = False 
