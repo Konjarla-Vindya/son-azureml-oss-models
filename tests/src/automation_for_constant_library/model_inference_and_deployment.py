@@ -146,6 +146,7 @@ class ModelInferenceAndDeployemnt:
             print (f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
         downloaded_model = self.workspace_ml_client.models.download(latest_model.name, latest_model.version, download_path=f"./model_download")
         loaded_model = mlflow.transformers.load_model(f"./model_download/{latest_model.name}/{latest_model.name}-artifact", return_type="pipeline")
+        loaded_model(scoring_input)
         print(type(loaded_model))
         #download_and_register_model()
         # get the task tag from the latest_model.tags
