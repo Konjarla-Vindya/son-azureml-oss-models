@@ -117,8 +117,8 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
     return returned_job.studio_url
 # studio_url = create_and_get_job_studio_url(command_job)
 # print("Studio URL for the job:", studio_url)
-@pipeline
-def create_pipeline(import_model, model_id, compute):
+#@pipeline
+def get_pipeline(import_model, model_id, compute):
     import_model_job = import_model(model_id=model_id, compute=compute)
     # Set job to not continue on failure
     import_model_job.settings.continue_on_step_failure = False 
@@ -179,17 +179,16 @@ if __name__ == "__main__":
     ml_client_registry = MLClient(credential, registry_name=queue.registry)
     import_model = ml_client_registry.components.get(name="import_model", label="latest")
     #pipeline = Pipeline(import_model=import_model)
-    pipeline_object = ''
     try:
-        pipeline_object = create_pipeline(
+        pipeline_object = get_pipeline(
                                 import_model=import_model, 
                                 model_id=test_model_name,
                                 compute="STANDARD-D13"
                             )
-    except Exception as ex:
-        print("The exception is this : ", ex)
         pipeline_object.identity = UserIdentityConfiguration()
         pipeline_object.settings.force_rerun = True
+    except Exception as ex:
+        print("The exception is this : ", ex)
 
     # submit the pipeline job
     pipeline_job = workspace_ml_client.jobs.create_or_update(
