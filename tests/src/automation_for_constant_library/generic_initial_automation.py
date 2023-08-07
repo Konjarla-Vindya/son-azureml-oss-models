@@ -117,6 +117,15 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
     return returned_job.studio_url
 # studio_url = create_and_get_job_studio_url(command_job)
 # print("Studio URL for the job:", studio_url)
+@pipeline
+def create_pipeline(import_model, model_id, compute):
+    import_model_job = import_model(model_id=model_id, compute=compute)
+    # Set job to not continue on failure
+    import_model_job.settings.continue_on_step_failure = False 
+
+    return {
+    "model_registration_details": import_model_job.outputs.model_registration_details
+    }
 
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -160,17 +169,21 @@ if __name__ == "__main__":
             )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(workspace_ml_client)
-    environment_variables = {"test_model_name": test_model_name, 
-           "subscription": queue.subscription,
-           "resource_group": queue.resource_group,
-           "workspace": queue.workspace
-           }
+    # environment_variables = {"test_model_name": test_model_name, 
+    #        "subscription": queue.subscription,
+    #        "resource_group": queue.resource_group,
+    #        "workspace": queue.workspace
+    #        }
     #command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:1", compute="STANDARD-D13", environment_variables=environment_variables)
     #create_and_get_job_studio_url(command_job, workspace_ml_client)
     ml_client_registry = MLClient(credential, registry_name=queue.registry)
     import_model = ml_client_registry.components.get(name="import_model", label="latest")
-    pipeline = Pipeline(import_model=import_model)
-    pipeline_object = pipeline.create_pipeline(model_id=test_model_name, compute="STANDARD-D13")
+    #pipeline = Pipeline(import_model=import_model)
+    pipeline_object = create_pipeline(
+                            import_model=import_model, 
+                            model_id=test_model_name,
+                            compute="STANDARD-D13"
+                        )
     pipeline_object.identity = UserIdentityConfiguration()
     pipeline_object.settings.force_rerun = True
 
