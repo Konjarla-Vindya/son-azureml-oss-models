@@ -33,6 +33,6 @@ jobs:
       run: pip install python-box 
     - name: deploy-model-step
       id: deploy-model-step
-      run: python generic_initial_automation.py
-      working-directory: tests/src/automation_for_constant_library
+      run: python d1.py
+      working-directory: tests/src
     
