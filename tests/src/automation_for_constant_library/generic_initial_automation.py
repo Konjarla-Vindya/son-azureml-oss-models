@@ -117,7 +117,7 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
     return returned_job.studio_url
 # studio_url = create_and_get_job_studio_url(command_job)
 # print("Studio URL for the job:", studio_url)
-#@pipeline
+@pipeline
 def get_pipeline(import_model, model_id, compute):
     import_model_job = import_model(model_id=model_id, compute=compute)
     # Set job to not continue on failure
