@@ -36,7 +36,7 @@ jobs:
       run: pip install python-box 
     - name: deploy-model-step
       id: deploy-model-step
-      run: python generic_initial_automation.py --model_name ${{ github.event.inputs.model_name }}
+      run: python deploy_multiple_models.py --model_name ${{ github.event.inputs.model_name }}
       working-directory: tests/src/automation_for_constant_library
     - name: trigger-next-model-step
       if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
