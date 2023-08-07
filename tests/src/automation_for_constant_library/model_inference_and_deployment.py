@@ -133,6 +133,8 @@ class ModelInferenceAndDeployemnt:
     def model_infernce_deployment(self):
         latest_model = self.get_latest_model_version(self.registry_ml_client, self.test_model_name)
         task = latest_model.flavors["transformers"]["task"]
+        print("latest_model:",latest_model)
+        print("Task is : ", task)
         # scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
         # # check of scoring_file exists
         # try:
@@ -161,8 +163,7 @@ class ModelInferenceAndDeployemnt:
         #     auth_mode="key",
         # )
     
-        print("latest_model:",latest_model)
-        print("endpoint name:",endpoint)
+        #print("endpoint name:",endpoint)
         #self.create_online_endpoint(self.workspace_ml_client, endpoint)
         #self.create_online_deployment(self.workspace_ml_client, endpoint, latest_model)
         # task = latest_model.flavors["transformers"]["task"]
