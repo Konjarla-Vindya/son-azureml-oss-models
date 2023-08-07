@@ -179,11 +179,14 @@ if __name__ == "__main__":
     ml_client_registry = MLClient(credential, registry_name=queue.registry)
     import_model = ml_client_registry.components.get(name="import_model", label="latest")
     #pipeline = Pipeline(import_model=import_model)
-    pipeline_object = create_pipeline(
-                            import_model=import_model, 
-                            model_id=test_model_name,
-                            compute="STANDARD-D13"
-                        )
+    try:
+        pipeline_object = create_pipeline(
+                                import_model=import_model, 
+                                model_id=test_model_name,
+                                compute="STANDARD-D13"
+                            )
+    except Exception as ex:
+        print("The exception is this : ", ex)
     pipeline_object.identity = UserIdentityConfiguration()
     pipeline_object.settings.force_rerun = True
 
