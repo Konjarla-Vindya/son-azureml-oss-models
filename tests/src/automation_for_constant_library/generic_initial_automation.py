@@ -9,7 +9,7 @@ from azure.ai.ml import MLClient, UserIdentityConfiguration
 from azure.ai.ml.dsl import pipeline
 import mlflow
 import json
-import os, traceback
+import os, sys
 from box import ConfigBox
 
 # constants
@@ -189,7 +189,9 @@ if __name__ == "__main__":
         pipeline_object.identity = UserIdentityConfiguration()
         pipeline_object.settings.force_rerun = True
     except Exception as ex:
-        print("The exception is this : ", traceback.format_exc())
+        exc_type, exc_obj, exc_tb = sys.exc_info()
+        print(f"The exception occured at this line no : {exc_tb.tb_lineno} "+
+              "the exception is this one :", ex)
 
     # submit the pipeline job
     pipeline_job = workspace_ml_client.jobs.create_or_update(
