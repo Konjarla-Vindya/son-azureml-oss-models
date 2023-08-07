@@ -10,6 +10,7 @@ from azure.ai.ml.entities import (
     ModelPackage,
     AzureMLOnlineInferencingServer
 )
+import mlflow
 
 class ModelInferenceAndDeployemnt:
     def __init__(self, test_model_name, workspace_ml_client, registry_ml_client, registry) -> None:
@@ -135,14 +136,17 @@ class ModelInferenceAndDeployemnt:
         task = latest_model.flavors["transformers"]["task"]
         print("latest_model:",latest_model)
         print("Task is : ", task)
-        # scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
-        # # check of scoring_file exists
-        # try:
-        #     with open(scoring_file) as f:
-        #         scoring_input = json.load(f)
-        #         print (f"scoring_input file:\n\n {scoring_input}\n\n")
-        # except Exception as e:
-        #     print (f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
+        scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
+        # check of scoring_file exists
+        try:
+            with open(scoring_file) as f:
+                scoring_input = json.load(f)
+                print (f"scoring_input file:\n\n {scoring_input}\n\n")
+        except Exception as e:
+            print (f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
+        downloaded_model = self.workspace_ml_client.models.download(latest_model.name, latest_model.version, download_path=f"./model_download")
+        loaded_model = mlflow.transformers.load_model(f"./model_download/{latest_model.name}/{latest_model.name}-artifact", return_type="pipeline")
+        print(type(loaded_model))
         #download_and_register_model()
         # get the task tag from the latest_model.tags
         # tags = str(latest_model.tags)

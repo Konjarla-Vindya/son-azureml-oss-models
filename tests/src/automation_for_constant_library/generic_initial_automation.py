@@ -175,30 +175,37 @@ if __name__ == "__main__":
     #        "resource_group": queue.resource_group,
     #        "workspace": queue.workspace
     #        }
-    #command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:1", compute="STANDARD-D13", environment_variables=environment_variables)
-    #create_and_get_job_studio_url(command_job, workspace_ml_client)
-    ml_client_registry = MLClient(credential, registry_name=queue.registry)
-    import_model = ml_client_registry.components.get(name="import_model", label="latest")
-    #pipeline = Pipeline(import_model=import_model)
-    try:
-        pipeline_object = get_pipeline(
-                                import_model=import_model, 
-                                model_id=test_model_name,
-                                compute="STANDARD-D13"
-                            )
-        pipeline_object.identity = UserIdentityConfiguration()
-        pipeline_object.settings.force_rerun = True
-    except Exception as ex:
-        exc_type, exc_obj, exc_tb = sys.exc_info()
-        print(f"The exception occured at this line no : {exc_tb.tb_lineno} "+
-              "the exception is this one :", ex)
+    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:1", compute="STANDARD-D13", environment_variables=environment_variables)
+    create_and_get_job_studio_url(command_job, workspace_ml_client)
 
-    # submit the pipeline job
-    pipeline_job = workspace_ml_client.jobs.create_or_update(
-        pipeline_object, experiment_name=f"Import Model Pipeline"
-    )
-    # wait for the pipeline job to complete
-    workspace_ml_client.jobs.stream(pipeline_job.name)
+
+
+
+    # ml_client_registry = MLClient(credential, registry_name=queue.registry)
+    # import_model = ml_client_registry.components.get(name="import_model", label="latest")
+    # #pipeline = Pipeline(import_model=import_model)
+    # try:
+    #     pipeline_object = get_pipeline(
+    #                             import_model=import_model, 
+    #                             model_id=test_model_name,
+    #                             compute="STANDARD-D13"
+    #                         )
+    #     pipeline_object.identity = UserIdentityConfiguration()
+    #     pipeline_object.settings.force_rerun = True
+    # except Exception as ex:
+    #     exc_type, exc_obj, exc_tb = sys.exc_info()
+    #     print(f"The exception occured at this line no : {exc_tb.tb_lineno} "+
+    #           "the exception is this one :", ex)
+
+    # # submit the pipeline job
+    # pipeline_job = workspace_ml_client.jobs.create_or_update(
+    #     pipeline_object, experiment_name=f"Import Model Pipeline"
+    # )
+    # # wait for the pipeline job to complete
+    # workspace_ml_client.jobs.stream(pipeline_job.name)
+
+
+
 
     InferenceAndDeployment = ModelInferenceAndDeployemnt(
         test_model_name=test_model_name,
