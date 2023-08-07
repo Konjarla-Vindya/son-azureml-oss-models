@@ -179,6 +179,7 @@ if __name__ == "__main__":
     ml_client_registry = MLClient(credential, registry_name=queue.registry)
     import_model = ml_client_registry.components.get(name="import_model", label="latest")
     #pipeline = Pipeline(import_model=import_model)
+    pipeline_object = ''
     try:
         pipeline_object = create_pipeline(
                                 import_model=import_model, 
@@ -187,8 +188,8 @@ if __name__ == "__main__":
                             )
     except Exception as ex:
         print("The exception is this : ", ex)
-    pipeline_object.identity = UserIdentityConfiguration()
-    pipeline_object.settings.force_rerun = True
+        pipeline_object.identity = UserIdentityConfiguration()
+        pipeline_object.settings.force_rerun = True
 
     # submit the pipeline job
     pipeline_job = workspace_ml_client.jobs.create_or_update(
