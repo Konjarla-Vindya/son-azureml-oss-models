@@ -16,7 +16,8 @@ model_names=df2["id"].head(50)
 import os
 
 # The path to the original YAML file
-original_yaml_file = '.github/workflows/1kmodels.yml'
+original_yaml_file = './github/workflows/1kmodels.yml'
+#.github/workflows/1kmodels.yml
 
 # The directory where the generated YAML files will be stored
 output_directory = './tests/src/1kmodelsYaml' 
