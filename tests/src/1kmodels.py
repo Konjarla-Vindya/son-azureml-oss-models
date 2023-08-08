@@ -1,3 +1,4 @@
+print("py started")
 from urllib.request import urlopen
 
 import os
@@ -14,9 +15,14 @@ model_names=df2["id"].head(5)
 #model_names
 
 import os
+print(os.getcwd())
+base_dir = ".github/workflows"
+file_name = "1kmodels.yml"
+file_path = os.path.join(base_dir, file_name)
+
 
 # The path to the original YAML file
-original_yaml_file = ".github/workflows/1kmodels.yml"
+#original_yaml_file = ".github/workflows/1kmodels.yml"
 #.github/workflows/1kmodels.yml
 
 # The directory where the generated YAML files will be stored
@@ -26,7 +32,8 @@ output_directory = './tests/src/1kmodelsYaml'
 #model_names = ['model1', 'model2', ..., 'model1000']
 
 def generate_workflow_yaml(model_name):
-    with open(original_yaml_file, 'r') as f:
+    with open(file_path, 'r') as f:
+    #with open(original_yaml_file, 'r') as f:
         yaml_content = f.read()
 
     # Modify the 'test_model_name' and 'test_queue' fields for the current model
