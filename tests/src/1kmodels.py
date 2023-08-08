@@ -28,7 +28,7 @@ original_yaml_file = "../../.github/workflows/1kmodels.yml"
 #.github/workflows/1kmodels.yml
 
 # The directory where the generated YAML files will be stored
-output_directory = "../../.github/workflows/1kmodelsyml/"
+output_directory = "../../.github/workflows/1kmodelsyml"
 
 # List of 1000 model names
 #model_names = ['model1', 'model2', ..., 'model1000']
@@ -48,6 +48,7 @@ def generate_workflow_yaml(model_name):
 
     # Write the modified YAML content to the generated YAML file
     generated_yaml_path = os.path.join(output_directory, generated_yaml_filename)
+    print("Writing to:", generated_yaml_path)
     with open(generated_yaml_path, 'w') as f:
         f.write(yaml_content)
         print("code parsed")
