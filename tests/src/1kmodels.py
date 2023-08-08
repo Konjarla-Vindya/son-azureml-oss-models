@@ -28,7 +28,7 @@ original_yaml_file = "../../.github/workflows/1kmodels.yml"
 #.github/workflows/1kmodels.yml
 
 # The directory where the generated YAML files will be stored
-output_directory = "../../.github/workflows/1kmodelsyml"
+output_directory = "../../.github/workflows/1kmodelsyml/"
 
 # List of 1000 model names
 #model_names = ['model1', 'model2', ..., 'model1000']
