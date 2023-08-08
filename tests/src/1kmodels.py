@@ -10,9 +10,16 @@ response = urlopen(url)
 data_json = json.loads(response.read())
 #print(data_json)
 df=pd.DataFrame(data_json)
+def contains(x):
+    return 'transformers' in x
+df["transformers"]=df["tags"].apply(contains)
+
 list1=["fill-mask","translation","text-generation","token-classification","summarization","text-classification","question-answering"]
-df2=df.loc[df["pipeline_tag"].isin(list1),["id","pipeline_tag","downloads"]].sort_values(by="downloads",ascending=False).head(1000)
-model_names=df2["id"].head(2)
+df3=df.loc[df["pipeline_tag"].isin(list1),["modelId","downloads","transformers"]].sort_values(by="downloads",ascending=False)
+df4=df3[df3["transformers"]==True]
+df4.head()
+#df2=df.loc[df["pipeline_tag"].isin(list1),["id","pipeline_tag","downloads"]].sort_values(by="downloads",ascending=False).head(1000)
+model_names=df4["id"].head(2)
 #model_names
 
 # import os
