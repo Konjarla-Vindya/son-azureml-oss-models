@@ -63,6 +63,8 @@ def generate_workflow_yaml(model_name):
     print("Writing to:", generated_yaml_path)
     with open(generated_yaml_path, 'w') as f:
         f.write(yaml_content)
+        print(""Content written to file:")
+        print(yaml_content)
         print("code parsed")
 
 if __name__ == "__main__":
