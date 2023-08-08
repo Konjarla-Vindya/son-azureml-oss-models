@@ -36,6 +36,10 @@ original_yaml_file = "../../.github/workflows/1kmodels.yml"
 
 # The directory where the generated YAML files will be stored
 output_directory = "../../.github/workflows/1kmodelsyml"
+print("Current working directory:", os.getcwd())
+print("Output directory:", output_directory)
+os.makedirs(output_directory, exist_ok=True)
+print("Output directory created:", os.path.exists(output_directory))
 
 # List of 1000 model names
 #model_names = ['model1', 'model2', ..., 'model1000']
