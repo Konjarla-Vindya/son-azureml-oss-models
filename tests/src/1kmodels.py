@@ -35,7 +35,7 @@ original_yaml_file = "../../.github/workflows/1kmodels.yml"
 #.github/workflows/1kmodels.yml
 
 # The directory where the generated YAML files will be stored
-output_directory = "../../.github/workflows/1kmodelsyml"
+output_directory = "../../.github/workflows/1kmodels"
 print("Current working directory:", os.getcwd())
 print("Output directory:", output_directory)
 os.makedirs(output_directory, exist_ok=True)
