@@ -56,6 +56,7 @@ def generate_workflow_yaml(model_name):
 
     # Create a filename for the generated YAML file based on the model name
     generated_yaml_filename = f'{model_name}_workflow.yaml'
+    print("My Generated YAML filename:", generated_yaml_filename)
 
     # Write the modified YAML content to the generated YAML file
     generated_yaml_path = os.path.join(output_directory, generated_yaml_filename)
