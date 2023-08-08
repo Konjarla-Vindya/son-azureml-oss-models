@@ -19,7 +19,7 @@ df3=df.loc[df["pipeline_tag"].isin(list1),["modelId","downloads","transformers"]
 df4=df3[df3["transformers"]==True]
 df4.head()
 #df2=df.loc[df["pipeline_tag"].isin(list1),["id","pipeline_tag","downloads"]].sort_values(by="downloads",ascending=False).head(1000)
-model_names=df4["id"].head(2)
+model_names=df4["modelId"].head(2)
 #model_names
 
 # import os
