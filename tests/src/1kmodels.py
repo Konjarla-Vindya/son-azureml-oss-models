@@ -12,7 +12,7 @@ data_json = json.loads(response.read())
 df=pd.DataFrame(data_json)
 list1=["fill-mask","translation","text-generation","token-classification","summarization","text-classification","question-answering"]
 df2=df.loc[df["pipeline_tag"].isin(list1),["id","pipeline_tag","downloads"]].sort_values(by="downloads",ascending=False).head(1000)
-model_names=df2["id"].head(5)
+model_names=df2["id"].head(2)
 #model_names
 
 # import os
@@ -28,7 +28,7 @@ original_yaml_file = "../../.github/workflows/1kmodels.yml"
 #.github/workflows/1kmodels.yml
 
 # The directory where the generated YAML files will be stored
-output_directory = '../../src/1kmodelsYaml' 
+output_directory = '../../tests/src/1kmodelsYaml' 
 
 # List of 1000 model names
 #model_names = ['model1', 'model2', ..., 'model1000']
@@ -50,6 +50,7 @@ def generate_workflow_yaml(model_name):
     generated_yaml_path = os.path.join(output_directory, generated_yaml_filename)
     with open(generated_yaml_path, 'w') as f:
         f.write(yaml_content)
+        print("code parsed")
 
 if __name__ == "__main__":
     # Create the output directory if it doesn't exist
