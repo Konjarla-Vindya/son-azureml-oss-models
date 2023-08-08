@@ -11,6 +11,7 @@ from transformers import pipeline
 import pandas as pd
 import os 
 import mlflow
+import re
 
   
 # import json
@@ -36,11 +37,14 @@ class Model:
         df = pd.DataFrame(data_json, columns=columns_to_read)
         df = df[df.tags.apply(lambda x: string_to_check in x)]
         required_data = df[df.modelId.apply(lambda x: x == self.model_name)]
-        return required_data
+        required_data = required_data["pipeline_tag"].to_string()
+        pattern = r'[0-9-\s+]'
+        final_data = re.sub(pattern, '', required_data)
+        return final_data
     
     def get_sample_input_data(self):
-        required_data = self.get_task_and_sample_data()
-        task = required_data["pipeline_tag"]
+        final_data = self.get_task_and_sample_data()
+        task = final_data
 
         scoring_file = f"sample_inputs/{task}.json"
         # check of scoring_file exists
