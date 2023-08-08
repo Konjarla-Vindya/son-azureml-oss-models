@@ -10,13 +10,13 @@ data_json = json.loads(response.read())
 df=pd.DataFrame(data_json)
 list1=["fill-mask","translation","text-generation","token-classification","summarization","text-classification","question-answering"]
 df2=df.loc[df["pipeline_tag"].isin(list1),["id","pipeline_tag","downloads"]].sort_values(by="downloads",ascending=False).head(1000)
-model_names=df2["id"].head(50)
+model_names=df2["id"].head(5)
 #model_names
 
 import os
 
 # The path to the original YAML file
-original_yaml_file = '../github/workflows/1kmodels.yml'
+original_yaml_file = '.github/workflows/1kmodels.yml'
 #.github/workflows/1kmodels.yml
 
 # The directory where the generated YAML files will be stored
