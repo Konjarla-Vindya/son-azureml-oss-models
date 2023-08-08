@@ -39,7 +39,7 @@ jobs:
       run: pip install python-box 
     - name: deploy-model-step
       id: deploy-model-step
-      run: python Create_Yaml.py
+      run: python 1kmodels.py
       working-directory: tests/src
     - name: trigger-next-model-step
       env:
