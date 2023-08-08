@@ -38,7 +38,7 @@ class Model:
         df = df[df.tags.apply(lambda x: string_to_check in x)]
         required_data = df[df.modelId.apply(lambda x: x == self.model_name)]
         required_data = required_data["pipeline_tag"].to_string()
-        pattern = r'[0-9-\s+]'
+        pattern = r'[0-9\s+]'
         final_data = re.sub(pattern, '', required_data)
         return final_data
     
