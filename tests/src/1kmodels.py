@@ -18,6 +18,7 @@ import os
 print(os.getcwd())
 base_dir = ".github/workflows"
 file_name = "1kmodels.yml"
+print("fetched value")
 file_path = os.path.join(base_dir, file_name)
 
 
