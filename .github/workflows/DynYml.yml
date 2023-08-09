@@ -44,6 +44,10 @@ jobs:
     - name: Commit files
       id: commit
       run: | 
+        - name: azure-login-step
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
         git add --all
         git commit -m "../../tests/logs/model_list_file"           
         git push
