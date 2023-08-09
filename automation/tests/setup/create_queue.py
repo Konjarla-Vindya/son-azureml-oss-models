@@ -127,13 +127,10 @@ def assign_models_to_queues(models, workspace_list):
                         print("current working directory is:", os.getcwd())
                         # if assign_models_to_queues under log_dir does not exist, create it
                         print("args.log_dir:", args.log_dir)
-                        subdirectory_path = os.path.join(args.log_dir, "assign_models_to_queues")
-                        if not os.path.exists(subdirectory_path):
-                            os.makedirs(subdirectory_path)
-                        print("newdir", subdirectory_path)
-                        # if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
-                        #     logpath=Path(f"{args.log_dir}/assign_models_to_queues")
-                        #     os.makedirs(logpath)
+                        
+                        if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
+                            logpath=Path(f"{args.log_dir}/assign_models_to_queues")
+                            os.makedirs(logpath)
                             print("logs created:" f"{args.log_dir}/assign_models_to_queues")
                         # generate filename as DDMMMYYYY-HHMMSS.json
                         timestamp = time.strftime("%d%b%Y-%H%M%S.json")
