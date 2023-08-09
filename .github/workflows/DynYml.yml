@@ -44,8 +44,8 @@ jobs:
     - name: Commit files
       id: commit
       run: | 
-        git config --global user.email "${{ secrets.Suchetha.c@sonata-software.com }}"          
-        git config --global user.name "${{ secrets.Suchetha24 }}"
+        git config --global user.email "${{ secrets.GIT_USER_EMAIL }}"           
+        git config --global user.name "${{ secrets.GIT_USER_NAME }}"
         git add --all
         git commit -m "../../tests/logs/model_list_file"           
         git push
