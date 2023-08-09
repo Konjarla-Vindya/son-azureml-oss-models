@@ -100,7 +100,8 @@ def create_queue_files(queue, workspace_list):
             print("registry",q_dict["registry"])
             with open(f"{args.queue_dir}/{args.test_set}/{workspace}-suchi-{thread}.json", 'w') as f:
                 print("enterred write file")
-                json.dump(q_dict, f, indent=4)
+                jsonserial=json.dump(q_dict,indent=4)
+                json.write(f,jsonserial)
 
 def assign_models_to_queues(models, workspace_list):
     queue = {}
@@ -201,6 +202,7 @@ def main():
     print (f"Found {len(workspace_list)} workspaces")
     # assign models to queues
     queue = assign_models_to_queues(models, workspace_list)
+    print("queue",queue)
     print (f"Created queues")
     # create queue files
     create_queue_files(queue, workspace_list)
