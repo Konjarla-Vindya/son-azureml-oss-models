@@ -92,7 +92,7 @@ def create_queue_files(queue, workspace_list):
             q_dict["subscription"] = workspace_list[workspace]["subscription"]
             q_dict["resource_group"] = workspace_list[workspace]["resource_group"]
             q_dict["registry"] = args.registry_name
-            with open(f"{args.queue_dir}/{args.test_set}/{workspace}-{thread}.json", 'w') as f:
+            with open(f"{args.queue_dir}/{args.test_set}/{workspace}-{thread}-suchi.json", 'w') as f:
                 json.dump(q_dict, f, indent=4)
 
 def assign_models_to_queues(models, workspace_list):
