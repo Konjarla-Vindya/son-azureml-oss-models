@@ -45,7 +45,7 @@ jobs:
       id: commit
       run: | 
         git add model_list_file.txt
-        git commit -m "model_list_file"           
+        git commit -m "../../tests/logs/model_list_file"           
         git push
     - name: trigger-next-model-step
       env:
