@@ -188,42 +188,49 @@ def write_single_workflow_file(model, q, secret_name):
     os.system(f"sed -i 's/<test_secret_name>/{secret_name}/g' {workflow_file}")
 def main(): 
 
-    # print("local path",os.getcwd())
-    # get list of models from registry
-    if args.mode == "registry":
-        models = get_model_containers(args.registry_name)
-    elif args.mode == "file":
-        models = load_model_list_file(args.model_list_file)
-    else:
-        print (f"::error Invalid mode {args.mode}")
-        exit (1)
-    print (f"Found {len(models)} models")
-    # load workspace_list_json
-    workspace_list = load_workspace_config()
-    print (f"Found {len(workspace_list)} workspaces")
-    # assign models to queues
-    queue = assign_models_to_queues(models, workspace_list)
-    print("queue",queue)
-    print (f"Created queues")
-    # create queue files
-    create_queue_files(queue, workspace_list)
-    print (f"Created queue files")
-    # create workflow files
-    create_workflow_files(queue, workspace_list)
-    print (f"Created workflow files")
-    print (f"Summary:")
-    print (f"  Models: {len(models)}")
-    print (f"  Workspaces: {len(workspace_list)}")
-    print (f"  Parallel tests: {parallel_tests}")
-    print (f"  Total queues: {len(workspace_list)*parallel_tests}")
-    print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
-    print("args.log_dir:", args.log_dir)
+    # # print("local path",os.getcwd())
+    # # get list of models from registry
+    # if args.mode == "registry":
+    #     models = get_model_containers(args.registry_name)
+    # elif args.mode == "file":
+    #     models = load_model_list_file(args.model_list_file)
+    # else:
+    #     print (f"::error Invalid mode {args.mode}")
+    #     exit (1)
+    # print (f"Found {len(models)} models")
+    # # load workspace_list_json
+    # workspace_list = load_workspace_config()
+    # print (f"Found {len(workspace_list)} workspaces")
+    # # assign models to queues
+    # queue = assign_models_to_queues(models, workspace_list)
+    # print("queue",queue)
+    # print (f"Created queues")
+    # # create queue files
+    # create_queue_files(queue, workspace_list)
+    # print (f"Created queue files")
+    # # create workflow files
+    # create_workflow_files(queue, workspace_list)
+    # print (f"Created workflow files")
+    # print (f"Summary:")
+    # print (f"  Models: {len(models)}")
+    # print (f"  Workspaces: {len(workspace_list)}")
+    # print (f"  Parallel tests: {parallel_tests}")
+    # print (f"  Total queues: {len(workspace_list)*parallel_tests}")
+    # print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
+    # print("args.log_dir:", args.log_dir)
     logpath=Path(f"{args.log_dir}/assign_models_to_queuessuchi/test.json")
     os.makedirs(logpath)
-    queue = assign_models_to_queues(models, workspace_list)
-    print("queue",queue)
-    with open(f"{args.log_dir}/suchi", 'w') as f:
-        json.dump(queue, f, indent=4)
+    # queue = assign_models_to_queues(models, workspace_list)
+    # print("queue",queue)
+    model_list_file=["Suchi","Vamshi"]
+    with open('model_list_file.txt', 'w+') as f:
+    # write elements of list
+    for items in model_list_file:
+        f.write('%s\n' %items)    
+
+    print("File written successfully")
+    # with open(f"{args.log_dir}/suchi", 'w') as f:
+    #     json.dump(queue, f, indent=4)
 
         
 if __name__ == "__main__":
