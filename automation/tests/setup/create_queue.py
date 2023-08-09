@@ -94,10 +94,10 @@ def create_queue_files(queue, workspace_list):
             q_dict["resource_group"] = workspace_list[workspace]["resource_group"]
             q_dict["registry"] = args.registry_name
             print("q_dict",q_dict)
-            print("q_dict["workspace"]",q_dict["workspace"])
-            print("q_dict["subscription"]",q_dict["subscription"])   
-            print("q_dict["resource_group"]",q_dict["resource_group"])
-            print("q_dict["registry"]",q_dict["registry"])
+            print("workspace",q_dict["workspace"])
+            print("subscription",q_dict["subscription"])   
+            print("resource_group",q_dict["resource_group"])
+            print("registry",q_dict["registry"])
             with open(f"{args.queue_dir}/{args.test_set}/{workspace}-suchi-{thread}.json", 'w') as f:
                 print("enterred write file")
                 json.dump(q_dict, f, indent=4)
