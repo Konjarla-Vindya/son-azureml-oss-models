@@ -190,11 +190,10 @@ def main():
     print("args.log_dir:", args.log_dir)
     logpath=Path(f"{args.log_dir}/assign_models_to_queuessuchi/test.json")
     os.makedirs(logpath)
-    subdirectory_path = os.path.join(args.log_dir, "assign_models_to_queuespooja")
-    if not os.path.exists(subdirectory_path):
-        os.makedirs(subdirectory_path)
-        print("subdirectory_path",subdirectory_path)
-    logpath.mkdir(parents=True, exist_ok=True)
+    queue = assign_models_to_queues(models, workspace_list)
+    print("queue",queue)
+    with open(f"{args.log_dir}/suchi", 'w') as f:
+        json.dump(queue, f, indent=4)
     
 
     # print("local path",os.getcwd())
