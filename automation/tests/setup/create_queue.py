@@ -119,6 +119,7 @@ def assign_models_to_queues(models, workspace_list):
                         # if assign_models_to_queues under log_dir does not exist, create it
                         if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
                             os.makedirs(f"{args.log_dir}/assign_models_to_queues")
+                            print("logs created:" f"{args.log_dir}/assign_models_to_queues")
                         # generate filename as DDMMMYYYY-HHMMSS.json
                         timestamp = time.strftime("%d%b%Y-%H%M%S.json")
                         # write queue to file
