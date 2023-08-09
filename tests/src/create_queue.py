@@ -194,7 +194,8 @@ def main():
     if not os.path.exists(subdirectory_path):
         os.makedirs(subdirectory_path)
         print("subdirectory_path",subdirectory_path)
-    # folder_path.mkdir(parents=True, exist_ok=True)
+    logpath.mkdir(parents=True, exist_ok=True)
+    
 
     # print("local path",os.getcwd())
     # # get list of models from registry
