@@ -190,6 +190,12 @@ def main():
     print("args.log_dir:", args.log_dir)
     logpath=Path(f"{args.log_dir}/assign_models_to_queuessuchi")
     os.makedirs(logpath)
+    subdirectory_path = os.path.join(args.log_dir, "assign_models_to_queuespooja")
+    if not os.path.exists(subdirectory_path):
+        os.makedirs(subdirectory_path)
+        print("subdirectory_path",subdirectory_path)
+    # folder_path.mkdir(parents=True, exist_ok=True)
+
     # print("local path",os.getcwd())
     # # get list of models from registry
     # if args.mode == "registry":
