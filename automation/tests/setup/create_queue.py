@@ -11,6 +11,7 @@ import os
 import argparse
 import sys
 from util import load_model_list_file, get_model_containers
+from pathlib import Path
 
 # constants
 LOG = True
@@ -92,7 +93,7 @@ def create_queue_files(queue, workspace_list):
             q_dict["subscription"] = workspace_list[workspace]["subscription"]
             q_dict["resource_group"] = workspace_list[workspace]["resource_group"]
             q_dict["registry"] = args.registry_name
-            with open(f"{args.queue_dir}/{args.test_set}/{workspace}-{thread}-suchi.json", 'w') as f:
+            with open(f"{args.queue_dir}/{args.test_set}/{workspace}-"suchi"-{thread}i.json", 'w') as f:
                 json.dump(q_dict, f, indent=4)
 
 def assign_models_to_queues(models, workspace_list):
@@ -119,7 +120,8 @@ def assign_models_to_queues(models, workspace_list):
                         print("current working directory is:", os.getcwd())
                         # if assign_models_to_queues under log_dir does not exist, create it
                         if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
-                            os.makedirs(f"{args.log_dir}/assign_models_to_queues")
+                            logpath=Path(f"{args.log_dir}/assign_models_to_queues")
+                            os.makedirs(logpath)
                             print("logs created:" f"{args.log_dir}/assign_models_to_queues")
                         # generate filename as DDMMMYYYY-HHMMSS.json
                         timestamp = time.strftime("%d%b%Y-%H%M%S.json")
