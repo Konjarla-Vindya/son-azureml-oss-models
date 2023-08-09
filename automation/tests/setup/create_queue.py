@@ -186,6 +186,7 @@ def write_single_workflow_file(model, q, secret_name):
     # replace <test_secret_name> 
     os.system(f"sed -i 's/<test_secret_name>/{secret_name}/g' {workflow_file}")
 def main():
+    print("local path",os.getcwd())
     # get list of models from registry
     if args.mode == "registry":
         models = get_model_containers(args.registry_name)
