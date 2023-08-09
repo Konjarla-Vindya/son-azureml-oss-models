@@ -1,4 +1,49 @@
-")
+from azure.ai.ml import MLClient
+from azure.identity import DefaultAzureCredential
+import time, sys
+from azure.ai.ml.entities import (
+    ManagedOnlineEndpoint,
+    ManagedOnlineDeployment,
+    OnlineRequestSettings,
+)
+import json
+import os
+import argparse
+import sys
+from util import load_model_list_file, get_model_containers
+
+# constants
+LOG = True
+
+# parse command line argument to specify the directory to write the workflow files to
+parser = argparse.ArgumentParser()
+# mode - options are file or registry
+parser.add_argument("--mode", type=str, default="file")
+# registry name if model is in registry
+parser.add_argument("--registry_name", type=str, default="HuggingFace")
+# argument to specify Github workflow directory. can write to local dir for testing
+# !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
+parser.add_argument("--workflow_dir", type=str, default="../../.github/workflows")
+# argument to specify queue directory
+parser.add_argument("--queue_dir", type=str, default="../config/queue")
+# queue set name (will create a folder under queue_dir with this name)
+# !!! backup files in this folder will be overwritten !!!
+parser.add_argument("--test_set", type=str, default="huggingface-all")
+# file containing list of models to test, one per line
+parser.add_argument("--model_list_file", type=str, default="../config/modellist.txt")
+# test_keep_looping, to keep looping through the queue after all models have been tested
+parser.add_argument("--test_keep_looping", type=str, default="false")
+# test_trigger_next_model, to trigger next model in queue after each model is tested
+parser.add_argument("--test_trigger_next_model", type=str, default="true")
+# test_sku_type, to specify sku type to use for testing
+parser.add_argument("--test_sku_type", type=str, default="cpu")
+# parallel_tests, to specify number of parallel tests to run per workspace. 
+# this will be used to create multiple queues
+parser.add_argument("--parallel_tests", type=int, default=3)
+# workflow-template.yml file to use as template for generating workflow files
+parser.add_argument("--workflow_template", type=str, default="../config/workflow-template-huggingface.yml")
+# workspace_list file get workspace metadata
+parser.add_argument("--workspace_list", type=str, default="../config/workspaces.json")
 # directory to write logs
 parser.add_argument("--log_dir", type=str, default="../logs")
 
