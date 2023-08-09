@@ -43,18 +43,10 @@ jobs:
       working-directory: tests/src
     - name: Commit files
       id: commit
-      run: |
-        git add --all
-        if [-z "$(git status --porcelain)"]; then
-           echo "::set-output name=push::false"
-        else
-           git commit -m "Add changes" -a
-           echo "::set-output name=push::true"
-        fi
-      shell: bash
-    - name: Push changes
-      if: steps.commit.outputs.push == 'true'
-      uses: .github/workflows/DynYml@main
+      run: | 
+        git add model_list_file.txt
+        git commit -m "model_list_file"           
+        git push
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
