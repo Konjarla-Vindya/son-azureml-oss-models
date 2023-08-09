@@ -223,7 +223,7 @@ def main():
     # queue = assign_models_to_queues(models, workspace_list)
     # print("queue",queue)
     model_list_file=["Suchi","Vamshi"]
-    with open('tests/src/model_list_file', 'w+') as f:
+    with open('..logs/model_list_file', 'w+') as f:
     # write elements of list
         for items in model_list_file:
             f.write('%s\n' %items)    
