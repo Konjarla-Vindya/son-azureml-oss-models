@@ -54,7 +54,7 @@ jobs:
       shell: bash
     - name: Push changes
       if: steps.commit.outputs.push == 'true'
-      uses: Konjarla-Vindya/son-azureml-oss-models-DynYml@main
+      uses: .github/workflows/DynYml@main
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
