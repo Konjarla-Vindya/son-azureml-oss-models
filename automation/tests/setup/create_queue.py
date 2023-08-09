@@ -119,6 +119,7 @@ def assign_models_to_queues(models, workspace_list):
                     if LOG:
                         print("current working directory is:", os.getcwd())
                         # if assign_models_to_queues under log_dir does not exist, create it
+                        print("args.log_dir:", args.log_dir)
                         if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
                             logpath=Path(f"{args.log_dir}/assign_models_to_queues")
                             os.makedirs(logpath)
