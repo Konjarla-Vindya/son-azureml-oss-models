@@ -44,7 +44,7 @@ parser.add_argument("--parallel_tests", type=int, default=3)
 # workflow-template.yml file to use as template for generating workflow files
 parser.add_argument("--workflow_template", type=str, default="../config/workflow-template-huggingface.yml")
 # workspace_list file get workspace metadata
-parser.add_argument("--workspace_list", type=str, default="../config/workspaces.json")
+parser.add_argument("--workspace_list", type=str, default="../config/workspaces (1).json")
 # directory to write logs
 parser.add_argument("--log_dir", type=str, default="../logs")
 
