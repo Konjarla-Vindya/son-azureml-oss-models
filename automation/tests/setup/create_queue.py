@@ -71,23 +71,71 @@ def load_workspace_config():
     
 # function to assign models to queues
 # assign each model from models to a thread per workspace in a round robin fashion by appending to a list called 'models' in the queue dictionary
+# function to create queue files
+def create_queue_files(queue, workspace_list):
+    print (f"\nCreating queue files")
+    # create folder queue if it does not exist
+    if not os.path.exists(args.queue_dir):
+        os.makedirs(args.queue_dir)
+    # check if test_set folder exists
+    if not os.path.exists(f"{args.queue_dir}/{args.test_set}"):
+        os.makedirs(f"{args.queue_dir}/{args.test_set}")
+    # delete any files in test_set folder
+    os.system(f"rm -rf {args.queue_dir}/{args.test_set}/*")
+    # generate queue files
+    for workspace in queue:
+        for thread in queue[workspace]:
+            #print (f"Generating queue file {args.queue_dir}/{args.test_set}/{workspace}-{thread}.json")
+            q_dict = {"queue_name": f"{workspace}-{thread}", "models": queue[workspace][thread]}
+            # get the workspace from workspace_list
+            q_dict["workspace"] = workspace
+            q_dict["subscription"] = workspace_list[workspace]["subscription"]
+            q_dict["resource_group"] = workspace_list[workspace]["resource_group"]
+            q_dict["registry"] = args.registry_name
+            with open(f"{args.queue_dir}/{args.test_set}/{workspace}-{thread}.json", 'w') as f:
+                json.dump(q_dict, f, indent=4)
+
 def assign_models_to_queues(models, workspace_list):
-  queue = {}
-  i=0
-  while i < len(models):
-      for workspace in workspace_list:
-          print (f"workspace instance: {workspace}")
-          for thread in range(parallel_tests):
-              print (f"thread instance: {thread}")
-              if i < len(models):
-                  if workspace not in queue:
-                      queue[workspace] = {}
-                      print("queue[workspace]",queue[workspace])
-                  if thread not in queue[workspace]:
-                      queue[workspace][thread] = []
-                  queue[workspace][thread].append(models[i])
-                  print("queue[workspace][thread]",queue[workspace][thread])
-                  i=i+1
+    queue = {}
+    i=0
+    while i < len(models):
+        for workspace in workspace_list:
+            print (f"workspace instance: {workspace}")
+            for thread in range(parallel_tests):
+                print (f"thread instance: {thread}")
+                if i < len(models):
+                    if workspace not in queue:
+                        queue[workspace] = {}
+                        print("queue[workspace]",queue[workspace])
+                    if thread not in queue[workspace]:
+                        queue[workspace][thread] = []
+                    queue[workspace][thread].append(models[i])
+                    print("queue[workspace][thread]",queue[workspace][thread])
+                    i=i+1
+                    #print (f"Adding model {models[i]} at index {i} to queue {workspace}-{thread}")
+                else:
+                    #print (f"Reached end of models list, breaking out of loop")
+                    if LOG:
+                        # if assign_models_to_queues under log_dir does not exist, create it
+                        if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
+                            os.makedirs(f"{args.log_dir}/assign_models_to_queues")
+                        # generate filename as DDMMMYYYY-HHMMSS.json
+                        timestamp = time.strftime("%d%b%Y-%H%M%S.json")
+                        # write queue to file
+                        with open(f"{args.log_dir}/assign_models_to_queues/{timestamp}", 'w') as f:
+                            json.dump(queue, f, indent=4)
+                    # validate that count of models across all queues is equal to count of models in models list
+                    model_count=0
+                    for workspace in queue:
+                        for thread in queue[workspace]:
+                            model_count=model_count+len(queue[workspace][thread])
+                    if model_count != len(models):
+                        print (f"Error: Model count mismatch. Expected {len(models)} but found {model_count}")
+                        exit (1)
+                    else:
+                        print (f"Found {model_count} models across {len(queue)} queues, which is equal to count of models in models list")
+                    return queue
+              
 def main():
     # get list of models from registry
     if args.mode == "registry":
