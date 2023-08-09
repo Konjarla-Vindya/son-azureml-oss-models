@@ -116,7 +116,7 @@ def assign_models_to_queues(models, workspace_list):
                 else:
                     #print (f"Reached end of models list, breaking out of loop")
                     if LOG:
-                        print("current working directory is:" os.getcwd())
+                        print("current working directory is:", os.getcwd())
                         # if assign_models_to_queues under log_dir does not exist, create it
                         if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
                             os.makedirs(f"{args.log_dir}/assign_models_to_queues")
