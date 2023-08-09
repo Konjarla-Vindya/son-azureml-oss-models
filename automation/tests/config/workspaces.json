@@ -11,3 +11,4 @@
       "resource_group": "AzureMLHuggingFaceRegistry1",
       "secret_name": "AZURE_CREDENTIALS"
     }
+}
