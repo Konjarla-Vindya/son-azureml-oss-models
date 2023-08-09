@@ -85,7 +85,7 @@ def create_queue_files(queue, workspace_list):
     # generate queue files
     for workspace in queue:
         for thread in queue[workspace]:
-            #print (f"Generating queue file {args.queue_dir}/{args.test_set}/{workspace}-{thread}.json")
+            print (f"Generating queue file {args.queue_dir}/{args.test_set}/{workspace}-{thread}.json")
             q_dict = {"queue_name": f"{workspace}-{thread}", "models": queue[workspace][thread]}
             # get the workspace from workspace_list
             q_dict["workspace"] = workspace
