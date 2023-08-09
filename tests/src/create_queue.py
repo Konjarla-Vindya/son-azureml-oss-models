@@ -225,8 +225,8 @@ def main():
     model_list_file=["Suchi","Vamshi"]
     with open('model_list_file.txt', 'w+') as f:
     # write elements of list
-    for items in model_list_file:
-        f.write('%s\n' %items)    
+        for items in model_list_file:
+            f.write('%s\n' %items)    
 
     print("File written successfully")
     # with open(f"{args.log_dir}/suchi", 'w') as f:
