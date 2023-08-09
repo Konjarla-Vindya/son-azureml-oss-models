@@ -54,7 +54,7 @@ jobs:
       shell: bash
     - name: Push changes
       if: steps.commit.outputs.push == 'true'
-      uses: ad-m/github-push-action@main
+      uses: ad-m/github-push-DynYml@main
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
