@@ -188,7 +188,7 @@ def write_single_workflow_file(model, q, secret_name):
     os.system(f"sed -i 's/<test_secret_name>/{secret_name}/g' {workflow_file}")
 def main():
     print("args.log_dir:", args.log_dir)
-    logpath=Path(f"{args.log_dir}/assign_models_to_queues")
+    logpath=Path(f"..logs/assign_models_to_queues")
     os.makedirs(logpath)
     # print("local path",os.getcwd())
     # # get list of models from registry
