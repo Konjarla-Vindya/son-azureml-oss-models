@@ -135,7 +135,25 @@ def assign_models_to_queues(models, workspace_list):
                     else:
                         print (f"Found {model_count} models across {len(queue)} queues, which is equal to count of models in models list")
                     return queue
-              
+# function to create workflow files
+# !!! any existing workflow files in workflow_dir will be overwritten. backup... !!!
+def create_workflow_files(queue, workspace_list):
+    counter=0
+    print (f"Creating workflow files")
+    # check if workflow_dir exists
+    if not os.path.exists(args.workflow_dir):
+        os.makedirs(args.workflow_dir)
+    # generate workflow files
+    for workspace in queue:
+        for thread in queue[workspace]:
+            for model in queue[workspace][thread]:
+                write_single_workflow_file(model, f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
+                # print progress
+                counter=counter+1
+                sys.stdout.write(f'{counter}\r')
+                sys.stdout.flush()
+    print (f"\nCreated {counter} workflow files")
+    
 def main():
     # get list of models from registry
     if args.mode == "registry":
