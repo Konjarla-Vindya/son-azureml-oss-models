@@ -40,7 +40,7 @@ jobs:
     - name: deploy-model-step
       id: deploy-model-step
       run: python create_queue.py
-      working-directory: automation/tests/setup
+      working-directory: tests/setup
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
