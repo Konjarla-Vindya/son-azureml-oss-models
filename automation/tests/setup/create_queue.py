@@ -153,7 +153,27 @@ def create_workflow_files(queue, workspace_list):
                 sys.stdout.write(f'{counter}\r')
                 sys.stdout.flush()
     print (f"\nCreated {counter} workflow files")
-    
+# function to write a single workflow file
+def write_single_workflow_file(model, q, secret_name):
+    # print a single dot without a newline to show progress
+    print (".", end="", flush=True)
+    workflow_file=f"{args.workflow_dir}/{model}.yml"
+    #print (f"Generating workflow file: {workflow_file}")
+    os.system(f"cp {args.workflow_template} {workflow_file}")
+    # replace <test_queue> with q
+    os.system(f"sed -i 's/<test_queue>/{q}/g' {workflow_file}")
+    # replace <test_sku_type> with test_sku_type in workflow_file
+    os.system(f"sed -i 's/<test_sku_type>/{args.test_sku_type}/g' {workflow_file}")
+    # replace <test_registry> with test_registry in workflow_file
+    os.system(f"sed -i 's/<test_trigger_next_model>/{args.test_trigger_next_model}/g' {workflow_file}")
+    # replace <test_keep_looping> with test_keep_looping in workflow_file
+    os.system(f"sed -i 's/<test_keep_looping>/{args.test_keep_looping}/g' {workflow_file}")
+    # replace <test_model_name> with model_container.name in workflow_file
+    os.system(f"sed -i 's/<test_model_name>/{model}/g' {workflow_file}")
+    # replace <test_set> with test_set in workflow_file
+    os.system(f"sed -i 's/<test_set>/{args.test_set}/g' {workflow_file}")
+    # replace <test_secret_name> 
+    os.system(f"sed -i 's/<test_secret_name>/{secret_name}/g' {workflow_file}")
 def main():
     # get list of models from registry
     if args.mode == "registry":
