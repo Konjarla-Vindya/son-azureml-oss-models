@@ -102,7 +102,52 @@ def create_queue_files(queue, workspace_list):
                 print("enterred write file")
                 json.dump(q_dict,f,indent=4)
                 # f.write(jsonserial)
-
+def assign_models_to_workflowq(workflownames, workspace_list):
+    q = {}
+    i=0
+    while i < len(workflownames):
+        for workspace in workspace_list:
+            print (f"workspace instance: {workspace}")
+            for thread in range(parallel_tests):
+                print (f"thread instance: {thread}")
+                if i < len(workflownames):
+                    if workspace not in q:
+                        q[workspace] = {}
+                        print("q[workspace]",q[workspace])
+                    if thread not in q[workspace]:
+                        q[workspace][thread] = []
+                    q[workspace][thread].append(workflownames[i])
+                    print("q[workspace][thread]",q[workspace][thread])
+                    i=i+1
+                    #print (f"Adding model {workflownames[i]} at index {i} to q {workspace}-{thread}")
+                else:
+                    #print (f"Reached end of models list, breaking out of loop")
+                    if LOG:
+                        print("current working directory is:", os.getcwd())
+                        # if assign_models_to_queues under log_dir does not exist, create it
+                        print("args.log_dir:", args.log_dir)
+                        
+                        if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
+                            logpath=Path(f"{args.log_dir}/assign_models_to_queues")
+                            os.makedirs(logpath)
+                            print("logs created:" f"{args.log_dir}/assign_models_to_queues")
+                        # generate filename as DDMMMYYYY-HHMMSS.json
+                        timestamp = time.strftime("%d%b%Y-%H%M%S.json")
+                        # write queue to file
+                        with open(f"{args.log_dir}/assign_models_to_queues/{timestamp}", 'w') as f:
+                            json.dump(q, f, indent=4)
+                    # validate that count of models across all queues is equal to count of models in models list
+                    model_count=0
+                    for workspace in q:
+                        for thread in q[workspace]:
+                            model_count=model_count+len(q[workspace][thread])
+                    if model_count != len(models):
+                        print (f"Error: Model count mismatch. Expected {len(workflownames)} but found {model_count}")
+                        exit (1)
+                    else:
+                        print (f"Found {model_count} models across {len(q)} queues, which is equal to count of models in models list")
+                    return q
+                    
 def assign_models_to_queues(models, workspace_list):
     queue = {}
     i=0
