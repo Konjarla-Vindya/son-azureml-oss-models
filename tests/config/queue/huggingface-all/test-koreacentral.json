@@ -4,10 +4,10 @@
 
     "models": [
 
-        "bert-base-cased"
-	"distilbert-base-uncased"
-	"bert-base-chinese"
-	"bert-base-multilingual-cased"
+        "bert-base-cased",
+	"distilbert-base-uncased",
+	"bert-base-chinese",
+	"bert-base-multilingual-cased",
 	"t5-base"
 
 
