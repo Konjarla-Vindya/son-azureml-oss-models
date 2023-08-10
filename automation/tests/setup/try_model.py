@@ -201,7 +201,7 @@ def main():
     print(f"Found {len(models)} models")
     print(f"models: {models}")
     workflownames = []
-    previous_name = None  # Initialize previous_name to None
+    previous_name = None
     
     for name in models:
         workflow_modelname = name.replace('/', '-')
@@ -218,6 +218,7 @@ def main():
         previous_name = workflow_modelname  # Update previous_name for the next iteration
     
     print(f"out of loop workflow names: {workflownames}")
+
 
     
     # # load workspace_list_json
