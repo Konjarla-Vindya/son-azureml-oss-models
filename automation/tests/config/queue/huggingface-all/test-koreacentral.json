@@ -1,5 +1,5 @@
 {
-    "queue_name": "est-koreacentral",
+    "queue_name": "test-koreacentral",
     "models": [
         "bert-base-cased",
 	"distilbert-base-uncased",
