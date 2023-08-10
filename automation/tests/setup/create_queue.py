@@ -197,10 +197,12 @@ def main():
     else:
         print (f"::error Invalid mode {args.mode}")
         exit (1)
+    
     print (f"Found {len(models)} models")
     print (f"models: {models}")
-    workflow_modelname=models.replace('/','-')
-    print(f"workflow_modelname: {workflow_modelname}")
+    for names in models:
+        workflow_modelname=names.replace('/','-')
+        print(f"workflow_modelname: {workflow_modelname}")
     # # load workspace_list_json
     # workspace_list = load_workspace_config()
     # print (f"Found {len(workspace_list)} workspaces")
