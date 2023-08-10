@@ -199,6 +199,8 @@ def main():
         exit (1)
     print (f"Found {len(models)} models")
     print (f"models: {model)}")
+    workflow_modelname=model.replace('/'.'-')
+    print(f"workflow_modelname: {workflow_modelname}")
     # # load workspace_list_json
     # workspace_list = load_workspace_config()
     # print (f"Found {len(workspace_list)} workspaces")
