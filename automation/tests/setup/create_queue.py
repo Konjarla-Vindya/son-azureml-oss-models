@@ -141,7 +141,7 @@ def assign_models_to_workflowq(workflownames, workspace_list):
                     for workspace in q:
                         for thread in q[workspace]:
                             model_count=model_count+len(q[workspace][thread])
-                    if model_count != len(models):
+                    if model_count != len(workflownames):
                         print (f"Error: Model count mismatch. Expected {len(workflownames)} but found {model_count}")
                         exit (1)
                     else:
