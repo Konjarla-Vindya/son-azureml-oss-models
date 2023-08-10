@@ -1,17 +1,11 @@
 {
     "queue_name": "test-eastus",
     "models": [
-        "mariagrandury-roberta-base-finetuned-sms-spam-detection",
-        "adasnew-t5-small-xsum",
-        "pszemraj-led-large-book-summary",
-        "valhalla-distilbart-mnli-12-6",
-        "stanford-crfm-alias-gpt2-small-x21",
-        "koboldai-fairseq-dense-2.7b-nerys",
-        "ivanlau-language-detection-fine-tuned-on-xlm-roberta-base",
-        "sahajtomar-german-zeroshot",
-        "flax-community-t5-recipe-generation",
-        "helsinki-nlp-opus-mt-gmq-en"
-    
+        "bert-base-uncased",
+        "xlm-roberta-base",
+        "gpt2",
+        "roberta-base",
+        "albert-base-v2"
     ],
     "workspace": "test-eastus",
     "subscription": "c11df4e4-eb38-4e11-b3dd-e8874de77d0a",
