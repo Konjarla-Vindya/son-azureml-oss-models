@@ -44,10 +44,10 @@ jobs:
     - name: Commit files
       id: commit
       run: | 
-        git config user.email "${{ secrets.GIT_USER_EMAIL }}"           
-        git config user.name "${{ secrets.GIT_USER_NAME }}"
+        git config user.email "${{ secrets.USER_EMAIL }}"           
+        git config user.name "${{ secrets.USER_NAME }}"
         git add --all
-        git commit -m "../../tests/logs/model_list_file"           
+        git commit -m "model_list_file"           
         git push
     - name: trigger-next-model-step
       env:
