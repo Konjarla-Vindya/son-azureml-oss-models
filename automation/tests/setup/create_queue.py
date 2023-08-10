@@ -200,9 +200,12 @@ def main():
     
     print (f"Found {len(models)} models")
     print (f"models: {models}")
+    workflownames=[]
     for names in models:
         workflow_modelname=names.replace('/','-')
         print(f"workflow_modelname: {workflow_modelname}")
+        workflownames.append(workflow_modelname)
+    print("workflow names: {workflownames}")
     # # load workspace_list_json
     # workspace_list = load_workspace_config()
     # print (f"Found {len(workspace_list)} workspaces")
