@@ -159,18 +159,18 @@ def create_workflow_files(queue, workspace_list):
     # generate workflow files
     for workspace in queue:
         for thread in queue[workspace]:
-            for model in queue[workspace][thread]:
-                write_single_workflow_file(model,workflownames, f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
+            for workflownames in queue[workspace][thread]:
+                write_single_workflow_file(workflownames, f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
                 # print progress
                 counter=counter+1
                 sys.stdout.write(f'{counter}\r')
                 sys.stdout.flush()
     print (f"\nCreated {counter} workflow files")
 # function to write a single workflow file
-def write_single_workflow_file(model,workflownames, q, secret_name):
+def write_single_workflow_file(workflownames, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
-    workflow_file=f"{args.workflow_dir}/{model}.yml"
+    workflow_file=f"{args.workflow_dir}/{workflownames}.yml"
     #print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
     # replace <test_queue> with q
