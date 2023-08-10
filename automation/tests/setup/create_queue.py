@@ -213,8 +213,9 @@ def main():
     #     j=j+1
     # print("out of loop workflow names: {workflownames}")
     for j in models:
-    new=j.replace("/","-")
-    workflownames.append(new)
+        new=j.replace("/","-")
+        workflownames.append(new)
+        print("in loop workflow names: {workflownames}")
     print("out of loop workflow names: {workflownames}")
     workflownames
     # # load workspace_list_json
