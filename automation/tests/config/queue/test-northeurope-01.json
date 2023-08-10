@@ -1,0 +1,14 @@
+{
+    "queue_name": "test-northeurope",
+    "models": [
+        "distilgpt2",
+        "ProsusAI-finbert",
+        "gpt2-large",
+        "EleutherAI-gpt-neo-125m",
+        "CAMeL-Lab-bert-base-arabic-camelbert-da-sentiment"
+    ],
+    "workspace": "test-northeurope",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace"
+}
