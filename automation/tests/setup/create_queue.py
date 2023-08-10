@@ -208,10 +208,10 @@ def main():
             print(f"workflow_modelname: {workflow_modelname}")
             print("beforeworkflow names",workflownames)
             workflownames.append(workflow_modelname)
-            print("in loop workflow names: {workflownames}")
-            print("total workflow names: {workflownames}")
+            print("in loop workflow names",workflownames)
+            print("total workflow names:",workflownames)
         j=j+1
-    print("out of loop workflow names: {workflownames}")
+    print("out of loop workflow names:",workflownames)
     # for j in models:
     #     new=j.replace("/","-")
     #     workflownames.append(new)
