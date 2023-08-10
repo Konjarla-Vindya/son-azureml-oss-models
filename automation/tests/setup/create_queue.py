@@ -232,6 +232,21 @@ def write_single_workflow_file(workflownames, q, secret_name):
     os.system(f"sed -i 's/<test_set>/{args.test_set}/g' {workflow_file}")
     # replace <test_secret_name> 
     os.system(f"sed -i 's/<test_secret_name>/{secret_name}/g' {workflow_file}")
+
+
+def workflow_names(models):
+    workflownames=[]
+    j=1
+    while j < len(models):
+        for names in models:
+            workflow_modelname=names.replace('/','-')
+            # print(f"workflow_modelname: {workflow_modelname}")
+            # print("beforeworkflow names",workflownames)
+            workflownames.append(workflow_modelname)
+            # print("in loop workflow names",workflownames)
+        j=j+1
+    print("out of loop workflow names:",workflownames)
+    return workflownames
 def main():
     
     # get list of models from registry
@@ -245,17 +260,7 @@ def main():
     
     print (f"Found {len(models)} models")
     print (f"models: {models}")
-    workflownames=[]
-    j=1
-    while j < len(models):
-        for names in models:
-            workflow_modelname=names.replace('/','-')
-            # print(f"workflow_modelname: {workflow_modelname}")
-            # print("beforeworkflow names",workflownames)
-            workflownames.append(workflow_modelname)
-            # print("in loop workflow names",workflownames)
-        j=j+1
-    print("out of loop workflow names:",workflownames)
+    workflownames=workflow_names
     
     # load workspace_list_json
     workspace_list = load_workspace_config()
