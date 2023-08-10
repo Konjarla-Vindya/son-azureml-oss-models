@@ -175,7 +175,7 @@ if __name__ == "__main__":
            "resource_group": queue.resource_group,
            "workspace": queue.workspace
            }
-    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:2", compute="STANDARD-D13", environment_variables=environment_variables)
+    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:2", compute="Standard-DS3-v2", environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
 
 
