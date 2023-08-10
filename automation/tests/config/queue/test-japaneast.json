@@ -2,10 +2,10 @@
     "queue_name": "test-japaneast",
     "models": [
         "distilbert-base-multilingual-cased",
-        "Davlan/distilbert-base-multilingual-cased-ner-hrl",
         "t5-large",
         "t5-small",
-        "xlm-roberta-large"
+        "xlm-roberta-large",
+        "Davlan/distilbert-base-multilingual-cased-ner-hrl"
        
         
     
