@@ -11,6 +11,7 @@ import os
 import argparse
 import sys
 from util import load_model_list_file, get_model_containers
+from pathlib import Path
 
 # constants
 LOG = True
@@ -28,9 +29,9 @@ parser.add_argument("--workflow_dir", type=str, default="../../.github/workflows
 parser.add_argument("--queue_dir", type=str, default="../config/queue")
 # queue set name (will create a folder under queue_dir with this name)
 # !!! backup files in this folder will be overwritten !!!
-parser.add_argument("--test_set", type=str, default="huggingface-rerun")
+parser.add_argument("--test_set", type=str, default="huggingface-all")
 # file containing list of models to test, one per line
-parser.add_argument("--model_list_file", type=str, default="../config/rerun.txt")
+parser.add_argument("--model_list_file", type=str, default="../config/modellist.txt")
 # test_keep_looping, to keep looping through the queue after all models have been tested
 parser.add_argument("--test_keep_looping", type=str, default="false")
 # test_trigger_next_model, to trigger next model in queue after each model is tested
@@ -71,30 +72,65 @@ def load_workspace_config():
     
 # function to assign models to queues
 # assign each model from models to a thread per workspace in a round robin fashion by appending to a list called 'models' in the queue dictionary
+# function to create queue files
+def create_queue_files(queue, workspace_list):
+    print (f"\nCreating queue files")
+    # create folder queue if it does not exist
+    if not os.path.exists(args.queue_dir):
+        os.makedirs(args.queue_dir)
+    # check if test_set folder exists
+    if not os.path.exists(f"{args.queue_dir}/{args.test_set}"):
+        os.makedirs(f"{args.queue_dir}/{args.test_set}")
+    # delete any files in test_set folder
+    os.system(f"rm -rf {args.queue_dir}/{args.test_set}/*")
+    # generate queue files
+    for workspace in queue:
+        for thread in queue[workspace]:
+            print (f"Generating queue file {args.queue_dir}/{args.test_set}/{workspace}-suchi-{thread}.json")
+            q_dict = {"queue_name": f"{workspace}-{thread}", "models": queue[workspace][thread]}
+            # get the workspace from workspace_list
+            q_dict["workspace"] = workspace
+            q_dict["subscription"] = workspace_list[workspace]["subscription"]
+            q_dict["resource_group"] = workspace_list[workspace]["resource_group"]
+            q_dict["registry"] = args.registry_name
+            print("q_dict",q_dict)
+            print("workspace",q_dict["workspace"])
+            print("subscription",q_dict["subscription"])   
+            print("resource_group",q_dict["resource_group"])
+            print("registry",q_dict["registry"])
+            with open(f"{args.queue_dir}/{args.test_set}/{workspace}-suchi-{thread}.json", 'w') as f:
+                print("enterred write file")
+                json.dump(q_dict,f,indent=4)
+                # f.write(jsonserial)
+
 def assign_models_to_queues(models, workspace_list):
-    print (f"\nAssigning models to queues")
-# get count of workspaces in workspace_list
     queue = {}
     i=0
     while i < len(models):
         for workspace in workspace_list:
-            #print (f"workspace instance: {workspace}")
+            print (f"workspace instance: {workspace}")
             for thread in range(parallel_tests):
-                #print (f"thread instance: {thread}")
+                print (f"thread instance: {thread}")
                 if i < len(models):
                     if workspace not in queue:
                         queue[workspace] = {}
+                        print("queue[workspace]",queue[workspace])
                     if thread not in queue[workspace]:
                         queue[workspace][thread] = []
                     queue[workspace][thread].append(models[i])
+                    print("queue[workspace][thread]",queue[workspace][thread])
                     i=i+1
                     #print (f"Adding model {models[i]} at index {i} to queue {workspace}-{thread}")
                 else:
                     #print (f"Reached end of models list, breaking out of loop")
                     if LOG:
+                        print("current working directory is:", os.getcwd())
                         # if assign_models_to_queues under log_dir does not exist, create it
+                        print("args.log_dir:", args.log_dir)
                         if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
-                            os.makedirs(f"{args.log_dir}/assign_models_to_queues")
+                            logpath=Path(f"{args.log_dir}/assign_models_to_queues")
+                            os.makedirs(logpath)
+                            print("logs created:" f"{args.log_dir}/assign_models_to_queues")
                         # generate filename as DDMMMYYYY-HHMMSS.json
                         timestamp = time.strftime("%d%b%Y-%H%M%S.json")
                         # write queue to file
@@ -111,34 +147,6 @@ def assign_models_to_queues(models, workspace_list):
                     else:
                         print (f"Found {model_count} models across {len(queue)} queues, which is equal to count of models in models list")
                     return queue
-
-
-
-
-# function to create queue files
-def create_queue_files(queue, workspace_list):
-    print (f"\nCreating queue files")
-    # create folder queue if it does not exist
-    if not os.path.exists(args.queue_dir):
-        os.makedirs(args.queue_dir)
-    # check if test_set folder exists
-    if not os.path.exists(f"{args.queue_dir}/{args.test_set}"):
-        os.makedirs(f"{args.queue_dir}/{args.test_set}")
-    # delete any files in test_set folder
-    os.system(f"rm -rf {args.queue_dir}/{args.test_set}/*")
-    # generate queue files
-    for workspace in queue:
-        for thread in queue[workspace]:
-            #print (f"Generating queue file {args.queue_dir}/{args.test_set}/{workspace}-{thread}.json")
-            q_dict = {"queue_name": f"{workspace}-{thread}", "models": queue[workspace][thread]}
-            # get the workspace from workspace_list
-            q_dict["workspace"] = workspace
-            q_dict["subscription"] = workspace_list[workspace]["subscription"]
-            q_dict["resource_group"] = workspace_list[workspace]["resource_group"]
-            q_dict["registry"] = args.registry_name
-            with open(f"{args.queue_dir}/{args.test_set}/{workspace}-{thread}.json", 'w') as f:
-                json.dump(q_dict, f, indent=4)
-
 # function to create workflow files
 # !!! any existing workflow files in workflow_dir will be overwritten. backup... !!!
 def create_workflow_files(queue, workspace_list):
@@ -157,7 +165,6 @@ def create_workflow_files(queue, workspace_list):
                 sys.stdout.write(f'{counter}\r')
                 sys.stdout.flush()
     print (f"\nCreated {counter} workflow files")
-
 # function to write a single workflow file
 def write_single_workflow_file(model, q, secret_name):
     # print a single dot without a newline to show progress
@@ -179,47 +186,40 @@ def write_single_workflow_file(model, q, secret_name):
     os.system(f"sed -i 's/<test_set>/{args.test_set}/g' {workflow_file}")
     # replace <test_secret_name> 
     os.system(f"sed -i 's/<test_secret_name>/{secret_name}/g' {workflow_file}")
-
-# main function
 def main():
-    # get list of models from registry
-    if args.mode == "registry":
-        models = get_model_containers(args.registry_name)
-    elif args.mode == "file":
-        models = load_model_list_file(args.model_list_file)
-    else:
-        print (f"::error Invalid mode {args.mode}")
-        exit (1)
-    print (f"Found {len(models)} models")
-    # load workspace_list_json
-    workspace_list = load_workspace_config()
-    print (f"Found {len(workspace_list)} workspaces")
-    # assign models to queues
-    queue = assign_models_to_queues(models, workspace_list)
-    print (f"Created queues")
-    # create queue files
-    create_queue_files(queue, workspace_list)
-    print (f"Created queue files")
-    # create workflow files
-    create_workflow_files(queue, workspace_list)
-    print (f"Created workflow files")
-    print (f"Summary:")
-    print (f"  Models: {len(models)}")
-    print (f"  Workspaces: {len(workspace_list)}")
-    print (f"  Parallel tests: {parallel_tests}")
-    print (f"  Total queues: {len(workspace_list)*parallel_tests}")
-    print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
+    print("args.log_dir:", args.log_dir)
+    logpath=Path(f"{args.log_dir}/assign_models_to_queues")
+    os.makedirs(logpath)
+    # print("local path",os.getcwd())
+    # # get list of models from registry
+    # if args.mode == "registry":
+    #     models = get_model_containers(args.registry_name)
+    # elif args.mode == "file":
+    #     models = load_model_list_file(args.model_list_file)
+    # else:
+    #     print (f"::error Invalid mode {args.mode}")
+    #     exit (1)
+    # print (f"Found {len(models)} models")
+    # # load workspace_list_json
+    # workspace_list = load_workspace_config()
+    # print (f"Found {len(workspace_list)} workspaces")
+    # # assign models to queues
+    # queue = assign_models_to_queues(models, workspace_list)
+    # print("queue",queue)
+    # print (f"Created queues")
+    # # create queue files
+    # create_queue_files(queue, workspace_list)
+    # print (f"Created queue files")
+    # # create workflow files
+    # create_workflow_files(queue, workspace_list)
+    # print (f"Created workflow files")
+    # print (f"Summary:")
+    # print (f"  Models: {len(models)}")
+    # print (f"  Workspaces: {len(workspace_list)}")
+    # print (f"  Parallel tests: {parallel_tests}")
+    # print (f"  Total queues: {len(workspace_list)*parallel_tests}")
+    # print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
 
         
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
