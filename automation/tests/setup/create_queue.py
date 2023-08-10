@@ -198,25 +198,26 @@ def main():
         print (f"::error Invalid mode {args.mode}")
         exit (1)
     print (f"Found {len(models)} models")
-    # load workspace_list_json
-    workspace_list = load_workspace_config()
-    print (f"Found {len(workspace_list)} workspaces")
-    # assign models to queues
-    queue = assign_models_to_queues(models, workspace_list)
-    print("queue",queue)
-    print (f"Created queues")
-    # create queue files
-    create_queue_files(queue, workspace_list)
-    print (f"Created queue files")
-    # create workflow files
-    create_workflow_files(queue, workspace_list)
-    print (f"Created workflow files")
-    print (f"Summary:")
-    print (f"  Models: {len(models)}")
-    print (f"  Workspaces: {len(workspace_list)}")
-    print (f"  Parallel tests: {parallel_tests}")
-    print (f"  Total queues: {len(workspace_list)*parallel_tests}")
-    print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
+    print (f"models: {model)}")
+    # # load workspace_list_json
+    # workspace_list = load_workspace_config()
+    # print (f"Found {len(workspace_list)} workspaces")
+    # # assign models to queues
+    # queue = assign_models_to_queues(models, workspace_list)
+    # print("queue",queue)
+    # print (f"Created queues")
+    # # create queue files
+    # create_queue_files(queue, workspace_list)
+    # print (f"Created queue files")
+    # # create workflow files
+    # create_workflow_files(queue, workspace_list)
+    # print (f"Created workflow files")
+    # print (f"Summary:")
+    # print (f"  Models: {len(models)}")
+    # print (f"  Workspaces: {len(workspace_list)}")
+    # print (f"  Parallel tests: {parallel_tests}")
+    # print (f"  Total queues: {len(workspace_list)*parallel_tests}")
+    # print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
 
         
 if __name__ == "__main__":
