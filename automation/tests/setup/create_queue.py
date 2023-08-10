@@ -195,16 +195,16 @@ def assign_models_to_queues(models, workspace_list):
                     return queue
 # function to create workflow files
 # !!! any existing workflow files in workflow_dir will be overwritten. backup... !!!
-def create_workflow_files(queue, workspace_list):
+def create_workflow_files(q, workspace_list):
     counter=0
     print (f"Creating workflow files")
     # check if workflow_dir exists
     if not os.path.exists(args.workflow_dir):
         os.makedirs(args.workflow_dir)
     # generate workflow files
-    for workspace in queue:
-        for thread in queue[workspace]:
-            for workflownames in queue[workspace][thread]:
+    for workspace in q:
+        for thread in q[workspace]:
+            for workflownames in q[workspace][thread]:
                 write_single_workflow_file(workflownames, f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
                 # print progress
                 counter=counter+1
@@ -266,13 +266,13 @@ def main():
     workspace_list = load_workspace_config()
     print (f"Found {len(workspace_list)} workspaces")
     # assign models to queues
-    queue = assign_models_to_queues(models, workspace_list)
+    # queue = assign_models_to_queues(models, workspace_list)
     q=assign_models_to_workflowq(workflownames, workspace_list)
     print("q",q)
     print("queue",queue)
     print (f"Created queues")
     # create queue files
-    create_queue_files(queue, workspace_list)
+    # create_queue_files(queue, workspace_list)
     print (f"Created queue files")
     # create workflow files
     create_workflow_files(queue, workspace_list)
