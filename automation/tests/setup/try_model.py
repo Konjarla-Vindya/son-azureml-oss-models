@@ -202,15 +202,17 @@ def main():
     print(f"models: {models}")
     workflownames = []
     
-    for idx, name in enumerate(models):
+    previous_name = None
+    
+    for name in models:
         workflow_modelname = name.replace('/', '-')
         print(f"workflow_modelname: {workflow_modelname}")
     
-        if idx > 0 and workflownames[-1] != workflow_modelname:
+        if workflow_modelname != previous_name:
             workflownames.append(workflow_modelname)
             print(f"beforeworkflow names: {workflownames}")
     
-        workflownames.append(workflow_modelname)
+        previous_name = workflow_modelname
         print(f"in loop workflow names: {workflownames}")
         print(f"total workflow names: {workflownames}")
     
