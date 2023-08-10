@@ -209,9 +209,9 @@ def main():
             print("beforeworkflow names",workflownames)
             workflownames.append(workflow_modelname)
             print("in loop workflow names: {workflownames}")
-        print("total workflow names: {workflownames}")
+            print("total workflow names: {workflownames}")
     #     j=j+1
-    # print("out of loop workflow names: {workflownames}")
+    print("out of loop workflow names: {workflownames}")
     
     # # load workspace_list_json
     # workspace_list = load_workspace_config()
