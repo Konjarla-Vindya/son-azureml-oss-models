@@ -1,2 +1,2 @@
-distilbert-base-uncased
+distilbert/base-uncased
 albert-base-v2
