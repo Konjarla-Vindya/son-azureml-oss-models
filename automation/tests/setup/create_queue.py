@@ -202,7 +202,7 @@ def main():
     print (f"models: {models}")
     workflownames=["Abc"]
     j=0
-    while j < len(models):
+    # while j < len(models):
         for names in models:
             workflow_modelname=names.replace('/','-')
             print(f"workflow_modelname: {workflow_modelname}")
