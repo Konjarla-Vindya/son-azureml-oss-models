@@ -6,10 +6,7 @@
         "t5-small",
         "xlm-roberta-large",
         "Davlan-distilbert-base-multilingual-cased-ner-hrl"
-       
-        
-    
-    ],
+       ],
     "workspace": "test-japaneast",
     "subscription": "0c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
