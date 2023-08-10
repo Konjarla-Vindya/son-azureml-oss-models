@@ -11,7 +11,7 @@
     
     ],
     "workspace": "test-japaneast",
-    "subscription": "c11df4e4-eb38-4e11-b3dd-e8874de77d0a",
-    "resource_group": "huggingface-registry-test",
+    "subscription": "0c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace"
 }
