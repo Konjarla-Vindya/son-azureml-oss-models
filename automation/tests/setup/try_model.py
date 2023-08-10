@@ -197,26 +197,48 @@ def main():
     else:
         print (f"::error Invalid mode {args.mode}")
         exit (1)
-    print (f"Found {len(models)} models")
-    # load workspace_list_json
-    workspace_list = load_workspace_config()
-    print (f"Found {len(workspace_list)} workspaces")
-    # assign models to queues
-    queue = assign_models_to_queues(models, workspace_list)
-    print("queue",queue)
-    print (f"Created queues")
-    # create queue files
-    create_queue_files(queue, workspace_list)
-    print (f"Created queue files")
-    # create workflow files
-    create_workflow_files(queue, workspace_list)
-    print (f"Created workflow files")
-    print (f"Summary:")
-    print (f"  Models: {len(models)}")
-    print (f"  Workspaces: {len(workspace_list)}")
-    print (f"  Parallel tests: {parallel_tests}")
-    print (f"  Total queues: {len(workspace_list)*parallel_tests}")
-    print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
+    
+    print(f"Found {len(models)} models")
+print(f"models: {models}")
+workflownames = []
+previous_name = None  # Initialize previous_name to None
+
+for name in models:
+    workflow_modelname = name.replace('/', '-')
+    print(f"workflow_modelname: {workflow_modelname}")
+
+    if previous_name is not None:
+        workflownames.append(previous_name)  # Append the previous name
+        print(f"beforeworkflow names: {workflownames}")
+
+    workflownames.append(workflow_modelname)
+    print(f"in loop workflow names: {workflownames}")
+    print(f"total workflow names: {workflownames}")
+
+    previous_name = workflow_modelname  # Update previous_name for the next iteration
+
+print(f"out of loop workflow names: {workflownames}")
+
+    
+    # # load workspace_list_json
+    # workspace_list = load_workspace_config()
+    # print (f"Found {len(workspace_list)} workspaces")
+    # # assign models to queues
+    # queue = assign_models_to_queues(models, workspace_list)
+    # print("queue",queue)
+    # print (f"Created queues")
+    # # create queue files
+    # create_queue_files(queue, workspace_list)
+    # print (f"Created queue files")
+    # # create workflow files
+    # create_workflow_files(queue, workspace_list)
+    # print (f"Created workflow files")
+    # print (f"Summary:")
+    # print (f"  Models: {len(models)}")
+    # print (f"  Workspaces: {len(workspace_list)}")
+    # print (f"  Parallel tests: {parallel_tests}")
+    # print (f"  Total queues: {len(workspace_list)*parallel_tests}")
+    # print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
 
         
 if __name__ == "__main__":
