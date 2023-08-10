@@ -1,0 +1,10 @@
+{
+    "sonata-test-ws": {
+        "0": [
+            "MoritzLaurer-DeBERTa-v3-base-mnli-fever-anli"
+        ],
+        "1": [
+            "YituTech-conv-bert-base"
+        ]
+    }
+}
