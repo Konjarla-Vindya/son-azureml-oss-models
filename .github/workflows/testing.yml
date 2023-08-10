@@ -37,6 +37,10 @@ jobs:
     #   run: pip install mlflow
     - name: pip-install-python-box
       run: pip install python-box 
+    - name: pip-install-wheel
+      run: pip install wheel
+    - name: pip-install-pandas
+      run: pip install pandas
     - name: deploy-model-step
       id: deploy-model-step
       run: python testing.py
