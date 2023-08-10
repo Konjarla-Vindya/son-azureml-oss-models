@@ -1,20 +1,14 @@
 {
     "queue_name": "test-japanwest",
     "models": [
-        "luodian-llama-7b-hf",
-        "helsinki-nlp-opus-mt-fr-de",
-        "ckiplab-albert-tiny-chinese-ws",
-        "declare-lab-flan-alpaca-large",
-        "koboldai-opt-6b-nerys-v2",
-        "deepset-bert-medium-squad2-distilled",
-        "cl-tohoku-bert-base-japanese",
-        "decapoda-research-llama-7b-hf",
-        "idea-ccnl-erlangshen-unimc-albert-235m-english",
-        "allenai-tk-instruct-3b-def-pos"
-    
+       "bert-large-uncased",
+"distilroberta-base",
+"distilbert-base-uncased-finetuned-sst-2-english",	
+"camembert-base",
+"roberta-large"		
     ],
     "workspace": "test-japanwest",
-    "subscription": "c11df4e4-eb38-4e11-b3dd-e8874de77d0a",
-    "resource_group": "huggingface-registry-test",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace"
 }
