@@ -200,7 +200,7 @@ def main():
     
     print (f"Found {len(models)} models")
     print (f"models: {models}")
-    workflownames=["Abc"]
+    workflownames=[]
     j=0
     # while j < len(models):
     for names in models:
