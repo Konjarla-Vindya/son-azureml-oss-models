@@ -45,7 +45,7 @@ class Model:
     def get_sample_input_data(self):
         final_data = self.get_task_and_sample_data()
         task = final_data
-
+        print("task:",task)
         scoring_file = f"sample_inputs/{task}.json"
         # check of scoring_file exists
         try:
