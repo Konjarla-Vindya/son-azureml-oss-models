@@ -28,9 +28,9 @@ parser.add_argument("--workflow_dir", type=str, default="../../.github/workflows
 parser.add_argument("--queue_dir", type=str, default="../config/queue")
 # queue set name (will create a folder under queue_dir with this name)
 # !!! backup files in this folder will be overwritten !!!
-parser.add_argument("--test_set", type=str, default="huggingface-rerun")
+parser.add_argument("--test_set", type=str, default="huggingface-all")
 # file containing list of models to test, one per line
-parser.add_argument("--model_list_file", type=str, default="../config/rerun.txt")
+parser.add_argument("--model_list_file", type=str, default="../config/modellist.txt")
 # test_keep_looping, to keep looping through the queue after all models have been tested
 parser.add_argument("--test_keep_looping", type=str, default="false")
 # test_trigger_next_model, to trigger next model in queue after each model is tested
