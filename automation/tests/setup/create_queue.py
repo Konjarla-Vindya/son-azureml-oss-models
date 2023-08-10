@@ -182,7 +182,7 @@ def write_single_workflow_file(model, q, secret_name):
     # replace <test_keep_looping> with test_keep_looping in workflow_file
     os.system(f"sed -i 's/<test_keep_looping>/{args.test_keep_looping}/g' {workflow_file}")
     # replace <test_model_name> with model_container.name in workflow_file
-    os.system(f"sed -i 's/<test_model_name>/{model}/g' {workflow_file}")
+    os.system(f"sed -i 's/<test_model_name>/{workflownames}/g' {workflow_file}")
     # replace <test_set> with test_set in workflow_file
     os.system(f"sed -i 's/<test_set>/{args.test_set}/g' {workflow_file}")
     # replace <test_secret_name> 
@@ -205,38 +205,32 @@ def main():
     while j < len(models):
         for names in models:
             workflow_modelname=names.replace('/','-')
-            print(f"workflow_modelname: {workflow_modelname}")
-            print("beforeworkflow names",workflownames)
+            # print(f"workflow_modelname: {workflow_modelname}")
+            # print("beforeworkflow names",workflownames)
             workflownames.append(workflow_modelname)
-            print("in loop workflow names",workflownames)
-            print("total workflow names:",workflownames)
+            # print("in loop workflow names",workflownames)
         j=j+1
     print("out of loop workflow names:",workflownames)
-    # for j in models:
-    #     new=j.replace("/","-")
-    #     workflownames.append(new)
-    #     print("in loop workflow names: {workflownames}")
-    # print("out of loop workflow names: {workflownames}")
-    # workflownames
-    # # load workspace_list_json
-    # workspace_list = load_workspace_config()
-    # print (f"Found {len(workspace_list)} workspaces")
-    # # assign models to queues
-    # queue = assign_models_to_queues(models, workspace_list)
-    # print("queue",queue)
-    # print (f"Created queues")
-    # # create queue files
-    # create_queue_files(queue, workspace_list)
-    # print (f"Created queue files")
-    # # create workflow files
-    # create_workflow_files(queue, workspace_list)
-    # print (f"Created workflow files")
-    # print (f"Summary:")
-    # print (f"  Models: {len(models)}")
-    # print (f"  Workspaces: {len(workspace_list)}")
-    # print (f"  Parallel tests: {parallel_tests}")
-    # print (f"  Total queues: {len(workspace_list)*parallel_tests}")
-    # print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
+    
+    # load workspace_list_json
+    workspace_list = load_workspace_config()
+    print (f"Found {len(workspace_list)} workspaces")
+    # assign models to queues
+    queue = assign_models_to_queues(models, workspace_list)
+    print("queue",queue)
+    print (f"Created queues")
+    # create queue files
+    create_queue_files(queue, workspace_list)
+    print (f"Created queue files")
+    # create workflow files
+    create_workflow_files(queue, workspace_list)
+    print (f"Created workflow files")
+    print (f"Summary:")
+    print (f"  Models: {len(models)}")
+    print (f"  Workspaces: {len(workspace_list)}")
+    print (f"  Parallel tests: {parallel_tests}")
+    print (f"  Total queues: {len(workspace_list)*parallel_tests}")
+    print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
 
         
 if __name__ == "__main__":
