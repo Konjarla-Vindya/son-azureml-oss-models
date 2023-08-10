@@ -1,5 +1,5 @@
 {
-    "queue_name": "test-japanwest",
+    "queue_name": "test-northcentralus",
     "models": [
        "bert-large-uncased",
        "distilroberta-base",
@@ -7,7 +7,7 @@
        "camembert-base",
        "roberta-large"		
     ],
-    "workspace": "test-japanwest",
+    "workspace": "test-northcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace"
