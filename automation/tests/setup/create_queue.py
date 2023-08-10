@@ -260,7 +260,7 @@ def main():
     
     print (f"Found {len(models)} models")
     print (f"models: {models}")
-    workflownames=workflow_names
+    workflownames=workflow_names(models)
     
     # load workspace_list_json
     workspace_list = load_workspace_config()
