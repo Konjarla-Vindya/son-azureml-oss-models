@@ -202,8 +202,7 @@ def main():
     print (f"models: {models}")
     workflownames=[]
     j=0
-    # while j < len(models):
-    for j in range(models):
+    while j < len(models):
         for names in models:
             workflow_modelname=names.replace('/','-')
             print(f"workflow_modelname: {workflow_modelname}")
@@ -211,7 +210,7 @@ def main():
             workflownames.append(workflow_modelname)
             print("in loop workflow names: {workflownames}")
             print("total workflow names: {workflownames}")
-    #     j=j+1
+        j=j+1
     print("out of loop workflow names: {workflownames}")
     
     # # load workspace_list_json
