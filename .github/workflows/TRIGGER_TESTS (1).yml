@@ -21,4 +21,4 @@ jobs:
         do  
           gh workflow run `cat $file | head -n 1`
         done    
-      working-directory: tests/config/queue
+      working-directory: automation/tests/config/queue
