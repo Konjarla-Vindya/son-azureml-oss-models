@@ -2,12 +2,7 @@ name: albert-base-v2
 true:
   workflow_dispatch: null
 env:
-  test_model_name:
-  - distilbert/base-uncased
-  - albert-base-v2
-  - a
-  - b
-  - c
+  test_model_name: c
   test_sku_type: cpu
   test_trigger_next_model: 'true'
   test_queue: test-eastus-2
@@ -46,7 +41,5 @@ jobs:
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL
-        != '' && (success() || failure())}}
-      run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref
-        ${{ github.ref_name }}
+      if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
+      run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
