@@ -196,7 +196,7 @@ def assign_models_to_queues(models, workspace_list):
                     return queue
 # function to create workflow files
 # !!! any existing workflow files in workflow_dir will be overwritten. backup... !!!
-def create_workflow_files(q, workspace_list):
+def create_workflow_files(q, models,workspace_list):
     counter=0
     print (f"Creating workflow files")
     # check if workflow_dir exists
@@ -283,7 +283,7 @@ def main():
     # create_queue_files(queue, workspace_list)
     print (f"Created queue files")
     # create workflow files
-    create_workflow_files(q, workspace_list)
+    create_workflow_files(q,models, workspace_list)
     print (f"Created workflow files")
     print (f"Summary:")
     print (f"  Models: {len(models)}")
