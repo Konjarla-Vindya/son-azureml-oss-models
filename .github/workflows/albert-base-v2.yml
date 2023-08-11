@@ -37,7 +37,7 @@ jobs:
     - name: deploy-model-step
       id: deploy-model-step
       run: python generic_initial_automation.py
-      working-directory: tests/src/automation_for_constant_library
+      working-directory: automation/tests/src/HF_Import_Deploy
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
