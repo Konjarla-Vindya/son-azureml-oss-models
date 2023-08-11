@@ -270,7 +270,7 @@ def main():
     workspace_list = load_workspace_config()
     print (f"Found {len(workspace_list)} workspaces")
     # assign models to queues
-    # queue = assign_models_to_queues(models, workspace_list)
+    queue = assign_models_to_queues(models, workspace_list)
     q=assign_models_to_workflowq(workflownames, workspace_list)
     print("q",q)
     print("queue",queue)
@@ -279,7 +279,7 @@ def main():
     # create_queue_files(queue, workspace_list)
     print (f"Created queue files")
     # create workflow files
-    create_workflow_files(queue, workspace_list)
+    create_workflow_files(q, workspace_list)
     print (f"Created workflow files")
     print (f"Summary:")
     print (f"  Models: {len(models)}")
