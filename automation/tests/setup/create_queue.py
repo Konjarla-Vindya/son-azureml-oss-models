@@ -254,7 +254,7 @@ def write_single_workflow_file(workflownames,model, q, secret_name):
     doc['env']['test_queue'] = q
 
     with open(workflow_file, 'w') as f:
-        yaml.dump(doc, f, default_flow_style=False, sort_keys=False,float("inf"))
+        yaml.dump(doc, f, default_flow_style=False, sort_keys=False,width=float("inf"))
 
     # new_workflow_file=f"{args.workflow_dir}/{workflownames}.yml"
     # os.system(f"sed -i s/name: distilbert-base-uncased/name: {workflownames}/g' {workflow_file}")
