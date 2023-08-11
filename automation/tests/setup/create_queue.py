@@ -242,31 +242,6 @@ def write_single_workflow_file(workflownames,models, q, secret_name):
     # replace <test_secret_name> 
     os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
     
-    # yaml = ruamel.yaml.YAML()
-    # with open(workflow_file) as f:
-    #     doc = yaml.safe_load(f)
-    # with open(workflow_file, 'r') as f:
-    #     doc = yaml.load(f)
-    # yaml=YAML(typ='safe')
-   
-    # doc = yaml.load(workflow_file)
-    # # doc = ruamel.yaml.load(workflow_file, Loader=ruamel.yaml.RoundTripLoader)
-    # doc['name'] = workflownames
-    # doc['env']['test_model_name'] = models
-    # doc['env']['test_sku_type'] = args.test_sku_type
-    # doc['env']['test_trigger_next_model'] = args.test_trigger_next_model
-    # doc['env']['test_queue'] = q
-    # doc['env']['test_set'] = args.test_set
-    # doc['env']['test_queue'] = q
-    # yaml.dump(doc, workflow_file)
-    # ruamel.yaml.dump(doc,Dumper=ruamel.yaml.RoundTripDumper)
-    # with open(workflow_file, 'w') as f:
-    #     yaml.safe_dump(doc, f, default_flow_style=False, sort_keys=False)
-   
-    # with open(workflow_file, 'w') as f:
-    #     yaml.dump(doc, f)
-
-
 def workflow_names(models):
     workflownames=[]
     j=1
