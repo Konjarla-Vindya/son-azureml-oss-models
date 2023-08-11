@@ -208,16 +208,17 @@ def create_workflow_files(q, models,workspace_list):
         for thread in q[workspace]:
             print("entered q of workspace loop:",thread)
             for workflownames in q[workspace][thread]:
+                for model in models:
                 print("entered q of workspace of thread loop:",workflownames)
-                write_single_workflow_file(workflownames, models,f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
-                # print progress
-                counter=counter+1
-                print("counter:",counter)
-                sys.stdout.write(f'{counter}\r')
-                sys.stdout.flush()
+                    write_single_workflow_file(workflownames, model,f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
+                    # print progress
+                    counter=counter+1
+                    print("counter:",counter)
+                    sys.stdout.write(f'{counter}\r')
+                    sys.stdout.flush()
     print (f"\nCreated {counter} workflow files")
 # function to write a single workflow file
-def write_single_workflow_file(workflownames,models, q, secret_name):
+def write_single_workflow_file(workflownames,model, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
     workflow_file=f"{args.workflow_dir}/{workflownames}.yml"
@@ -245,7 +246,7 @@ def write_single_workflow_file(workflownames,models, q, secret_name):
     with open(workflow_file, 'r') as f:
         doc = yaml.load(f)
     doc['name'] = workflownames
-    doc['env']['test_model_name'] = models
+    doc['env']['test_model_name'] = model
     doc['env']['test_sku_type'] = args.test_sku_type
     doc['env']['test_trigger_next_model'] = args.test_trigger_next_model
     doc['env']['test_queue'] = q
