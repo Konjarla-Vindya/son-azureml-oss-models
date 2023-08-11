@@ -26,7 +26,7 @@ jobs:
     - name: deploy-model-step
       id: deploy-model-step
       run: python deploy_huggingface_models.py
-      working-directory: tests/src
+      working-directory: automation/tests/src/HF_Import_Deploy
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
