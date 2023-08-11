@@ -216,7 +216,7 @@ def create_workflow_files(q, workspace_list):
                 sys.stdout.flush()
     print (f"\nCreated {counter} workflow files")
 # function to write a single workflow file
-def write_single_workflow_file(workflownames, q, secret_name):
+def write_single_workflow_file(workflownames,models, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
     workflow_file=f"{args.workflow_dir}/{workflownames}.yml"
@@ -235,7 +235,7 @@ def write_single_workflow_file(workflownames, q, secret_name):
     # replace <test_keep_looping> with test_keep_looping in workflow_file
     os.system(f"sed -i 's/test_keep_looping: .*/test_keep_looping: {args.test_keep_looping}/g' {workflow_file}")
     # replace <test_model_name> with model_container.name in workflow_file
-    os.system(f"sed -i 's/test_model_name: .*/test_model_name: {workflownames}/g' {workflow_file}")
+    os.system(f"sed -i 's/test_model_name: .*/test_model_name: {models}/g' {workflow_file}")
     # replace <test_set> with test_set in workflow_file
     os.system(f"sed -i 's/test_set: .*/test_set: {args.test_set}/g' {workflow_file}")
     # replace <test_secret_name> 
