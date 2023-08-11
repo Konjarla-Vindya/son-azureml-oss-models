@@ -21,6 +21,10 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: azure-login-step
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.WORKFLOW_TOKEN}}
     - name: pip-install-azure-ai-ml
       run: pip install azure-ai-ml
     # - name: pip-install-azureml-core
