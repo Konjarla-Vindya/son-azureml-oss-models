@@ -1,0 +1,20 @@
+{
+    "queue_name": "test-japaneast",
+    "models": [
+        "bert-large-uncased-whole-word-masking-finetuned-squad",
+		"t5-3b",
+		"bert-large-cased",
+		"albert-base-v1",
+		"xlnet-base-cased",
+		"bert-base-german-dbmdz-uncased",
+		"distilbert-base-german-cased",
+		"xlm-roberta-large-finetuned-conll03-english",
+		"bert-large-uncased-whole-word-masking",
+		"bert-base-german-cased"
+
+    ],
+    "workspace": "test-japaneast",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace"
+}
