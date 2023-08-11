@@ -180,7 +180,7 @@ if __name__ == "__main__":
     latest_version = 0
     for env in env_list:
         if latest_version <= int(env.version):
-            latest_version = int(env.verion)
+            latest_version = int(env.version)
     print("Latest Environment Version:", latest_version)
     latest_env = workspace_ml_client.environments.get(name=queue.environment, version=str(latest_version))
     print("Latest Environment :", latest_env)
