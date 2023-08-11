@@ -41,7 +41,7 @@ jobs:
       id: deploy-model-step
       run: python create_queue.py
       working-directory: automation/tests/setup
-    - name: trigger-next-model-step
+#     - name: trigger-next-model-step
     - name: Commit files
       id: commit
       run: | 
