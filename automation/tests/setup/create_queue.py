@@ -12,6 +12,7 @@ import argparse
 import sys
 from util import load_model_list_file, get_model_containers
 from pathlib import Path
+import yaml
 
 # constants
 LOG = True
@@ -24,7 +25,7 @@ parser.add_argument("--mode", type=str, default="file")
 parser.add_argument("--registry_name", type=str, default="HuggingFace")
 # argument to specify Github workflow directory. can write to local dir for testing
 # !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
-parser.add_argument("--workflow_dir", type=str, default="../../../.github/workflows")
+parser.add_argument("--workflow_dir", type=str, default="../../.github/workflows")
 # argument to specify queue directory
 parser.add_argument("--queue_dir", type=str, default="../../../tests/config/queue")
 # queue set name (will create a folder under queue_dir with this name)
@@ -220,27 +221,50 @@ def write_single_workflow_file(workflownames,models, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
     workflow_file=f"{args.workflow_dir}/{workflownames}.yml"
-    print("yml file----------------------------------------",workflow_file)
-    # print(workflow_file['env']['test_queue'])
-    print (f"Generating workflow file: {workflow_file}")
-    os.system(f"cp {args.workflow_template} {workflow_file}")
-    os.system(f"sed -i s/name: distilbert-base-uncased/name: {workflownames}/g' {workflow_file}")
-    # replace <test_queue> with q
-    os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
-    # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
-    # replace <test_sku_type> with test_sku_type in workflow_file
-    os.system(f"sed -i 's/test_sku_type: .*/test_sku_type: {args.test_sku_type}/g' {workflow_file}")
-    # replace <test_registry> with test_registry in workflow_file
-    os.system(f"sed -i 's/test_trigger_next_model: .*/test_trigger_next_model: {args.test_trigger_next_model}/g' {workflow_file}")
-    # replace <test_keep_looping> with test_keep_looping in workflow_file
-    os.system(f"sed -i 's/test_keep_looping: .*/test_keep_looping: {args.test_keep_looping}/g' {workflow_file}")
-    # replace <test_model_name> with model_container.name in workflow_file
-    os.system(f"sed -i 's/test_model_name: .*/test_model_name: {models}/g' {workflow_file}")
-    # replace <test_set> with test_set in workflow_file
-    os.system(f"sed -i 's/test_set: .*/test_set: {args.test_set}/g' {workflow_file}")
-    # replace <test_secret_name> 
-    os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
+    # print("yml file----------------------------------------",workflow_file)
+    # # print(workflow_file['env']['test_queue'])
+    # print (f"Generating workflow file: {workflow_file}")
+    # os.system(f"cp {args.workflow_template} {workflow_file}")
+    # os.system(f"sed -i s/name: distilbert-base-uncased/name: {workflownames}/g' {workflow_file}")
+    # # replace <test_queue> with q
+    # os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
+    # # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
+    # # replace <test_sku_type> with test_sku_type in workflow_file
+    # os.system(f"sed -i 's/test_sku_type: .*/test_sku_type: {args.test_sku_type}/g' {workflow_file}")
+    # # replace <test_registry> with test_registry in workflow_file
+    # os.system(f"sed -i 's/test_trigger_next_model: .*/test_trigger_next_model: {args.test_trigger_next_model}/g' {workflow_file}")
+    # # replace <test_keep_looping> with test_keep_looping in workflow_file
+    # os.system(f"sed -i 's/test_keep_looping: .*/test_keep_looping: {args.test_keep_looping}/g' {workflow_file}")
+    # # replace <test_model_name> with model_container.name in workflow_file
+    # os.system(f"sed -i 's/test_model_name: .*/test_model_name: {models}/g' {workflow_file}")
+    # # replace <test_set> with test_set in workflow_file
+    # os.system(f"sed -i 's/test_set: .*/test_set: {args.test_set}/g' {workflow_file}")
+    # # replace <test_secret_name> 
+    # os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
     
+    # yaml = ruamel.yaml.YAML()
+    with open(workflow_file) as f:
+        doc = yaml.safe_load(f)
+    with open(workflow_file, 'r') as f:
+        doc = yaml.load(f)
+    yaml=YAML(typ='safe')
+   
+    doc = yaml.load(workflow_file)
+    # doc = ruamel.yaml.load(workflow_file, Loader=ruamel.yaml.RoundTripLoader)
+    doc['name'] = workflownames
+    doc['env']['test_model_name'] = models
+    doc['env']['test_sku_type'] = args.test_sku_type
+    doc['env']['test_trigger_next_model'] = args.test_trigger_next_model
+    doc['env']['test_queue'] = q
+    doc['env']['test_set'] = args.test_set
+    doc['env']['test_queue'] = q
+    yaml.dump(doc, workflow_file)
+    ruamel.yaml.dump(doc,Dumper=ruamel.yaml.RoundTripDumper)
+    with open(workflow_file, 'w') as f:
+        yaml.safe_dump(doc, f, default_flow_style=False, sort_keys=False)
+   
+    with open(workflow_file, 'w') as f:
+        yaml.dump(doc, f)
 
 
 def workflow_names(models):
@@ -281,7 +305,7 @@ def main():
     print("queue",queue)
     print (f"Created queues")
     # create queue files
-    create_queue_files(queue, workspace_list)
+    # create_queue_files(queue, workspace_list)
     print (f"Created queue files")
     # create workflow files
     create_workflow_files(q, workspace_list)
