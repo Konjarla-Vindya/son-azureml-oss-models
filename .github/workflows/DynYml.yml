@@ -1,10 +1,10 @@
-name: Dyn
+name: Dyna
 
 on: 
   workflow_dispatch:
 
 env:
-  test_model_name: Dyn
+  test_model_name: Dyna
   test_sku_type: cpu
   test_trigger_next_model: true
   test_queue: model_with_static_library
