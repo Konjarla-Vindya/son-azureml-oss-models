@@ -1,4 +1,4 @@
-name: albert-base-v2
+name: distilbert-base-uncased
 
 on: 
   workflow_dispatch:
