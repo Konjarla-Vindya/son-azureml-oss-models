@@ -23,5 +23,6 @@ jobs:
         for file in `ls -1`  
         do  
           gh workflow run `cat $file | head -4 | tail -1 | sed 's/,//' | sed 's/"//g'`
+          gh working-directory: github/workflows
         done    
       working-directory: automation/tests/config/queue
