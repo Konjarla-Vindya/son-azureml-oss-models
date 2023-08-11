@@ -5,7 +5,7 @@ on:
     inputs:
       test_set:
         description: 'Test set to run'
-        default: huggingface-rerun
+        default: huggingface-all
 
 jobs:
   start-tests-job:
@@ -24,4 +24,4 @@ jobs:
         do  
           gh workflow run `cat $file | head -4 | tail -1 | sed 's/,//' | sed 's/"//g'`
         done    
-      working-directory: tests/config/queue
+      working-directory: automation/tests/config/queue
