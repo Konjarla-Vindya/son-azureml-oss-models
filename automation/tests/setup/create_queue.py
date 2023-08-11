@@ -239,7 +239,7 @@ def write_single_workflow_file(workflownames, q, secret_name):
     os.system(f"sed -i 's/<test_set>/{args.test_set}/g' {workflow_file}")
     # replace <test_secret_name> 
     os.system(f"sed -i 's/<test_secret_name>/{secret_name}/g' {workflow_file}")
-    os.system(f"sed -i 's/name: .*/name: {workflownames}/1' {workflow_file}")
+    os.system(f"sed -i 's/name: .*/name: {workflownames}/' {workflow_file}")
 
 
 def workflow_names(models):
