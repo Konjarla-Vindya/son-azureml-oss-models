@@ -15,33 +15,33 @@ jobs:
   deploy-model-job:
     runs-on: ubuntu-latest
     steps:
-    - name: check-out-repo-step
+    - name: distilbert-base-uncased
       uses: actions/checkout@v2
-    - name: azure-login-step
+    - name: distilbert-base-uncased
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: pip-install-azure-ai-ml
+    - name: distilbert-base-uncased
       run: pip install azure-ai-ml
-    - name: pip-install-azureml-core
+    - name: distilbert-base-uncased
       run: pip install azureml-core
-    - name: pip-install-azureml-mlflow
+    - name: distilbert-base-uncased
       run: pip install azureml-mlflow
-    - name: pip-install-transformers
+    - name: distilbert-base-uncased
       run: pip install transformers
-    - name: pip-install-transformers[torch]
+    - name: distilbert-base-uncased
       run: pip install transformers[torch]
-    - name: pip-install-torchvision
+    - name: distilbert-base-uncased
       run: pip install torchvision 
-    - name: pip-install-mlflow
+    - name: distilbert-base-uncased
       run: pip install mlflow
-    - name: pip-install-python-box
+    - name: distilbert-base-uncased
       run: pip install python-box 
-    - name: deploy-model-step
+    - name: distilbert-base-uncased
       id: deploy-model-step
       run: python generic_initial_automation.py
       working-directory: tests/src/automation_for_constant_library
-    - name: trigger-next-model-step
+    - name: distilbert-base-uncased
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}

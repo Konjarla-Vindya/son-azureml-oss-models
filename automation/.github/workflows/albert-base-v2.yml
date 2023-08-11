@@ -1,4 +1,4 @@
-name: distilbert-base-uncased
+name: albert-base-v2
 
 on: 
   workflow_dispatch:
@@ -15,33 +15,33 @@ jobs:
   deploy-model-job:
     runs-on: ubuntu-latest
     steps:
-    - name: check-out-repo-step
+    - name: albert-base-v2
       uses: actions/checkout@v2
-    - name: azure-login-step
+    - name: albert-base-v2
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: pip-install-azure-ai-ml
+    - name: albert-base-v2
       run: pip install azure-ai-ml
-    - name: pip-install-azureml-core
+    - name: albert-base-v2
       run: pip install azureml-core
-    - name: pip-install-azureml-mlflow
+    - name: albert-base-v2
       run: pip install azureml-mlflow
-    - name: pip-install-transformers
+    - name: albert-base-v2
       run: pip install transformers
-    - name: pip-install-transformers[torch]
+    - name: albert-base-v2
       run: pip install transformers[torch]
-    - name: pip-install-torchvision
+    - name: albert-base-v2
       run: pip install torchvision 
-    - name: pip-install-mlflow
+    - name: albert-base-v2
       run: pip install mlflow
-    - name: pip-install-python-box
+    - name: albert-base-v2
       run: pip install python-box 
-    - name: deploy-model-step
+    - name: albert-base-v2
       id: deploy-model-step
       run: python generic_initial_automation.py
       working-directory: tests/src/automation_for_constant_library
-    - name: trigger-next-model-step
+    - name: albert-base-v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
