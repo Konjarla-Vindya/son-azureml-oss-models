@@ -1,6 +1,6 @@
 name: albert-base-v2
 true:
-  workflow_dispatch: null
+  workflow_dispatch: 
 env:
   test_model_name: albert-base-v2
   test_sku_type: cpu
