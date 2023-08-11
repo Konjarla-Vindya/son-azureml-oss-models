@@ -86,7 +86,7 @@ def create_queue_files(queue, workspace_list):
     # generate queue files
     for workspace in queue:
         for thread in queue[workspace]:
-            print (f"Generating queue file {args.queue_dir}/{args.test_set}/{workspace}-suchi-{thread}.json")
+            print (f"Generating queue file {args.queue_dir}/{args.test_set}/{workspace}-{thread}.json")
             q_dict = {"queue_name": f"{workspace}-{thread}", "models": queue[workspace][thread]}
             # get the workspace from workspace_list
             q_dict["workspace"] = workspace
@@ -98,7 +98,7 @@ def create_queue_files(queue, workspace_list):
             print("subscription",q_dict["subscription"])   
             print("resource_group",q_dict["resource_group"])
             print("registry",q_dict["registry"])
-            with open(f"{args.queue_dir}/{args.test_set}/{workspace}-suchi-{thread}.json", 'w') as f:
+            with open(f"{args.queue_dir}/{args.test_set}/{workspace}-{thread}.json", 'w') as f:
                 print("enterred write file")
                 json.dump(q_dict,f,indent=4)
                 # f.write(jsonserial)
