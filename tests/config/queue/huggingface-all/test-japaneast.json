@@ -1,11 +1,16 @@
 {
     "queue_name": "test-japaneast",
     "models": [
-        "distilbert-base-multilingual-cased",
-        "t5-large",
-        "t5-small",
-        "xlm-roberta-large",
-        "Davlan-distilbert-base-multilingual-cased-ner-hrl"
+        "bert-large-uncased-whole-word-masking-finetuned-squad",
+        "t5-3b",
+        "bert-large-cased",
+        "albert-base-v1",
+        "xlnet-base-cased",
+        "bert-base-german-dbmdz-uncased",
+        "distilbert-base-german-cased",
+        "xlm-roberta-large-finetuned-conll03-english",
+        "bert-large-uncased-whole-word-masking",
+        "bert-base-german-cased"
        
         
     
