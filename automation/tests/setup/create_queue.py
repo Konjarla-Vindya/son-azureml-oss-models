@@ -83,7 +83,7 @@ def create_queue_files(queue, workspace_list):
     if not os.path.exists(f"{args.queue_dir}/{args.test_set}"):
         os.makedirs(f"{args.queue_dir}/{args.test_set}")
     # delete any files in test_set folder
-    os.system(f"rm -rf {args.queue_dir}/{args.test_set}/*")
+    # os.system(f"rm -rf {args.queue_dir}/{args.test_set}/*")
     # generate queue files
     for workspace in queue:
         for thread in queue[workspace]:
@@ -298,7 +298,7 @@ def main():
     print("queue",queue)
     print (f"Created queues")
     # create queue files
-    # create_queue_files(queue, workspace_list)
+    create_queue_files(queue, workspace_list)
     print (f"Created queue files")
     # create workflow files
     create_workflow_files(q, workspace_list)
