@@ -1,0 +1,10 @@
+{
+    "sonata-test-ws": {
+        "0": [
+            "distilbert-base-uncased"
+        ],
+        "1": [
+            "albert-base-v2"
+        ]
+    }
+}
