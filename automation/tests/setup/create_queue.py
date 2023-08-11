@@ -196,7 +196,7 @@ def assign_models_to_queues(models, workspace_list):
                     return queue
 # function to create workflow files
 # !!! any existing workflow files in workflow_dir will be overwritten. backup... !!!
-def create_workflow_files(q, models,workspace_list):
+def create_workflow_files(q,workspace_list,models):
     counter=0
     print (f"Creating workflow files")
     # check if workflow_dir exists
@@ -211,7 +211,7 @@ def create_workflow_files(q, models,workspace_list):
                 # for model in models:
                 print("entered q of workspace of thread loop:",workflownames)
                 # print("entered model of workspace of thread loop:",workflownames)
-                write_single_workflow_file(workflownames, model,f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
+                write_single_workflow_file(workflownames,f"{workspace}-{thread}", workspace_list[workspace]['secret_name'],models)
                 # print progress
                 counter=counter+1
                 print("counter:",counter)
@@ -219,7 +219,7 @@ def create_workflow_files(q, models,workspace_list):
                 sys.stdout.flush()
     print (f"\nCreated {counter} workflow files")
 # function to write a single workflow file
-def write_single_workflow_file(workflownames,model, q, secret_name):
+def write_single_workflow_file(workflownames, q, secret_name,models):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
     workflow_file=f"{args.workflow_dir}/{workflownames}.yml"
@@ -247,7 +247,8 @@ def write_single_workflow_file(workflownames,model, q, secret_name):
     with open(workflow_file, 'r') as f:
         doc = yaml.load(f)
     doc['name'] = workflownames
-    doc['env']['test_model_name'] = model
+    for model in models:
+        doc['env']['test_model_name'] = model
     doc['env']['test_sku_type'] = args.test_sku_type
     doc['env']['test_trigger_next_model'] = args.test_trigger_next_model
     doc['env']['test_queue'] = q
