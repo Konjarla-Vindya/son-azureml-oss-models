@@ -209,7 +209,7 @@ def create_workflow_files(q, models,workspace_list):
             print("entered q of workspace loop:",thread)
             for workflownames in q[workspace][thread]:
                 for model in models:
-                print("entered q of workspace of thread loop:",workflownames)
+                    print("entered q of workspace of thread loop:",workflownames)
                     write_single_workflow_file(workflownames, model,f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
                     # print progress
                     counter=counter+1
@@ -254,8 +254,10 @@ def write_single_workflow_file(workflownames,model, q, secret_name):
     doc['env']['test_queue'] = q
 
     with open(workflow_file, 'w') as f:
-        yaml.safe_dump(doc, f, default_flow_style=False, sort_keys=False)
+        yaml.dump(doc, f, default_flow_style=False, sort_keys=False,float("inf"))
 
+    # new_workflow_file=f"{args.workflow_dir}/{workflownames}.yml"
+    # os.system(f"sed -i s/name: distilbert-base-uncased/name: {workflownames}/g' {workflow_file}")
 def workflow_names(models):
     workflownames=[]
     j=1
