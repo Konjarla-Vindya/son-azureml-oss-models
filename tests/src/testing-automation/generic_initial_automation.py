@@ -227,7 +227,7 @@ if __name__ == "__main__":
         registry_ml_client=workspace_ml_client,
         registry=queue.registry
     )
-    InferenceAndDeployment.model_infernce_deployment()
+    InferenceAndDeployment.model_infernce_and_deployment()
 
     # model = Model(model_name=test_model_name, queue=queue)
     # model_and_tokenizer = model.download_and_register_model(workspace=ws)
