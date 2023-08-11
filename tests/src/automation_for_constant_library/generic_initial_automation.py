@@ -85,13 +85,13 @@ def set_next_trigger_model(queue):
         print(f'NEXT_MODEL={next_model}', file=fh)
 
 def create_or_get_compute_target(ml_client):
-    cpu_compute_target = "Standard-DS3-v2"
+    cpu_compute_target = "STANDARD-D13"
     try:
         compute = ml_client.compute.get(cpu_compute_target)
     except Exception:
         print("Creating a new cpu compute target...")
         compute = AmlCompute(
-            name=cpu_compute_target, size="Standard-DS3-v2", min_instances=0, max_instances=4
+            name=cpu_compute_target, size="STANDARD-D13", min_instances=0, max_instances=4
         )
         ml_client.compute.begin_create_or_update(compute).result()
     
@@ -175,7 +175,7 @@ if __name__ == "__main__":
            "resource_group": queue.resource_group,
            "workspace": queue.workspace
            }
-    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:2", compute="Standard-DS3-v2", environment_variables=environment_variables)
+    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment="automate-venv:2", compute="STANDARD-D13", environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
 
 
