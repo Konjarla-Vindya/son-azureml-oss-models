@@ -2,10 +2,10 @@ name: distilbert-base-uncased
 true:
   workflow_dispatch: null
 env:
-  test_model_name: distilbert-base-uncased
+  test_model_name: distilbert/base-uncased
   test_sku_type: cpu
   test_trigger_next_model: 'true'
-  test_queue: test-eastus-2
+  test_queue: sonata-test-ws-0
   test_set: huggingface-all
   test_keep_looping: false
 jobs:
