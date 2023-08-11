@@ -224,7 +224,7 @@ def write_single_workflow_file(workflownames, q, secret_name):
     # print(workflow_file['env']['test_queue'])
     print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
-    os.system(f"sed -i 's/name: distilbert-base-uncased/name: {workflownames}' {workflow_file}")
+    os.system(f"sed -i '1/name: distilbert-base-uncased/name: {workflownames}' {workflow_file}")
     # replace <test_queue> with q
     os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
     # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
