@@ -24,7 +24,7 @@ parser.add_argument("--mode", type=str, default="file")
 parser.add_argument("--registry_name", type=str, default="HuggingFace")
 # argument to specify Github workflow directory. can write to local dir for testing
 # !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
-parser.add_argument("--workflow_dir", type=str, default="../../../.github/workflows")
+parser.add_argument("--workflow_dir", type=str, default="../../.github/workflows")
 # argument to specify queue directory
 parser.add_argument("--queue_dir", type=str, default="../config/queue")
 # queue set name (will create a folder under queue_dir with this name)
@@ -239,7 +239,7 @@ def write_single_workflow_file(workflownames, q, secret_name):
     os.system(f"sed -i 's/<test_set>/{args.test_set}/g' {workflow_file}")
     # replace <test_secret_name> 
     os.system(f"sed -i 's/<test_secret_name>/{secret_name}/g' {workflow_file}")
-    os.system(f"sed -i 's/name: .*/name: {workflownames}' {workflow_file}")
+    os.system(f"sed -i 's/name: .*/name: {workflownames}/1' {workflow_file}")
 
 
 def workflow_names(models):
