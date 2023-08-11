@@ -1,4 +1,4 @@
-from transformers import AutoModel,AutoTokenizer,AutoConfig
+from transformers import AutoModel, AutoTokenizer, AutoConfig
 import transformers
 #from azureml.core import Workspace
 #from azureml.core import Workspace
@@ -9,17 +9,17 @@ from mlflow.models import infer_signature
 from mlflow.transformers import generate_signature_output
 from transformers import pipeline
 import pandas as pd
-import os 
+import os
 import mlflow
 import re
 
-  
+
 # import json
 import json
-# store the URL in url as 
+# store the URL in url as
 # parameter for urlopen
 url = "https://huggingface.co/api/models"
-columns_to_read = ["modelId","pipeline_tag","tags"]
+columns_to_read = ["modelId", "pipeline_tag", "tags"]
 string_to_check = 'transformers'
 
 test_model_name = os.environ.get('test_model_name')
@@ -27,10 +27,11 @@ subscription = os.environ.get('subscription')
 resource_group = os.environ.get('resource_group')
 workspace_name = os.environ.get('workspace')
 
+
 class Model:
     def __init__(self, model_name) -> None:
         self.model_name = model_name
-    
+
     def get_task_and_sample_data(self) -> pd.DataFrame:
         response = urlopen(url)
         data_json = json.loads(response.read())
@@ -41,23 +42,24 @@ class Model:
         pattern = r'[0-9\s+]'
         final_data = re.sub(pattern, '', required_data)
         return final_data
-    
+
     def get_sample_input_data(self):
         final_data = self.get_task_and_sample_data()
         task = final_data
-        print("task:",task)
+        print("task:", task)
         scoring_file = f"sample_inputs/{task}.json"
         # check of scoring_file exists
         try:
             with open(scoring_file) as f:
                 scoring_input = ConfigBox(json.load(f))
-                print (f"scoring_input file:\n\n {scoring_input}\n\n")
+                print(f"scoring_input file:\n\n {scoring_input}\n\n")
         except Exception as e:
-            print (f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
-        
+            print(
+                f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
+
         return scoring_input, task
 
-    def download_model_and_tokenizer(self)->dict:
+    def download_model_and_tokenizer(self) -> dict:
         model_detail = AutoConfig.from_pretrained(self.model_name)
         model_library_name = model_detail.to_dict()["architectures"][0]
         model_library = getattr(transformers, model_library_name)
@@ -68,19 +70,26 @@ class Model:
         # task_dict = config_dict["task_specific_params"]
         # task=list(task_dict.keys())[0]
 
-        model_and_tokenizer = {"model":model, "tokenizer":tokenizer}
+        model_and_tokenizer = {"model": model, "tokenizer": tokenizer}
         return model_and_tokenizer
-    
+
     def register_model_in_workspace(self, model_and_tokenizer, sample_data, task):
         #task = self.queue.models[self.model_name].task
-        model_pipeline = transformers.pipeline(task=task, model=self.model_name)
+        model_pipeline = transformers.pipeline(
+            task=task, model=self.model_name)
+        if task == "fill-mask":
+            pipeline_tokenizer = model_pipeline.tokenizer
+            for index in range(len(sample_data.inputs)):
+                sample_data.inputs[index] = sample_data.inputs[index].replace(
+                    "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
+
         output = generate_signature_output(model_pipeline, sample_data.inputs)
         signature = infer_signature(sample_data.inputs, output)
         artifact_path = self.model_name + "-artifact"
         registered_model_name = self.model_name
         # mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
         mlflow.transformers.log_model(
-            transformers_model = model_and_tokenizer,
+            transformers_model=model_and_tokenizer,
             task=task,
             artifact_path=artifact_path,
             registered_model_name=registered_model_name,
@@ -88,11 +97,13 @@ class Model:
             input_example=sample_data.inputs
         )
 
-    def download_and_register_model(self)->dict :
+    def download_and_register_model(self) -> dict:
         model_and_tokenizer = self.download_model_and_tokenizer()
         sample_data, task = self.get_sample_input_data()
-        self.register_model_in_workspace(model_and_tokenizer, sample_data, task)
+        self.register_model_in_workspace(
+            model_and_tokenizer, sample_data, task)
         return model_and_tokenizer
+
 
 if __name__ == "__main__":
     model = Model(model_name=test_model_name)
