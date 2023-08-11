@@ -27,7 +27,7 @@ parser.add_argument("--registry_name", type=str, default="HuggingFace")
 # !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
 parser.add_argument("--workflow_dir", type=str, default="../../.github/workflows")
 # argument to specify queue directory
-parser.add_argument("--queue_dir", type=str, default="../../../tests/config/queue")
+parser.add_argument("--queue_dir", type=str, default="../../tests/config/queue")
 # queue set name (will create a folder under queue_dir with this name)
 # !!! backup files in this folder will be overwritten !!!
 parser.add_argument("--test_set", type=str, default="huggingface-all")
