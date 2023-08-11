@@ -220,7 +220,8 @@ def write_single_workflow_file(workflownames, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
     workflow_file=f"{args.workflow_dir}/{workflownames}.yml"
-    print(workflow_file['env']['test_queue'])
+    print(workflow_file)
+    # print(workflow_file['env']['test_queue'])
     print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
     # replace <test_queue> with q
