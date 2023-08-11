@@ -208,8 +208,9 @@ def create_workflow_files(q, models,workspace_list):
         for thread in q[workspace]:
             print("entered q of workspace loop:",thread)
             for workflownames in q[workspace][thread]:
-                for model in models:
+                # for model in models:
                     print("entered q of workspace of thread loop:",workflownames)
+                    # print("entered model of workspace of thread loop:",workflownames)
                     write_single_workflow_file(workflownames, model,f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
                     # print progress
                     counter=counter+1
