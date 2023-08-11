@@ -42,6 +42,15 @@ jobs:
       run: python create_queue.py
       working-directory: automation/tests/setup
     - name: trigger-next-model-step
+    - name: Commit files
+      id: commit
+      run: | 
+        git config user.email "${{ secrets.USER_EMAIL }}"           
+        git config user.name "${{ secrets.USER_NAME }}"
+        git add --all
+        git commit -m --all          
+        git push
+      - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
