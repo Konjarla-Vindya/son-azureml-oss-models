@@ -2,7 +2,7 @@ name: a
 true:
   workflow_dispatch: null
 env:
-  test_model_name: c
+  test_model_name: a
   test_sku_type: cpu
   test_trigger_next_model: 'true'
   test_queue: test-eastus-2
