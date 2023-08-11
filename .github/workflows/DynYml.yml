@@ -50,7 +50,7 @@ jobs:
         git add --all
         git commit -m --all          
         git push
-      - name: trigger-next-model-step
+    - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
