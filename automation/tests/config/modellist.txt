@@ -1,5 +1,7 @@
-distilbert/base-uncased
 albert-base-v2
-a
-b
-c
+xlm-roberta-large
+distilgpt2
+ProsusAI/finbert
+gpt2-large
+EleutherAI/gpt-neo-125m
+CAMeL-Lab/bert-base-arabic-camelbert-da-sentiment
