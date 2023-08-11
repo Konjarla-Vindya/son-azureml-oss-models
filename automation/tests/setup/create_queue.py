@@ -209,14 +209,14 @@ def create_workflow_files(q, models,workspace_list):
             print("entered q of workspace loop:",thread)
             for workflownames in q[workspace][thread]:
                 # for model in models:
-                    print("entered q of workspace of thread loop:",workflownames)
-                    # print("entered model of workspace of thread loop:",workflownames)
-                    write_single_workflow_file(workflownames, model,f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
-                    # print progress
-                    counter=counter+1
-                    print("counter:",counter)
-                    sys.stdout.write(f'{counter}\r')
-                    sys.stdout.flush()
+                print("entered q of workspace of thread loop:",workflownames)
+                # print("entered model of workspace of thread loop:",workflownames)
+                write_single_workflow_file(workflownames, model,f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
+                # print progress
+                counter=counter+1
+                print("counter:",counter)
+                sys.stdout.write(f'{counter}\r')
+                sys.stdout.flush()
     print (f"\nCreated {counter} workflow files")
 # function to write a single workflow file
 def write_single_workflow_file(workflownames,model, q, secret_name):
