@@ -180,7 +180,7 @@ if __name__ == "__main__":
     for env in env_list:
         if latest_version <= int(env.version):
             latest_version = int(env.version)
-    #print("Latest Environment Version:", latest_version)
+    print("Latest Environment Version:", latest_version)
     latest_env = workspace_ml_client.environments.get(name=queue.environment, version=str(latest_version))
     print("Latest Environment :", latest_env)
     command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py", environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
