@@ -24,7 +24,7 @@ parser.add_argument("--mode", type=str, default="file")
 parser.add_argument("--registry_name", type=str, default="HuggingFace")
 # argument to specify Github workflow directory. can write to local dir for testing
 # !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
-parser.add_argument("--workflow_dir", type=str, default="../../../.github/workflows")
+parser.add_argument("--workflow_dir", type=str, default="../../../.github/workflows copy")
 # argument to specify queue directory
 parser.add_argument("--queue_dir", type=str, default="../config/queue")
 # queue set name (will create a folder under queue_dir with this name)
