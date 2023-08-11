@@ -103,51 +103,51 @@ def create_queue_files(queue, workspace_list):
                 print("enterred write file")
                 json.dump(q_dict,f,indent=4)
                 # f.write(jsonserial)
-def assign_models_to_workflowq(workflownames, workspace_list):
-    q = {}
-    i=0
-    while i < len(workflownames):
-        for workspace in workspace_list:
-            print (f"workspace instance: {workspace}")
-            for thread in range(parallel_tests):
-                print (f"thread instance: {thread}")
-                if i < len(workflownames):
-                    if workspace not in q:
-                        q[workspace] = {}
-                        print("q[workspace]",q[workspace])
-                    if thread not in q[workspace]:
-                        q[workspace][thread] = []
-                    q[workspace][thread].append(workflownames[i])
-                    print("q[workspace][thread]",q[workspace][thread])
-                    i=i+1
-                    #print (f"Adding model {workflownames[i]} at index {i} to q {workspace}-{thread}")
-                else:
-                    #print (f"Reached end of models list, breaking out of loop")
-                    if LOG:
-                        print("current working directory is:", os.getcwd())
-                        # if assign_models_to_queues under log_dir does not exist, create it
-                        print("args.log_dir:", args.log_dir)
+# def assign_models_to_workflowq(workflownames, workspace_list):
+#     q = {}
+#     i=0
+#     while i < len(workflownames):
+#         for workspace in workspace_list:
+#             print (f"workspace instance: {workspace}")
+#             for thread in range(parallel_tests):
+#                 print (f"thread instance: {thread}")
+#                 if i < len(workflownames):
+#                     if workspace not in q:
+#                         q[workspace] = {}
+#                         print("q[workspace]",q[workspace])
+#                     if thread not in q[workspace]:
+#                         q[workspace][thread] = []
+#                     q[workspace][thread].append(workflownames[i])
+#                     print("q[workspace][thread]",q[workspace][thread])
+#                     i=i+1
+#                     #print (f"Adding model {workflownames[i]} at index {i} to q {workspace}-{thread}")
+#                 else:
+#                     #print (f"Reached end of models list, breaking out of loop")
+#                     if LOG:
+#                         print("current working directory is:", os.getcwd())
+#                         # if assign_models_to_queues under log_dir does not exist, create it
+#                         print("args.log_dir:", args.log_dir)
                         
-                        if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
-                            logpath=Path(f"{args.log_dir}/assign_models_to_queues")
-                            os.makedirs(logpath)
-                            print("logs created:" f"{args.log_dir}/assign_models_to_queues")
-                        # generate filename as DDMMMYYYY-HHMMSS.json
-                        timestamp = time.strftime("%d%b%Y-%H%M%S.json")
-                        # write queue to file
-                        with open(f"{args.log_dir}/assign_models_to_queues/{timestamp}", 'w') as f:
-                            json.dump(q, f, indent=4)
-                    # validate that count of models across all queues is equal to count of models in models list
-                    model_count=0
-                    for workspace in q:
-                        for thread in q[workspace]:
-                            model_count=model_count+len(q[workspace][thread])
-                    if model_count != len(workflownames):
-                        print (f"Error: Model count mismatch. Expected {len(workflownames)} but found {model_count}")
-                        exit (1)
-                    else:
-                        print (f"Found {model_count} models across {len(q)} queues, which is equal to count of models in models list")
-                    return q
+#                         if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
+#                             logpath=Path(f"{args.log_dir}/assign_models_to_queues")
+#                             os.makedirs(logpath)
+#                             print("logs created:" f"{args.log_dir}/assign_models_to_queues")
+#                         # generate filename as DDMMMYYYY-HHMMSS.json
+#                         timestamp = time.strftime("%d%b%Y-%H%M%S.json")
+#                         # write queue to file
+#                         with open(f"{args.log_dir}/assign_models_to_queues/{timestamp}", 'w') as f:
+#                             json.dump(q, f, indent=4)
+#                     # validate that count of models across all queues is equal to count of models in models list
+#                     model_count=0
+#                     for workspace in q:
+#                         for thread in q[workspace]:
+#                             model_count=model_count+len(q[workspace][thread])
+#                     if model_count != len(workflownames):
+#                         print (f"Error: Model count mismatch. Expected {len(workflownames)} but found {model_count}")
+#                         exit (1)
+#                     else:
+#                         print (f"Found {model_count} models across {len(q)} queues, which is equal to count of models in models list")
+#                     return q
                     
 def assign_models_to_queues(models, workspace_list):
     queue = {}
@@ -207,11 +207,11 @@ def create_workflow_files(q,workspace_list):
         print("entered q loop:",workspace)
         for thread in q[workspace]:
             print("entered q of workspace loop:",thread)
-            for workflownames in q[workspace][thread]:
+            for model in q[workspace][thread]:
                 # for model in models:
-                print("entered q of workspace of thread loop:",workflownames)
+                print("entered q of workspace of thread loop:",model)
                 # print("entered model of workspace of thread loop:",workflownames)
-                write_single_workflow_file(workflownames,f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
+                write_single_workflow_file(model,f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
                 # print progress
                 counter=counter+1
                 print("counter:",counter)
@@ -219,15 +219,16 @@ def create_workflow_files(q,workspace_list):
                 sys.stdout.flush()
     print (f"\nCreated {counter} workflow files")
 # function to write a single workflow file
-def write_single_workflow_file(workflownames, q, secret_name):
+def write_single_workflow_file(model, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
-    workflow_file=f"{args.workflow_dir}/{workflownames}.yml"
+    workflowname=model.replace('/','-')
+    workflow_file=f"{args.workflow_dir}/{workflowname}.yml"
     print("yml file----------------------------------------",workflow_file)
     # print(workflow_file['env']['test_queue'])
     print (f"Generating workflow file: {workflow_file}")
     # os.system(f"cp {args.workflow_template} {workflow_file}")
-    # os.system(f"sed -i s/name: distilbert-base-uncased/name: {workflownames}/g' {workflow_file}")
+    # os.system(f"sed -i s/name: distilbert-base-uncased/name: {workflowname}/g' {workflow_file}")
     # # replace <test_queue> with q
     # os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
     # # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
@@ -246,9 +247,9 @@ def write_single_workflow_file(workflownames, q, secret_name):
 
     with open(workflow_file, 'r') as f:
         doc = yaml.load(f)
-    doc['name'] = workflownames
+    doc['name'] = workflowname
     # for model in models:
-    doc['env']['test_model_name'] = workflownames.replace('/','-')
+    doc['env']['test_model_name'] = model
     doc['env']['test_sku_type'] = args.test_sku_type
     doc['env']['test_trigger_next_model'] = args.test_trigger_next_model
     doc['env']['test_queue'] = q
@@ -258,8 +259,6 @@ def write_single_workflow_file(workflownames, q, secret_name):
     with open(workflow_file, 'w') as f:
         yaml.dump(doc, f, default_flow_style=False, sort_keys=False,width=float("inf"))
 
-    # new_workflow_file=f"{args.workflow_dir}/{workflownames}.yml"
-    # os.system(f"sed -i s/name: distilbert-base-uncased/name: {workflownames}/g' {workflow_file}")
 def workflow_names(models):
     workflownames=[]
     j=1
@@ -293,7 +292,8 @@ def main():
     print (f"Found {len(workspace_list)} workspaces")
     # assign models to queues
     queue = assign_models_to_queues(models, workspace_list)
-    q=assign_models_to_workflowq(workflownames, workspace_list)
+    # q=assign_models_to_workflowq(workflownames, workspace_list)
+    q=queue
     print("q",q)
     print("queue",queue)
     print (f"Created queues")
