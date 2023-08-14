@@ -13,7 +13,7 @@ import sys
 from util import load_model_list_file, get_model_containers
 from pathlib import Path
 import yaml
-from github import Github
+# from github import Github
 
 # constants
 LOG = True
