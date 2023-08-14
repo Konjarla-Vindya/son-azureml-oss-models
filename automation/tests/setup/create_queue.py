@@ -228,6 +228,7 @@ def write_single_workflow_file(model, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
     workflowname=model.replace('/','-')
+    # os.system(f"sed -i 's/name: .*/name: {model}/g' {args.workflow_template}")
     workflow_file=f"{args.workflow_dir}/demo_{workflowname}.yml"
     # print("yml file----------------------------------------",workflow_file)
     # # print(workflow_file['env']['test_queue'])
@@ -258,7 +259,7 @@ def write_single_workflow_file(model, q, secret_name):
     with open(workflow_file, 'r') as f:
         doc = yaml.load(f)
     doc['name'] = model
-    doc['workflow_dispatch']='namera'
+    doc['on']['workflow_dispatch']='namera'
     # for model in models:
     doc['env']['test_model_name'] = model
     doc['env']['test_sku_type'] = args.test_sku_type
