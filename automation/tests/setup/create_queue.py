@@ -260,7 +260,7 @@ def write_single_workflow_file(model, q, secret_name):
     filedata = filedata.replace('abcd', 'ram')
 
     # Write the file out again
-     with open(workflow_file, 'w') as f:
+    with open(workflow_file, 'w') as f:
         yaml.dump(doc, f, default_flow_style=False, sort_keys=False,width=float("inf"))
     # with open(workflow_file, 'r') as f:
     #     doc = yaml.load(f)
