@@ -266,7 +266,8 @@ def write_single_workflow_file(model, q, secret_name):
     doc['env']['test_queue'] = q
     doc['env']['test_set'] = args.test_set
     doc['env']['test_queue'] = q
-    os.system(f"sed -i 's/true: .*/on: .*/g' {workflow_file}")
+    doc.replace('true:','on:')
+    # os.system(f"sed -i 's/true: .*/on: .*/g' {workflow_file}")
     with open(workflow_file, 'w') as f:
        yml= yaml.dump(doc, f, default_flow_style=False, sort_keys=False,width=float("inf"))
         # yml=yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
