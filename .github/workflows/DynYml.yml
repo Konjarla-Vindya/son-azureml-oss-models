@@ -1,4 +1,4 @@
-name: abcd
+name: DynYml
 
 on: 
   workflow_dispatch:
