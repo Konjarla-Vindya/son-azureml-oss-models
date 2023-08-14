@@ -1,4 +1,4 @@
-name: distilbert-base-uncased
+name: CAMeL-Lab/bert-base-arabic-camelbert-da-sentiment
 
 on: 
   workflow_dispatch:
