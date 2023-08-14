@@ -1,16 +1,13 @@
-name: 
-
-on: 
-  workflow_dispatch:
-
+name: distilgpt2
+true:
+  workflow_dispatch: null
 env:
   test_model_name: distilgpt2
   test_sku_type: cpu
-  test_trigger_next_model: true
+  test_trigger_next_model: 'true'
   test_queue: test-eastus-1
   test_set: huggingface-all
   test_keep_looping: false
-
 jobs:
   deploy-model-job:
     runs-on: ubuntu-latest
@@ -32,11 +29,11 @@ jobs:
     - name: pip-install-transformers[torch]
       run: pip install transformers[torch]
     - name: pip-install-torchvision
-      run: pip install torchvision 
+      run: pip install torchvision
     - name: pip-install-mlflow
       run: pip install mlflow
     - name: pip-install-python-box
-      run: pip install python-box 
+      run: pip install python-box
     - name: deploy-model-step
       id: deploy-model-step
       run: python generic_initial_automation.py
