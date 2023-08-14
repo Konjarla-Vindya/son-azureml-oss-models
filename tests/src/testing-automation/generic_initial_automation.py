@@ -92,14 +92,14 @@ def set_next_trigger_model(queue):
         print(f'NEXT_MODEL={next_model}', file=fh)
 
 
-def create_or_get_compute_target(ml_client):
-    cpu_compute_target = "Standard-DS3-v2"
+def create_or_get_compute_target(ml_client,  compute):
+    cpu_compute_target = compute
     try:
         compute = ml_client.compute.get(cpu_compute_target)
     except Exception:
         print("Creating a new cpu compute target...")
         compute = AmlCompute(
-            name=cpu_compute_target, size="Standard-DS3-v2", min_instances=0, max_instances=4
+            name=cpu_compute_target, size=compute, min_instances=0, max_instances=4
         )
         ml_client.compute.begin_create_or_update(compute).result()
 
@@ -179,7 +179,7 @@ if __name__ == "__main__":
         workspace_name=queue.workspace
     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
-    compute_target = create_or_get_compute_target(workspace_ml_client)
+    compute_target = create_or_get_compute_target(workspace_ml_client, queue.compute)
     environment_variables = {"test_model_name": test_model_name,
                              "subscription": queue.subscription,
                              "resource_group": queue.resource_group,
