@@ -1,12 +1,8 @@
 {
     "queue_name": "test-eastus",
     "models": [
-	        "bert-base-german-dbmdz-cased",
-	    	"albert-large-v1",
-	    	"albert-xlarge-v1",
-	    	"xlm-mlm-ende-1024",
-	    	"xlm-roberta-large-finetuned-conll02-spanish",
-	    	"xlm-mlm-17-1280"
+		"Helsinki-NLP/opus-mt-fr-en",
+	        "Helsinki-NLP/opus-mt-es-en"
 	    
     ],
     "workspace": "test-eastus",
