@@ -24,10 +24,10 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: cred
-      uses: actions/labeler@v4
-      with:
-        repo-token: ${{ secrets.WORKFLOW_TOKEN }}
+    # - name: cred
+    #   uses: actions/labeler@v4
+    #   with:
+    #     repo-token: ${{ secrets.WORKFLOW_TOKEN }}
     - name: pip-install-azure-ai-ml
       run: pip install azure-ai-ml
     # - name: pip-install-azureml-core
@@ -57,8 +57,9 @@ jobs:
         git add --all
         git commit -m --all          
         git push
-    - name: trigger-next-model-step
-      env:
-        GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
-      if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
-      run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
+    
+    # - name: trigger-next-model-step
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
+    #   if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
+    #   run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
