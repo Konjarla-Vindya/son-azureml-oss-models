@@ -10,10 +10,19 @@
 		"distilbert-base-uncased",
 		"bert-base-chinese",
 		"bert-base-multilingual-cased",
-		"t5-base"
+		"t5-base",
+	        "bert-base-german-dbmdz-cased",
+	    	"albert-large-v1",
+	    	"albert-xlarge-v1",
+	    	"xlm-mlm-ende-1024",
+	    	"xlm-roberta-large-finetuned-conll02-spanish",
+	    	"xlm-mlm-17-1280"
+	    
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace"
+    "environment": "automate-venv",
+    "compute": "Standard-DS3-v2"
 }
