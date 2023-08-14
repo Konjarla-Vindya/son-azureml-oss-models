@@ -259,7 +259,7 @@ def write_single_workflow_file(model, q, secret_name):
     with open(workflow_file, 'r') as f:
         doc = yaml.load(f)
     doc['name'] = model
-    # doc['true']['workflow_dispatch']='namera'
+    # doc['True']['workflow_dispatch']='namera'
     # for model in models:
     doc['env']['test_model_name'] = model
     doc['env']['test_sku_type'] = args.test_sku_type
