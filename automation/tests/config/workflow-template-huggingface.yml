@@ -1,6 +1,6 @@
 name: distl
 
-on: 
+onion: 
   workflow_dispatch:
 
 env:
