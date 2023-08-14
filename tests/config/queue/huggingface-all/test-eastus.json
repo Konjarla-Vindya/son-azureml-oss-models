@@ -1,16 +1,6 @@
 {
     "queue_name": "test-eastus",
     "models": [
-        "bert-base-uncased",
-		"xlm-roberta-base",
-		"gpt2",
-		"roberta-base",
-		"albert-base-v2",
-		"bert-base-cased",
-		"distilbert-base-uncased",
-		"bert-base-chinese",
-		"bert-base-multilingual-cased",
-		"t5-base",
 	        "bert-base-german-dbmdz-cased",
 	    	"albert-large-v1",
 	    	"albert-xlarge-v1",
