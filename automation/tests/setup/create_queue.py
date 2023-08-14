@@ -227,11 +227,11 @@ def write_single_workflow_file(model, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
     workflowname=model.replace('/','-')
-    workflow_file=f"{args.workflow_dir}/{workflowname}.yml"
+    workflow_file=f"{args.workflow_dir}/demo_{workflowname}.yml"
     # print("yml file----------------------------------------",workflow_file)
     # # print(workflow_file['env']['test_queue'])
     # print (f"Generating workflow file: {workflow_file}")
-    # os.system(f"cp {args.workflow_template} {workflow_file}")
+    os.system(f"cp {args.workflow_template} {workflow_file}")
     # name=str(model)
     # print("name:---------------------",name)
     # print("model:--------------------",model)
@@ -269,8 +269,8 @@ def write_single_workflow_file(model, q, secret_name):
         yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
         yml=yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
         # yaml.dump(doc, f, default_flow_style=True,width=float("inf"))
-    # workflow_filecopy=f"{args.workflow_dir}/{workflowname}suchi.yml"
-    os.system(f"cp {args.workflow_template} {workflow_file}")
+    workflow_filecopy=f"{args.workflow_dir}/{workflowname}.yml"
+    os.system(f"cp {yml} {workflow_filecopy}")
 def workflow_names(models):
     workflownames=[]
     j=1
