@@ -7,7 +7,7 @@ env:
   test_model_name: xlm-roberta-large
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: sonata-test-ws-1
+  test_queue: test-eastus-0
   test_set: huggingface-all
   test_keep_looping: false
 
