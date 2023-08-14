@@ -27,7 +27,7 @@ parser.add_argument("--environment", type=str, default="automate-venv")
 parser.add_argument("--compute", type=str, default="Standard-DS13-v2")
 # argument to specify Github workflow directory. can write to local dir for testing
 # !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
-parser.add_argument("--workflow_dir", type=str, default="../../.github/workflows")
+parser.add_argument("--workflow_dir", type=str, default="../../../.github/workflows")
 # argument to specify queue directory
 parser.add_argument("--queue_dir", type=str, default="../../tests/config/queue")
 # queue set name (will create a folder under queue_dir with this name)
@@ -299,14 +299,14 @@ def main():
     workspace_list = load_workspace_config()
     print (f"Found {len(workspace_list)} workspaces")
     # assign models to queues
-    queue = assign_models_to_queues(models, workspace_list)
+    # queue = assign_models_to_queues(models, workspace_list)
     # q=assign_models_to_workflowq(workflownames, workspace_list)
     q=queue
     print("q",q)
     print("queue",queue)
     print (f"Created queues")
     # create queue files
-    create_queue_files(queue, workspace_list)
+    # create_queue_files(queue, workspace_list)
     print (f"Created queue files")
     # create workflow files
     create_workflow_files(q, workspace_list)
