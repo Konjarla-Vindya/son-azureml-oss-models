@@ -1,4 +1,4 @@
-name: distilbert-base-uncased
+name: 
 
 on: 
   workflow_dispatch:
