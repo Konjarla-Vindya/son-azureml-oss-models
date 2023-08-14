@@ -156,7 +156,7 @@ class ModelInferenceAndDeployemnt:
         # endpoint.traffic = {"demo": 100}
         # workspace_ml_client.begin_create_or_update(endpoint).result()
 
-        deployment_name = latest_model.name.substring[:31]
+        deployment_name = latest_model.name
         deployment_config = ManagedOnlineDeployment(
             name=deployment_name,
             model=latest_model,
@@ -200,7 +200,7 @@ class ModelInferenceAndDeployemnt:
                     "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
 
         output = loaded_model(scoring_input.inputs)
-        print(output)
+        print("My outupt is this : ",output)
 
     def model_infernce_and_deployment(self):
         model_name = ''
