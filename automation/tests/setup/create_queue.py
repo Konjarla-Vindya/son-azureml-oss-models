@@ -259,7 +259,7 @@ def write_single_workflow_file(model, q, secret_name):
     with open(workflow_file, 'r') as f:
         doc = yaml.load(f)
     doc['name'] = model
-    doc['true']['workflow_dispatch']='namera'
+    # doc['true']['workflow_dispatch']='namera'
     # for model in models:
     doc['env']['test_model_name'] = model
     doc['env']['test_sku_type'] = args.test_sku_type
@@ -267,6 +267,7 @@ def write_single_workflow_file(model, q, secret_name):
     doc['env']['test_queue'] = q
     doc['env']['test_set'] = args.test_set
     doc['env']['test_queue'] = q
+    print("keys of dict------------",doc.keys())
     # doc.replace('true:','on:')
     # os.system(f"sed -i 's/true: .*/on: .*/g' {workflow_file}")
     with open(workflow_file, 'w') as f:
