@@ -270,7 +270,7 @@ def write_single_workflow_file(model, q, secret_name):
         # yml=yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
         # yaml.dump(doc, f, default_flow_style=True,width=float("inf"))
     workflow_filecopy=f"{args.workflow_dir}/suchitest{workflowname}.yml"
-    os.system(f"cp {yml} {workflow_filecopy}")
+    os.system(f"cp {workflow_file} {workflow_filecopy}")
 def workflow_names(models):
     workflownames=[]
     j=1
