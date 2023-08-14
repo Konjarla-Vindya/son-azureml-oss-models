@@ -35,6 +35,8 @@ jobs:
       run: pip install transformers[torch]
     - name: pip-install-torchvision
       run: pip install torchvision 
+    - name: pip-install-sentencepiece
+      run: pip install sentencepiece 
     - name: pip-install-python-box
       run: pip install python-box 
     - name: deploy-model-step
