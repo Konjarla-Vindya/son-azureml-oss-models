@@ -1,6 +1,6 @@
 name: xlm-roberta-large
-onion:
-  workflow_dispatch: ' '
+true:
+  workflow_dispatch: null
 env:
   test_model_name: xlm-roberta-large
   test_sku_type: cpu
