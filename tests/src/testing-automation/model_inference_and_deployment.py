@@ -156,7 +156,12 @@ class ModelInferenceAndDeployemnt:
         # endpoint.traffic = {"demo": 100}
         # workspace_ml_client.begin_create_or_update(endpoint).result()
 
-        deployment_name = latest_model.name
+        deployment_name = ""
+        if len(latest_model.name) > 32:
+            model_name = latest_model.name[:31]
+            deployment_name = model_name.rstrip("-")
+        else:
+            deployment_name = latest_model.name
         deployment_config = ManagedOnlineDeployment(
             name=deployment_name,
             model=latest_model,
@@ -200,7 +205,7 @@ class ModelInferenceAndDeployemnt:
                     "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
 
         output = loaded_model(scoring_input.inputs)
-        print("My outupt is this : ",output)
+        print("My outupt is this : ", output)
 
     def model_infernce_and_deployment(self):
         model_name = self.test_model_name.replace("/", "-")
