@@ -266,8 +266,8 @@ def write_single_workflow_file(model, q, secret_name):
     # doc['env']['test_queue'] = q
 
     with open(workflow_file, 'w') as f:
-        # yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
-        yaml.dump(doc, f,width=float("inf"))
+        yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
+        # yaml.dump(doc, f, default_flow_style=True,width=float("inf"))
 
 def workflow_names(models):
     workflownames=[]
