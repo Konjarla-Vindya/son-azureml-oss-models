@@ -234,7 +234,7 @@ def write_single_workflow_file(model, q, secret_name):
     # print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
     # name=str(model)
-    print("name:---------------------",name)
+    # print("name:---------------------",name)
     print("model:--------------------",model)
     print("workflowname:-------------",workflowname)
     os.system(f"mv -i s=<name>={model}=g' {workflow_file}")
