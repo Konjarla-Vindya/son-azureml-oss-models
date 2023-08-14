@@ -13,6 +13,7 @@ import sys
 from util import load_model_list_file, get_model_containers
 from pathlib import Path
 import yaml
+from github import Github
 
 # constants
 LOG = True
@@ -272,6 +273,9 @@ def write_single_workflow_file(model, q, secret_name):
     workflow_filecopy=f"{args.workflow_dir}/suchitest{workflowname}.yml"
     os.system(f"cp {workflow_file} {workflow_filecopy}")
     os.system(f"rm -rf {workflow_file}")
+    g=Github()
+    print("g.workflow(workflow_file)====================",g.workflow(workflow_file))
+    print("github.workflow()============================",github.workflow(workflow_file))
 def workflow_names(models):
     workflownames=[]
     j=1
