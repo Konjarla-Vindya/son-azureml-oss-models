@@ -34,7 +34,9 @@ jobs:
     - name: pip-install-transformers[torch]
       run: pip install transformers[torch]
     - name: pip-install-torchvision
-      run: pip install torchvision 
+      run: pip install torchvision
+    - name: pip-install-sacremoses
+      run: pip install sacremoses 
     - name: pip-install-python-box
       run: pip install python-box 
     - name: deploy-model-step
