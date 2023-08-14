@@ -254,7 +254,7 @@ def write_single_workflow_file(model, q, secret_name):
     # os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
     # Read in the file
     
-    with open(workflow_file, 'w+') as f:
+    with open(workflow_file, 'r') as f:
         doc = yaml.load(f)
     # doc['name'] = model
     # # for model in models:
@@ -265,7 +265,7 @@ def write_single_workflow_file(model, q, secret_name):
     # doc['env']['test_set'] = args.test_set
     # doc['env']['test_queue'] = q
 
-    # with open(workflow_file, 'w') as f:
+    with open(workflow_file, 'w') as f:
         yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
 
 def workflow_names(models):
