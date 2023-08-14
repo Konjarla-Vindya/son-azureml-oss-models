@@ -18,7 +18,7 @@ from box import ConfigBox
 
 class ModelInferenceAndDeployemnt:
     def __init__(self, test_model_name, workspace_ml_client, registry_ml_client, registry) -> None:
-        self.test_model_name = test_model_name
+        self.test_model_name = test_model_name.replace("/", "-")
         self.workspace_ml_client = workspace_ml_client
         self.registry_ml_client = registry_ml_client
         self.registry = registry
