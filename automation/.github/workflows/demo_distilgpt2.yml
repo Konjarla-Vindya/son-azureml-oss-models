@@ -1,6 +1,6 @@
 name: distilgpt2
-true:
-  workflow_dispatch: null
+onion:
+  workflow_dispatch: namera
 env:
   test_model_name: distilgpt2
   test_sku_type: cpu
