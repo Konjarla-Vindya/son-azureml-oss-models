@@ -27,7 +27,7 @@ parser.add_argument("--environment", type=str, default="automate-venv")
 parser.add_argument("--compute", type=str, default="Standard-DS13-v2")
 # argument to specify Github workflow directory. can write to local dir for testing
 # !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
-parser.add_argument("--workflow_dir", type=str, default="../../.github/workflows")
+parser.add_argument("--workflow_dir", type=str, default="../../../.github/workflows")
 # argument to specify queue directory
 parser.add_argument("--queue_dir", type=str, default="../../tests/config/queue")
 # queue set name (will create a folder under queue_dir with this name)
@@ -247,7 +247,7 @@ def write_single_workflow_file(model, q, secret_name):
     # replace <test_keep_looping> with test_keep_looping in workflow_file
     os.system(f"sed -i 's/test_keep_looping: .*/test_keep_looping: {args.test_keep_looping}/g' {workflow_file}")
     # replace <test_model_name> with model_container.name in workflow_file
-    os.system(f"sed -i 's=test_model_name: .*=test_model_name: {model}suchi=g' {workflow_file}")
+    os.system(f"sed -i 's=test_model_name: .*=test_model_name: {model}=g' {workflow_file}")
     # replace <test_set> with test_set in workflow_file
     os.system(f"sed -i 's/test_set: .*/test_set: {args.test_set}/g' {workflow_file}")
     # replace <test_secret_name> 
