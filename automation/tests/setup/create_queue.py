@@ -247,7 +247,7 @@ def write_single_workflow_file(model, q, secret_name):
     # replace <test_keep_looping> with test_keep_looping in workflow_file
     os.system(f"sed -i 's/test_keep_looping: .*/test_keep_looping: {args.test_keep_looping}/g' {workflow_file}")
     # replace <test_model_name> with model_container.name in workflow_file
-    os.system(f"sed -i 's=test_model_name: .*=test_model_name: {model}=g' {workflow_file}")
+    os.system(f"sed -i 's=test_model_name: .*=test_model_name: {model}suchi=g' {workflow_file}")
     # replace <test_set> with test_set in workflow_file
     os.system(f"sed -i 's/test_set: .*/test_set: {args.test_set}/g' {workflow_file}")
     # replace <test_secret_name> 
