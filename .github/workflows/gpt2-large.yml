@@ -1,4 +1,4 @@
-name: gpt2-large
+name: 
 
 on: 
   workflow_dispatch:
@@ -7,7 +7,7 @@ env:
   test_model_name: gpt2-large
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-northcentralus
+  test_queue: sonata-test-ws-0
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -27,14 +27,14 @@ jobs:
       run: pip install azureml-core
     - name: pip-install-azureml-mlflow
       run: pip install azureml-mlflow
-    - name: pip-install-mlflow
-      run: pip install mlflow
     - name: pip-install-transformers
       run: pip install transformers
     - name: pip-install-transformers[torch]
       run: pip install transformers[torch]
     - name: pip-install-torchvision
       run: pip install torchvision 
+    - name: pip-install-mlflow
+      run: pip install mlflow
     - name: pip-install-python-box
       run: pip install python-box 
     - name: deploy-model-step
