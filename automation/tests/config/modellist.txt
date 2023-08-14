@@ -1,3 +1,5 @@
+bert-base-uncased
+bert-base-cased
 albert-base-v2
 xlm-roberta-large
 distilgpt2
