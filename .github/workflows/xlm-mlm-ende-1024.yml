@@ -36,7 +36,9 @@ jobs:
     - name: pip-install-torchvision
       run: pip install torchvision 
     - name: pip-install-python-box
-      run: pip install python-box 
+      run: pip install python-box
+    - name: pip-install-sacremoses
+      run: pip install sacremoses
     - name: deploy-model-step
       id: deploy-model-step
       run: python generic_initial_automation.py
