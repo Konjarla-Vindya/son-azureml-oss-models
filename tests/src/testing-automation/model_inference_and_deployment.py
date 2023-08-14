@@ -203,7 +203,7 @@ class ModelInferenceAndDeployemnt:
         print("My outupt is this : ",output)
 
     def model_infernce_and_deployment(self):
-        model_name = self.model_name
+        model_name = self.test_model_name.replace("/", "-")
         # if len(self.test_model_name) > 22:
         #     model_name = self.test_model_name.replace("/", "-")[:22]
         #     model_name = model_name.rstrip("-")

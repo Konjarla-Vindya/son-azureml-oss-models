@@ -85,7 +85,7 @@ class Model:
 
         output = generate_signature_output(model_pipeline, sample_data.inputs)
         signature = infer_signature(sample_data.inputs, output)
-        model_name =  self.model_name
+        model_name =  self.model_name.replace("/", "-")
         # if len(self.model_name) > 22:
         #     model_name = self.model_name.replace("/", "-")[:22]
         #     model_name = model_name.rstrip("-")
