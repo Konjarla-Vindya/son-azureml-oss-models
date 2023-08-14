@@ -206,6 +206,7 @@ class ModelInferenceAndDeployemnt:
         model_name = ''
         if len(self.test_model_name) > 22:
             model_name = self.test_model_name.replace("/", "-")[:22]
+            model_name = model_name.rstrip("-")
         else:
             model_name = self.test_model_name
         latest_model = self.get_latest_model_version(

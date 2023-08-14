@@ -88,6 +88,7 @@ class Model:
         model_name = ''
         if len(self.model_name) > 22:
             model_name = self.model_name.replace("/", "-")[:22]
+            model_name = model_name.rstrip("-")
         else:
             model_name = self.model_name
         artifact_path = model_name + "-artifact"
