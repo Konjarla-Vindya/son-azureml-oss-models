@@ -229,7 +229,7 @@ def write_single_workflow_file(model, q, secret_name):
     print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
     name=model
-    os.system(f"sed -i s/<name>/name: {name}/g' {workflow_file}")
+    os.system(f"sed -i s/<name>/name: {model}/g' {workflow_file}")
     # replace <test_queue> with q
     os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
     # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
@@ -240,7 +240,7 @@ def write_single_workflow_file(model, q, secret_name):
     # replace <test_keep_looping> with test_keep_looping in workflow_file
     os.system(f"sed -i 's/test_keep_looping: .*/test_keep_looping: {args.test_keep_looping}/g' {workflow_file}")
     # replace <test_model_name> with model_container.name in workflow_file
-    os.system(f"sed -i 's/test_model_name: .*/test_model_name: {name}/g' {workflow_file}")
+    os.system(f"sed -i 's/test_model_name: .*/test_model_name: {workflowname}/g' {workflow_file}")
     # replace <test_set> with test_set in workflow_file
     os.system(f"sed -i 's/test_set: .*/test_set: {args.test_set}/g' {workflow_file}")
     # replace <test_secret_name> 
