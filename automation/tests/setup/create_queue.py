@@ -27,7 +27,7 @@ parser.add_argument("--environment", type=str, default="automate-venv")
 parser.add_argument("--compute", type=str, default="Standard-DS13-v2")
 # argument to specify Github workflow directory. can write to local dir for testing
 # !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
-parser.add_argument("--workflow_dir", type=str, default="../../../.github/workflows")
+parser.add_argument("--workflow_dir", type=str, default="../../.github/workflows")
 # argument to specify queue directory
 parser.add_argument("--queue_dir", type=str, default="../../tests/config/queue")
 # queue set name (will create a folder under queue_dir with this name)
@@ -252,7 +252,16 @@ def write_single_workflow_file(model, q, secret_name):
     os.system(f"sed -i 's/test_set: .*/test_set: {args.test_set}/g' {workflow_file}")
     # replace <test_secret_name> 
     os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
+    # Read in the file
+    with open(workflow_file, 'r') as file :
+      filedata = file.read()
 
+    # Replace the target string
+    filedata = filedata.replace('abcd', 'ram')
+
+    # Write the file out again
+    with open(workflow_file', 'w') as file:
+        file.write(filedata)
     # with open(workflow_file, 'r') as f:
     #     doc = yaml.load(f)
     # doc['name'] = workflowname
