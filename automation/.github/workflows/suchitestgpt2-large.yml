@@ -1,6 +1,6 @@
 name: gpt2-large
 onion:
-  workflow_dispatch: namera
+  workflow_dispatch: ' '
 env:
   test_model_name: gpt2-large
   test_sku_type: cpu

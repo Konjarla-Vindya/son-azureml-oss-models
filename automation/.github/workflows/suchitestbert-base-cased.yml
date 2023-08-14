@@ -1,6 +1,6 @@
 name: bert-base-cased
 onion:
-  workflow_dispatch: namera
+  workflow_dispatch: ' '
 env:
   test_model_name: bert-base-cased
   test_sku_type: cpu
