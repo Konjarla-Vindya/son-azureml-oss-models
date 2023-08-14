@@ -259,7 +259,7 @@ def write_single_workflow_file(model, q, secret_name):
     with open(workflow_file, 'rt') as f:
         doc = yaml.safe_load(f)
     doc['name'] = model
-    doc['onion']['workflow_dispatch']=
+    # doc['onion']['workflow_dispatch']=
     # for model in models:
     doc['env']['test_model_name'] = model
     doc['env']['test_sku_type'] = args.test_sku_type
