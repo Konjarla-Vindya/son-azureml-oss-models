@@ -253,15 +253,15 @@ def write_single_workflow_file(model, q, secret_name):
     # replace <test_secret_name> 
     os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
     # Read in the file
-    with open(workflow_file, 'r') as file :
-      filedata = file.read()
+    with open(workflow_file, 'r') as f:
+        doc = yaml.load(f)
 
     # Replace the target string
     filedata = filedata.replace('abcd', 'ram')
 
     # Write the file out again
-    with open(workflow_file', 'w') as file:
-        file.write(filedata)
+     with open(workflow_file, 'w') as f:
+        yaml.dump(doc, f, default_flow_style=False, sort_keys=False,width=float("inf"))
     # with open(workflow_file, 'r') as f:
     #     doc = yaml.load(f)
     # doc['name'] = workflowname
