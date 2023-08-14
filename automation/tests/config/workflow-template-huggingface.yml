@@ -1,4 +1,4 @@
-test_name: distl
+name: distl
 
 on: 
   workflow_dispatch:
