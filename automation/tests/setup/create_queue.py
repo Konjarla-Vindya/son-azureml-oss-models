@@ -256,7 +256,7 @@ def write_single_workflow_file(model, q, secret_name):
     # os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
     # # Read in the file
     
-    with open(workflow_file, 'r') as f:
+    with open(workflow_file, 'rt') as f:
         doc = yaml.safe_load(f)
     doc['name'] = model
     doc['onion']['workflow_dispatch']=
