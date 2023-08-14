@@ -17,8 +17,10 @@ jobs:
     steps:
     - name: check-out-repo-step
       uses: actions/checkout@v2
+    - name: cred
+      uses: actions/labeler@v4
       with:
-        creds: ${{secrets.WORKFLOW_TOKEN}}
+        token: ${{ secrets.WORKFLOW_TOKEN }}
     - name: azure-login-step
       uses: azure/login@v1
       with:
