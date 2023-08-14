@@ -233,11 +233,11 @@ def write_single_workflow_file(model, q, secret_name):
     # # print(workflow_file['env']['test_queue'])
     # print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
-    # name=str(model)
-    # print("name:---------------------",name)
-    print("model:--------------------",model)
-    print("workflowname:-------------",workflowname)
-    # os.system(f"sed -i s/name: .*/name: {model}/g' {workflow_file}")
+    # # name=str(model)
+    # # print("name:---------------------",name)
+    # print("model:--------------------",model)
+    # print("workflowname:-------------",workflowname)
+    # os.system(f"sed -i s/test_name: .*/name: {model}/g' {workflow_file}")
     # # replace <test_queue> with q
     # os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
     # # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
@@ -258,7 +258,7 @@ def write_single_workflow_file(model, q, secret_name):
     with open(workflow_file, 'r') as f:
         doc = yaml.load(f)
     doc['name'] = model
-    doc['workflow_dispatch']=' '
+    doc['workflow_dispatch']=None
     # for model in models:
     doc['env']['test_model_name'] = model
     doc['env']['test_sku_type'] = args.test_sku_type
@@ -272,8 +272,8 @@ def write_single_workflow_file(model, q, secret_name):
        yml= yaml.dump(doc, f, default_flow_style=False, sort_keys=False,width=float("inf"))
         # yml=yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
         # yaml.dump(doc, f, default_flow_style=True,width=float("inf"))
-    # workflow_filecopy=f"{args.workflow_dir}/suchitest{workflowname}.yml"
-    # os.system(f"cp {workflow_file} {workflow_filecopy}")
+    workflow_filecopy=f"{args.workflow_dir}/suchitest{workflowname}.yml"
+    os.system(f"cp {workflow_file} {workflow_filecopy}")
     # os.system(f"rm -rf {workflow_file}")
     # g=Github()
     # print("g.workflow(workflow_file)====================",g.workflow(workflow_file))
