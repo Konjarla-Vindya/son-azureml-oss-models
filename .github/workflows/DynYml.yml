@@ -1,4 +1,4 @@
-name: DynYml
+name: Querty
 
 on: 
   workflow_dispatch:
