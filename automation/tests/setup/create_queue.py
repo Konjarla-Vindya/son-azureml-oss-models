@@ -228,7 +228,7 @@ def write_single_workflow_file(model, q, secret_name):
     # print(workflow_file['env']['test_queue'])
     print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
-    name=model.replace('/','r"/"')
+    name=model.replace('/','r/')
     print("name:---------------------",name)
     print("model:--------------------",model)
     print("workflowname:-------------",workflowname)
