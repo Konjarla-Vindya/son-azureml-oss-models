@@ -188,7 +188,7 @@ class ModelInferenceAndDeployemnt:
         print(
             f"Latest model name : {latest_model.name} and latest model version : {latest_model.version}", )
         downloaded_model = self.workspace_ml_client.models.download(
-            name=self.test_model_name, version=latest_model.version, download_path=f"./model_download")
+            name=latest_model.name, version=latest_model.version, download_path=f"./model_download")
         loaded_model = mlflow.transformers.load_model(
             model_uri=f"./model_download/{latest_model.name}/{latest_model.name}-artifact", return_type="pipeline")
         print(type(loaded_model))
@@ -204,7 +204,7 @@ class ModelInferenceAndDeployemnt:
 
     def model_infernce_and_deployment(self):
         latest_model = self.get_latest_model_version(
-            self.registry_ml_client, self.test_model_name.replace("/", "-"))
+            self.registry_ml_client, self.test_model_name)
         task = latest_model.flavors["transformers"]["task"]
         print("latest_model:", latest_model)
         print("Task is : ", task)
