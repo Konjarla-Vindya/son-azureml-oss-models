@@ -228,14 +228,14 @@ def write_single_workflow_file(model, q, secret_name):
     print (".", end="", flush=True)
     workflowname=model.replace('/','-')
     workflow_file=f"{args.workflow_dir}/{workflowname}.yml"
-    print("yml file----------------------------------------",workflow_file)
-    # print(workflow_file['env']['test_queue'])
-    print (f"Generating workflow file: {workflow_file}")
-    os.system(f"cp {args.workflow_template} {workflow_file}")
-    name=str(model)
-    print("name:---------------------",name)
-    print("model:--------------------",model)
-    print("workflowname:-------------",workflowname)
+    # print("yml file----------------------------------------",workflow_file)
+    # # print(workflow_file['env']['test_queue'])
+    # print (f"Generating workflow file: {workflow_file}")
+    # os.system(f"cp {args.workflow_template} {workflow_file}")
+    # name=str(model)
+    # print("name:---------------------",name)
+    # print("model:--------------------",model)
+    # print("workflowname:-------------",workflowname)
     # os.system(f"mv -i s=<name>={model}=g' {workflow_file}")
     # # replace <test_queue> with q
     # os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
@@ -256,21 +256,21 @@ def write_single_workflow_file(model, q, secret_name):
     
     with open(workflow_file, 'r') as f:
         doc = yaml.load(f)
-    # doc['name'] = model
-    # # for model in models:
-    # doc['env']['test_model_name'] = model
-    # doc['env']['test_sku_type'] = args.test_sku_type
-    # doc['env']['test_trigger_next_model'] = args.test_trigger_next_model
-    # doc['env']['test_queue'] = q
-    # doc['env']['test_set'] = args.test_set
-    # doc['env']['test_queue'] = q
+    doc['name'] = model
+    # for model in models:
+    doc['env']['test_model_name'] = model
+    doc['env']['test_sku_type'] = args.test_sku_type
+    doc['env']['test_trigger_next_model'] = args.test_trigger_next_model
+    doc['env']['test_queue'] = q
+    doc['env']['test_set'] = args.test_set
+    doc['env']['test_queue'] = q
 
     with open(workflow_file, 'w') as f:
         yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
         yml=yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
         # yaml.dump(doc, f, default_flow_style=True,width=float("inf"))
-    workflow_filecopy=f"{args.workflow_dir}/{workflowname}suchi.yml"
-    os.system(f"cp {args.workflow_template} {workflow_filecopy}")
+    # workflow_filecopy=f"{args.workflow_dir}/{workflowname}suchi.yml"
+    os.system(f"cp {args.workflow_template} {workflow_file}")
 def workflow_names(models):
     workflownames=[]
     j=1
