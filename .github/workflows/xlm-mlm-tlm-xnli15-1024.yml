@@ -24,6 +24,8 @@ jobs:
       run: pip install azure-ai-ml
     - name: pip-install-azureml-core
       run: pip install azureml-core
+    - name: pip-install-sacremoses
+      run: pip install sacremoses
     - name: pip-install-azureml-mlflow
       run: pip install azureml-mlflow
     - name: pip-install-mlflow
