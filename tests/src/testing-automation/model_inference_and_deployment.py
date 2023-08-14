@@ -156,7 +156,7 @@ class ModelInferenceAndDeployemnt:
         # endpoint.traffic = {"demo": 100}
         # workspace_ml_client.begin_create_or_update(endpoint).result()
 
-        deployment_name = latest_model.name
+        deployment_name = latest_model.name.substring[:31]
         deployment_config = ManagedOnlineDeployment(
             name=deployment_name,
             model=latest_model,
