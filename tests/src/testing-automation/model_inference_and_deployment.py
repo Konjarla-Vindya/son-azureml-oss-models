@@ -18,7 +18,7 @@ from box import ConfigBox
 
 class ModelInferenceAndDeployemnt:
     def __init__(self, test_model_name, workspace_ml_client, registry_ml_client, registry) -> None:
-        self.test_model_name = test_model_name.replace("/", "-")
+        self.test_model_name = test_model_name
         self.workspace_ml_client = workspace_ml_client
         self.registry_ml_client = registry_ml_client
         self.registry = registry
@@ -203,8 +203,13 @@ class ModelInferenceAndDeployemnt:
         print(output)
 
     def model_infernce_and_deployment(self):
+        model_name = ''
+        if len(self.test_model_name) > 22:
+            model_name = self.test_model_name.replace("/", "-")[:22]
+        else:
+            model_name = self.test_model_name
         latest_model = self.get_latest_model_version(
-            self.registry_ml_client, self.test_model_name)
+            self.registry_ml_client, model_name)
         task = latest_model.flavors["transformers"]["task"]
         print("latest_model:", latest_model)
         print("Task is : ", task)
