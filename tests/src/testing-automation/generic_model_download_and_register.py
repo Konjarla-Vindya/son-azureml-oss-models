@@ -85,12 +85,12 @@ class Model:
 
         output = generate_signature_output(model_pipeline, sample_data.inputs)
         signature = infer_signature(sample_data.inputs, output)
-        model_name = ''
-        if len(self.model_name) > 22:
-            model_name = self.model_name.replace("/", "-")[:22]
-            model_name = model_name.rstrip("-")
-        else:
-            model_name = self.model_name
+        model_name =  self.model_name
+        # if len(self.model_name) > 22:
+        #     model_name = self.model_name.replace("/", "-")[:22]
+        #     model_name = model_name.rstrip("-")
+        # else:
+        #     model_name = self.model_name
         artifact_path = model_name + "-artifact"
         registered_model_name = model_name
         # mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())

@@ -203,12 +203,12 @@ class ModelInferenceAndDeployemnt:
         print("My outupt is this : ",output)
 
     def model_infernce_and_deployment(self):
-        model_name = ''
-        if len(self.test_model_name) > 22:
-            model_name = self.test_model_name.replace("/", "-")[:22]
-            model_name = model_name.rstrip("-")
-        else:
-            model_name = self.test_model_name
+        model_name = self.model_name
+        # if len(self.test_model_name) > 22:
+        #     model_name = self.test_model_name.replace("/", "-")[:22]
+        #     model_name = model_name.rstrip("-")
+        # else:
+        #     model_name = self.test_model_name
         latest_model = self.get_latest_model_version(
             self.registry_ml_client, model_name)
         task = latest_model.flavors["transformers"]["task"]
