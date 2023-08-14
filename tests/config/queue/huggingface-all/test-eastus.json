@@ -1,7 +1,6 @@
 {
     "queue_name": "test-eastus",
     "models": [
-		"Helsinki-NLP/opus-mt-fr-en",
 	        "Helsinki-NLP/opus-mt-es-en"
 	    
     ],
