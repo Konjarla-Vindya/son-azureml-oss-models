@@ -257,7 +257,7 @@ def write_single_workflow_file(model, q, secret_name):
     # # Read in the file
     
     with open(workflow_file, 'r') as f:
-        doc = yaml.load(f)
+        doc = yaml.safe_load(f)
     doc['name'] = model
     # doc['True']['workflow_dispatch']='namera'
     # for model in models:
