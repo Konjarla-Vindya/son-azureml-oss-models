@@ -257,7 +257,7 @@ def write_single_workflow_file(model, q, secret_name):
     os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
     # # Read in the file
 
-    github_token="GITHUB_TOKEN"
+    # github_token="GITHUB_TOKEN"
     repository_owner="USER_EMAIL"
     repository_name="USER_NAME"
     workflow_filename=f".github/workflows/demo_{workflowname}.yml"
@@ -271,10 +271,15 @@ def write_single_workflow_file(model, q, secret_name):
     print("type of api_url=============",type(api_url))
     print("type of workflow_file=============",type(workflow_file))
 
-    
-    # with open(api_url,'rt') as a:
-    #     dic=yaml.load(a)
-    # print("sha is -----------------------",dic['sha'])
+    github_token = os.environ.get("GITHUB_TOKEN")
+
+    if github_token:
+        print("GitHub Token:", github_token)
+    else:
+        print("GitHub Token not found.")
+        # with open(api_url,'rt') as a:
+        #     dic=yaml.load(a)
+        # print("sha is -----------------------",dic['sha'])
 
     
     # Prepare the request headers
