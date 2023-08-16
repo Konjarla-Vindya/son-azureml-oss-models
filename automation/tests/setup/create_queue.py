@@ -276,7 +276,7 @@ def write_single_workflow_file(model, q, secret_name):
     if github_token:
         print("GitHub Token:", github_token)
     else:
-        print("GitHub Token not found.")
+        print("GitHub Token not found.",github_token)
         # with open(api_url,'rt') as a:
         #     dic=yaml.load(a)
         # print("sha is -----------------------",dic['sha'])
@@ -328,10 +328,10 @@ def write_single_workflow_file(model, q, secret_name):
     #      -d "$json_payload" "$current_url"
 
     
-    with open(api_url, 'rt') as f:
-        doc = yaml.safe_load(f)
+    # with open(api_url, 'rt') as f:
+    #     doc = yaml.safe_load(f)
     #     # ,Loader=yaml.FullLoader
-    print("dict-----------------------",doc)
+    # print("dict-----------------------",doc)
     # doc['name'] = model
     # # doc['onion']['workflow_dispatch']=
     # # for model in models:
