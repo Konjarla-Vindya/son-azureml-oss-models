@@ -21,8 +21,10 @@ jobs:
         pwd
         ls -1
         for file in `ls -1`  
-        do  
-          gh workflow run `cat $file | head -n 1`
+        #do  
+          echo "Triggering workflow for $model"
+            gh workflow run "$model.yml" -R Konjarla-Vindya/son-azureml-oss-models -F model_name="$model"
+          # gh workflow run `cat $file | head -n 1`
           # gh workflow run `cat $file | head -4 | tail -1 | sed 's/,//' | sed 's/"//g'`
           gh working-directory: github/workflows
         done    
