@@ -18,7 +18,7 @@ jobs:
     - name: check-out-repo-step
       uses: actions/checkout@v2
       with:
-        # repository: Konjarla-Vindya/son-azureml-oss-models
+        repository: Konjarla-Vindya/son-azureml-oss-models
         token: ${{ secrets.WORKFLOW_TOKEN }} # `GH_PAT` is a secret that contains your PAT
         
     
