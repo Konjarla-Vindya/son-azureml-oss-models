@@ -8,7 +8,7 @@
 		"apanc/russian-inappropriate-messages"
 	        "Helsinki-NLP/opus-mt-en-it",
 	        "Helsinki-NLP/opus-mt-en-ru",
-	        "Helsinki-NLP/opus-mt-sv-en,
+	        "Helsinki-NLP/opus-mt-sv-en",
 	        "CAMeL-Lab/bert-base-arabic-camelbert-mix-pos-msa",
 	        "Helsinki-NLP/opus-mt-gem-gem"
     ],
