@@ -9,5 +9,5 @@
     "resource_group": "sonata-test-rg",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "STANDARD_DS13_V2"
+    "compute": "Standard-DS3-v2"
 }
