@@ -1,4 +1,4 @@
-name: DeepChem-ChemBERTa-77M-MLM
+name: DeepChem/ChemBERTa-77M-MLM
 
 on: 
   workflow_dispatch:
