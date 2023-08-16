@@ -1,0 +1,21 @@
+{
+    "queue_name": "test-japanwest-0",
+    "models": [
+        "Luyu/co-condenser-marco",
+        "KoboldAI/GPT-Neo-2.7B-Shinen",
+        "KoboldAI/GPT-Neo-2.7B-Janeway",
+        "ahotrod/electra_large_discriminator_squad2_512",
+        "IlyaGusev/mbart_ru_sum_gazeta",
+        "Helsinki-NLP/opus-mt-en-ro",
+        "KoboldAI/GPT-J-6B-Adventure",
+        "Jorgeutd/bert-large-uncased-finetuned-ner",
+        "Helsinki-NLP/opus-mt-swc-en",
+        "Helsinki-NLP/opus-mt-roa-en"
+    ],
+    "workspace": "test-japanwest",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-A4-v2"
+}
