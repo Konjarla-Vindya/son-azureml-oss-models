@@ -272,8 +272,8 @@ def write_single_workflow_file(model, q, secret_name):
     # print("post change of dict------------",doc)
     # # doc.replace('true:','on:')
     # # os.system(f"sed -i 's/true: .*/on: .*/g' {workflow_file}")
-    with open(workflow_file, 'w') as f:
-       yml= yaml.dump(doc, f, default_flow_style=False, sort_keys=False,width=float("inf"))
+    # with open(workflow_file, 'w') as f:
+    #    yml= yaml.dump(doc, f, default_flow_style=False, sort_keys=False,width=float("inf"))
     #     # yml=yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
     #     # yaml.dump(doc, f, default_flow_style=True,width=float("inf"))
     # workflow_filecopy=f"{args.workflow_dir}/suchitest{workflowname}.yml"
