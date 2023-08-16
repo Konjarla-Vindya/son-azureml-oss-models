@@ -1,4 +1,4 @@
-name: Jean-Baptiste-camembert-ner-with-dates
+name: Jean-Baptiste/camembert-ner-with-dates
 
 on: 
   workflow_dispatch:
