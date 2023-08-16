@@ -1,4 +1,4 @@
-name: HooshvareLab-bert-fa-base-uncased
+name: HooshvareLab/bert-fa-base-uncased
 
 on: 
   workflow_dispatch:

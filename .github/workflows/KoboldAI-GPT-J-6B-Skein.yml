@@ -1,4 +1,4 @@
-name: KoboldAI-GPT-J-6B-Skein
+name: KoboldAI/GPT-J-6B-Skein
 
 on: 
   workflow_dispatch:

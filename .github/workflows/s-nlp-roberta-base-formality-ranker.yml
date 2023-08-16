@@ -1,4 +1,4 @@
-name: s-nlp-roberta-base-formality-ranker
+name: s-nlp/roberta-base-formality-ranker
 
 on: 
   workflow_dispatch:

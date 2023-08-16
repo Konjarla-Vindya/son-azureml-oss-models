@@ -1,4 +1,4 @@
-name: KoboldAI-GPT-Neo-2.7B-Horni
+name: KoboldAI/GPT-Neo-2.7B-Horni
 
 on: 
   workflow_dispatch:

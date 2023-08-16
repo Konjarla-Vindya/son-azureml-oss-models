@@ -1,4 +1,4 @@
-name: HooshvareLab-bert-fa-base-uncased-sentiment-deepsentipers-binary
+name: HooshvareLab/bert-fa-base-uncased-sentiment-deepsentipers-binary
 
 on: 
   workflow_dispatch:

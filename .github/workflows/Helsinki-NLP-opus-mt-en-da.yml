@@ -1,4 +1,4 @@
-name: Helsinki-NLP-opus-mt-en-da
+name: Helsinki-NLP/opus-mt-en-da
 
 on: 
   workflow_dispatch:
@@ -34,11 +34,11 @@ jobs:
     - name: pip-install-transformers[torch]
       run: pip install transformers[torch]
     - name: pip-install-torchvision
-      run: pip install torchvision 
+      run: pip install 
     - name: pip-install-sentencepiece
       run: pip install sentencepiece
     - name: pip-install-sacremoses
-      run: pip install sacremoses
+      run: pip install sacremoses 
     - name: pip-install-python-box
       run: pip install python-box 
     - name: deploy-model-step
