@@ -39,6 +39,8 @@ jobs:
         creds: ${{secrets.AZURE_CREDENTIALS}}
     - name: pip-install-azure-ai-ml
       run: pip install azure-ai-ml
+    - name: jq
+      run: pip install jq
     # - name: pip-install-azureml-core
     #   run: pip install azureml-core
     # - name: pip-install-azureml-mlflow
