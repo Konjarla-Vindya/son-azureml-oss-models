@@ -5,6 +5,7 @@ on:
 
 env:
   test_model_name: abc
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # test_sku_type: cpu
   # test_trigger_next_model: true
   # test_queue: model_with_static_library
