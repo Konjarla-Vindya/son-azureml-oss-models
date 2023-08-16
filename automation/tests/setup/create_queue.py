@@ -260,7 +260,7 @@ def write_single_workflow_file(model, q, secret_name):
     repository_owner="USER_EMAIL"
     repository_name="USER_NAME"
     # workflow_filename=".github/workflows/your_workflow.yml"
-    # workflow_sha="SHA_OF_YOUR_EXISTING_WORKFLOW_YAML"  # You need to provide the correct SHA
+    workflow_sha="main"  # You need to provide the correct SHA
     new_workflow_name={model}
     new_job_name={model}
 
@@ -268,32 +268,28 @@ def write_single_workflow_file(model, q, secret_name):
     commit_info=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
                    "https://api.github.com/repos/$repository_owner/$repository_name/commits?path=$workflow_file")
     
-    # Extract the SHA of the latest commit
-    workflow_sha=$(echo "$commit_info" | jq -r '.[0].sha')
     
-    echo "SHA of the latest commit for '$workflow_file':
+    # Read the current workflow content from GitHub
+    current_content=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
+                      "https://api.github.com/repos/$repository_owner/$repository_name/contents/$workflow_file?ref=$workflow_sha")
+    # Extract the current content, URL, and other attributes
+    current_content=$(echo "$current_content" | jq -r .content)
+    current_url=$(echo "$current_content" | jq -r .url)
+    current_encoding=$(echo "$current_content" | jq -r .encoding)
     
-    # # Read the current workflow content from GitHub
-    # current_content=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
-    #                   "https://api.github.com/repos/$repository_owner/$repository_name/contents/$workflow_file?ref=$workflow_sha")
-    # # Extract the current content, URL, and other attributes
-    # current_content=$(echo "$current_content" | jq -r .content)
-    # current_url=$(echo "$current_content" | jq -r .url)
-    # current_encoding=$(echo "$current_content" | jq -r .encoding)
+    # Prepare the updated content with new names
+    updated_content=$(echo -n "$current_content" | base64 -d | \
+                      sed "s/Old Workflow Name/$new_workflow_name/g; s/Old Job Name/$new_job_name/g")
     
-    # # Prepare the updated content with new names
-    # updated_content=$(echo -n "$current_content" | base64 -d | \
-    #                   sed "s/Old Workflow Name/$new_workflow_name/g; s/Old Job Name/$new_job_name/g")
+    # Encode the updated content in base64
+    encoded_updated_content=$(echo -n "$updated_content" | base64 -w 0)
     
-    # # Encode the updated content in base64
-    # encoded_updated_content=$(echo -n "$updated_content" | base64 -w 0)
+    # Prepare the JSON payload for updating the content
+    json_payload="{\"message\":\"Update workflow names\",\"content\":\"$encoded_updated_content\",\"sha\":\"$workflow_sha\"}"
     
-    # # Prepare the JSON payload for updating the content
-    # json_payload="{\"message\":\"Update workflow names\",\"content\":\"$encoded_updated_content\",\"sha\":\"$workflow_sha\"}"
-    
-    # # Make the PATCH request to update the workflow file
-    # curl -X PUT -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
-    #      -d "$json_payload" "$current_url"
+    # Make the PATCH request to update the workflow file
+    curl -X PUT -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
+         -d "$json_payload" "$current_url"
 
     
     # with open(workflow_file, 'rt') as f:
