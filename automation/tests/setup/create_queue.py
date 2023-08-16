@@ -260,7 +260,7 @@ def write_single_workflow_file(model, q, secret_name):
     github_token="GITHUB_TOKEN"
     repository_owner="USER_EMAIL"
     repository_name="USER_NAME"
-    workflow_filename=workflow_file
+    workflow_filename=f"/.github/workflows/demo_{workflowname}.yml"
     workflow_sha="main"  # You need to provide the correct SHA
     new_workflow_name={model}
     new_job_name={model}
