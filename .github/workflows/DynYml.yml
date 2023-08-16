@@ -18,13 +18,13 @@ jobs:
     - name: check-out-repo-step
       uses: actions/checkout@v2
       # uses: actions/checkout@a81bbbf8298c0fa03ea29cdc473d45769f953675
-      # with:
-      #   # ref: main
-      #   lfs: true
-      #   repository: Konjarla-Vindya/son-azureml-oss-models
-      #   branh: main
+      with:
+        # ref: main
+        lfs: true
+        repository: Konjarla-Vindya/son-azureml-oss-models
+        branh: main
       #     git config global init.defaultBranch main
-      #   token: ${{ secrets.WORKFLOW_TOKEN }} # `GH_PAT` is a secret that contains your PAT
+        token: ${{ secrets.WORKFLOW_TOKEN }} # `GH_PAT` is a secret that contains your PAT
       #   path: son-azureml-oss-models
     
     # - name: Checkout private tools
