@@ -1,4 +1,4 @@
-name: HooshvareLab-bert-base-parsbert-ner-uncased
+name: HooshvareLab/bert-base-parsbert-ner-uncased
 
 on: 
   workflow_dispatch:
