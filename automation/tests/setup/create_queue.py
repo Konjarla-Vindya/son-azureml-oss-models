@@ -320,14 +320,15 @@ def write_single_workflow_file(model, q, secret_name):
     #      -d "$json_payload" "$current_url"
 
     with open(workflow_file, 'rt') as f:
-        # yaml_content = f.read()
-        yaml_content=yaml.safe_load(f)
+        yaml_content = f.read()
+        # yaml_content=yaml.safe_load(f)
     
     updated_yaml_content = yaml_content.replace("name: distl", "name: model")
+    yml_content="""updated_yaml_content"""
     print("updated_yaml_content-----------------------",updated_yaml_content)
     with open(workflow_file, 'w') as yaml_file:
-        # yaml_file.write(updated_yaml_content)
-        yaml.dump(updated_yaml_content,yaml_file)
+        yaml_file.write(yml_content)
+        # yaml.dump(updated_yaml_content,yaml_file)
     # with open(api_url, 'rt') as f:
     #     doc = yaml.safe_load(f)
     #     # ,Loader=yaml.FullLoader
