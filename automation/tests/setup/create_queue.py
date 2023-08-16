@@ -272,22 +272,14 @@ def write_single_workflow_file(model, q, secret_name):
     print("type of workflow_file=============",type(workflow_file))
 
     github_token = os.environ.get("GITHUB_TOKEN")
-
-    if github_token:
-        print("GitHub Token:", github_token)
-    else:
-        print("GitHub Token not found.",github_token)
-        # with open(api_url,'rt') as a:
-        #     dic=yaml.load(a)
-        # print("sha is -----------------------",dic['sha'])
-
-    
+    print("github_token: is ------------------------------------",github_token)
+   
     # Prepare the request headers
     headers = {
         "Authorization": f"Bearer {github_token}",
         "Accept": "application/vnd.github.v3+json"
     }
-    
+    print("header---------------------",headers)
     # Make the GET request
     response = requests.get(api_url, headers=headers)
     print("response is genrating:--------------------",response)
