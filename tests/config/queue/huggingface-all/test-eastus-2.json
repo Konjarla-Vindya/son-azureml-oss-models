@@ -1,12 +1,11 @@
 {
-    "queue_name": "sonata-test-ws-0",
+    "queue_name": "test-eastus-2",
     "models": [
-        "bert-base-uncased",
-        "gpt2-large"
+        "ProsusAI/finbert"
     ],
-    "workspace": "sonata-test-ws",
+    "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
-    "resource_group": "sonata-test-rg",
+    "resource_group": "AzureMLHuggingFaceRegistry1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
     "compute": "Standard-DS13-v2"

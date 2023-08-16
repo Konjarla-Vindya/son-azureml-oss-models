@@ -1,7 +1,7 @@
 {
     "queue_name": "sonata-test-ws-1",
     "models": [
-        "bert-base-multilingual-cased",
+        "bert-base-cased",
         "EleutherAI/gpt-neo-125m"
     ],
     "workspace": "sonata-test-ws",
