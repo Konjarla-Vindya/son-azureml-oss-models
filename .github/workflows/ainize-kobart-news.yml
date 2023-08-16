@@ -1,4 +1,4 @@
-name: ainize-kobart-news
+name: ainize/kobart-news
 
 on: 
   workflow_dispatch:
