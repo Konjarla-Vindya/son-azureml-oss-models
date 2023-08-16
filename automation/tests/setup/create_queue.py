@@ -27,7 +27,7 @@ parser.add_argument("--mode", type=str, default="file")
 # registry name if model is in registry
 parser.add_argument("--registry_name", type=str, default="HuggingFace")
 parser.add_argument("--environment", type=str, default="automate-venv")
-parser.add_argument("--compute", type=str, default="Standard-DS13-v2")
+parser.add_argument("--compute", type=str, default="STANDARD_DS13_V2")
 # argument to specify Github workflow directory. can write to local dir for testing
 # !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
 parser.add_argument("--workflow_dir", type=str, default="../../../.github/workflows")
@@ -231,7 +231,7 @@ def write_single_workflow_file(model, q, secret_name):
     print (".", end="", flush=True)
     workflowname=model.replace('/','-')
     # os.system(f"sed -i 's/name: .*/name: {model}/g' {args.workflow_template}")
-    workflow_file=f"{args.workflow_dir}/demo_{workflowname}.yml"
+    workflow_file=f"{args.workflow_dir}/{workflowname}.yml"
     # print("yml file----------------------------------------",workflow_file)
     # # print(workflow_file['env']['test_queue'])
     print (f"Generating workflow file: {workflow_file}")
@@ -261,7 +261,7 @@ def write_single_workflow_file(model, q, secret_name):
     # github_token="GITHUB_TOKEN"
     repository_owner="Konjarla-Vindya"
     repository_name="son-azureml-oss-models"
-    workflow_filename=f".github/workflows/demo_{workflowname}.yml"
+    workflow_filename=f".github/workflows/{workflowname}.yml"
     # workflow_sha="main"  # You need to provide the correct SHA
     new_workflow_name={model}
     new_job_name={model}
