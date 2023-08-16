@@ -24,9 +24,14 @@ jobs:
     - name: pip-install-pyyaml
       run: pip install pyyaml
     - name: Generate Output
-      run: python update-readme.py > test.md
-    # - name: Update README
-    #   run: cat table.md >> README.md
+      run: python update-readme.py > table.md
+    - name: Update README
+      run: |
+         cat table.md > test.md
+         git add table.md
+         git commit -am "Update readme with table"
+         git push
+      
     # - name: Commit and push changes
     #   run: |
     #      git add table.md
