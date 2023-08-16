@@ -7,7 +7,7 @@ env:
   test_model_name: Davlan/distilbert-base-multilingual-cased-ner-hrl
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test
+  test_queue: test-koreacentral
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -44,7 +44,7 @@ jobs:
     - name: deploy-model-step
       id: deploy-model-step
       run: python generic_initial_automation.py
-      working-directory: tests/src/testing-automation
+      working-directory: tests/src/automation_for_constant_library
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
