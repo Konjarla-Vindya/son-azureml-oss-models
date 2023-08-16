@@ -268,7 +268,7 @@ def write_single_workflow_file(model, q, secret_name):
     # Construct the API URL
     api_url = f"https://api.github.com/repositories/655633575/contents/{workflow_filename}"
     print("api url is genrating:--------------------",api_url)
-    withopen(api_url,r) as a:
+    with open(api_url,'rt') as a:
         dic=yaml.load(a)
     print("sha is -----------------------",dic['sha'])
     # Prepare the request headers
