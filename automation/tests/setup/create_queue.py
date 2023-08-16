@@ -324,7 +324,7 @@ def write_single_workflow_file(model, q, secret_name):
     
     updated_yaml_content = yaml_content.replace("name: distl", "name: model")
     print("updated_yaml_content-----------------------",updated_yaml_content)
-    with open(workflow_file, 'w') asyaml_file:
+    with open(workflow_file, 'w') as yaml_file:
         # yaml_file.write(updated_yaml_content)
         yaml.dump(updated_yaml_content,yaml_file)
     # with open(api_url, 'rt') as f:
