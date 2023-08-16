@@ -27,13 +27,13 @@ jobs:
         ls -1
         for file in `ls -1`  
         do  
-          # echo "Triggering workflow for $file"
-          models_json=$(cat file.json)
-          models_list=$(echo "$models_json" | jq -r '.models[]')
-          echo "Model Names: $models_list"
+          # # echo "Triggering workflow for $file"
+          # models_json=$(cat file.json)
+          # models_list=$(echo "$models_json" | jq -r '.models[]')
+          # echo "Model Names: $models_list"
           # gh workflow run "$file.yml" -R Konjarla-Vindya/son-azureml-oss-models -F model_name="$file"
           # gh workflow run `cat $file | head -n 1`
-          # gh workflow run `cat $file | head -4 | tail -1 | sed 's/,//' | sed 's/"//g'`
-          # gh working-directory: github/workflows
+          gh workflow run `cat $file | head -4 | tail -1 | sed 's/,//' | sed 's/"//g'`
+          gh working-directory: github/workflows
         done    
       working-directory: tests/config/queue
