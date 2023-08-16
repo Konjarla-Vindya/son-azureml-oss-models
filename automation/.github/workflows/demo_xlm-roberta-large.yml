@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
 
 env:
-  test_model_name: xlm-roberta-large
+  test_model_name: distilbert-base-uncased
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-eastus-0
+  test_queue: test-norwayeast-02
   test_set: huggingface-all
   test_keep_looping: false
 
