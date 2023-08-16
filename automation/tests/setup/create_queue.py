@@ -304,6 +304,7 @@ def write_single_workflow_file(model, q, secret_name):
     
     # Update the friendly name in the workflow data
     workflow_data["name"] = new_job_name
+    print("workflow_data----------------",workflow_data)
     workflow_data["on"]["push"]["branches"] = list(workflow_data["on"]["push"]["branches"])
     
     # Update the workflow using a PUT request
