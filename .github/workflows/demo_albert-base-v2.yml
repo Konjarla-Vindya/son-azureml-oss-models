@@ -1,5 +1,5 @@
 """
-name: model
+name: {model}
 
 on: 
   workflow_dispatch:
