@@ -1,4 +1,4 @@
-name: Einmalumdiewelt-T5-Base_GNAD
+name: Einmalumdiewelt/T5-Base_GNAD
 
 on: 
   workflow_dispatch:
