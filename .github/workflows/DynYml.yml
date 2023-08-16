@@ -17,6 +17,13 @@ jobs:
     steps:
     - name: check-out-repo-step
       uses: actions/checkout@v2
+    
+    - name: Checkout private tools
+      uses: actions/checkout@v3
+      with:
+        # repository: Konjarla-Vindya/son-azureml-oss-models
+        token: ${{ secrets.WORKFLOW_TOEKN }} # `GH_PAT` is a secret that contains your PAT
+        # path: my-tools
     - name: azure-login-step
       uses: azure/login@v1
       with:
