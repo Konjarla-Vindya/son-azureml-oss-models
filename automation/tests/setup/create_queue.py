@@ -324,7 +324,8 @@ def write_single_workflow_file(model, q, secret_name):
     print("yaml_content-----------------------",yaml_content)
     updated_yaml_content = yaml_content.replace("distl", model)
     with open("workflow.yml", "w") as yaml_file:
-        yaml_file.write(updated_yaml_content)
+        # yaml_file.write(updated_yaml_content)
+        yaml.dump(updated_yaml_content,yaml_file)
     # with open(api_url, 'rt') as f:
     #     doc = yaml.safe_load(f)
     #     # ,Loader=yaml.FullLoader
