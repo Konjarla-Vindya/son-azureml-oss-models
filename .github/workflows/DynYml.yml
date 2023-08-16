@@ -17,6 +17,9 @@ jobs:
     steps:
     - name: check-out-repo-step
       uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.WORKFLOWS_TOKEN }} # `GH_PAT` is a secret that contains your PAT
+        
     
     # - name: Checkout private tools
     #   uses: actions/checkout@v2
