@@ -1,12 +1,15 @@
 {
     "queue_name": "test-koreacentral",
     "models": [
-                "xlm-mlm-en-2048",
-		"xlm-roberta-large-finetuned-conll02-dutch",
-		"xlm-roberta-large-finetuned-conll03-german",
-		"bert-large-cased-whole-word-masking",
-		"albert-xxlarge-v1",
-		"albert-xlarge-v2"
+                "Davlan/distilbert-base-multilingual-cased-ner-hrl",
+		"ProsusAI/finbert",
+		"EleutherAI/gpt-neo-125m",
+		"CAMeL-Lab/bert-base-arabic-camelbert-da-sentiment",
+		"Jean-Baptiste/camembert-ner",
+		"Helsinki-NLP/opus-mt-fr-en",
+	        "Helsinki-NLP/opus-mt-es-en",
+	        "Helsinki-NLP/opus-mt-zh-en",
+	        "Helsinki-NLP/opus-mt-de-en"
 		
     ],
     "workspace": "test-koreacentral",
