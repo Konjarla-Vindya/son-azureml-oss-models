@@ -293,25 +293,25 @@ def write_single_workflow_file(model, q, secret_name):
         print(f"Failed to fetch file info. Status code: {response.status_code}")
 
     # Prepare the request headers
-headers = {
-    "Authorization": f"Bearer {github_token}",
-    "Accept": "application/vnd.github.v3+json"
-}
-
-# Fetch the existing workflow data
-response = requests.get(api_url, headers=headers)
-workflow_data = response.json()
-
-# Update the friendly name in the workflow data
-workflow_data["name"] = new_job_name
-
-# Update the workflow using a PUT request
-update_response = requests.put(api_url, headers=headers, json=workflow_data)
-
-if update_response.status_code == 200:
-    print("Friendly name updated successfully!")
-else:
-    print(f"Failed to update friendly name. Status code: {update_response.status_code}")
+    # headers = {
+    #     "Authorization": f"Bearer {github_token}",
+    #     "Accept": "application/vnd.github.v3+json"
+    # }
+    
+    # Fetch the existing workflow data
+    response = requests.get(api_url, headers=headers)
+    workflow_data = response.json()
+    
+    # Update the friendly name in the workflow data
+    workflow_data["name"] = new_job_name
+    
+    # Update the workflow using a PUT request
+    update_response = requests.put(api_url, headers=headers, json=workflow_data)
+    
+    if update_response.status_code == 200:
+        print("Friendly name updated successfully!")
+    else:
+        print(f"Failed to update friendly name. Status code: {update_response.status_code}")
 
 
     workflow_sha=file_sha
