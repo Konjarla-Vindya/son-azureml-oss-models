@@ -259,8 +259,8 @@ def write_single_workflow_file(model, q, secret_name):
     # # Read in the file
 
     # github_token="GITHUB_TOKEN"
-    repository_owner="USER_EMAIL"
-    repository_name="USER_NAME"
+    repository_owner="Konjarla-Vindya"
+    repository_name="son-azureml-oss-models"
     workflow_filename=f".github/workflows/demo_{workflowname}.yml"
     # workflow_sha="main"  # You need to provide the correct SHA
     new_workflow_name={model}
@@ -298,22 +298,22 @@ def write_single_workflow_file(model, q, secret_name):
     #     "Accept": "application/vnd.github.v3+json"
     # }
     
-    # Fetch the existing workflow data
-    response = requests.get(api_url, headers=headers)
-    workflow_data = response.json()
+    # # Fetch the existing workflow data
+    # response = requests.get(api_url, headers=headers)
+    # workflow_data = response.json()
     
-    # Update the friendly name in the workflow data
-    workflow_data["name"] = new_job_name
-    print("workflow_data----------------",workflow_data)
-    workflow_data["on"]["push"]["branches"] = list(workflow_data["on"]["push"]["branches"])
+    # # Update the friendly name in the workflow data
+    # workflow_data["name"] = new_job_name
+    # print("workflow_data----------------",workflow_data)
+    # workflow_data["on"]["push"]["branches"] = list(workflow_data["on"]["push"]["branches"])
     
-    # Update the workflow using a PUT request
-    update_response = requests.put(api_url, headers=headers, json=workflow_data)
+    # # Update the workflow using a PUT request
+    # update_response = requests.put(api_url, headers=headers, json=workflow_data)
     
-    if update_response.status_code == 200:
-        print("Friendly name updated successfully!")
-    else:
-        print(f"Failed to update friendly name. Status code: {update_response.status_code}")
+    # if update_response.status_code == 200:
+    #     print("Friendly name updated successfully!")
+    # else:
+    #     print(f"Failed to update friendly name. Status code: {update_response.status_code}")
 
 
     workflow_sha=file_sha
@@ -344,15 +344,15 @@ def write_single_workflow_file(model, q, secret_name):
     # curl -X PUT -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
     #      -d "$json_payload" "$current_url"
 
-    # with open(workflow_file, 'rt') as f:
-    #     yaml_content = f.read()
-    #     # yaml_content=yaml.safe_load(f)
+    with open(workflow_file, 'rt') as f:
+        yaml_content = f.read()
+        # yaml_content=yaml.safe_load(f)
     
-    # updated_yaml_content = yaml_content.replace("name: distl", "name: {model}")
-    # yml_content=textwrap.dedent('"""'+'\n'+updated_yaml_content+'\n'+'"""') 
-    # print("updated_yaml_content-----------------------",yml_content)
-    # with open(workflow_file, 'w') as yaml_file:
-    #     yaml_file.write(yml_content)
+    updated_yaml_content = yaml_content.replace("name: distl", "name: {model}")
+    yml_content=textwrap.dedent('"""'+'\n'+updated_yaml_content+'\n'+'"""') 
+    print("updated_yaml_content-----------------------",yml_content)
+    with open(workflow_file, 'w') as yaml_file:
+        yaml_file.write(yml_content)
     #     # yaml.dump(updated_yaml_content,yaml_file)
     # with open(api_url, 'rt') as f:
     #     doc = yaml.safe_load(f)
