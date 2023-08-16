@@ -1,47 +1,43 @@
 name: Update README with Python Output
 
 on:
-  workflow_dispatch:
-    #branches:
-      #- main  # Adjust this to your default branch
+  push:
+    branches:
+      - main
 
 jobs:
-  update_readme:
+  update-readme:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.x  # Specify the desired Python version
-    - name: pip-install-pandas
-      run: pip install pandas
-    - name: pip-install-simplejson
-      run: pip install simplejson
-    - name: pip-install-pyyaml
-      run: pip install pyyaml
-    - name: Generate Output
-      run: python update-readme.py > table.md
-    - name: Update README
-      run: |
-         cat table.md > test.md
-         git add table.md
-         git commit -am "Update readme with table"
-         git push
-      
-    # - name: Commit and push changes
-    #   run: |
-    #      git add table.md
-    #      git config --local user.email "swathipriyarv23@gmail.com"
-    #      git config --local user.name "Swathi23345"
-    #      git commit -am "Update readme with table"
-    #      git push
-         
-         
-   
+      - name: pip-install-pandas
+        run: pip install pandas
+      - name: pip-install-simplejson
+        run: pip install simplejson
+      - name: pip-install-pyyaml
+        run: pip install pyyaml
 
+      - name: Run Python Script
+        id: run_python
+        run: |
+          python3 update-readme.py
+        # env:
+        #    GITHUB_TOKEN: ${{ secrets.PAT}}
 
-   
+      - name: Update README
+        run: |
+          MARKDOWN_CONTENT="${{ steps.run_python.outputs.stdout }}"
+          sed -i '/<!--START_SECTION:python-output-->/,/<!--END_SECTION:python-output-->/d' test.md
+          echo "<!--START_SECTION:python-output-->" >> test.md
+          echo "$MARKDOWN_CONTENT" >> test.md
+          echo "<!--END_SECTION:python-output-->" >> test.md
+          git config --global user.email "swathipriyarv23@gmail.com"
+          git config --global user.name "Swathi23345"
+          # git config --local user.email "swathipriyarv23@gmail.com"
+          # git config --local user.name "Swathi23345"
+          git commit -am "Update README with Python output" || true
+          git push
