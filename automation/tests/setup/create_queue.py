@@ -316,7 +316,7 @@ def write_single_workflow_file(model, q, secret_name):
     #     print(f"Failed to update friendly name. Status code: {update_response.status_code}")
 
 
-    workflow_sha=file_sha
+    # workflow_sha=file_sha
     # # Get the latest commit information for the workflow file
     # commit_info=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
     #                "https://api.github.com/repos/$repository_owner/$repository_name/commits?path=$workflow_file")
