@@ -1,11 +1,16 @@
 {
     "queue_name": "test-northcentralus",
     "models": [
-                "xlm-mlm-tlm-xnli15-1024",
-		"xlm-mlm-enfr-1024",
-		"xlm-clm-enfr-1024",
-		"xlm-mlm-xnli15-1024",
-		"xlm-mlm-enro-1024"
+                "Rostlab/prot_bert",
+		"Helsinki-NLP/opus-mt-fi-en",
+		"s-nlp/roberta_toxicity_classifier",
+		"Rostlab/prot_bert_bfd",
+		"apanc/russian-inappropriate-messages"
+	        "Helsinki-NLP/opus-mt-en-it",
+	        "Helsinki-NLP/opus-mt-en-ru",
+	        "Helsinki-NLP/opus-mt-sv-en,
+	        "CAMeL-Lab/bert-base-arabic-camelbert-mix-pos-msa",
+	        "Helsinki-NLP/opus-mt-gem-gem"
     ],
     "workspace": "test-northcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
