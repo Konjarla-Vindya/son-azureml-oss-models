@@ -13,5 +13,5 @@
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard_D4_v2"
+    "compute": "Standard-D4-v2"
   }
