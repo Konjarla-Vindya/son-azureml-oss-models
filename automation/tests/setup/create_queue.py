@@ -323,8 +323,8 @@ def write_single_workflow_file(model, q, secret_name):
         yaml_content = f.read()
         # yaml_content=yaml.safe_load(f)
     
-    updated_yaml_content = yaml_content.replace("name: distl", "name: model")
-    yml_content='"""'+'\n'+updated_yaml_content+'\n'+'"""' 
+    updated_yaml_content = yaml_content.replace("name: distl", "name: {model}")
+    yml_content=textwrap.dedent('"""'+'\n'+updated_yaml_content+'\n'+'"""') 
     print("updated_yaml_content-----------------------",yml_content)
     with open(workflow_file, 'w') as yaml_file:
         yaml_file.write(yml_content)
