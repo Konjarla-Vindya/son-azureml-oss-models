@@ -1,5 +1,5 @@
 """
-name: {model}
+name: xlm-roberta-large
 
 on: 
   workflow_dispatch:

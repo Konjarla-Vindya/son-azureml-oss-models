@@ -1,5 +1,5 @@
 """
-name: {model}
+name: gpt2-large
 
 on: 
   workflow_dispatch:

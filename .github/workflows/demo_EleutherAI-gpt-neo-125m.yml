@@ -1,5 +1,5 @@
 """
-name: {model}
+name: EleutherAI/gpt-neo-125m
 
 on: 
   workflow_dispatch:

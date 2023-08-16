@@ -1,5 +1,5 @@
 """
-name: {model}
+name: ProsusAI/finbert
 
 on: 
   workflow_dispatch:

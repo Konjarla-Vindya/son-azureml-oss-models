@@ -1,5 +1,5 @@
 """
-name: {model}
+name: bert-base-uncased
 
 on: 
   workflow_dispatch:

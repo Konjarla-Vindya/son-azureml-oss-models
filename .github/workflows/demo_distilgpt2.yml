@@ -1,5 +1,5 @@
 """
-name: {model}
+name: distilgpt2
 
 on: 
   workflow_dispatch:
