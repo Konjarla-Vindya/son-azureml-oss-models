@@ -1,7 +1,7 @@
 {
     "queue_name": "test-sonata-test-ws1",
     "models": [
-            "bert-large-uncased-whole-word-masking"
+            "gpt2-xl"
             
     ],
     "workspace": "sonata-test-ws",
