@@ -167,6 +167,7 @@ class ModelInferenceAndDeployemnt:
             model=latest_model,
             endpoint_name=online_endpoint_name,
             environment=model_package,
+            instance_type="Standard_D8a_v4",
             instance_count=1
         )
         deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(
