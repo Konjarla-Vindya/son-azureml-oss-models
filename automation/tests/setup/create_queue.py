@@ -321,10 +321,14 @@ def write_single_workflow_file(model, q, secret_name):
 
     with open(workflow_file, 'rt') as f:
         yaml_content = f.read()
+    print("yaml_content-----------------------",yaml_content)
+    updated_yaml_content = yaml_content.replace("distl", {model})
+    with open("workflow.yml", "w") as yaml_file:
+        yaml_file.write(updated_yaml_content)
     # with open(api_url, 'rt') as f:
     #     doc = yaml.safe_load(f)
     #     # ,Loader=yaml.FullLoader
-    print("yaml_content-----------------------",yaml_content)
+    
     # doc['name'] = model
     # # doc['onion']['workflow_dispatch']=
     # # for model in models:
