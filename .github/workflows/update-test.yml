@@ -1,9 +1,11 @@
 name: Update README with Python Output
 
+
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:  # Allow manual runs
+  #push:
+    #branches:
+      #- main
 
 jobs:
   update-readme:
