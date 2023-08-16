@@ -266,7 +266,7 @@ def write_single_workflow_file(model, q, secret_name):
     new_job_name={model}
 
     # Construct the API URL
-    api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/contents/{workflow_filename}"
+    api_url = f"https://api.github.com/repositories/655633575/contents/{workflow_filename}"
     print("api url is genrating:--------------------",api_url)
     # Prepare the request headers
     headers = {
