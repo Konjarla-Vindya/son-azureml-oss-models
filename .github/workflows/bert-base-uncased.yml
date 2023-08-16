@@ -1,4 +1,4 @@
-name: 
+name: bert-base-uncased
 
 on: 
   workflow_dispatch:

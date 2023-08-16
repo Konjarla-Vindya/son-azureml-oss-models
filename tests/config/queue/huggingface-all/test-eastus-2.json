@@ -8,5 +8,5 @@
     "resource_group": "AzureMLHuggingFaceRegistry1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-DS13-v2"
+    "compute": "STANDARD_DS13_V2"
 }
