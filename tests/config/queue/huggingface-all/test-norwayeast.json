@@ -1,0 +1,21 @@
+{
+    "queue_name": "test-norwayeast",
+    "models": [
+        "ahmedrachid/FinancialBERT-Sentiment-Analysis",
+	"Helsinki-NLP/opus-mt-et-en",
+	"s-nlp/russian_toxicity_classifier",
+	"ALINEAR/albert-japanese-v2",
+	"MilaNLProc/feel-it-italian-emotion",
+	"HooshvareLab/bert-base-parsbert-uncased",
+	"Salesforce/qaconv-roberta-large-squad2",
+	"Helsinki-NLP/opus-mt-en-ar",
+	"TurkuNLP/bert-base-finnish-cased-v1",
+	"Helsinki-NLP/opus-mt-th-en"
+    ],
+    "workspace": "test-northeurope",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-DS3-v2"
+}
