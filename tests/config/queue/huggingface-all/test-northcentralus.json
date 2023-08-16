@@ -5,7 +5,7 @@
 		"Helsinki-NLP/opus-mt-fi-en",
 		"s-nlp/roberta_toxicity_classifier",
 		"Rostlab/prot_bert_bfd",
-		"apanc/russian-inappropriate-messages"
+		"apanc/russian-inappropriate-messages",
 	        "Helsinki-NLP/opus-mt-en-it",
 	        "Helsinki-NLP/opus-mt-en-ru",
 	        "Helsinki-NLP/opus-mt-sv-en",
