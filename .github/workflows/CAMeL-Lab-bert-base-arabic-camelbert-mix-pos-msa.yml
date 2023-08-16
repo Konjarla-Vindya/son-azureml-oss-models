@@ -7,7 +7,7 @@ env:
   test_model_name: CAMeL-Lab/bert-base-arabic-camelbert-mix-pos-msa
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test
+  test_queue: test-northcentralus
   test_set: huggingface-all
   test_keep_looping: false
 
