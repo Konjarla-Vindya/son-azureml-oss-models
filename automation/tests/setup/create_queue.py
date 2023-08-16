@@ -257,7 +257,7 @@ def write_single_workflow_file(model, q, secret_name):
     # # Read in the file
     
     with open(workflow_file, 'rt') as f:
-        doc = yaml.safe_load(f,loader=yaml.FullLoader)
+        doc = yaml.safe_load(f,Loader=yaml.FullLoader)
     print("dict-----------------------",doc)
     doc['name'] = model
     # doc['onion']['workflow_dispatch']=
