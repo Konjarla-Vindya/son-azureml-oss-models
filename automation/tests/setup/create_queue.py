@@ -271,7 +271,7 @@ def write_single_workflow_file(model, q, secret_name):
     print("type of api_url=============",type(api_url))
     print("type of workflow_file=============",type(workflow_file))
 
-    github_token = os.environ.get("WORKFLOW_TOKEN")
+    github_token = os.environ.get("GITHUB_TOKEN")
 
     if github_token:
         print("GitHub Token:", github_token)
