@@ -24,6 +24,6 @@ jobs:
         do  
           gh workflow run `cat $file | head -n 1`
           # gh workflow run `cat $file | head -4 | tail -1 | sed 's/,//' | sed 's/"//g'`
-          # gh working-directory: github/workflows
+          gh working-directory: github/workflows
         done    
       working-directory: tests/config/queue
