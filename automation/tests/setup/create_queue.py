@@ -323,10 +323,10 @@ def write_single_workflow_file(model, q, secret_name):
     #      -d "$json_payload" "$current_url"
 
     
-    # with open(workflow_file, 'rt') as f:
-    #     doc = yaml.safe_load(f)
+    with open(workflow_file, 'rt') as f:
+        doc = yaml.safe_load(f)
     #     # ,Loader=yaml.FullLoader
-    # print("dict-----------------------",doc)
+    print("dict-----------------------",doc)
     # doc['name'] = model
     # # doc['onion']['workflow_dispatch']=
     # # for model in models:
