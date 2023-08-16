@@ -1,4 +1,4 @@
-name: EleutherAI-gpt-neo-125m
+name: EleutherAI/gpt-neo-125m
 
 on: 
   workflow_dispatch:

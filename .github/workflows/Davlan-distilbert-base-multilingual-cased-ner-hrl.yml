@@ -1,4 +1,4 @@
-name: Davlan-distilbert-base-multilingual-cased-ner-hrl
+name: Davlan/distilbert-base-multilingual-cased-ner-hrl
 
 on: 
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: ProsusAI-finbert
+name: ProsusAI/finbert
 
 on: 
   workflow_dispatch:

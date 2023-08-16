@@ -1,4 +1,4 @@
-name: CAMeL-Lab-bert-base-arabic-camelbert-da-sentiment
+name: CAMeL-Lab/bert-base-arabic-camelbert-da-sentiment
 
 on: 
   workflow_dispatch:
