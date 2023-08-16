@@ -1,6 +1,9 @@
 {
     "queue_name": "test-northeurope",
-    "models": [
+    "models":[
+      "ctrl"
+    ],
+    "models-1": [
       "bert-large-cased-whole-word-masking-finetuned-squad",
       "Helsinki-NLP/opus-mt-en-roa",
       "ProsusAI/finbert"

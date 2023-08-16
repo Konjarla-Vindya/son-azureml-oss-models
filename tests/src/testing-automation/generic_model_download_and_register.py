@@ -18,9 +18,10 @@ import re
 import json
 # store the URL in url as
 # parameter for urlopen
-url = "https://huggingface.co/api/models"
-columns_to_read = ["modelId", "pipeline_tag", "tags"]
-string_to_check = 'transformers'
+URL = "https://huggingface.co/api/models"
+COLUMNS_TO_READ = ["modelId", "pipeline_tag", "tags"]
+STRING_TO_CHECK = 'transformers'
+AUTOMODEL = "AutoModel"
 
 test_model_name = os.environ.get('test_model_name')
 subscription = os.environ.get('subscription')
@@ -33,10 +34,10 @@ class Model:
         self.model_name = model_name
 
     def get_task_and_sample_data(self) -> pd.DataFrame:
-        response = urlopen(url)
+        response = urlopen(URL)
         data_json = json.loads(response.read())
-        df = pd.DataFrame(data_json, columns=columns_to_read)
-        df = df[df.tags.apply(lambda x: string_to_check in x)]
+        df = pd.DataFrame(data_json, columns=COLUMNS_TO_READ)
+        df = df[df.tags.apply(lambda x: STRING_TO_CHECK in x)]
         required_data = df[df.modelId.apply(lambda x: x == self.model_name)]
         required_data = required_data["pipeline_tag"].to_string()
         pattern = r'[0-9\s+]'
@@ -61,7 +62,12 @@ class Model:
 
     def download_model_and_tokenizer(self) -> dict:
         model_detail = AutoConfig.from_pretrained(self.model_name)
-        model_library_name = model_detail.to_dict()["architectures"][0]
+        res_dict = model_detail.to_dict().get("architectures")
+        if res_dict is not None:
+            model_library_name = res_dict[0]
+        else:
+            model_library_name = AUTOMODEL
+        #model_library_name = model_detail.to_dict()["architectures"][0]
         model_library = getattr(transformers, model_library_name)
         model = model_library.from_pretrained(self.model_name)
         tokenizer = AutoTokenizer.from_pretrained(self.model_name)
