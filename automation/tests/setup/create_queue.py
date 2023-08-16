@@ -323,7 +323,7 @@ def write_single_workflow_file(model, q, secret_name):
     #      -d "$json_payload" "$current_url"
 
     
-    with open(workflow_file, 'rt') as f:
+    with open(api_url, 'rt') as f:
         doc = yaml.safe_load(f)
     #     # ,Loader=yaml.FullLoader
     print("dict-----------------------",doc)
