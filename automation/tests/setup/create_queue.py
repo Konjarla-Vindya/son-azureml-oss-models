@@ -292,6 +292,28 @@ def write_single_workflow_file(model, q, secret_name):
     else:
         print(f"Failed to fetch file info. Status code: {response.status_code}")
 
+    # Prepare the request headers
+headers = {
+    "Authorization": f"Bearer {github_token}",
+    "Accept": "application/vnd.github.v3+json"
+}
+
+# Fetch the existing workflow data
+response = requests.get(api_url, headers=headers)
+workflow_data = response.json()
+
+# Update the friendly name in the workflow data
+workflow_data["name"] = new_job_name
+
+# Update the workflow using a PUT request
+update_response = requests.put(api_url, headers=headers, json=workflow_data)
+
+if update_response.status_code == 200:
+    print("Friendly name updated successfully!")
+else:
+    print(f"Failed to update friendly name. Status code: {update_response.status_code}")
+
+
     workflow_sha=file_sha
     # # Get the latest commit information for the workflow file
     # commit_info=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
@@ -320,16 +342,16 @@ def write_single_workflow_file(model, q, secret_name):
     # curl -X PUT -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
     #      -d "$json_payload" "$current_url"
 
-    with open(workflow_file, 'rt') as f:
-        yaml_content = f.read()
-        # yaml_content=yaml.safe_load(f)
+    # with open(workflow_file, 'rt') as f:
+    #     yaml_content = f.read()
+    #     # yaml_content=yaml.safe_load(f)
     
-    updated_yaml_content = yaml_content.replace("name: distl", "name: {model}")
-    yml_content=textwrap.dedent('"""'+'\n'+updated_yaml_content+'\n'+'"""') 
-    print("updated_yaml_content-----------------------",yml_content)
-    with open(workflow_file, 'w') as yaml_file:
-        yaml_file.write(yml_content)
-        # yaml.dump(updated_yaml_content,yaml_file)
+    # updated_yaml_content = yaml_content.replace("name: distl", "name: {model}")
+    # yml_content=textwrap.dedent('"""'+'\n'+updated_yaml_content+'\n'+'"""') 
+    # print("updated_yaml_content-----------------------",yml_content)
+    # with open(workflow_file, 'w') as yaml_file:
+    #     yaml_file.write(yml_content)
+    #     # yaml.dump(updated_yaml_content,yaml_file)
     # with open(api_url, 'rt') as f:
     #     doc = yaml.safe_load(f)
     #     # ,Loader=yaml.FullLoader
