@@ -1,4 +1,4 @@
-name: KoboldAI-GPT-Neo-2.7B-Janeway
+name: KoboldAI/GPT-Neo-2.7B-Janeway
 
 on: 
   workflow_dispatch:

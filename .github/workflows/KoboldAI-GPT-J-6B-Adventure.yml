@@ -1,4 +1,4 @@
-name: KoboldAI-GPT-J-6B-Adventure
+name: KoboldAI/GPT-J-6B-Adventure
 
 on: 
   workflow_dispatch:

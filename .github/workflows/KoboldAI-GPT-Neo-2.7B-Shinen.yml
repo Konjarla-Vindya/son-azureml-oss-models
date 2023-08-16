@@ -1,4 +1,4 @@
-name: KoboldAI-GPT-Neo-2.7B-Shinen
+name: KoboldAI/GPT-Neo-2.7B-Shinen
 
 on: 
   workflow_dispatch:

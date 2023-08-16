@@ -1,4 +1,4 @@
-name: IlyaGusev-mbart_ru_sum_gazeta
+name: IlyaGusev/mbart_ru_sum_gazeta
 
 on: 
   workflow_dispatch:

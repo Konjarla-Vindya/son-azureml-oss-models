@@ -1,4 +1,4 @@
-name: Luyu-co-condenser-marco
+name: Luyu/co-condenser-marco
 
 on: 
   workflow_dispatch:

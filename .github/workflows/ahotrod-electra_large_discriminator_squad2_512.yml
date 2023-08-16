@@ -1,4 +1,4 @@
-name: ahotrod-electra_large_discriminator_squad2_512
+name: ahotrod/electra_large_discriminator_squad2_512
 
 on: 
   workflow_dispatch:

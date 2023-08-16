@@ -1,4 +1,4 @@
-name: Jorgeutd-bert-large-uncased-finetuned-ner
+name: Jorgeutd/bert-large-uncased-finetuned-ner
 
 on: 
   workflow_dispatch:
