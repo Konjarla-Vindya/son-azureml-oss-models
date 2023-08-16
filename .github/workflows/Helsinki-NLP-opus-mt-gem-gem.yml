@@ -1,4 +1,4 @@
-name: Helsinki-NLP-opus-mt-gem-gem
+name: Helsinki-NLP/opus-mt-gem-gem
 
 on: 
   workflow_dispatch:

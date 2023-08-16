@@ -1,4 +1,4 @@
-name: GroNLP-bert-base-dutch-cased
+name: GroNLP/bert-base-dutch-cased
 
 on: 
   workflow_dispatch:

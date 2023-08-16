@@ -1,4 +1,4 @@
-name: apanc-russian-inappropriate-messages
+name: apanc/russian-inappropriate-messages
 
 on: 
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: IMSyPP-hate_speech_en
+name: IMSyPP/hate_speech_en
 
 on: 
   workflow_dispatch:

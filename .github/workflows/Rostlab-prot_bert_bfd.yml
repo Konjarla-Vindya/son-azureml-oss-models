@@ -1,4 +1,4 @@
-name: Rostlab-prot_bert_bfd
+name: Rostlab/prot_bert_bfd
 
 on: 
   workflow_dispatch:
