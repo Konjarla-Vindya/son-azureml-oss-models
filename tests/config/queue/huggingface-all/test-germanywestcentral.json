@@ -10,8 +10,8 @@
 	        "Davlan/bert-base-multilingual-cased-ner-hrl",
 	        "airesearch/wangchanberta-base-att-spm-uncased",
 	        "Geotrend/distilbert-base-en-fr-cased",
-            "ahotrod/albert_xxlargev1_squad2_512",
-            "Helsinki-NLP/opus-mt-ko-en"
+                "ahotrod/albert_xxlargev1_squad2_512",
+                "Helsinki-NLP/opus-mt-ko-en"
 		
     ],
     "workspace": "test-germanywestcentral",
