@@ -1,0 +1,27 @@
+{
+    "sonata-test-ws": {
+        "0": [
+            "bert-base-uncased",
+            "gpt2-large"
+        ],
+        "1": [
+            "bert-base-cased",
+            "EleutherAI/gpt-neo-125m"
+        ],
+        "2": [
+            "albert-base-v2",
+            "CAMeL-Lab/bert-base-arabic-camelbert-da-sentiment"
+        ]
+    },
+    "test-eastus": {
+        "0": [
+            "xlm-roberta-large"
+        ],
+        "1": [
+            "distilgpt2"
+        ],
+        "2": [
+            "ProsusAI/finbert"
+        ]
+    }
+}
