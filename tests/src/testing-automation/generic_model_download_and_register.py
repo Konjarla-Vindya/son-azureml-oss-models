@@ -12,6 +12,7 @@ import pandas as pd
 import os
 import mlflow
 import re
+import json
 
 
 # import json
@@ -22,6 +23,7 @@ URL = "https://huggingface.co/api/models"
 COLUMNS_TO_READ = ["modelId", "pipeline_tag", "tags"]
 STRING_TO_CHECK = 'transformers'
 AUTOMODEL = "AutoModel"
+FILE_NAME = "rare-model-with-library.json"
 
 test_model_name = os.environ.get('test_model_name')
 subscription = os.environ.get('subscription')
@@ -32,6 +34,10 @@ workspace_name = os.environ.get('workspace')
 class Model:
     def __init__(self, model_name) -> None:
         self.model_name = model_name
+
+    def load_rare_model(self) -> ConfigBox:
+        with open(FILE_NAME) as f:
+            return ConfigBox(json.load(f))
 
     def get_task_and_sample_data(self) -> pd.DataFrame:
         response = urlopen(URL)
@@ -66,7 +72,8 @@ class Model:
         if res_dict is not None:
             model_library_name = res_dict[0]
         else:
-            model_library_name = AUTOMODEL
+            rara_model_dict = self.load_rare_model()
+            model_library_name = rara_model_dict.get(self.model_name)
         #model_library_name = model_detail.to_dict()["architectures"][0]
         model_library = getattr(transformers, model_library_name)
         model = model_library.from_pretrained(self.model_name)
@@ -91,7 +98,7 @@ class Model:
 
         output = generate_signature_output(model_pipeline, sample_data.inputs)
         signature = infer_signature(sample_data.inputs, output)
-        model_name =  self.model_name.replace("/", "-")
+        model_name = self.model_name.replace("/", "-")
         # if len(self.model_name) > 22:
         #     model_name = self.model_name.replace("/", "-")[:22]
         #     model_name = model_name.rstrip("-")
