@@ -1,4 +1,4 @@
-name: Vamsi-T5_Paraphrase_Paws
+name: Vamsi/T5_Paraphrase_Paws
 
 on: 
   workflow_dispatch:
