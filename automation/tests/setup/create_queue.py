@@ -261,7 +261,7 @@ def write_single_workflow_file(model, q, secret_name):
     repository_owner="USER_EMAIL"
     repository_name="USER_NAME"
     workflow_filename=f".github/workflows/demo_{workflowname}.yml"
-    workflow_sha="main"  # You need to provide the correct SHA
+    # workflow_sha="main"  # You need to provide the correct SHA
     new_workflow_name={model}
     new_job_name={model}
 
@@ -272,7 +272,7 @@ def write_single_workflow_file(model, q, secret_name):
     print("type of workflow_file=============",type(workflow_file))
 
     github_token = os.environ.get("GITHUB_TOKEN")
-    print("github_token: is ------------------------------------",github_token)
+    # print("github_token: is ------------------------------------",github_token)
    
     # Prepare the request headers
     headers = {
@@ -291,7 +291,7 @@ def write_single_workflow_file(model, q, secret_name):
     else:
         print(f"Failed to fetch file info. Status code: {response.status_code}")
 
-
+    workflow_sha=file_sha
     # # Get the latest commit information for the workflow file
     # commit_info=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
     #                "https://api.github.com/repos/$repository_owner/$repository_name/commits?path=$workflow_file")
@@ -319,11 +319,12 @@ def write_single_workflow_file(model, q, secret_name):
     # curl -X PUT -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
     #      -d "$json_payload" "$current_url"
 
-    
+    with open(workflow_file, 'rt') as f:
+        yaml_content = yaml_file.read()
     # with open(api_url, 'rt') as f:
     #     doc = yaml.safe_load(f)
     #     # ,Loader=yaml.FullLoader
-    # print("dict-----------------------",doc)
+    print("yaml_content-----------------------",yaml_content)
     # doc['name'] = model
     # # doc['onion']['workflow_dispatch']=
     # # for model in models:
