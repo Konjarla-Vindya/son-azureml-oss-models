@@ -13,6 +13,7 @@ import sys
 from util import load_model_list_file, get_model_containers
 from pathlib import Path
 import yaml
+import requests
 # from github import Github
 
 # constants
@@ -259,37 +260,57 @@ def write_single_workflow_file(model, q, secret_name):
     github_token="GITHUB_TOKEN"
     repository_owner="USER_EMAIL"
     repository_name="USER_NAME"
-    # workflow_filename=".github/workflows/your_workflow.yml"
+    workflow_filename=workflow_file
     workflow_sha="main"  # You need to provide the correct SHA
     new_workflow_name={model}
     new_job_name={model}
 
-    # Get the latest commit information for the workflow file
-    commit_info=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
-                   "https://api.github.com/repos/$repository_owner/$repository_name/commits?path=$workflow_file")
+    # Construct the API URL
+    api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/contents/{workflow_filename}"
+    
+    # Prepare the request headers
+    headers = {
+        "Authorization": f"Bearer {github_token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    
+    # Make the GET request
+    response = requests.get(api_url, headers=headers)
+    
+    if response.status_code == 200:
+        file_info = response.json()
+        file_sha = file_info["sha"]
+        print(f"SHA of '{workflow_filename}': {file_sha}")
+    else:
+        print(f"Failed to fetch file info. Status code: {response.status_code}")
+
+
+    # # Get the latest commit information for the workflow file
+    # commit_info=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
+    #                "https://api.github.com/repos/$repository_owner/$repository_name/commits?path=$workflow_file")
     
     
-    # Read the current workflow content from GitHub
-    current_content=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
-                      "https://api.github.com/repos/$repository_owner/$repository_name/contents/$workflow_file?ref=$workflow_sha")
-    # Extract the current content, URL, and other attributes
-    current_content=$(echo "$current_content" | jq -r .content)
-    current_url=$(echo "$current_content" | jq -r .url)
-    current_encoding=$(echo "$current_content" | jq -r .encoding)
+    # # Read the current workflow content from GitHub
+    # current_content=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
+    #                   "https://api.github.com/repos/$repository_owner/$repository_name/contents/$workflow_file?ref=$workflow_sha")
+    # # Extract the current content, URL, and other attributes
+    # current_content=$(echo "$current_content" | jq -r .content)
+    # current_url=$(echo "$current_content" | jq -r .url)
+    # current_encoding=$(echo "$current_content" | jq -r .encoding)
     
-    # Prepare the updated content with new names
-    updated_content=$(echo -n "$current_content" | base64 -d | \
-                      sed "s/Old Workflow Name/$new_workflow_name/g; s/Old Job Name/$new_job_name/g")
+    # # Prepare the updated content with new names
+    # updated_content=$(echo -n "$current_content" | base64 -d | \
+    #                   sed "s/Old Workflow Name/$new_workflow_name/g; s/Old Job Name/$new_job_name/g")
     
-    # Encode the updated content in base64
-    encoded_updated_content=$(echo -n "$updated_content" | base64 -w 0)
+    # # Encode the updated content in base64
+    # encoded_updated_content=$(echo -n "$updated_content" | base64 -w 0)
     
-    # Prepare the JSON payload for updating the content
-    json_payload="{\"message\":\"Update workflow names\",\"content\":\"$encoded_updated_content\",\"sha\":\"$workflow_sha\"}"
+    # # Prepare the JSON payload for updating the content
+    # json_payload="{\"message\":\"Update workflow names\",\"content\":\"$encoded_updated_content\",\"sha\":\"$workflow_sha\"}"
     
-    # Make the PATCH request to update the workflow file
-    curl -X PUT -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
-         -d "$json_payload" "$current_url"
+    # # Make the PATCH request to update the workflow file
+    # curl -X PUT -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
+    #      -d "$json_payload" "$current_url"
 
     
     # with open(workflow_file, 'rt') as f:
