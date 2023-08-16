@@ -34,7 +34,7 @@ jobs:
     - name: pip-install-transformers[torch]
       run: pip install transformers[torch]
     - name: pip-install-torchvision
-      run: pip install 
+      run: pip install torchvision  
     - name: pip-install-sentencepiece
       run: pip install sentencepiece
     - name: pip-install-sacremoses
