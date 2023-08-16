@@ -267,7 +267,7 @@ def write_single_workflow_file(model, q, secret_name):
 
     # Construct the API URL
     api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/contents/{workflow_filename}"
-    
+    print("api url is genrating:--------------------",api_url)
     # Prepare the request headers
     headers = {
         "Authorization": f"Bearer {github_token}",
@@ -276,6 +276,7 @@ def write_single_workflow_file(model, q, secret_name):
     
     # Make the GET request
     response = requests.get(api_url, headers=headers)
+    print("response is genrating:--------------------",response)
     
     if response.status_code == 200:
         file_info = response.json()
