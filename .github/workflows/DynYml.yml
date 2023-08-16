@@ -19,6 +19,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: Konjarla-Vindya/son-azureml-oss-models
+          git config global init.defaultBranch main
         token: ${{ secrets.WORKFLOW_TOKEN }} # `GH_PAT` is a secret that contains your PAT
         path: son-azureml-oss-models
     
