@@ -1,4 +1,4 @@
-name: apanc-russian-sensitive-topics
+name: apanc/russian-sensitive-topics
 
 on: 
   workflow_dispatch:
