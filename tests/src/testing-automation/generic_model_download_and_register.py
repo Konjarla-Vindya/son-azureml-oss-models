@@ -36,8 +36,14 @@ class Model:
         self.model_name = model_name
 
     def load_rare_model(self) -> ConfigBox:
-        with open(FILE_NAME) as f:
-            return ConfigBox(json.load(f))
+        try:
+            with open(FILE_NAME) as f:
+                model_with_library = ConfigBox(json.load(f))
+                print(f"scoring_input file:\n\n {model_with_library}\n\n")
+        except Exception as e:
+            print(
+                f"::warning:: Could not find scoring_file: {model_with_library}. Finishing without sample scoring: \n{e}")
+        return model_with_library
 
     def get_task_and_sample_data(self) -> pd.DataFrame:
         response = urlopen(URL)
@@ -72,8 +78,8 @@ class Model:
         if res_dict is not None:
             model_library_name = res_dict[0]
         else:
-            rara_model_dict = self.load_rare_model()
-            model_library_name = rara_model_dict.get(self.model_name)
+            rare_model_dict = self.load_rare_model()
+            model_library_name = rare_model_dict.get(self.model_name)
         #model_library_name = model_detail.to_dict()["architectures"][0]
         model_library = getattr(transformers, model_library_name)
         model = model_library.from_pretrained(self.model_name)
