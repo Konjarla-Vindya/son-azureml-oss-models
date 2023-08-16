@@ -175,6 +175,7 @@ class ModelInferenceAndDeployemnt:
 
     def delete_online_endpoint(self, online_endpoint_name):
         try:
+            print("In delete_online_endpoint.....")
             self.workspace_ml_client.online_endpoints.begin_delete(
                 name=online_endpoint_name).wait()
         except Exception as e:
