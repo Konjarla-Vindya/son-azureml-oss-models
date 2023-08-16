@@ -22,7 +22,7 @@ jobs:
         ls -1
         for file in `ls -1`  
         #do  
-          echo "Triggering workflow for $file"
+          # echo "Triggering workflow for $file"
           gh workflow run "$file.yml" -R Konjarla-Vindya/son-azureml-oss-models -F model_name="$file"
           # gh workflow run `cat $file | head -n 1`
           # gh workflow run `cat $file | head -4 | tail -1 | sed 's/,//' | sed 's/"//g'`
