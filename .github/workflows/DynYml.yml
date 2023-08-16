@@ -16,9 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: check-out-repo-step
-      uses: actions/checkout@v2
+      uses: actions/checkout@a81bbbf8298c0fa03ea29cdc473d45769f953675
       with:
         ref: main
+        lfs: true
         repository: Konjarla-Vindya/son-azureml-oss-models
           git config global init.defaultBranch main
         token: ${{ secrets.WORKFLOW_TOKEN }} # `GH_PAT` is a secret that contains your PAT
