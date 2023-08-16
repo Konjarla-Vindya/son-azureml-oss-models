@@ -29,7 +29,7 @@ parser.add_argument("--environment", type=str, default="automate-venv")
 parser.add_argument("--compute", type=str, default="Standard-DS13-v2")
 # argument to specify Github workflow directory. can write to local dir for testing
 # !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
-parser.add_argument("--workflow_dir", type=str, default="../../.github/workflows")
+parser.add_argument("--workflow_dir", type=str, default="../../../.github/workflows")
 # argument to specify queue directory
 parser.add_argument("--queue_dir", type=str, default="../../tests/config/queue")
 # queue set name (will create a folder under queue_dir with this name)
@@ -239,22 +239,22 @@ def write_single_workflow_file(model, q, secret_name):
     # # print("name:---------------------",name)
     # print("model:--------------------",model)
     # print("workflowname:-------------",workflowname)
-    # os.system(f"sed -i s/name: .*/name: {model}/g' {workflow_file}")
-    # # replace <test_queue> with q
-    # os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
-    # # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
-    # # replace <test_sku_type> with test_sku_type in workflow_file
-    # os.system(f"sed -i 's/test_sku_type: .*/test_sku_type: {args.test_sku_type}/g' {workflow_file}")
-    # # replace <test_registry> with test_registry in workflow_file
-    # os.system(f"sed -i 's/test_trigger_next_model: .*/test_trigger_next_model: {args.test_trigger_next_model}/g' {workflow_file}")
-    # # replace <test_keep_looping> with test_keep_looping in workflow_file
-    # os.system(f"sed -i 's/test_keep_looping: .*/test_keep_looping: {args.test_keep_looping}/g' {workflow_file}")
-    # # replace <test_model_name> with model_container.name in workflow_file
-    # os.system(f"sed -i 's=test_model_name: .*=test_model_name: {model}=g' {workflow_file}")
-    # # replace <test_set> with test_set in workflow_file
-    # os.system(f"sed -i 's/test_set: .*/test_set: {args.test_set}/g' {workflow_file}")
-    # # replace <test_secret_name> 
-    # os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
+    os.system(f"sed -i s/name: .*/name: {model}/g' {workflow_file}")
+    # replace <test_queue> with q
+    os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
+    # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
+    # replace <test_sku_type> with test_sku_type in workflow_file
+    os.system(f"sed -i 's/test_sku_type: .*/test_sku_type: {args.test_sku_type}/g' {workflow_file}")
+    # replace <test_registry> with test_registry in workflow_file
+    os.system(f"sed -i 's/test_trigger_next_model: .*/test_trigger_next_model: {args.test_trigger_next_model}/g' {workflow_file}")
+    # replace <test_keep_looping> with test_keep_looping in workflow_file
+    os.system(f"sed -i 's/test_keep_looping: .*/test_keep_looping: {args.test_keep_looping}/g' {workflow_file}")
+    # replace <test_model_name> with model_container.name in workflow_file
+    os.system(f"sed -i 's=test_model_name: .*=test_model_name: {model}=g' {workflow_file}")
+    # replace <test_set> with test_set in workflow_file
+    os.system(f"sed -i 's/test_set: .*/test_set: {args.test_set}/g' {workflow_file}")
+    # replace <test_secret_name> 
+    os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
     # # Read in the file
 
     # github_token="GITHUB_TOKEN"
