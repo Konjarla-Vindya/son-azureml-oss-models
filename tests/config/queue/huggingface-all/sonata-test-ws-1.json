@@ -1,8 +1,13 @@
 {
     "queue_name": "sonata-test-ws-1",
     "models": [
-        "bert-base-cased",
-        "EleutherAI/gpt-neo-125m"
+        "PlanTL-GOB-ES/roberta-base-bne-capitel-ner",
+        "CAMeL-Lab/bert-base-arabic-camelbert-mix",
+        "Helsinki-NLP/opus-mt-fi-sv",
+        "Helsinki-NLP/opus-mt-bn-en",
+        "MMG/xlm-roberta-large-ner-spanish",
+        "DanL/scientific-challenges-and-directions",
+        "KoboldAI/GPT-Neo-2.7B-Horni-LN"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
