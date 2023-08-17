@@ -156,12 +156,13 @@ class ModelInferenceAndDeployemnt:
         # endpoint.traffic = {"demo": 100}
         # workspace_ml_client.begin_create_or_update(endpoint).result()
 
-        deployment_name = ""
+        latest_model_name = latest_model.name.replace("_", "-")
         if len(latest_model.name) > 32:
-            model_name = latest_model.name[:31]
+            model_name = latest_model_name[:31]
             deployment_name = model_name.rstrip("-")
         else:
-            deployment_name = latest_model.name
+            deployment_name = latest_model_name
+        print("deployment name is this one : ", deployment_name)
         deployment_config = ManagedOnlineDeployment(
             name=deployment_name,
             model=latest_model,
