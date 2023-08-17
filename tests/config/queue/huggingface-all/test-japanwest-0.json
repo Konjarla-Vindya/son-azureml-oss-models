@@ -17,5 +17,5 @@
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-A4-v2"
+    "compute": "Standard-E4ds-v4"
 }
