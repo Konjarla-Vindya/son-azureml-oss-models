@@ -43,7 +43,7 @@ def get_github_workflows(token):
     runs = []
     while total_pages is None or current_page <= total_pages:
         # create a requests session object with 
-        headers = { "Authorization": f"Bearer {token}",
+        headers = { "Authorization": f"Bearer {GITHUB_TOKEN}",
                     "X-GitHub-Api-Version": "2022-11-28",
                     "Accept": "application/vnd.github+json"
         }
