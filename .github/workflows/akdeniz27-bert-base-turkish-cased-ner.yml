@@ -1,6 +1,6 @@
 name: akdeniz27/bert-base-turkish-cased-ner
-true:
-  workflow_dispatch: null
+on: 
+  workflow_dispatch:
 env:
   test_keep_looping: false
   test_model_name: akdeniz27/bert-base-turkish-cased-ner
