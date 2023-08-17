@@ -2,7 +2,7 @@ import os
 import json
 import requests
 from datetime import datetime
-from util import load_model_list_file, get_model_containers
+#from util import load_model_list_file, get_model_containers
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential
 
