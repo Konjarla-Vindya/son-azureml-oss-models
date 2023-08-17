@@ -4,7 +4,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-        GIT_TOKEN: ${{secrets.GIT_TOKEN}}
+        GIT_TOKEN: ${{secrets.TOKEN}}
 
     steps:
       - name: Checkout code
@@ -35,7 +35,7 @@ jobs:
           git add testing.md          
           # Attempt to commit changes and handle errors
           set +e
-          git commit -m "Add README.md"
+          git commit -m "Add testing.md"
           commit_status=$?
           set -e
           if [ $commit_status -eq 0 ]; then
