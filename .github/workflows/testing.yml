@@ -4,7 +4,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-        GIT_TOKEN: ${{secrets.TOKEN}}
+        GIT_TOKEN: ${{secrets.Workflow_token}}
 
     steps:
       - name: Checkout code
