@@ -29,8 +29,8 @@ jobs:
           python testing.py
       - name: Add Generated File
         run: |
-          git config user.email "${{ secrets.GIT_USER_EMAIL }}"
-          git config user.name "${{ secrets.GIT_USER_NAME }}"
+          git config user.email "${{secrets.GIT_USER_EMAIL}}"
+          git config user.name "${{secrets.GIT_USER_NAME}}"
           git pull origin main
           git add testing.md          
           # Attempt to commit changes and handle errors
