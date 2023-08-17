@@ -1,16 +1,16 @@
 {
     "queue_name": "test-eastus",
     "models": [
-	        "Vamsi/T5_Paraphrase_Paws",
-		"ainize/kobart-news",
-		"SAPOSS/password-model",
-		"Helsinki-NLP/opus-mt-en-de",
-		"EleutherAI/gpt-neo-1.3B",
-		"apanc/russian-sensitive-topics",
-		"Helsinki-NLP/opus-mt-mul-en",
-		"Helsinki-NLP/opus-mt-nl-en",
-		"Helsinki-NLP/opus-mt-it-en",
-		"HooshvareLab/bert-base-parsbert-ner-uncased"         
+			"Elron/bleurt-tiny-512",
+			"Helsinki-NLP/opus-mt-gmq-en",
+			"Helsinki-NLP/opus-mt-hu-en",
+			"Geotrend/distilbert-base-es-cased",
+			"KoboldAI/GPT-Neo-2.7B-Picard",
+			"KoboldAI/GPT-J-6B-Shinen",
+			"Helsinki-NLP/opus-mt-ur-en",
+			"Helsinki-NLP/opus-mt-de-nl",
+			"Helsinki-NLP/opus-mt-en-grk",
+			"akdeniz27/bert-base-turkish-cased-ner"       
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
