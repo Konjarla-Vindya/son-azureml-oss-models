@@ -1,16 +1,16 @@
 {
     "queue_name": "test-northeurope-0",
     "models": [
-        "Luyu/co-condenser-marco",
-        "KoboldAI/GPT-Neo-2.7B-Shinen",
-        "KoboldAI/GPT-Neo-2.7B-Janeway",
-        "ahotrod/electra_large_discriminator_squad2_512",
-        "IlyaGusev/mbart_ru_sum_gazeta",
-        "Helsinki-NLP/opus-mt-en-ro",
-        "KoboldAI/GPT-J-6B-Adventure",
-        "Jorgeutd/bert-large-uncased-finetuned-ner",
-        "Helsinki-NLP/opus-mt-swc-en",
-        "Helsinki-NLP/opus-mt-roa-en"
+        "CAMeL-Lab/bert-base-arabic-camelbert-msa-ner",
+        "Helsinki-NLP/opus-mt-en-sk",
+        "AkshatSurolia/ICD-10-Code-Prediction",
+        "SIKU-BERT/sikubert",
+        "DaisyMak/bert-finetuned-squad-accelerate-10epoch_transformerfrozen",
+        "Helsinki-NLP/opus-mt-sv-fi",
+        "DCU-NLP/bert-base-irish-cased-v1",
+        "Wellcome/WellcomeBertMesh",
+        "Helsinki-NLP/opus-mt-en-jap",
+        "LukasStankevicius/t5-base-lithuanian-news-summaries-175"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
