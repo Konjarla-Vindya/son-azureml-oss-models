@@ -1,6 +1,7 @@
 {
     "queue_name": "test-northeurope",
     "models":[
+      "xlm-roberta-large-finetuned-conll03-english",
       "Rostlab/prot_bert_bfd_ss3",
       "EleutherAI/gpt-neo-125m"
     ],
