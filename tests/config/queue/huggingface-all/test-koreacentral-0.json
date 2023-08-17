@@ -1,5 +1,5 @@
 {
-    "queue_name": "test-koreacentral",
+    "queue_name": "test-koreacentral-0",
     "models": [
                 "EleutherAI/gpt-j-6b",
 		"Helsinki-NLP/opus-mt-ru-en",
