@@ -1,7 +1,7 @@
 {
     "queue_name": "test-northeurope",
     "models":[
-      "EleutherAI-gpt-neo-125m"
+      "EleutherAI/gpt-neo-125m"
     ],
     "models-1": [
       "ctrl",
