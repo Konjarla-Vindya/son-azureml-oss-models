@@ -1,6 +1,6 @@
 name: Geotrend/distilbert-base-es-cased
-true:
-  workflow_dispatch: null
+on: 
+  workflow_dispatch:
 env:
   test_keep_looping: false
   test_model_name: Geotrend/distilbert-base-es-cased
