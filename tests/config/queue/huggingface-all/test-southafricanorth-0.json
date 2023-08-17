@@ -1,0 +1,17 @@
+{
+    "queue_name": "test-southafricanorth-0",
+    "models": [
+                "Rostlab/prot_bert",
+		            "s-nlp/roberta_toxicity_classifier",
+		            "Rostlab/prot_bert_bfd",
+	            	"apanc/russian-inappropriate-messages",
+		            "IMSyPP/hate_speech_en"
+                
+    ],
+    "workspace": "test-southafricanorth",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-D16-v4"	
+}
