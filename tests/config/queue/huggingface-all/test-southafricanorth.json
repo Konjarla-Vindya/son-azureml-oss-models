@@ -1,16 +1,16 @@
 {
     "queue_name": "test-southafricanorth",
     "models": [
-                "Helsinki-NLP/opus-mt-da-en",
-		"Helsinki-NLP/opus-mt-it-fr",
-		"Helsinki-NLP/opus-mt-tr-en",
-		"Helsinki-NLP/opus-mt-en-id",
-		"Helsinki-NLP/opus-mt-id-en",
-                "Helsinki-NLP/opus-mt-ja-en",
-                "IMSyPP/hate_speech_en",
-                "Helsinki-NLP/opus-mt-bat-en",
-                "GroNLP/bert-base-dutch-cased",
-                "Helsinki-NLP/opus-mt-fr-de"
+                "PlanTL-GOB-ES/roberta-large-bne",
+		"alexandrainst/da-hatespeech-detection-small",
+		"Helsinki-NLP/opus-mt-bg-en",
+		"CAMeL-Lab/bert-base-arabic-camelbert-ca",
+		"Musixmatch/umberto-commoncrawl-cased-v1",
+                "Helsinki-NLP/opus-mt-en-roa",
+                "Helsinki-NLP/opus-mt-sla-en",
+                "AlexKay/xlm-roberta-large-qa-multilingual-finedtuned-ru",
+                "Helsinki-NLP/opus-mt-gem-en",
+                "Rostlab/prot_bert_bfd_localization"
     ],
     "workspace": "test-southafricanorth",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
