@@ -17,7 +17,7 @@ parser.add_argument("--mode_workflow", type=str, default="api")
 # mode_model parameter to get model status from api or file
 parser.add_argument("--mode_model", type=str, default="file")
 # parameter to get markdown file name
-parser.add_argument("--markdown_file", type=str, default="../../dashboard/HuggingFace/README.md")
+parser.add_argument("--markdown_file", type=str, default="../../dashboard/HuggingFace/testing.md")
 # parameter to get registry name
 parser.add_argument("--registry_name", type=str, default="HuggingFace")
 args = parser.parse_args()
