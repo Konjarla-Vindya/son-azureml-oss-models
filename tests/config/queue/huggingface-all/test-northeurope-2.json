@@ -1,5 +1,5 @@
 {
-    "queue_name": "test-northeurope-1",
+    "queue_name": "test-northeurope-2",
     "models": [
         "Helsinki-NLP/opus-mt-jap-en",
 "Helsinki-NLP/opus-mt-gl-en",
