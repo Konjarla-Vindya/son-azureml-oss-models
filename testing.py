@@ -34,7 +34,7 @@ def get_github_token():
 
 
 def get_github_workflows(token):
-    RUN_API="https://api.github.com/repos/Azure/azureml-oss-models/actions/runs"
+    RUN_API="https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs"
     print (f"Getting github workflows from {RUN_API}")
     
     total_pages = None
