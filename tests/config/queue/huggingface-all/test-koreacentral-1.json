@@ -2,7 +2,8 @@
     "queue_name": "test-koreacentral-1",
     "models": [
                 "EleutherAI/gpt-j-6b",
-		"EleutherAI/gpt-neo-125m"
+		"EleutherAI/gpt-neo-125m",
+	        "Jean-Baptiste/camembert-ner"
 		
     ],
     "workspace": "test-koreacentral",
