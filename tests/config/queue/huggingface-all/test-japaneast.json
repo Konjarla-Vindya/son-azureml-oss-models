@@ -1,16 +1,16 @@
 {
     "queue_name": "test-japaneast",
     "models": [
-        "Helsinki-NLP/opus-mt-ROMANCE-en",
-	"Helsinki-NLP/opus-mt-da-de",
-	"Helsinki-NLP/opus-mt-no-de",
-	"Helsinki-NLP/opus-mt-gmw-gmw",
-	"Helsinki-NLP/opus-mt-hi-en",
-	"Helsinki-NLP/opus-mt-fi-de",
-	"Jean-Baptiste/camembert-ner-with-dates",
-	"Einmalumdiewelt/T5-Base_GNAD",
-	"DeepChem/ChemBERTa-77M-MLM",
-	"Helsinki-NLP/opus-mt-en-nl"
+        "ainize/bart-base-cnn",
+	"Hate-speech-CNERG/bert-base-uncased-hatexplain",
+	"Musixmatch/umberto-wikipedia-uncased-v1",
+	"Helsinki-NLP/opus-mt-ceb-en",
+	"Helsinki-NLP/opus-mt-en-el",
+	"MilaNLProc/feel-it-italian-sentiment",
+	"Hate-speech-CNERG/dehatebert-mono-english",
+	"MonoHime/rubert-base-cased-sentiment-new",
+	"HooshvareLab/bert-fa-base-uncased-sentiment-snappfood",
+	"NbAiLab/nb-bert-base"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
