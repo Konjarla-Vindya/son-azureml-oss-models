@@ -2,10 +2,10 @@
     "queue_name": "test-southafricanorth-0",
     "models": [
                 "Rostlab/prot_bert",
-		            "s-nlp/roberta_toxicity_classifier",
-		            "Rostlab/prot_bert_bfd",
-	            	"apanc/russian-inappropriate-messages",
-		            "IMSyPP/hate_speech_en"
+		"s-nlp/roberta_toxicity_classifier",
+		"Rostlab/prot_bert_bfd",
+	        "apanc/russian-inappropriate-messages",
+		"IMSyPP/hate_speech_en"
                 
     ],
     "workspace": "test-southafricanorth",
