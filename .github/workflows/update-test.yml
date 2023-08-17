@@ -30,19 +30,19 @@ jobs:
         # env:
         #    GITHUB_TOKEN: ${{ secrets.PAT}}
 
-      - name: Update README
-        run: |
-          MARKDOWN_CONTENT="${{ steps.run_python.outputs.stdout }}"
-          sed -i '/<!--START_SECTION:python-output-->/,/<!--END_SECTION:python-output-->/d' test.md
-          echo "<!--START_SECTION:python-output-->" >> test.md
-          echo "$MARKDOWN_CONTENT" >> test.md
-          echo "<!--END_SECTION:python-output-->" >> test.md
-          git config --global user.email "swathipriyarv23@gmail.com"
-          git config --global user.name "Swathi23345"
-          # git config --local user.email "swathipriyarv23@gmail.com"
-          # git config --local user.name "Swathi23345"
-          git commit -am "Update README with Python output" || true
-          git push
+      # - name: Update README
+      #   run: |
+      #     MARKDOWN_CONTENT="${{ steps.run_python.outputs.stdout }}"
+      #     sed -i '/<!--START_SECTION:python-output-->/,/<!--END_SECTION:python-output-->/d' test.md
+      #     echo "<!--START_SECTION:python-output-->" >> test.md
+      #     echo "$MARKDOWN_CONTENT" >> test.md
+      #     echo "<!--END_SECTION:python-output-->" >> test.md
+      #     git config --global user.email "swathipriyarv23@gmail.com"
+      #     git config --global user.name "Swathi23345"
+      #     # git config --local user.email "swathipriyarv23@gmail.com"
+      #     # git config --local user.name "Swathi23345"
+      #     git commit -am "Update README with Python output" || true
+      #     git push
       - name: Update README
         run: |
           MARKDOWN_CONTENT="${{ steps.run_python.outputs.stdout }}"
