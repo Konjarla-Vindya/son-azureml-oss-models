@@ -6,6 +6,7 @@
       "resource_group": "huggingface-registry-test1",
       "secret_name": "AZURE_CREDENTIALS",
       "environment": "automate-venv",
+      "compute": "v-sameep",
       "instance_type": "Standard_D16a_v4"
     }
     
