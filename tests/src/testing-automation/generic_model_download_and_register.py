@@ -22,8 +22,7 @@ import json
 URL = "https://huggingface.co/api/models"
 COLUMNS_TO_READ = ["modelId", "pipeline_tag", "tags"]
 STRING_TO_CHECK = 'transformers'
-AUTOMODEL = "AutoModel"
-FILE_NAME = "rare-model-with-library.json"
+FILE_NAME = "task_and_library.json"
 
 test_model_name = os.environ.get('test_model_name')
 subscription = os.environ.get('subscription')
@@ -35,7 +34,14 @@ class Model:
     def __init__(self, model_name) -> None:
         self.model_name = model_name
 
-    def load_rare_model(self) -> ConfigBox:
+    def get_library_to_load_model(self, task) -> str:
+        """ Takes the task name and load the  json file findout the library 
+        which is applicable for that task and retyrun it 
+        Args:
+            task (str): required the task name 
+        Returns:
+            str: return the library name
+        """
         try:
             with open(FILE_NAME) as f:
                 model_with_library = ConfigBox(json.load(f))
@@ -43,9 +49,9 @@ class Model:
         except Exception as e:
             print(
                 f"::warning:: Could not find scoring_file: {model_with_library}. Finishing without sample scoring: \n{e}")
-        return model_with_library
+        return model_with_library.task
 
-    def get_task_and_sample_data(self) -> pd.DataFrame:
+    def get_task(self) -> str:
         response = urlopen(URL)
         data_json = json.loads(response.read())
         df = pd.DataFrame(data_json, columns=COLUMNS_TO_READ)
@@ -56,9 +62,9 @@ class Model:
         final_data = re.sub(pattern, '', required_data)
         return final_data
 
-    def get_sample_input_data(self):
-        final_data = self.get_task_and_sample_data()
-        task = final_data
+    def get_sample_input_data(self, task):
+        #final_data = self.get_task_and_sample_data()
+        #task = final_data
         print("task:", task)
         scoring_file = f"sample_inputs/{task}.json"
         # check of scoring_file exists
@@ -70,25 +76,22 @@ class Model:
             print(
                 f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
 
-        return scoring_input, task
+        return scoring_input
 
-    def download_model_and_tokenizer(self) -> dict:
-        model_detail = AutoConfig.from_pretrained(self.model_name)
-        res_dict = model_detail.to_dict().get("architectures")
-        if res_dict is not None:
-            model_library_name = res_dict[0]
-        else:
-            rare_model_dict = self.load_rare_model()
-            model_library_name = rare_model_dict.get(self.model_name)
+    def download_model_and_tokenizer(self, task) -> dict:
+        # model_detail = AutoConfig.from_pretrained(self.model_name)
+        # res_dict = model_detail.to_dict().get("architectures")
+        # if res_dict is not None:
+        #     model_library_name = res_dict[0]
+        # else:
+        #     rare_model_dict = self.load_rare_model()
+        #     model_library_name = rare_model_dict.get(self.model_name)
         #model_library_name = model_detail.to_dict()["architectures"][0]
+        model_library_name = self.get_library_to_load_model(task=task)
+        print("Library name is this one : ", model_library_name)
         model_library = getattr(transformers, model_library_name)
         model = model_library.from_pretrained(self.model_name)
         tokenizer = AutoTokenizer.from_pretrained(self.model_name)
-        # config = AutoConfig.from_pretrained(self.model_name)
-        # config_dict = config.to_dict()
-        # task_dict = config_dict["task_specific_params"]
-        # task=list(task_dict.keys())[0]
-
         model_and_tokenizer = {"model": model, "tokenizer": tokenizer}
         return model_and_tokenizer
 
@@ -123,10 +126,14 @@ class Model:
         )
 
     def download_and_register_model(self) -> dict:
-        model_and_tokenizer = self.download_model_and_tokenizer()
-        sample_data, task = self.get_sample_input_data()
+        task = self.get_task()
+        model_and_tokenizer = self.download_model_and_tokenizer(task=task)
+        sample_data, task = self.get_sample_input_data(task=task)
         self.register_model_in_workspace(
-            model_and_tokenizer, sample_data, task)
+            model_and_tokenizer=model_and_tokenizer,
+            sample_data=sample_data,
+            task=task
+        )
         return model_and_tokenizer
 
 
