@@ -1,12 +1,22 @@
 {
     "queue_name": "sonata-test-ws-1",
     "models": [
-        "Helsinki-NLP/opus-mt-sn-en",
-        "NbAiLab/nb-bert-large",
-        "AmazonScience/qanlu",
-        "Helsinki-NLP/opus-mt-eu-es",
-        "Helsinki-NLP/opus-mt-th-fr",
-        "CogComp/bart-faithful-summary-detector"
+        "Helsinki-NLP/opus-mt-ar-es",
+        "SEBIS/code_trans_t5_base_code_documentation_generation_java",
+        "Newtral/xlm-r-finetuned-toxic-political-tweets-es",
+        "HeyLucasLeao/gpt-neo-small-portuguese",
+        "Davlan/naija-twitter-sentiment-afriberta-large",
+        "Hate-speech-CNERG/dehatebert-mono-german",
+        "Geotrend/bert-base-15lang-cased",
+        "EMBEDDIA/litlat-bert",
+        "KoboldAI/fairseq-dense-2.7B-Janeway",
+        "Capreolus/bert-base-msmarco",
+        "Helsinki-NLP/opus-mt-lg-en",
+        "DJSammy/bert-base-danish-uncased_BotXO-ai",
+        "alenusch/rugpt3-paraphraser",
+        "Hate-speech-CNERG/dehatebert-mono-french",
+        "Helsinki-NLP/opus-mt-en-trk",
+        "Xuhui/ToxDect-roberta-large"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

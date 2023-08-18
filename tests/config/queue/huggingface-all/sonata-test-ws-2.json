@@ -1,12 +1,22 @@
 {
     "queue_name": "sonata-test-ws-2",
     "models": [
-        "Helsinki-NLP/opus-mt-mt-en",
-        "T-Systems-onsite/mt5-small-sum-de-en-v2",
-        "Helsinki-NLP/opus-mt-de-fr",
-        "PlanTL-GOB-ES/RoBERTalex",
-        "Elron/bleurt-large-512",
-        "Theivaprakasham/layoutlmv2-finetuned-sroie"
+        "Norod78/hebrew-gpt_neo-xl",
+        "Helsinki-NLP/opus-mt-mg-en",
+        "Tanhim/translation-En2De",
+        "dccuchile/distilbert-base-spanish-uncased",
+        "Maltehb/danish-bert-botxo-ner-dane",
+        "PlanTL-GOB-ES/gpt2-large-bne",
+        "Helsinki-NLP/opus-mt-ru-uk",
+        "Narrativa/mbart-large-50-finetuned-opus-pt-en-translation",
+        "Helsinki-NLP/opus-mt-uk-pl",
+        "EMBEDDIA/finest-bert",
+        "Helsinki-NLP/opus-mt-hy-en",
+        "CAMeL-Lab/bert-base-arabic-camelbert-ca-pos-msa",
+        "Hate-speech-CNERG/dehatebert-mono-spanish",
+        "HooshvareLab/bert-base-parsbert-peymaner-uncased",
+        "SEBIS/code_trans_t5_small_code_documentation_generation_java_multitask_finetune",
+        "MrBananaHuman/kogpt_6b_fp16"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

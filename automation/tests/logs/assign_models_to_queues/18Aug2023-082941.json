@@ -1,0 +1,59 @@
+{
+    "sonata-test-ws": {
+        "0": [
+            "TransQuest/monotransquest-da-en_de-wiki",
+            "KoboldAI/fairseq-dense-355M",
+            "Shahm/bart-german",
+            "GroNLP/gpt2-medium-italian-embeddings",
+            "Andrija/M-bert-NER",
+            "Helsinki-NLP/opus-mt-es-ro",
+            "Helsinki-NLP/opus-mt-ar-ru",
+            "Helsinki-NLP/opus-mt-ru-es",
+            "NLPC-UOM/SinBERT-large",
+            "Kowsher/bangla-bert",
+            "abinayam/gpt-2-tamil",
+            "Helsinki-NLP/opus-tatoeba-en-ja",
+            "algolet/bert-large-chinese",
+            "KoichiYasuoka/xlm-roberta-base-english-upos",
+            "Helsinki-NLP/opus-mt-ka-en",
+            "KoichiYasuoka/roberta-base-japanese-aozora",
+            "Hate-speech-CNERG/dehatebert-mono-italian"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-ar-es",
+            "SEBIS/code_trans_t5_base_code_documentation_generation_java",
+            "Newtral/xlm-r-finetuned-toxic-political-tweets-es",
+            "HeyLucasLeao/gpt-neo-small-portuguese",
+            "Davlan/naija-twitter-sentiment-afriberta-large",
+            "Hate-speech-CNERG/dehatebert-mono-german",
+            "Geotrend/bert-base-15lang-cased",
+            "EMBEDDIA/litlat-bert",
+            "KoboldAI/fairseq-dense-2.7B-Janeway",
+            "Capreolus/bert-base-msmarco",
+            "Helsinki-NLP/opus-mt-lg-en",
+            "DJSammy/bert-base-danish-uncased_BotXO-ai",
+            "alenusch/rugpt3-paraphraser",
+            "Hate-speech-CNERG/dehatebert-mono-french",
+            "Helsinki-NLP/opus-mt-en-trk",
+            "Xuhui/ToxDect-roberta-large"
+        ],
+        "2": [
+            "Norod78/hebrew-gpt_neo-xl",
+            "Helsinki-NLP/opus-mt-mg-en",
+            "Tanhim/translation-En2De",
+            "dccuchile/distilbert-base-spanish-uncased",
+            "Maltehb/danish-bert-botxo-ner-dane",
+            "PlanTL-GOB-ES/gpt2-large-bne",
+            "Helsinki-NLP/opus-mt-ru-uk",
+            "Narrativa/mbart-large-50-finetuned-opus-pt-en-translation",
+            "Helsinki-NLP/opus-mt-uk-pl",
+            "EMBEDDIA/finest-bert",
+            "Helsinki-NLP/opus-mt-hy-en",
+            "CAMeL-Lab/bert-base-arabic-camelbert-ca-pos-msa",
+            "Hate-speech-CNERG/dehatebert-mono-spanish",
+            "HooshvareLab/bert-base-parsbert-peymaner-uncased",
+            "SEBIS/code_trans_t5_small_code_documentation_generation_java_multitask_finetune",
+            "MrBananaHuman/kogpt_6b_fp16"
+        ]
+    }
+}
