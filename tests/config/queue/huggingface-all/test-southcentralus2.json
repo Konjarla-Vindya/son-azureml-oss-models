@@ -5,9 +5,7 @@
             "Helsinki-NLP/opus-mt-gmw-gmw",
 	    "ahmedrachid/FinancialBERT-Sentiment-Analysis",
 	    "HooshvareLab/bert-fa-base-uncased",
-	    "HooshvareLab/bert-fa-base-uncased-sentiment-deepsentipers-binary",
-	    "Helsinki-NLP/opus-mt-jap-en",
-	    "Helsinki-NLP/opus-mt-en-cs"
+	    "HooshvareLab/bert-fa-base-uncased-sentiment-deepsentipers-binary"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
