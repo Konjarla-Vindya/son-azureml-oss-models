@@ -26,8 +26,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--mode", type=str, default="file")
 # registry name if model is in registry
 parser.add_argument("--registry_name", type=str, default="HuggingFace")
-parser.add_argument("--environment", type=str, default="automate-venv")
-parser.add_argument("--compute", type=str, default="Standard-DS3-v2")
+# parser.add_argument("--environment", type=str, default="automate-venv")
+# parser.add_argument("--compute", type=str, default="Standard-DS3-v2")
+
 # argument to specify Github workflow directory. can write to local dir for testing
 # !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
 parser.add_argument("--workflow_dir", type=str, default="../../../.github/workflows")
@@ -99,8 +100,9 @@ def create_queue_files(queue, workspace_list):
             q_dict["subscription"] = workspace_list[workspace]["subscription"]
             q_dict["resource_group"] = workspace_list[workspace]["resource_group"]
             q_dict["registry"] = args.registry_name
-            q_dict["environment"] = args.environment
-            q_dict["compute"] = args.compute
+            q_dict["environment"] = workspace_list[workspace]["environment"]
+            q_dict["compute"] = workspace_list[workspace]["compute"]
+            q_dict["instance_type"] = workspace_list[workspace]["instance_type"]
             print("q_dict",q_dict)
             print("workspace",q_dict["workspace"])
             print("subscription",q_dict["subscription"])   
