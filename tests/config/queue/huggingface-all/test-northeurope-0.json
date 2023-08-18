@@ -1,9 +1,11 @@
 {
     "queue_name": "test-northeurope-0",
     "models": [
-        "Helsinki-NLP/opus-mt-tl-en",
-"KoichiYasuoka/bert-base-japanese-upos",
-"Maltehb/danish-bert-botxo"
+        "SIKU-BERT/sikuroberta",
+        "alexandrainst/da-emotion-classification-base",
+        "TransQuest/monotransquest-da-multilingual",
+        "Helsinki-NLP/opus-mt-sv-fr",
+        "SEBIS/code_trans_t5_large_code_documentation_generation_python_multitask"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

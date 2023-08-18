@@ -1,0 +1,224 @@
+{
+    "sonata-test-ws": {
+        "0": [
+            "alexandrainst/da-sentiment-base",
+            "ahmedrachid/FinancialBERT",
+            "GKLMIP/roberta-hindi-romanized",
+            "IlyaGusev/rut5_base_headline_gen_telegram",
+            "IlyaGusev/rut5_base_sum_gazeta",
+            "Helsinki-NLP/opus-mt-es-it"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-sn-en",
+            "NbAiLab/nb-bert-large",
+            "AmazonScience/qanlu",
+            "Helsinki-NLP/opus-mt-eu-es",
+            "Helsinki-NLP/opus-mt-th-fr",
+            "CogComp/bart-faithful-summary-detector"
+        ],
+        "2": [
+            "Helsinki-NLP/opus-mt-mt-en",
+            "T-Systems-onsite/mt5-small-sum-de-en-v2",
+            "Helsinki-NLP/opus-mt-de-fr",
+            "PlanTL-GOB-ES/RoBERTalex",
+            "Elron/bleurt-large-512",
+            "Theivaprakasham/layoutlmv2-finetuned-sroie"
+        ]
+    },
+    "test-eastus": {
+        "0": [
+            "Hate-speech-CNERG/dehatebert-mono-arabic",
+            "Jean-Baptiste/roberta-ticker",
+            "Helsinki-NLP/opus-mt-es-ar",
+            "CAMeL-Lab/bert-base-arabic-camelbert-da",
+            "HooshvareLab/bert-fa-zwnj-base-ner",
+            "Helsinki-NLP/opus-mt-mr-en"
+        ],
+        "1": [
+            "VietAI/gpt-j-6B-vietnamese-news",
+            "Helsinki-NLP/opus-mt-mk-en",
+            "Helsinki-NLP/opus-mt-de-it",
+            "akahana/indonesia-emotion-roberta",
+            "Helsinki-NLP/opus-mt-sv-nl",
+            "PlanTL-GOB-ES/roberta-large-bne-sqac"
+        ],
+        "2": [
+            "Helsinki-NLP/opus-mt-lv-en",
+            "PlanTL-GOB-ES/roberta-large-bne-capitel-ner",
+            "aware-ai/bart-squadv2",
+            "Helsinki-NLP/opus-mt-xh-en",
+            "TsinghuaAI/CPM-Generate",
+            "HooshvareLab/bert-fa-base-uncased-clf-persiannews"
+        ]
+    },
+    "test-germanywestcentral": {
+        "0": [
+            "Helsinki-NLP/opus-mt-uk-ru",
+            "Lalita/marianmt-th-zh_cn",
+            "Helsinki-NLP/opus-mt-az-en",
+            "Helsinki-NLP/opus-mt-ru-fr",
+            "Helsinki-NLP/opus-mt-ga-en",
+            "PremalMatalia/albert-base-best-squad2"
+        ],
+        "1": [
+            "HooshvareLab/distilbert-fa-zwnj-base-ner",
+            "HooshvareLab/gpt2-fa",
+            "PlanTL-GOB-ES/roberta-base-bne-capitel-ner-plus",
+            "SEBIS/code_trans_t5_large_source_code_summarization_python_multitask_finetune",
+            "HooshvareLab/bert-fa-base-uncased-sentiment-deepsentipers-multi",
+            "Davlan/bert-base-multilingual-cased-masakhaner"
+        ],
+        "2": [
+            "CLTL/MedRoBERTa.nl",
+            "Langboat/mengzi-bert-base",
+            "Elron/bleurt-large-128",
+            "Recognai/distilbert-base-es-multilingual-cased",
+            "KBLab/bert-base-swedish-cased",
+            "Helsinki-NLP/opus-mt-en-bg"
+        ]
+    },
+    "test-japaneast": {
+        "0": [
+            "CAMeL-Lab/bert-base-arabic-camelbert-msa-did-madar-twitter5",
+            "Helsinki-NLP/opus-tatoeba-en-tr",
+            "Luyu/co-condenser-wiki",
+            "SajjadAyoubi/bert-base-fa-qa",
+            "Helsinki-NLP/opus-mt-ts-en",
+            "Rajan/NepaliBERT"
+        ],
+        "1": [
+            "TurkuNLP/bert-base-finnish-uncased-v1",
+            "Li/bert-base-uncased-qnli",
+            "CAMeL-Lab/bert-base-arabic-camelbert-msa",
+            "LorenzoDeMattei/GePpeTto",
+            "Helsinki-NLP/opus-mt-ine-ine",
+            "Davlan/bert-base-multilingual-cased-finetuned-swahili"
+        ],
+        "2": [
+            "HooshvareLab/albert-fa-zwnj-base-v2",
+            "Helsinki-NLP/opus-mt-de-es",
+            "Helsinki-NLP/opus-mt-en-ur",
+            "SIC98/GPT2-python-code-generator",
+            "CouchCat/ma_ner_v7_distil",
+            "alexyalunin/RuBioRoBERTa"
+        ]
+    },
+    "test-koreacentral": {
+        "0": [
+            "Callidior/bert2bert-base-arxiv-titlegen",
+            "HooshvareLab/roberta-fa-zwnj-base",
+            "Lowin/chinese-bigbird-wwm-base-4096",
+            "Helsinki-NLP/opus-mt-es-de",
+            "Helsinki-NLP/opus-mt-war-en",
+            "Helsinki-NLP/opus-mt-es-ru"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-en-tl",
+            "IlyaGusev/rubertconv_toxic_clf",
+            "akhooli/gpt2-small-arabic",
+            "Helsinki-NLP/opus-mt-de-ZH",
+            "Helsinki-NLP/opus-mt-no-sv",
+            "Helsinki-NLP/opus-mt-es-ca"
+        ],
+        "2": [
+            "TODBERT/TOD-BERT-JNT-V1",
+            "UBC-NLP/ARBERT",
+            "ainize/klue-bert-base-mrc",
+            "DTAI-KULeuven/robbertje-1-gb-non-shuffled",
+            "Helsinki-NLP/opus-mt-yo-en",
+            "Helsinki-NLP/opus-mt-zh-de"
+        ]
+    },
+    "test-northcentralus": {
+        "0": [
+            "PlanTL-GOB-ES/roberta-base-biomedical-clinical-es",
+            "alexandrainst/da-binary-emotion-classification-base",
+            "PlanTL-GOB-ES/gpt2-base-bne",
+            "IlyaGusev/rubert_telegram_headlines",
+            "Helsinki-NLP/opus-mt-es-eu"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-en-ca",
+            "Helsinki-NLP/opus-mt-grk-en",
+            "Helsinki-NLP/opus-mt-en-gl",
+            "PlanTL-GOB-ES/roberta-base-bne-sqac",
+            "CAMeL-Lab/bert-base-arabic-camelbert-mix-sentiment"
+        ],
+        "2": [
+            "Helsinki-NLP/opus-mt-tn-en",
+            "alexandrainst/da-subjectivivity-classification-base",
+            "SEBIS/code_trans_t5_base_code_documentation_generation_java_multitask",
+            "Helsinki-NLP/opus-mt-fr-ru",
+            "Huffon/klue-roberta-base-nli"
+        ]
+    },
+    "test-northeurope": {
+        "0": [
+            "SIKU-BERT/sikuroberta",
+            "alexandrainst/da-emotion-classification-base",
+            "TransQuest/monotransquest-da-multilingual",
+            "Helsinki-NLP/opus-mt-sv-fr",
+            "SEBIS/code_trans_t5_large_code_documentation_generation_python_multitask"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-is-en",
+            "Helsinki-NLP/opus-mt-en-vi",
+            "Sahajtomar/German-question-answer-Electra",
+            "Helsinki-NLP/opus-mt-sv-no",
+            "Elron/bleurt-base-512"
+        ],
+        "2": [
+            "SI2M-Lab/DarijaBERT",
+            "GroNLP/gpt2-small-italian",
+            "Qishuai/distilbert_punctuator_en",
+            "Tejas3/distillbert_base_uncased_80_equal",
+            "alger-ia/dziribert"
+        ]
+    },
+    "test-norwayeast": {
+        "0": [
+            "Helsinki-NLP/opus-mt-cy-en",
+            "DeepChem/ChemBERTa-10M-MLM",
+            "PlanTL-GOB-ES/roberta-base-bne-capitel-pos",
+            "HooshvareLab/bert-fa-base-uncased-sentiment-digikala",
+            "s-nlp/xlmr_formality_classifier"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-en-eu",
+            "Helsinki-NLP/opus-mt-en-sla",
+            "aXhyra/presentation_irony_1234567",
+            "akhooli/xlm-r-large-arabic-sent",
+            "EMBEDDIA/crosloengual-bert"
+        ],
+        "2": [
+            "Langboat/mengzi-bert-base-fin",
+            "alexandrainst/da-hatespeech-detection-base",
+            "Narrativaai/fake-news-detection-spanish",
+            "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
+            "KoboldAI/fairseq-dense-125M"
+        ]
+    },
+    "test-southafricanorth": {
+        "0": [
+            "Helsinki-NLP/opus-mt-it-de",
+            "GKLMIP/roberta-hindi-devanagari",
+            "GKLMIP/bert-tagalog-base-uncased",
+            "Helsinki-NLP/opus-mt-sv-es",
+            "THUMT/mGPT"
+        ],
+        "1": [
+            "DeepESP/gpt2-spanish",
+            "Helsinki-NLP/opus-mt-fr-es",
+            "SEBIS/code_trans_t5_large_code_documentation_generation_java_transfer_learning_finetune",
+            "Norod78/hebrew-gpt_neo-small",
+            "KoichiYasuoka/roberta-classical-chinese-large-char"
+        ],
+        "2": [
+            "Lalita/marianmt-zh_cn-th",
+            "Helsinki-NLP/opus-mt-st-en",
+            "Hate-speech-CNERG/bert-base-uncased-hatexplain-rationale-two",
+            "Helsinki-NLP/opus-mt-ca-es",
+            "VictorSanh/roberta-base-finetuned-yelp-polarity"
+        ]
+    }
+}

@@ -1,11 +1,16 @@
 {
     "queue_name": "test-eastus-0",
     "models": [
-        "xlm-roberta-large"
+        "Hate-speech-CNERG/dehatebert-mono-arabic",
+        "Jean-Baptiste/roberta-ticker",
+        "Helsinki-NLP/opus-mt-es-ar",
+        "CAMeL-Lab/bert-base-arabic-camelbert-da",
+        "HooshvareLab/bert-fa-zwnj-base-ner",
+        "Helsinki-NLP/opus-mt-mr-en"
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
-    "resource_group": "AzureMLHuggingFaceRegistry1",
+    "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
     "compute": "Standard-DS3-v2"

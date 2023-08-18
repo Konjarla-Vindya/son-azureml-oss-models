@@ -1,0 +1,17 @@
+{
+    "queue_name": "test-japaneast-0",
+    "models": [
+        "CAMeL-Lab/bert-base-arabic-camelbert-msa-did-madar-twitter5",
+        "Helsinki-NLP/opus-tatoeba-en-tr",
+        "Luyu/co-condenser-wiki",
+        "SajjadAyoubi/bert-base-fa-qa",
+        "Helsinki-NLP/opus-mt-ts-en",
+        "Rajan/NepaliBERT"
+    ],
+    "workspace": "test-japaneast",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-DS3-v2"
+}

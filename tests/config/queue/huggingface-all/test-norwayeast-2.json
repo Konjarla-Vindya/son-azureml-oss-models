@@ -1,0 +1,16 @@
+{
+    "queue_name": "test-norwayeast-2",
+    "models": [
+        "Langboat/mengzi-bert-base-fin",
+        "alexandrainst/da-hatespeech-detection-base",
+        "Narrativaai/fake-news-detection-spanish",
+        "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
+        "KoboldAI/fairseq-dense-125M"
+    ],
+    "workspace": "test-norwayeast",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-DS3-v2"
+}

@@ -1,15 +1,17 @@
 {
     "queue_name": "test-koreacentral-1",
     "models": [
-                "EleutherAI/gpt-j-6b",
-		"EleutherAI/gpt-neo-125m",
-	        "Jean-Baptiste/camembert-ner"
-		
+        "Helsinki-NLP/opus-mt-en-tl",
+        "IlyaGusev/rubertconv_toxic_clf",
+        "akhooli/gpt2-small-arabic",
+        "Helsinki-NLP/opus-mt-de-ZH",
+        "Helsinki-NLP/opus-mt-no-sv",
+        "Helsinki-NLP/opus-mt-es-ca"
     ],
     "workspace": "test-koreacentral",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-A8m-v2"
+    "compute": "Standard-DS3-v2"
 }

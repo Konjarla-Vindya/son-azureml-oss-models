@@ -1,10 +1,11 @@
 {
     "queue_name": "test-northeurope-1",
     "models": [
-        "Meli/GPT2-Prompt",
-"TehranNLP-org/bert-base-uncased-avg-mnli",
-"Helsinki-NLP/opus-mt-en-sv",
-"Hate-speech-CNERG/dehatebert-mono-indonesian"
+        "Helsinki-NLP/opus-mt-is-en",
+        "Helsinki-NLP/opus-mt-en-vi",
+        "Sahajtomar/German-question-answer-Electra",
+        "Helsinki-NLP/opus-mt-sv-no",
+        "Elron/bleurt-base-512"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

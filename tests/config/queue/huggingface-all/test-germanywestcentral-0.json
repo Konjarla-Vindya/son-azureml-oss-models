@@ -1,0 +1,17 @@
+{
+    "queue_name": "test-germanywestcentral-0",
+    "models": [
+        "Helsinki-NLP/opus-mt-uk-ru",
+        "Lalita/marianmt-th-zh_cn",
+        "Helsinki-NLP/opus-mt-az-en",
+        "Helsinki-NLP/opus-mt-ru-fr",
+        "Helsinki-NLP/opus-mt-ga-en",
+        "PremalMatalia/albert-base-best-squad2"
+    ],
+    "workspace": "test-germanywestcentral",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-DS3-v2"
+}

@@ -1,17 +1,17 @@
 {
     "queue_name": "sonata-test-ws-2",
     "models": [
-        "Luyu/condenser",
-        "KoboldAI/fairseq-dense-13B",
-        "StevenLimcorn/indonesian-roberta-base-emotion-classifier",
-        "Helsinki-NLP/opus-mt-af-en",
-        "MKaan/multilingual-cpv-sector-classifier",
-        "IlyaGusev/rubert_ext_sum_gazeta"
+        "Helsinki-NLP/opus-mt-mt-en",
+        "T-Systems-onsite/mt5-small-sum-de-en-v2",
+        "Helsinki-NLP/opus-mt-de-fr",
+        "PlanTL-GOB-ES/RoBERTalex",
+        "Elron/bleurt-large-512",
+        "Theivaprakasham/layoutlmv2-finetuned-sroie"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "sonata-test-rg",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-NC6S-v3"
+    "compute": "Standard-DS3-v2"
 }

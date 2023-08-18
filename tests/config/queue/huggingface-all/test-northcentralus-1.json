@@ -1,0 +1,16 @@
+{
+    "queue_name": "test-northcentralus-1",
+    "models": [
+        "Helsinki-NLP/opus-mt-en-ca",
+        "Helsinki-NLP/opus-mt-grk-en",
+        "Helsinki-NLP/opus-mt-en-gl",
+        "PlanTL-GOB-ES/roberta-base-bne-sqac",
+        "CAMeL-Lab/bert-base-arabic-camelbert-mix-sentiment"
+    ],
+    "workspace": "test-northcentralus",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-DS3-v2"
+}

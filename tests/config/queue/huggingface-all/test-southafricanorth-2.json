@@ -1,0 +1,16 @@
+{
+    "queue_name": "test-southafricanorth-2",
+    "models": [
+        "Lalita/marianmt-zh_cn-th",
+        "Helsinki-NLP/opus-mt-st-en",
+        "Hate-speech-CNERG/bert-base-uncased-hatexplain-rationale-two",
+        "Helsinki-NLP/opus-mt-ca-es",
+        "VictorSanh/roberta-base-finetuned-yelp-polarity"
+    ],
+    "workspace": "test-southafricanorth",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-DS3-v2"
+}
