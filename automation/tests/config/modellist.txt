@@ -15,4 +15,3 @@ KoboldAI/fairseq-dense-6.7B
 DeepPavlov/xlm-roberta-large-en-ru-mnli
 CAMeL-Lab/bert-base-arabic-camelbert-ca-pos-egy
 HooshvareLab/distilbert-fa-zwnj-base
-PlanTL-GOB-ES/roberta-base-biomedical-es
