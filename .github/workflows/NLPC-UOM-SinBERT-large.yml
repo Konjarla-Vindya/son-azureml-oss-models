@@ -6,7 +6,7 @@ on:
 env:
   test_model_name: NLPC-UOM/SinBERT-large
   test_sku_type: cpu
-  test_trigger_next_model: true
+  test_trigger_next_model: false
   test_queue: sonata-test-ws-0
   test_set: huggingface-all
   test_keep_looping: false
