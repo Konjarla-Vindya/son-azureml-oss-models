@@ -34,7 +34,7 @@ class Model:
     def __init__(self, model_name) -> None:
         self.model_name = model_name
 
-    def get_library_to_load_model(self, task) -> str:
+    def get_library_to_load_model(self, task:str) -> str:
         """ Takes the task name and load the  json file findout the library 
         which is applicable for that task and retyrun it 
 
@@ -113,7 +113,7 @@ class Model:
         #     rare_model_dict = self.load_rare_model()
         #     model_library_name = rare_model_dict.get(self.model_name)
         #model_library_name = model_detail.to_dict()["architectures"][0]
-        
+
         # Get the library name from this method from which we will load the model
         model_library_name = self.get_library_to_load_model(task=task)
         print("Library name is this one : ", model_library_name)
