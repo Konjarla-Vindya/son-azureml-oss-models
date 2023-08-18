@@ -71,7 +71,7 @@ class dashboard():
         for row in summary:
             summary_text += row + "\n"
 
-        with open("testing2.md", "w", encoding="utf-8") as f:
+        with open("testing.md", "w", encoding="utf-8") as f:
             f.write(summary_text)
             f.write(os.linesep)
             f.write(os.linesep)
