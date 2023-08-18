@@ -16,5 +16,6 @@
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "ctrl-compute"
+    "compute": "ctrl-compute",
+    "instance_type": "Standard_D8a_v4"
   }

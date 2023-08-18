@@ -180,7 +180,8 @@ if __name__ == "__main__":
         workspace_name=queue.workspace
     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
-    compute_target = create_or_get_compute_target(workspace_ml_client, queue.compute)
+    compute_target = create_or_get_compute_target(
+        workspace_ml_client, queue.compute)
     environment_variables = {"test_model_name": test_model_name,
                              "subscription": queue.subscription,
                              "resource_group": queue.resource_group,
@@ -228,7 +229,9 @@ if __name__ == "__main__":
         registry_ml_client=workspace_ml_client,
         registry=queue.registry
     )
-    InferenceAndDeployment.model_infernce_and_deployment()
+    InferenceAndDeployment.model_infernce_and_deployment(
+        instance_type=queue.instance_type
+    )
 
     # model = Model(model_name=test_model_name, queue=queue)
     # model_and_tokenizer = model.download_and_register_model(workspace=ws)

@@ -118,7 +118,7 @@ class ModelInferenceAndDeployemnt:
         self.workspace_ml_client.begin_create_or_update(endpoint).result()
         return model_package
 
-    def create_online_deployment(self, latest_model, online_endpoint_name, model_package):
+    def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type):
         print("In create_online_deployment...")
         # demo_deployment = ManagedOnlineDeployment(
         #     name="demo",
@@ -168,7 +168,7 @@ class ModelInferenceAndDeployemnt:
             model=latest_model,
             endpoint_name=online_endpoint_name,
             environment=model_package,
-            instance_type="Standard_D8a_v4",
+            instance_type=instance_type,
             instance_count=1
         )
         deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(
@@ -210,7 +210,7 @@ class ModelInferenceAndDeployemnt:
         output = loaded_model(scoring_input.inputs)
         print("My outupt is this : ", output)
 
-    def model_infernce_and_deployment(self):
+    def model_infernce_and_deployment(self, instance_type):
         model_name = self.test_model_name.replace("/", "-")
         # if len(self.test_model_name) > 22:
         #     model_name = self.test_model_name.replace("/", "-")[:22]
@@ -238,7 +238,9 @@ class ModelInferenceAndDeployemnt:
         self.create_online_deployment(
             latest_model=latest_model,
             online_endpoint_name=online_endpoint_name,
-            model_package=model_package)
+            model_package=model_package,
+            instance_type=instance_type
+        )
         self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
         # endpoint = ManagedOnlineEndpoint(
         #     name=online_endpoint_name,
