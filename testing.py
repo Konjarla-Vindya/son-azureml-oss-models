@@ -6,7 +6,7 @@ from github import Github, Auth
 
 class dashboard():
     def __init__(self): 
-        self.github_token = secrets.GITHUB_TOKEN
+        self.github_token = os.environ["GIT_TOKEN"]
         
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
@@ -26,7 +26,7 @@ class dashboard():
         for workflow in workflows:
             workflow_name = workflow.name.replace(".github/workflows/", "")
             
-            if workflow_name == "getruns.yml":
+            if workflow_name == "testing.yml":
                 continue
             
             try:
