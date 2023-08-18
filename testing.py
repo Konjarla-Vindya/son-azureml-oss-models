@@ -1,48 +1,57 @@
-import github,requests,os,pandas
-from github import Github,Auth
+import github
+import requests
+import os
+import pandas
+from github import Github, Auth
 
-class dashboard():
+class Dashboard():
     def __init__(self): 
         self.github_token = os.environ["GIT_TOKEN"]
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
 
-        self.repo =self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
+        self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
         self.repo_full_name = self.repo.full_name
-        self.dict = {"workflow_id":[],"workflow_name":[],"last_runid":[],"created_at":[],"updated_at":[],"status":[],"conclusion":[], "badge":[]}
+        self.dict = {"workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [], "updated_at": [], "status": [], "conclusion": [], "badge": []}
         
         self.workflow_path = ".github/workflows/"
 
     def workflow_last_run(self):
         workflows = self.repo.get_workflows()
-        headers = { "Authorization": f"Bearer {self.github_token}",
-                    "X-GitHub-Api-Version": "2022-11-28",
-                    "Accept": "application/vnd.github+json"}
-        for workflow in workflows:           
-            workflow_name = workflow.name.replace(".github/workflows/","")
+        headers = {"Authorization": f"Bearer {self.github_token}",
+                   "X-GitHub-Api-Version": "2022-11-28",
+                   "Accept": "application/vnd.github+json"}
+        
+        for workflow in workflows:
+            workflow_name = workflow.name.replace(".github/workflows/", "")
+            
             if workflow_name == "getruns.yml":
                 continue
-            response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name,workflow_name), headers = headers)
             
-            if response.status_code == 200:
+            try:
+                response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name, workflow_name), headers=headers)
+                response.raise_for_status()  # Raise an error if the response status code is not successful
+                
                 runs = response.json()
                 lastrun = runs["workflow_runs"][0]
-                self.workflow_name_ext=lastrun["name"].replace(self.workflow_path,"")
-                self.badgeurl = "https://github.com/{}/actions/workflows/{}/badge.svg".format(self.repo_full_name,self.workflow_name_ext)
+                self.workflow_name_ext = lastrun["name"].replace(self.workflow_path, "")
+                self.badgeurl = "https://github.com/{}/actions/workflows/{}/badge.svg".format(self.repo_full_name, self.workflow_name_ext)
 
                 self.dict["workflow_id"].append(lastrun["workflow_id"])
-                self.dict["workflow_name"].append(self.workflow_name_ext.replace(".yml",""))
+                self.dict["workflow_name"].append(self.workflow_name_ext.replace(".yml", ""))
                 self.dict["last_runid"].append(lastrun["id"])
                 self.dict["created_at"].append(lastrun["created_at"])
                 self.dict["updated_at"].append(lastrun["updated_at"])
                 self.dict["status"].append(lastrun["status"])
                 self.dict["conclusion"].append(lastrun["conclusion"])
-                self.dict["badge"].append("[![{}]({})]({})".format(self.workflow_name_ext,self.badgeurl,self.badgeurl.replace("/badge.svg","") ))
+                self.dict["badge"].append("[![{}]({})]({})".format(self.workflow_name_ext, self.badgeurl, self.badgeurl.replace("/badge.svg", "")))
 
-            else:
-                raise Exception("Failed to get latest run id: {}".format(response.status_code))
-             
+            except requests.exceptions.RequestException as e:
+                print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
+
         return self.dict
+
+
 
     def results(self,last_runs_dict):
         results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0, "not_tested": 0, "total_duration": 0}
