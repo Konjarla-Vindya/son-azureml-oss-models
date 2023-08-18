@@ -27,7 +27,7 @@ parser.add_argument("--mode", type=str, default="file")
 # registry name if model is in registry
 parser.add_argument("--registry_name", type=str, default="HuggingFace")
 parser.add_argument("--environment", type=str, default="automate-venv")
-parser.add_argument("--compute", type=str, default="v-sameep")
+parser.add_argument("--compute", type=str, default="Standard-DS3-v2")
 # argument to specify Github workflow directory. can write to local dir for testing
 # !!! main workflow files will be overwritten if set to "../../.github/workflows" !!!
 parser.add_argument("--workflow_dir", type=str, default="../../../.github/workflows")
