@@ -4,7 +4,7 @@ import os
 import pandas
 from github import Github, Auth
 
-class Dashboard():
+class dashboard():
     def __init__(self): 
         self.github_token = os.environ["GITHUB_TOKEN"]
         self.token = Auth.Token(self.github_token)
