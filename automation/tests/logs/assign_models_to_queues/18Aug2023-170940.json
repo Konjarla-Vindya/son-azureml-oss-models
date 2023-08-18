@@ -1,0 +1,27 @@
+{
+    "test-japanwest": {
+        "0": [
+            "abhishek/autonlp-bbc-news-classification-37229289",
+            "Luciano/bertimbau-large-lener_br",
+            "CAUKiel/JavaBERT",
+            "HamidRezaAttar/gpt2-product-description-generator",
+            "NLP4H/ms_bert",
+            "CAMeL-Lab/bert-base-arabic-camelbert-ca-pos-egy"
+        ],
+        "1": [
+            "HooshvareLab/albert-fa-zwnj-base-v2-ner",
+            "IlyaGusev/rugpt3medium_sum_gazeta",
+            "ainize/gpt2-spongebob-script-large",
+            "Davlan/xlm-roberta-base-finetuned-swahili",
+            "KoboldAI/fairseq-dense-6.7B",
+            "HooshvareLab/distilbert-fa-zwnj-base"
+        ],
+        "2": [
+            "Cedille/fr-boris",
+            "Helsinki-NLP/opus-mt-it-es",
+            "TransQuest/monotransquest-da-en_any",
+            "Helsinki-NLP/opus-mt-en-mr",
+            "DeepPavlov/xlm-roberta-large-en-ru-mnli"
+        ]
+    }
+}
