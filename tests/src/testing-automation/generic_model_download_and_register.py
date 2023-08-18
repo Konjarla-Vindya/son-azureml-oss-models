@@ -49,7 +49,7 @@ class Model:
         except Exception as e:
             print(
                 f"::warning:: Could not find scoring_file: {model_with_library}. Finishing without sample scoring: \n{e}")
-        return model_with_library.task
+        return model_with_library.get(task)
 
     def get_task(self) -> str:
         response = urlopen(URL)
