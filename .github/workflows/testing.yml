@@ -1,6 +1,6 @@
 on: workflow_dispatch
 jobs:
-  getruns:
+  testing:
     runs-on: ubuntu-latest
 
     env:
