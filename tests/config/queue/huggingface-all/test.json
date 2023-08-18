@@ -1,21 +1,21 @@
 {
     "queue_name": "test-northeurope",
     "models":[
-      "xlm-roberta-large-finetuned-conll03-english",
-      "Rostlab/prot_bert_bfd_ss3",
-      "EleutherAI/gpt-neo-125m"
+      "xlm-roberta-large-finetuned-conll03-english"
     ],
     "models-1": [
       "ctrl",
+      "Rostlab/prot_bert_bfd_ss3",
+      "EleutherAI/gpt-neo-125m",
       "bert-large-cased-whole-word-masking-finetuned-squad",
       "Helsinki-NLP/opus-mt-en-roa",
       "ProsusAI/finbert"
     ],
-    "workspace": "test-northeurope",
+    "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
-    "resource_group": "huggingface-registry-test1",
+    "resource_group": "sonata-test-rg",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "ctrl-compute",
-    "instance_type": "Standard_D8a_v4"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16as_v4"
   }
