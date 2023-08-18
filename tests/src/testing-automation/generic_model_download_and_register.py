@@ -65,7 +65,6 @@ class Model:
     def get_sample_input_data(self, task):
         #final_data = self.get_task_and_sample_data()
         #task = final_data
-        print("task:", task)
         scoring_file = f"sample_inputs/{task}.json"
         # check of scoring_file exists
         try:
@@ -127,8 +126,9 @@ class Model:
 
     def download_and_register_model(self) -> dict:
         task = self.get_task()
+        print("This is the task associated to the model : ", task)
         model_and_tokenizer = self.download_model_and_tokenizer(task=task)
-        sample_data, task = self.get_sample_input_data(task=task)
+        sample_data = self.get_sample_input_data(task=task)
         self.register_model_in_workspace(
             model_and_tokenizer=model_and_tokenizer,
             sample_data=sample_data,
