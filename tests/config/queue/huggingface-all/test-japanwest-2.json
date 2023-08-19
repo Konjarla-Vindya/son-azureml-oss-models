@@ -1,11 +1,17 @@
 {
     "queue_name": "test-japanwest-2",
     "models": [
-        "Cedille/fr-boris",
-        "Helsinki-NLP/opus-mt-it-es",
-        "TransQuest/monotransquest-da-en_any",
-        "Helsinki-NLP/opus-mt-en-mr",
-        "DeepPavlov/xlm-roberta-large-en-ru-mnli"
+        "Helsinki-NLP/opus-mt-en-sw",
+        "Helsinki-NLP/opus-mt-itc-itc",
+        "Helsinki-NLP/opus-mt-pl-fr",
+        "Hate-speech-CNERG/dehatebert-mono-portugese",
+        "SEBIS/code_trans_t5_large_code_documentation_generation_javascript_transfer_learning_finetune",
+        "KBLab/bert-base-swedish-cased-new",
+        "Geotrend/distilbert-base-en-th-cased",
+        "Helsinki-NLP/opus-mt-pl-de",
+        "Helsinki-NLP/opus-mt-ar-fr",
+        "DeepChem/ChemBERTa-5M-MLM",
+        "Helsinki-NLP/opus-mt-ar-de"
     ],
     "workspace": "test-japanwest",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

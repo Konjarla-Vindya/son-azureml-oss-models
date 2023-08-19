@@ -1,12 +1,17 @@
 {
     "queue_name": "test-japanwest-1",
     "models": [
-        "HooshvareLab/albert-fa-zwnj-base-v2-ner",
-        "IlyaGusev/rugpt3medium_sum_gazeta",
-        "ainize/gpt2-spongebob-script-large",
-        "Davlan/xlm-roberta-base-finetuned-swahili",
-        "KoboldAI/fairseq-dense-6.7B",
-        "HooshvareLab/distilbert-fa-zwnj-base"
+        "MarcBrun/ixambert-finetuned-squad-eu-en",
+        "Shushant/nepaliBERT",
+        "akhooli/xlm-r-large-arabic-toxic",
+        "Helsinki-NLP/opus-mt-es-fi",
+        "CAMeL-Lab/bert-base-arabic-camelbert-msa-sentiment",
+        "Davlan/xlm-roberta-base-wikiann-ner",
+        "Ghana-NLP/distilabena-base-v2-asante-twi-uncased",
+        "Helsinki-NLP/opus-mt-ht-en",
+        "KoboldAI/fairseq-dense-1.3B",
+        "Intel/bert-base-uncased-sparse-85-unstructured-pruneofa",
+        "Helsinki-NLP/opus-mt-ca-pt"
     ],
     "workspace": "test-japanwest",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

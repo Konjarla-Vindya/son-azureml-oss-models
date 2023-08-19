@@ -1,12 +1,18 @@
 {
     "queue_name": "test-japanwest-0",
     "models": [
-        "abhishek/autonlp-bbc-news-classification-37229289",
-        "Luciano/bertimbau-large-lener_br",
-        "CAUKiel/JavaBERT",
-        "HamidRezaAttar/gpt2-product-description-generator",
-        "NLP4H/ms_bert",
-        "CAMeL-Lab/bert-base-arabic-camelbert-ca-pos-egy"
+        "PlanTL-GOB-ES/roberta-base-biomedical-es",
+        "Helsinki-NLP/opus-mt-fr-ca",
+        "Helsinki-NLP/opus-mt-ca-fr",
+        "XSY/albert-base-v2-fakenews-discriminator",
+        "Alireza1044/albert-base-v2-cola",
+        "Soonhwan-Kwon/xlm-roberta-xlarge",
+        "NbAiLab/nb-gpt-j-6B",
+        "Helsinki-NLP/opus-mt-sv-ru",
+        "IlyaGusev/rubertconv_toxic_editor",
+        "CAMeL-Lab/bert-base-arabic-camelbert-ca-ner",
+        "Ivo/emscad-skill-extraction-conference",
+        "akdeniz27/roberta-large-cuad"
     ],
     "workspace": "test-japanwest",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
