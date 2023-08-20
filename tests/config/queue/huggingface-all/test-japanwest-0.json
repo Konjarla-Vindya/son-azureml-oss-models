@@ -20,7 +20,9 @@
         "NYTK/text-generation-news-gpt2-small-hungarian",
         "Helsinki-NLP/opus-mt-afa-afa",
         "Helsinki-NLP/opus-mt-vi-fr",
-        "SEBIS/code_trans_t5_base_source_code_summarization_csharp"
+        "SEBIS/code_trans_t5_base_source_code_summarization_csharp",
+        "SparkBeyond/roberta-large-sts-b",
+        "Helsinki-NLP/opus-mt-da-ru"
     ],
     "workspace": "test-japanwest",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

@@ -20,7 +20,9 @@
         "BSC-LT/roberta-base-bne-capitel-ner",
         "Helsinki-NLP/opus-mt-af-sv",
         "Helsinki-NLP/opus-mt-ro-sv",
-        "addy88/programming-lang-identifier"
+        "addy88/programming-lang-identifier",
+        "SEBIS/code_trans_t5_small_source_code_summarization_python",
+        "Helsinki-NLP/opus-mt-en-bat"
     ],
     "workspace": "test-japanwest",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
