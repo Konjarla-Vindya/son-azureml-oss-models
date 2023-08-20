@@ -66,4 +66,3 @@ Helsinki-NLP/opus-mt-en-bat
 Helsinki-NLP/opus-mt-ru-et
 RabotaRu/HRBert-mini
 Geotrend/bert-base-en-fr-cased
-JuliusAlphonso/distilbert-plutchik
