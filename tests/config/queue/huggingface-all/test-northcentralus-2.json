@@ -1,16 +1,24 @@
 {
     "queue_name": "test-northcentralus-2",
     "models": [
-        "Helsinki-NLP/opus-mt-tn-en",
-        "alexandrainst/da-subjectivivity-classification-base",
-        "SEBIS/code_trans_t5_base_code_documentation_generation_java_multitask",
-        "Helsinki-NLP/opus-mt-fr-ru",
-        "Huffon/klue-roberta-base-nli"
+        "MYX4567/distilgpt2-finetuned-wikitext2",
+        "Helsinki-NLP/opus-mt-uk-fr",
+        "Helsinki-NLP/opus-mt-de-hr",
+        "Helsinki-NLP/opus-mt-sm-en",
+        "NovelAI/genji-jp",
+        "EMBO/bio-lm",
+        "Helsinki-NLP/opus-mt-uk-de",
+        "Helsinki-NLP/opus-mt-ja-vi",
+        "Helsinki-NLP/opus-mt-fi-es",
+        "Geotrend/distilbert-base-uk-cased",
+        "Helsinki-NLP/opus-mt-sl-ru",
+        "Helsinki-NLP/opus-mt-da-no"
     ],
     "workspace": "test-northcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-DS3-v2"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }

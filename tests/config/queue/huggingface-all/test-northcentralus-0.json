@@ -1,16 +1,25 @@
 {
     "queue_name": "test-northcentralus-0",
     "models": [
-        "PlanTL-GOB-ES/roberta-base-biomedical-clinical-es",
-        "alexandrainst/da-binary-emotion-classification-base",
-        "PlanTL-GOB-ES/gpt2-base-bne",
-        "IlyaGusev/rubert_telegram_headlines",
-        "Helsinki-NLP/opus-mt-es-eu"
+        "SetFit/distilbert-base-uncased__enron_spam__all-train",
+        "DTAI-KULeuven/robbertje-1-gb-shuffled",
+        "ARTeLab/mbart-summarization-mlsum",
+        "HooshvareLab/bert-fa-base-uncased-ner-peyma",
+        "s-nlp/gpt2-base-gedi-detoxification",
+        "Palak/microsoft_deberta-base_squad",
+        "airesearch/wangchanberta-base-wiki-20210520-spm-finetune-qa",
+        "Ruizhou/bert-base-uncased-finetuned-rte",
+        "TypicaAI/magbert-ner",
+        "Helsinki-NLP/opus-mt-pt-tl",
+        "Helsinki-NLP/opus-tatoeba-fr-it",
+        "NovelAI/genji-python-6B",
+        "AdapterHub/bert-base-uncased-pf-emotion"
     ],
     "workspace": "test-northcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "standard-D16d-v4"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }
