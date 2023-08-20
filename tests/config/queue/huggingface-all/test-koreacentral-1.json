@@ -1,17 +1,24 @@
 {
     "queue_name": "test-koreacentral-1",
     "models": [
-        "Helsinki-NLP/opus-mt-en-tl",
-        "IlyaGusev/rubertconv_toxic_clf",
-        "akhooli/gpt2-small-arabic",
-        "Helsinki-NLP/opus-mt-de-ZH",
-        "Helsinki-NLP/opus-mt-no-sv",
-        "Helsinki-NLP/opus-mt-es-ca"
+        "alexandrainst/da-hatespeech-classification-base",
+        "algoprog/mimics-tagging-roberta-base",
+        "Helsinki-NLP/opus-mt-pt-uk",
+        "ForutanRad/bert-fa-QA-v1",
+        "SEBIS/code_trans_t5_large_source_code_summarization_csharp_multitask_finetune",
+        "Helsinki-NLP/opus-mt-ja-es",
+        "addy88/gpt-j-8bit",
+        "ARTeLab/it5-summarization-fanpage",
+        "Helsinki-NLP/opus-mt-fi-fr",
+        "Helsinki-NLP/opus-mt-en-gem",
+        "Helsinki-NLP/opus-mt-zls-en",
+        "CAMeL-Lab/bert-base-arabic-camelbert-mix-did-madar-corpus6"
     ],
     "workspace": "test-koreacentral",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-A8m-v2"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }

@@ -1,0 +1,47 @@
+{
+    "test-koreacentral": {
+        "0": [
+            "CodeNinja1126/xlm-roberta-large-kor-mrc",
+            "Milos/slovak-gpt-j-1.4B",
+            "StevenLimcorn/indo-roberta-indonli",
+            "IlyaGusev/xlm_roberta_large_headline_cause_full",
+            "Alireza1044/albert-base-v2-mrpc",
+            "Norod78/hebrew-gpt_neo-tiny",
+            "HooshvareLab/gpt2-fa-poetry",
+            "Helsinki-NLP/opus-mt-vi-ru",
+            "Narsil/tiny-distilbert-sequence-classification",
+            "Lowin/chinese-bigbird-mini-1024",
+            "Helsinki-NLP/opus-mt-en-sq",
+            "Shahm/t5-small-german",
+            "Naveen-k/KanBERTo"
+        ],
+        "1": [
+            "alexandrainst/da-hatespeech-classification-base",
+            "algoprog/mimics-tagging-roberta-base",
+            "Helsinki-NLP/opus-mt-pt-uk",
+            "ForutanRad/bert-fa-QA-v1",
+            "SEBIS/code_trans_t5_large_source_code_summarization_csharp_multitask_finetune",
+            "Helsinki-NLP/opus-mt-ja-es",
+            "addy88/gpt-j-8bit",
+            "ARTeLab/it5-summarization-fanpage",
+            "Helsinki-NLP/opus-mt-fi-fr",
+            "Helsinki-NLP/opus-mt-en-gem",
+            "Helsinki-NLP/opus-mt-zls-en",
+            "CAMeL-Lab/bert-base-arabic-camelbert-mix-did-madar-corpus6"
+        ],
+        "2": [
+            "Lowin/chinese-bigbird-base-4096",
+            "MutazYoune/Absa_AspectSentiment_hotels",
+            "s-nlp/rubert-base-corruption-detector",
+            "Salesforce/qaconv-bert-large-uncased-whole-word-masking-squad2",
+            "Deniskin/gpt3_medium",
+            "Helsinki-NLP/opus-mt-pa-en",
+            "SEBIS/code_trans_t5_large_code_documentation_generation_javascript_multitask",
+            "Soonhwan-Kwon/xlm-roberta-xxlarge",
+            "akdeniz27/deberta-v2-xlarge-cuad",
+            "Yanzhu/bertweetfr_ner",
+            "Alireza1044/albert-base-v2-wnli",
+            "Helsinki-NLP/opus-mt-es-uk"
+        ]
+    }
+}

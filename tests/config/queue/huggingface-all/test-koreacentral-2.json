@@ -1,17 +1,24 @@
 {
     "queue_name": "test-koreacentral-2",
     "models": [
-        "TODBERT/TOD-BERT-JNT-V1",
-        "UBC-NLP/ARBERT",
-        "ainize/klue-bert-base-mrc",
-        "DTAI-KULeuven/robbertje-1-gb-non-shuffled",
-        "Helsinki-NLP/opus-mt-yo-en",
-        "Helsinki-NLP/opus-mt-zh-de"
+        "Lowin/chinese-bigbird-base-4096",
+        "MutazYoune/Absa_AspectSentiment_hotels",
+        "s-nlp/rubert-base-corruption-detector",
+        "Salesforce/qaconv-bert-large-uncased-whole-word-masking-squad2",
+        "Deniskin/gpt3_medium",
+        "Helsinki-NLP/opus-mt-pa-en",
+        "SEBIS/code_trans_t5_large_code_documentation_generation_javascript_multitask",
+        "Soonhwan-Kwon/xlm-roberta-xxlarge",
+        "akdeniz27/deberta-v2-xlarge-cuad",
+        "Yanzhu/bertweetfr_ner",
+        "Alireza1044/albert-base-v2-wnli",
+        "Helsinki-NLP/opus-mt-es-uk"
     ],
     "workspace": "test-koreacentral",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-A8m-v2"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }
