@@ -57,3 +57,13 @@ Helsinki-NLP/opus-mt-ro-sv
 Helsinki-NLP/opus-mt-es-nl
 SEBIS/code_trans_t5_base_source_code_summarization_csharp
 addy88/programming-lang-identifier
+Helsinki-NLP/opus-mt-en-pon
+SparkBeyond/roberta-large-sts-b
+SEBIS/code_trans_t5_small_source_code_summarization_python
+Helsinki-NLP/opus-mt-ko-fi
+Helsinki-NLP/opus-mt-da-ru
+Helsinki-NLP/opus-mt-en-bat
+Helsinki-NLP/opus-mt-ru-et
+RabotaRu/HRBert-mini
+Geotrend/bert-base-en-fr-cased
+JuliusAlphonso/distilbert-plutchik
