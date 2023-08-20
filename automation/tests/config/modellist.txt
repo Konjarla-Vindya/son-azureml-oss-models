@@ -63,7 +63,3 @@ SEBIS/code_trans_t5_small_source_code_summarization_python
 Helsinki-NLP/opus-mt-ko-fi
 Helsinki-NLP/opus-mt-da-ru
 Helsinki-NLP/opus-mt-en-bat
-Helsinki-NLP/opus-mt-ru-et
-RabotaRu/HRBert-mini
-Geotrend/bert-base-en-fr-cased
-JuliusAlphonso/distilbert-plutchik
