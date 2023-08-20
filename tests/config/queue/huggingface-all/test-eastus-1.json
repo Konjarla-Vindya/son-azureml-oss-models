@@ -1,17 +1,23 @@
 {
     "queue_name": "test-eastus-1",
     "models": [
-        "VietAI/gpt-j-6B-vietnamese-news",
-        "Helsinki-NLP/opus-mt-mk-en",
-        "Helsinki-NLP/opus-mt-de-it",
-        "akahana/indonesia-emotion-roberta",
-        "Helsinki-NLP/opus-mt-sv-nl",
-        "PlanTL-GOB-ES/roberta-large-bne-sqac"
+        "Alireza1044/albert-base-v2-mnli",
+        "Helsinki-NLP/opus-mt-fr-pl",
+        "Luyu/bert-base-mdoc-bm25",
+        "Helsinki-NLP/opus-mt-ro-fr",
+        "KoichiYasuoka/roberta-classical-chinese-base-char",
+        "Helsinki-NLP/opus-mt-en-mt",
+        "UWB-AIR/Czert-B-base-cased",
+        "SajjadAyoubi/distil-bigbird-fa-zwnj",
+        "GroNLP/gpt2-small-dutch",
+        "Elron/bleurt-base-128",
+        "airesearch/wangchanberta-base-wiki-newmm"
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D13-v2"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }

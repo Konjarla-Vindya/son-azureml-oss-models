@@ -1,17 +1,24 @@
 {
     "queue_name": "test-eastus-0",
     "models": [
-        "Hate-speech-CNERG/dehatebert-mono-arabic",
-        "Jean-Baptiste/roberta-ticker",
-        "Helsinki-NLP/opus-mt-es-ar",
-        "CAMeL-Lab/bert-base-arabic-camelbert-da",
-        "HooshvareLab/bert-fa-zwnj-base-ner",
-        "Helsinki-NLP/opus-mt-mr-en"
+        "Alireza1044/albert-base-v2-sst2",
+        "Helsinki-NLP/opus-mt-ko-fr",
+        "Helsinki-NLP/opus-mt-en-itc",
+        "SajjadAyoubi/xlm-roberta-large-fa-qa",
+        "Shushant/NepNewsBERT",
+        "Helsinki-NLP/opus-mt-nl-fi",
+        "Helsinki-NLP/opus-mt-en-ml",
+        "Helsinki-NLP/opus-mt-de-pl",
+        "Helsinki-NLP/opus-mt-pt-ca",
+        "SEBIS/code_trans_t5_large_code_comment_generation_java_multitask_finetune",
+        "Helsinki-NLP/opus-mt-rw-en",
+        "BSC-LT/roberta-base-bne"
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D13-v2"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }

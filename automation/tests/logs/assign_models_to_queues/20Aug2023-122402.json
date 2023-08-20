@@ -1,0 +1,44 @@
+{
+    "test-eastus": {
+        "0": [
+            "Alireza1044/albert-base-v2-sst2",
+            "Helsinki-NLP/opus-mt-ko-fr",
+            "Helsinki-NLP/opus-mt-en-itc",
+            "SajjadAyoubi/xlm-roberta-large-fa-qa",
+            "Shushant/NepNewsBERT",
+            "Helsinki-NLP/opus-mt-nl-fi",
+            "Helsinki-NLP/opus-mt-en-ml",
+            "Helsinki-NLP/opus-mt-de-pl",
+            "Helsinki-NLP/opus-mt-pt-ca",
+            "SEBIS/code_trans_t5_large_code_comment_generation_java_multitask_finetune",
+            "Helsinki-NLP/opus-mt-rw-en",
+            "BSC-LT/roberta-base-bne"
+        ],
+        "1": [
+            "Alireza1044/albert-base-v2-mnli",
+            "Helsinki-NLP/opus-mt-fr-pl",
+            "Luyu/bert-base-mdoc-bm25",
+            "Helsinki-NLP/opus-mt-ro-fr",
+            "KoichiYasuoka/roberta-classical-chinese-base-char",
+            "Helsinki-NLP/opus-mt-en-mt",
+            "UWB-AIR/Czert-B-base-cased",
+            "SajjadAyoubi/distil-bigbird-fa-zwnj",
+            "GroNLP/gpt2-small-dutch",
+            "Elron/bleurt-base-128",
+            "airesearch/wangchanberta-base-wiki-newmm"
+        ],
+        "2": [
+            "Geotrend/distilbert-base-zh-cased",
+            "Helsinki-NLP/opus-mt-es-gl",
+            "Rocketknight1/distilbert-base-uncased-finetuned-cola",
+            "SEBIS/code_trans_t5_small_source_code_summarization_sql_multitask_finetune",
+            "Helsinki-NLP/opus-mt-en-af",
+            "Helsinki-NLP/opus-mt-en-az",
+            "Helsinki-NLP/opus-mt-en-rw",
+            "abhibisht89/spanbert-large-cased-finetuned-ade_corpus_v2",
+            "Helsinki-NLP/opus-mt-gl-es",
+            "Helsinki-NLP/opus-mt-ru-sv",
+            "Geotrend/distilbert-base-ru-cased"
+        ]
+    }
+}
