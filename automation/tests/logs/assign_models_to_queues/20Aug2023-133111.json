@@ -1,0 +1,48 @@
+{
+    "sonata-test-ws": {
+        "0": [
+            "akhooli/gpt2-small-arabic-poetry",
+            "Helsinki-NLP/opus-mt-ha-en",
+            "09panesara/distilbert-base-uncased-finetuned-cola",
+            "Helsinki-NLP/opus-mt-de-cs",
+            "alexandrainst/da-ner-base",
+            "Helsinki-NLP/opus-mt-ar-tr",
+            "AdapterHub/roberta-base-pf-hotpotqa",
+            "TransQuest/monotransquest-da-ro_en-wiki",
+            "CAMeL-Lab/bert-base-arabic-camelbert-mix-did-nadi",
+            "Helsinki-NLP/opus-mt-af-es",
+            "airesearch/wangchanberta-base-wiki-spm",
+            "Fan-s/reddit-tc-bert",
+            "Helsinki-NLP/opus-mt-ko-de"
+        ],
+        "1": [
+            "M-FAC/bert-tiny-finetuned-qqp",
+            "HooshvareLab/bert-fa-base-uncased-ner-arman",
+            "Helsinki-NLP/opus-mt-en-sit",
+            "Helsinki-NLP/opus-mt-de-et",
+            "LeoCordoba/beto2beto-mlsum",
+            "Helsinki-NLP/opus-mt-bg-uk",
+            "AhmedBou/TuniBert",
+            "Helsinki-NLP/opus-mt-af-fr",
+            "Helsinki-NLP/opus-mt-es-hr",
+            "abdusah/arabert-ner",
+            "IMSyPP/hate_speech_nl",
+            "Geotrend/bert-base-de-cased",
+            "Tsubasaz/clinical-pubmed-bert-base-512"
+        ],
+        "2": [
+            "Geotrend/bert-base-zh-cased",
+            "Helsinki-NLP/opus-mt-fi_nb_no_nn_ru_sv_en-SAMI",
+            "Helsinki-NLP/opus-mt-hu-fr",
+            "Helsinki-NLP/opus-mt-nl-es",
+            "Helsinki-NLP/opus-mt-en-iir",
+            "Geotrend/bert-base-ru-cased",
+            "Helsinki-NLP/opus-mt-afa-en",
+            "UBIAI/en_scibert_ScienceIE",
+            "Helsinki-NLP/opus-mt-is-sv",
+            "MariamD/my-t5-qa-legal",
+            "KoichiYasuoka/roberta-classical-chinese-large-sentence-segmentation",
+            "Narrativaai/deberta-v3-small-finetuned-hate_speech18"
+        ]
+    }
+}

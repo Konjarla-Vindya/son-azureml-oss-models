@@ -1,27 +1,25 @@
 {
     "queue_name": "sonata-test-ws-1",
     "models": [
-        "Helsinki-NLP/opus-mt-ar-es",
-        "SEBIS/code_trans_t5_base_code_documentation_generation_java",
-        "Newtral/xlm-r-finetuned-toxic-political-tweets-es",
-        "HeyLucasLeao/gpt-neo-small-portuguese",
-        "Davlan/naija-twitter-sentiment-afriberta-large",
-        "Hate-speech-CNERG/dehatebert-mono-german",
-        "Geotrend/bert-base-15lang-cased",
-        "EMBEDDIA/litlat-bert",
-        "KoboldAI/fairseq-dense-2.7B-Janeway",
-        "Capreolus/bert-base-msmarco",
-        "Helsinki-NLP/opus-mt-lg-en",
-        "DJSammy/bert-base-danish-uncased_BotXO-ai",
-        "alenusch/rugpt3-paraphraser",
-        "Hate-speech-CNERG/dehatebert-mono-french",
-        "Helsinki-NLP/opus-mt-en-trk",
-        "Xuhui/ToxDect-roberta-large"
+        "M-FAC/bert-tiny-finetuned-qqp",
+        "HooshvareLab/bert-fa-base-uncased-ner-arman",
+        "Helsinki-NLP/opus-mt-en-sit",
+        "Helsinki-NLP/opus-mt-de-et",
+        "LeoCordoba/beto2beto-mlsum",
+        "Helsinki-NLP/opus-mt-bg-uk",
+        "AhmedBou/TuniBert",
+        "Helsinki-NLP/opus-mt-af-fr",
+        "Helsinki-NLP/opus-mt-es-hr",
+        "abdusah/arabert-ner",
+        "IMSyPP/hate_speech_nl",
+        "Geotrend/bert-base-de-cased",
+        "Tsubasaz/clinical-pubmed-bert-base-512"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "sonata-test-rg",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-DS3-v2"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }

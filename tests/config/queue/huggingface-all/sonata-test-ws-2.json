@@ -1,27 +1,24 @@
 {
     "queue_name": "sonata-test-ws-2",
     "models": [
-        "Norod78/hebrew-gpt_neo-xl",
-        "Helsinki-NLP/opus-mt-mg-en",
-        "Tanhim/translation-En2De",
-        "dccuchile/distilbert-base-spanish-uncased",
-        "Maltehb/danish-bert-botxo-ner-dane",
-        "PlanTL-GOB-ES/gpt2-large-bne",
-        "Helsinki-NLP/opus-mt-ru-uk",
-        "Narrativa/mbart-large-50-finetuned-opus-pt-en-translation",
-        "Helsinki-NLP/opus-mt-uk-pl",
-        "EMBEDDIA/finest-bert",
-        "Helsinki-NLP/opus-mt-hy-en",
-        "CAMeL-Lab/bert-base-arabic-camelbert-ca-pos-msa",
-        "Hate-speech-CNERG/dehatebert-mono-spanish",
-        "HooshvareLab/bert-base-parsbert-peymaner-uncased",
-        "SEBIS/code_trans_t5_small_code_documentation_generation_java_multitask_finetune",
-        "MrBananaHuman/kogpt_6b_fp16"
+        "Geotrend/bert-base-zh-cased",
+        "Helsinki-NLP/opus-mt-fi_nb_no_nn_ru_sv_en-SAMI",
+        "Helsinki-NLP/opus-mt-hu-fr",
+        "Helsinki-NLP/opus-mt-nl-es",
+        "Helsinki-NLP/opus-mt-en-iir",
+        "Geotrend/bert-base-ru-cased",
+        "Helsinki-NLP/opus-mt-afa-en",
+        "UBIAI/en_scibert_ScienceIE",
+        "Helsinki-NLP/opus-mt-is-sv",
+        "MariamD/my-t5-qa-legal",
+        "KoichiYasuoka/roberta-classical-chinese-large-sentence-segmentation",
+        "Narrativaai/deberta-v3-small-finetuned-hate_speech18"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "sonata-test-rg",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-DS3-v2"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }
