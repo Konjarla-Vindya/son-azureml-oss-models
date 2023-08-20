@@ -48,3 +48,12 @@ Cinnamon/electra-small-japanese-generator
 Helsinki-NLP/opus-mt-af-fi
 NYTK/text-generation-news-gpt2-small-hungarian
 BSC-LT/roberta-base-bne-capitel-ner
+MMG/bert-base-spanish-wwm-cased-finetuned-spa-squad2-es-finetuned-sqac
+Helsinki-NLP/opus-mt-afa-afa
+Helsinki-NLP/opus-mt-af-sv
+Helsinki-NLP/opus-mt-af-nl
+Helsinki-NLP/opus-mt-vi-fr
+Helsinki-NLP/opus-mt-ro-sv
+Helsinki-NLP/opus-mt-es-nl
+SEBIS/code_trans_t5_base_source_code_summarization_csharp
+addy88/programming-lang-identifier
