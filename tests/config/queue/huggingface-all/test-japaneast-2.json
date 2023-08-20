@@ -1,17 +1,24 @@
 {
     "queue_name": "test-japaneast-2",
     "models": [
-        "HooshvareLab/albert-fa-zwnj-base-v2",
-        "Helsinki-NLP/opus-mt-de-es",
-        "Helsinki-NLP/opus-mt-en-ur",
-        "SIC98/GPT2-python-code-generator",
-        "CouchCat/ma_ner_v7_distil",
-        "alexyalunin/RuBioRoBERTa"
+        "Sentdex/GPyT",
+        "HooshvareLab/gpt2-fa-comment",
+        "M-FAC/bert-mini-finetuned-mrpc",
+        "Helsinki-NLP/opus-mt-en-phi",
+        "alexanderfalk/danbert-small-cased",
+        "aware-ai/mobilebert-squadv2",
+        "akdeniz27/xlm-roberta-base-turkish-ner",
+        "Helsinki-NLP/opus-mt-bg-fr",
+        "Helsinki-NLP/opus-mt-fr-el",
+        "Helsinki-NLP/opus-mt-en-hy",
+        "Helsinki-NLP/opus-mt-en-toi",
+        "Helsinki-NLP/opus-mt-cs-fr"
     ],
     "workspace": "test-japaneast",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D16d-v4"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }
