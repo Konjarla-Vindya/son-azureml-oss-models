@@ -1,16 +1,25 @@
 {
     "queue_name": "test-southafricanorth-0",
     "models": [
-        "Helsinki-NLP/opus-mt-it-de",
-        "GKLMIP/roberta-hindi-devanagari",
-        "GKLMIP/bert-tagalog-base-uncased",
-        "Helsinki-NLP/opus-mt-sv-es",
-        "THUMT/mGPT"
+        "akdeniz27/roberta-base-cuad",
+        "TingChenChang/bert-base-chinese-finetuned-squad-colab",
+        "Helsinki-NLP/opus-mt-cs-de",
+        "M-FAC/bert-tiny-finetuned-squadv2",
+        "MoritzLaurer/MiniLM-L6-mnli-binary",
+        "DemangeJeremy/4-sentiments-with-flaubert",
+        "Norod78/distilgpt2-base-pretrained-he",
+        "SEBIS/code_trans_t5_base_code_documentation_generation_python_transfer_learning_finetune",
+        "Peltarion/xlm-roberta-longformer-base-4096",
+        "AdapterHub/bert-base-uncased-pf-newsqa",
+        "Luciano/bertimbau-base-lener_br",
+        "Helsinki-NLP/opus-mt-eo-de",
+        "Geotrend/distilbert-base-da-cased"
     ],
     "workspace": "test-southafricanorth",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "standard-D16-v4"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }
