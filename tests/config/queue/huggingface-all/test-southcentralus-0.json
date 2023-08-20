@@ -1,0 +1,25 @@
+{
+    "queue_name": "test-southcentralus-0",
+    "models": [
+        "Helsinki-NLP/opus-mt-af-de",
+        "Helsinki-NLP/opus-mt-lt-de",
+        "Helsinki-NLP/opus-mt-fr-sv",
+        "Chun/DialoGPT-medium-dailydialog",
+        "MiBo/RepML",
+        "Helsinki-NLP/opus-mt-da-fr",
+        "Helsinki-NLP/opus-mt-hu-fi",
+        "ASCCCCCCCC/distilbert-base-chinese-amazon_zh_20000",
+        "Helsinki-NLP/opus-mt-es-pl",
+        "CoffeeAddict93/gpt1-modest-proposal",
+        "Helsinki-NLP/opus-mt-aed-es",
+        "Helsinki-NLP/opus-mt-ca-it",
+        "Ivo/emscad-skill-extraction-token-classification"
+    ],
+    "workspace": "test-southcentralus",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
+}
