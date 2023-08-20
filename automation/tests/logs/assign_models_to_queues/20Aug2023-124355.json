@@ -1,0 +1,48 @@
+{
+    "test-norwayeast": {
+        "0": [
+            "Helsinki-NLP/opus-mt-en-lg",
+            "SharanSMenon/22-languages-bert-base-cased",
+            "HooshvareLab/roberta-fa-zwnj-base-ner",
+            "SetFit/distilbert-base-uncased__sst5__all-train",
+            "Suchandra/bengali_language_NER",
+            "Davlan/xlm-roberta-large-masakhaner",
+            "Helsinki-NLP/opus-mt-lt-ru",
+            "akhooli/mbart-large-cc25-ar-en",
+            "Helsinki-NLP/opus-mt-en-dra",
+            "Helsinki-NLP/opus-mt-ilo-en",
+            "Helsinki-NLP/opus-mt-ms-ms",
+            "BSC-LT/roberta-base-biomedical-es",
+            "M-FAC/bert-tiny-finetuned-mnli"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-en_el_es_fi-en_el_es_fi",
+            "18811449050/bert_finetuning_test",
+            "Helsinki-NLP/opus-mt-de-hu",
+            "DTAI-KULeuven/mbert-corona-tweets-belgium-topics",
+            "Helsinki-NLP/opus-mt-vi-de",
+            "Helsinki-NLP/opus-mt-en-cpp",
+            "Helsinki-NLP/opus-mt-af-ru",
+            "Rostlab/prot_bert_bfd_membrane",
+            "NYTK/summarization-hi-bart-base-1024-hungarian",
+            "Helsinki-NLP/opus-mt-is-de",
+            "Pollawat/mt5-small-thai-qa-qg",
+            "Davlan/distilbert-base-multilingual-cased-masakhaner",
+            "Luciano/gpt2-small-portuguese-finetuned-peticoes"
+        ],
+        "2": [
+            "Helsinki-NLP/opus-mt-ja-de",
+            "Helsinki-NLP/opus-mt-fi-ru",
+            "BigSalmon/SimplifyText",
+            "Helsinki-NLP/opus-mt-en-ceb",
+            "Geotrend/distilbert-base-en-fr-es-pt-it-cased",
+            "Helsinki-NLP/opus-mt-sv-hu",
+            "SEBIS/code_trans_t5_base_source_code_summarization_csharp_multitask_finetune",
+            "Helsinki-NLP/opus-mt-ja-fr",
+            "NYTK/sentiment-hts2-hubert-hungarian",
+            "Helsinki-NLP/opus-mt-it-uk",
+            "Prompsit/paraphrase-bert-en",
+            "GroNLP/gpt2-small-italian-embeddings"
+        ]
+    }
+}

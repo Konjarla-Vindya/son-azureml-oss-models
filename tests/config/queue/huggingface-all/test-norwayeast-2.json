@@ -1,16 +1,24 @@
 {
     "queue_name": "test-norwayeast-2",
     "models": [
-        "Langboat/mengzi-bert-base-fin",
-        "alexandrainst/da-hatespeech-detection-base",
-        "Narrativaai/fake-news-detection-spanish",
-        "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
-        "KoboldAI/fairseq-dense-125M"
+        "Helsinki-NLP/opus-mt-ja-de",
+        "Helsinki-NLP/opus-mt-fi-ru",
+        "BigSalmon/SimplifyText",
+        "Helsinki-NLP/opus-mt-en-ceb",
+        "Geotrend/distilbert-base-en-fr-es-pt-it-cased",
+        "Helsinki-NLP/opus-mt-sv-hu",
+        "SEBIS/code_trans_t5_base_source_code_summarization_csharp_multitask_finetune",
+        "Helsinki-NLP/opus-mt-ja-fr",
+        "NYTK/sentiment-hts2-hubert-hungarian",
+        "Helsinki-NLP/opus-mt-it-uk",
+        "Prompsit/paraphrase-bert-en",
+        "GroNLP/gpt2-small-italian-embeddings"
     ],
     "workspace": "test-norwayeast",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D16d-v4"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }

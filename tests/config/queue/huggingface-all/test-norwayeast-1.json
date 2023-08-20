@@ -1,16 +1,25 @@
 {
     "queue_name": "test-norwayeast-1",
     "models": [
-        "Helsinki-NLP/opus-mt-en-eu",
-        "Helsinki-NLP/opus-mt-en-sla",
-        "aXhyra/presentation_irony_1234567",
-        "akhooli/xlm-r-large-arabic-sent",
-        "EMBEDDIA/crosloengual-bert"
+        "Helsinki-NLP/opus-mt-en_el_es_fi-en_el_es_fi",
+        "18811449050/bert_finetuning_test",
+        "Helsinki-NLP/opus-mt-de-hu",
+        "DTAI-KULeuven/mbert-corona-tweets-belgium-topics",
+        "Helsinki-NLP/opus-mt-vi-de",
+        "Helsinki-NLP/opus-mt-en-cpp",
+        "Helsinki-NLP/opus-mt-af-ru",
+        "Rostlab/prot_bert_bfd_membrane",
+        "NYTK/summarization-hi-bart-base-1024-hungarian",
+        "Helsinki-NLP/opus-mt-is-de",
+        "Pollawat/mt5-small-thai-qa-qg",
+        "Davlan/distilbert-base-multilingual-cased-masakhaner",
+        "Luciano/gpt2-small-portuguese-finetuned-peticoes"
     ],
     "workspace": "test-norwayeast",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D16d-v4"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }
