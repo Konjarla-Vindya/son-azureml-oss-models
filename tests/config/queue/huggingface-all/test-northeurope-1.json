@@ -1,16 +1,26 @@
 {
     "queue_name": "test-northeurope-1",
     "models": [
-        "Helsinki-NLP/opus-mt-is-en",
-        "Helsinki-NLP/opus-mt-en-vi",
-        "Sahajtomar/German-question-answer-Electra",
-        "Helsinki-NLP/opus-mt-sv-no",
-        "Elron/bleurt-base-512"
+        "Helsinki-NLP/opus-mt-gl-pt",
+        "IDEA-CCNL/Wenzhong-GPT2-3.5B",
+        "Palak/microsoft_deberta-large_squad",
+        "GroNLP/gpt2-medium-dutch-embeddings",
+        "HooshvareLab/bert-fa-base-uncased-clf-digimag",
+        "DeepESP/gpt2-spanish-medium",
+        "Helsinki-NLP/opus-mt-pt-gl",
+        "abhilash1910/albert-german-ner",
+        "Helsinki-NLP/opus-mt-ig-en",
+        "Helsinki-NLP/opus-mt-ml-en",
+        "Jacobo/aristoBERTo",
+        "Helsinki-NLP/opus-mt-en-gmq",
+        "accelotron/rugpt3-ficbook-bts",
+        "RecordedFuture/Swedish-NER"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "STANDARD-D13"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }

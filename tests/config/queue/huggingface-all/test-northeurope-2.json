@@ -1,16 +1,25 @@
 {
     "queue_name": "test-northeurope-2",
     "models": [
-        "SI2M-Lab/DarijaBERT",
-        "GroNLP/gpt2-small-italian",
-        "Qishuai/distilbert_punctuator_en",
-        "Tejas3/distillbert_base_uncased_80_equal",
-        "alger-ia/dziribert"
+        "Helsinki-NLP/opus-mt-en-et",
+        "Geotrend/bert-base-es-cased",
+        "Geotrend/distilbert-base-25lang-cased",
+        "akdeniz27/bert-base-hungarian-cased-ner",
+        "abhishek/autonlp-japanese-sentiment-59362",
+        "Helsinki-NLP/opus-mt-de-uk",
+        "MMG/bert-base-spanish-wwm-cased-finetuned-squad2-es",
+        "Intel/dynamic_tinybert",
+        "NTUYG/DeepSCC-RoBERTa",
+        "Kayvane/distilbert-complaints-product",
+        "alenusch/rugpt2-paraphraser",
+        "Helsinki-NLP/opus-mt-el-fr",
+        "Helsinki-NLP/opus-mt-en-tw"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-DS3-v2"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16a_v4"
 }
