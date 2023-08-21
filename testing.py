@@ -19,15 +19,16 @@ class dashboard():
                    "X-GitHub-Api-Version": "2022-11-28",
                    "Accept": "application/vnd.github+json"}
 
+        
+        workflows_to_include = ["ahotrod-electra_large_discriminator_squad2_512.yml","ARTeLab-it5-summarization-fanpage.yml"]
 
 
         for workflow in workflows:
             workflow_name = workflow.name.replace(".github/workflows/", "")
             workflow_name = workflow_name.replace("/", "-")
     
-            if workflow_name in ["ahotrod-electra_large_discriminator_squad2_512.yml","testing.yml"]:
-                continue
-
+             if workflow_name not in workflows_to_include:
+                 continue
                
     
             try:
