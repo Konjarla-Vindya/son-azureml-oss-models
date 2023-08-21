@@ -1,11 +1,12 @@
 {
     "queue_name": "sonata-test-ws-05",
     "models": [
-        "DoyyingFace/bert-asian-hate-tweets-asian-unclean-freeze-4",
-"Helsinki-NLP/opus-mt-en-bi",
-"Helsinki-NLP/opus-mt-ja-pt",
-"Helsinki-NLP/opus-mt-en-bzs",
-"Helsinki-NLP/opus-mt-en-ht"
+        "Helsinki-NLP/opus-mt-en-inc",
+"Helsinki-NLP/opus-mt-fi-et",
+"Ruizhou/bert-base-uncased-finetuned-mrpc",
+"M-FAC/bert-tiny-finetuned-stsb",
+"M47Labs/italian_news_classification_headlines",
+"Helsinki-NLP/opus-mt-tll-en"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
