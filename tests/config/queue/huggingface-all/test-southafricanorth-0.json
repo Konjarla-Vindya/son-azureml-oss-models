@@ -20,6 +20,6 @@
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "standard-D16-v4",
-    "instance_type": "Standard_D16d_v4"
+    "compute": "Standard-D16ds-v4",
+    "instance_type": "Standard_D16ds_v4"
 }
