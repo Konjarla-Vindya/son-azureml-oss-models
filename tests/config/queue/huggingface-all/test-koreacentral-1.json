@@ -20,5 +20,5 @@
     "registry": "HuggingFace",
     "environment": "automate-venv",
     "compute": "Standard-A8m-v2",
-    "instance_type": "Standard-A8m-v2"
+    "instance_type": "Standard_A8m_v2"
 }
