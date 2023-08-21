@@ -32,6 +32,8 @@ class dashboard():
     
             try:
                 response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name, workflow_name), headers=headers)
+                print(response)
+
                 response.raise_for_status()  # Raise an error if the response status code is not successful
                 runs = response.json()
                 
