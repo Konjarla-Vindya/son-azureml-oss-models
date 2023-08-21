@@ -23,11 +23,12 @@ class dashboard():
 
         for workflow in workflows:
             workflow_name = workflow.name.replace(".github/workflows/", "")
+            workflow_name = workflow_name.replace("/", "-")
     
             if workflow_name in ["ahotrod-electra_large_discriminator_squad2_512.yml","testing.yml"]:
                 continue
 
-                workflow_name = workflow_name.replace("/", "-")
+               
     
             try:
                 response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name, workflow_name), headers=headers)
