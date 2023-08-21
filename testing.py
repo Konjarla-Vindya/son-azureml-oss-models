@@ -27,7 +27,7 @@ class dashboard():
             workflow_name = workflow.name.replace(".github/workflows/", "")
             workflow_name = workflow_name.replace("/", "-")
     
-             if workflow_name not in workflows_to_include:
+            if workflow_name not in workflows_to_include:
                  continue
                
     
