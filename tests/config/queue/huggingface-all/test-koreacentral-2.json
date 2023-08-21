@@ -20,5 +20,5 @@
     "registry": "HuggingFace",
     "environment": "automate-venv",
     "compute": "Standard-D32-v3",
-    "instance_type": "Standard-D32-v3"
+    "instance_type": "Standard_D32_v3"
 }
