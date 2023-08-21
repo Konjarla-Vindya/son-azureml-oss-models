@@ -26,8 +26,8 @@ class dashboard():
         for workflow in workflows:
             workflow_name = workflow.name.replace(".github/workflows/", "")
             
-            # if workflow_name != "":
-            #     continue
+            if workflow_name == "testing.yml":
+                continue
 
             workflow_name = workflow_name.replace("/", "-")
             
