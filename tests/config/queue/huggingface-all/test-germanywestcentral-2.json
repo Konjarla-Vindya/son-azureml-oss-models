@@ -20,5 +20,5 @@
     "registry": "HuggingFace",
     "environment": "automate-venv",
     "compute": "Standard-D48d-v4",
-    "instance_type": "Standard-D48d-v4"
+    "instance_type": "Standard_D48d_v4"
 }
