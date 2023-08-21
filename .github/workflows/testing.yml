@@ -4,7 +4,7 @@ jobs:
   testing:
     runs-on: ubuntu-latest
     env:
-        GIT_TOKEN: ${{secrets.GIT_TOKEN}}
+        GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     steps:
       - name: Checkout code
