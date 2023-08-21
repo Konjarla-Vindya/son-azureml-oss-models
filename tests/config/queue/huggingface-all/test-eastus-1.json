@@ -18,6 +18,6 @@
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-E32-v3",
-    "instance_type": "Standard_E32_v3"
+    "compute": "Standard-D13-v2",
+    "instance_type": "Standard_D13_v2"
 }
