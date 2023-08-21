@@ -31,7 +31,7 @@ class dashboard():
                     lastrun = runs["workflow_runs"][0]
                     # ... rest of the code that uses lastrun
                 else:
-                print(f"No runs found for workflow '{workflow_name}'. Skipping...")
+                    print(f"No runs found for workflow '{workflow_name}'. Skipping...")
 
                 
                 # runs = response.json()
