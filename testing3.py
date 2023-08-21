@@ -3,7 +3,6 @@ import requests
 import os
 import pandas
 from github import Github, Auth
-import sys
 
 class dashboard():
     def __init__(self): 
@@ -51,9 +50,7 @@ class dashboard():
                 self.dict["badge"].append("[![{}]({})]({})".format(self.workflow_name_ext, self.badgeurl, self.badgeurl.replace("/badge.svg", "")))
 
             except requests.exceptions.RequestException as e:
-                _, _, exc_tb = sys.exc_info()
-                print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e} \n "+
-                      "The exception occured at this line no : {exc_tb.tb_lineno}")
+                print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
         return self.dict
 
