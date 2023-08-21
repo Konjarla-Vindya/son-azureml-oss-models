@@ -26,7 +26,8 @@ class dashboard():
         for workflow in workflows:
             workflow_name = workflow.name.replace(".github/workflows/", "")
             
-            if workflow_name not in ["CAMeL-Lab/bert-base-arabic-camelbert-ca-sentiment","Helsinki-NLP/opus-mt-trk-en","Helsinki-NLP/opus-mt-en-bem","Helsinki-NLP/opus-mt-it-bg","SauravMaheshkar/clr-finetuned-albert-base","DoyyingFace/bert-asian-hate-tweets-asian-unclean-freeze-4","Helsinki-NLP/opus-mt-en-bi","Helsinki-NLP/opus-mt-ja-pt","Helsinki-NLP/opus-mt-en-bzs","Helsinki-NLP/opus-mt-en-ht","Geotrend/bert-base-uk-cased","Helsinki-NLP/opus-mt-sv-uk","Helsinki-NLP/opus-mt-es-zai","EasthShin/Android_Ios_Classification","Helsinki-NLP/opus-mt-en-lua"] :
+            if workflow_name !="CAMeL-Lab/bert-base-arabic-camelbert-ca-sentiment.yml" :
+            #not in ["CAMeL-Lab/bert-base-arabic-camelbert-ca-sentiment.yml","Helsinki-NLP/opus-mt-trk-en","Helsinki-NLP/opus-mt-en-bem","Helsinki-NLP/opus-mt-it-bg","SauravMaheshkar/clr-finetuned-albert-base","DoyyingFace/bert-asian-hate-tweets-asian-unclean-freeze-4","Helsinki-NLP/opus-mt-en-bi","Helsinki-NLP/opus-mt-ja-pt","Helsinki-NLP/opus-mt-en-bzs","Helsinki-NLP/opus-mt-en-ht","Geotrend/bert-base-uk-cased","Helsinki-NLP/opus-mt-sv-uk","Helsinki-NLP/opus-mt-es-zai","EasthShin/Android_Ios_Classification","Helsinki-NLP/opus-mt-en-lua"] :
                 continue
 
             workflow_name = workflow_name.replace("/", "-")
