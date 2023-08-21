@@ -1,0 +1,24 @@
+{
+    "queue_name": "test-southcentralus-0",
+    "models": [
+        "Helsinki-NLP/opus-mt-lt-de",
+        "Chun/DialoGPT-medium-dailydialog",
+        "Helsinki-NLP/opus-mt-da-fr",
+        "ASCCCCCCCC/distilbert-base-chinese-amazon_zh_20000",
+        "CoffeeAddict93/gpt1-modest-proposal",
+        "Helsinki-NLP/opus-mt-ca-it",
+        "Geotrend/bert-base-zh-cased",
+        "Helsinki-NLP/opus-mt-hu-fr",
+        "Helsinki-NLP/opus-mt-en-iir",
+        "Helsinki-NLP/opus-mt-afa-en",
+        "Helsinki-NLP/opus-mt-is-sv",
+        "KoichiYasuoka/roberta-classical-chinese-large-sentence-segmentation"
+    ],
+    "workspace": "test-southcentralus",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-D16as-v4",
+    "instance_type": "Standard_D16as_v4"
+}
