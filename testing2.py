@@ -53,8 +53,8 @@ class dashboard():
 
             except requests.exceptions.RequestException as e:
                 _, _, exc_tb = sys.exc_info()
-                print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e} \n "+
-                    "The exception occured at this line no : {exc_tb.tb_lineno}")
+                print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
+                print(f"The exception occured at this line no : {exc_tb.tb_lineno} ")
             break
 
 
