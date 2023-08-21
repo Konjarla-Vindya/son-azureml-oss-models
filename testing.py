@@ -26,9 +26,16 @@ class dashboard():
             try:
                 response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow.id}/runs", headers=headers)
                 response.raise_for_status()  # Raising an error if the response status code is not successful
+
+                if runs["workflow_runs"]:
+                    lastrun = runs["workflow_runs"][0]
+                    # ... rest of the code that uses lastrun
+                else:
+                print(f"No runs found for workflow '{workflow_name}'. Skipping...")
+
                 
-                runs = response.json()
-                lastrun = runs["workflow_runs"][0]
+                # runs = response.json()
+                # lastrun = runs["workflow_runs"][0]
                 badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow.name}/badge.svg"
 
                 self.dict["workflow_id"].append(lastrun["workflow_id"])
