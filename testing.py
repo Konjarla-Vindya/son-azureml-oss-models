@@ -28,6 +28,8 @@ class dashboard():
             
             # if workflow_name != "":
             #     continue
+
+            workflow_name = workflow_name.replace("/", "-")
             
             try:
                 response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name, workflow_name), headers=headers)
