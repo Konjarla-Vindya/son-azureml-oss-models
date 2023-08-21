@@ -26,8 +26,8 @@ class dashboard():
         for workflow in workflows:
             workflow_name = workflow.name.replace(".github/workflows/", "")
             
-            if workflow_name != "":
-                continue
+            # if workflow_name != "":
+            #     continue
             
             try:
                 response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name, workflow_name), headers=headers)
