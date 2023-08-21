@@ -26,9 +26,10 @@ class dashboard():
         
         for workflow in workflows:
             workflow_name = workflow.name.replace(".github/workflows/", "")
-            
-            if workflow_name != "":
-                continue
+            print("workflow is this :  ", workflow)
+            print("workflow_name : ", workflow_name)
+            # if workflow_name != "":
+            #     continue
 
             workflow_name = workflow_name.replace("/", "-")
             
@@ -54,6 +55,7 @@ class dashboard():
                 _, _, exc_tb = sys.exc_info()
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e} \n "+
                     "The exception occured at this line no : {exc_tb.tb_lineno}")
+            break
 
 
         return self.dict
