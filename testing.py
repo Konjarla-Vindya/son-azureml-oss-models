@@ -18,20 +18,34 @@ class dashboard():
         headers = {"Authorization": f"Bearer {self.github_token}",
                    "X-GitHub-Api-Version": "2022-11-28",
                    "Accept": "application/vnd.github+json"}
-        
+
+
+
         for workflow in workflows:
-            if workflow.name in ["ahotrod-electra_large_discriminator_squad2_512.yml", "testing.yml"]:
+            workflow_name = workflow.name.replace(".github/workflows/", "")
+    
+            if workflow_name in ["ahotrod-electra_large_discriminator_squad2_512.yml","testing.yml"]:
                 continue
 
+                workflow_name = workflow_name.replace("/", "-")
+    
             try:
-                response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow.id}/runs", headers=headers)
-                response.raise_for_status()  # Raising an error if the response status code is not successful
-
-                if runs["workflow_runs"]:
-                    lastrun = runs["workflow_runs"][0]
-                    # ... rest of the code that uses lastrun
-                else:
+                response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name, workflow_name), headers=headers)
+                response.raise_for_status()  # Raise an error if the response status code is not successful
+                runs = response.json()
+                
+                if not runs["workflow_runs"]: 
                     print(f"No runs found for workflow '{workflow_name}'. Skipping...")
+                    continue
+                
+                lastrun = runs["workflow_runs"][0]
+                # ... the rest of your code for this iteration
+                
+            except requests.exceptions.RequestException as e:
+                print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
+                continue  # Move to the next iteration of the loop
+
+        
 
                 
                 # runs = response.json()
