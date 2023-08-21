@@ -26,7 +26,7 @@ class dashboard():
         for workflow in workflows:
             workflow_name = workflow.name.replace(".github/workflows/", "")
             
-            if workflow_name != "":
+            if workflow_name != "ahotrod-electra_large_discriminator_squad2_512.yml":
                 continue
 
             workflow_name = workflow_name.replace("/", "-")
