@@ -1,11 +1,12 @@
 {
     "queue_name": "test-northeurope-05",
     "models": [
-        "CAMeL-Lab/bert-base-arabic-camelbert-ca-sentiment",
-        "Helsinki-NLP/opus-mt-trk-en",
-        "Helsinki-NLP/opus-mt-en-bem",
-        "Helsinki-NLP/opus-mt-it-bg",
-        "SauravMaheshkar/clr-finetuned-albert-base"        
+        "LeoCordoba/beto2beto-cc-news-es-titles",
+"Helsinki-NLP/opus-mt-ca-nl",
+"2umm3r/distilbert-base-uncased-finetuned-cola",
+"DTAI-KULeuven/robbertje-1-gb-merged",
+"SEBIS/code_trans_t5_small_source_code_summarization_csharp_multitask",
+"Helsinki-NLP/opus-mt-fr-tw"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
