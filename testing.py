@@ -39,7 +39,7 @@ class dashboard():
                     continue
                 
                 lastrun = runs["workflow_runs"][0]
-                # ... the rest of your code for this iteration
+                # 
                 
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
