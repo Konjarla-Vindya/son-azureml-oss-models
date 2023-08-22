@@ -11,5 +11,5 @@
     "registry": "HuggingFace",
     "environment": "automate-venv",
     "compute": "Standard-D16s-v3",
-    "instance_type": "Standard_D16s_v3"
+    "instance_type": "Standard_D16_v3"
 }
