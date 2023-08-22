@@ -39,7 +39,7 @@ class dashboard():
                 response.raise_for_status()  # Raise an error if the response status code is not successful
                 
                 runs = response.json()
-                print(runs)
+                #print(runs)
                 lastrun = runs["workflow_runs"][0]
                 self.workflow_name_ext = lastrun["name"].replace(self.workflow_path, "")
                 badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
