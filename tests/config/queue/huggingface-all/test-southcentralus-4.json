@@ -1,6 +1,6 @@
 
 {
-    "queue_name": "test-southcentralus-1",
+    "queue_name": "test-southcentralus-4",
     "models": [
     "Geotrend/distilbert-base-da-cased",
     "GroNLP/gpt2-small-dutch",
