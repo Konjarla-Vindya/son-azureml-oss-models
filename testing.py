@@ -1,75 +1,58 @@
-import github
-import requests
 import os
+import requests
 import pandas
 from github import Github, Auth
 
-class dashboard():
+class Dashboard():
     def __init__(self): 
         self.github_token = os.environ["GIT_TOKEN"]
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
         self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
         self.repo_full_name = self.repo.full_name
-        self.dict = {"workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [], "updated_at": [], "status": [], "conclusion": [], "badge": []}
+        self.data = {
+            "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
+            "updated_at": [], "status": [], "conclusion": [], "badge": []
+        }
         
     def workflow_last_run(self):
-        workflows = self.repo.get_workflows()
-        headers = {"Authorization": f"Bearer {self.github_token}",
-                   "X-GitHub-Api-Version": "2022-11-28",
-                   "Accept": "application/vnd.github+json"}
-
+        headers = {
+            "Authorization": f"Bearer {self.github_token}",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "Accept": "application/vnd.github+json"
+        }
         
-        workflows_to_include = ["testing.yml","ahotrod-electra_large_discriminator_squad2_512.yml","ARTeLab-it5-summarization-fanpage.yml"]
+        workflows_to_include = [
+            "testing.yml", 
+            "ahotrod-electra_large_discriminator_squad2_512.yml",
+            "ARTeLab-it5-summarization-fanpage.yml"
+        ]
 
-
-        for workflow in workflows:
-            workflow_name = workflow.name.replace(".github/workflows/", "")
-            workflow_name = workflow_name.replace("/", "-")
-    
-            if workflow_name not in workflows_to_include:
-                 continue
-               
-    
+        for workflow_name in workflows_to_include:
             try:
-                response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name, workflow_name), headers=headers)
-                print(response)
-                print(response.json())
-
-                response.raise_for_status()  # Raise an error if the response status code is not successful
-                runs = response.json()
+                response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}/runs", headers=headers)
+                response.raise_for_status()
                 
+                runs = response.json()
                 if not runs["workflow_runs"]: 
                     print(f"No runs found for workflow '{workflow_name}'. Skipping...")
                     continue
                 
                 lastrun = runs["workflow_runs"][0]
-                # 
-                
+                badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
+
+                self.data["workflow_id"].append(lastrun["workflow_id"])
+                self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
+                self.data["last_runid"].append(lastrun["id"])
+                self.data["created_at"].append(lastrun["created_at"])
+                self.data["updated_at"].append(lastrun["updated_at"])
+                self.data["status"].append(lastrun["status"])
+                self.data["conclusion"].append(lastrun["conclusion"])
+                self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
-                continue  # Move to the next iteration of the loop
 
-        
-
-                
-                # runs = response.json()
-                # lastrun = runs["workflow_runs"][0]
-                badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow.name}/badge.svg"
-
-                self.dict["workflow_id"].append(lastrun["workflow_id"])
-                self.dict["workflow_name"].append(workflow.name.replace(".yml", ""))
-                self.dict["last_runid"].append(lastrun["id"])
-                self.dict["created_at"].append(lastrun["created_at"])
-                self.dict["updated_at"].append(lastrun["updated_at"])
-                self.dict["status"].append(lastrun["status"])
-                self.dict["conclusion"].append(lastrun["conclusion"])
-                self.dict["badge"].append(f"[![{workflow.name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
-
-            except requests.exceptions.RequestException as e:
-                print(f"An error occurred while fetching run information for workflow '{workflow.name}' (ID: {workflow.id}): {e}")
-
-        return self.dict
+        return self.data
 
     def results(self, last_runs_dict):
         results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0, "not_tested": 0, "total_duration": 0}
@@ -100,9 +83,10 @@ class dashboard():
             f.write(os.linesep)
             f.write(os.linesep)
             f.write(models_md)
+       
 
 def main():
-    my_class = dashboard()
+    my_class = Dashboard()
     last_runs_dict = my_class.workflow_last_run()
     my_class.results(last_runs_dict)
 
