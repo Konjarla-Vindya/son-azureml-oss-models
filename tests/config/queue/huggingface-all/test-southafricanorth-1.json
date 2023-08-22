@@ -1,18 +1,12 @@
 {
     "queue_name": "test-southafricanorth-1",
     "models": [
-        "Helsinki-NLP/opus-mt-ka-ru",
-        "Helsinki-NLP/opus-mt-zlw-en",
-        "aware-ai/roberta-large-squad-classification",
-        "PlanTL-GOB-ES/roberta-large-bne-capitel-pos",
-        "Helsinki-NLP/opus-mt-he-de",
-        "Qishuai/distilbert_punctuator_zh",
-        "CAMeL-Lab/bert-base-arabic-camelbert-mix-pos-glf",
-        "SEBIS/code_trans_t5_large_code_comment_generation_java_multitask",
-        "SI2M-Lab/DarijaBERT-arabizi",
-        "Helsinki-NLP/opus-mt-en-is",
-        "Helsinki-NLP/opus-mt-en-swc",
-        "Helsinki-NLP/opus-mt-uk-pt"
+        "NbAiLab/nb-bert-base",
+        "NlpHUST/vibert4news-base-cased",
+        "Rostlab/prot_t5_base_mt_uniref50",
+        "alaggung/bart-r3f",
+        "AkshatSurolia/ICD-10-Code-Prediction",
+     
     ],
     "workspace": "test-southafricanorth",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
