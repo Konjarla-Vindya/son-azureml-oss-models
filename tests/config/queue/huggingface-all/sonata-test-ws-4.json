@@ -1,9 +1,7 @@
 {
     "queue_name": "sonata-test-ws-4",
     "models": [
-        "Helsinki-NLP/opus-mt-de-pl",
-        "Helsinki-NLP/opus-mt-en-dra",
-        "Helsinki-NLP/opus-mt-en-inc"
+        "Helsinki-NLP/opus-mt-en-swc"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
