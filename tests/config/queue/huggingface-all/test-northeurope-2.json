@@ -1,7 +1,6 @@
 {
     "queue_name": "test-northeurope-2",
     "models": [
-        "Helsinki-NLP/opus-mt-az-en",
         "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
         "VictorSanh/roberta-base-finetuned-yelp-polarity"
     ],
