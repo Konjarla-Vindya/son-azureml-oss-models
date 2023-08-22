@@ -1,6 +1,10 @@
 {
     "queue_name": "test-northcentralus-1",
     "models": [
+        "Helsinki-NLP/opus-mt-rw-en",
+        "Helsinki-NLP/opus-mt-sv-ru"
+    ],
+    "models_1": [
         "Helsinki-NLP/opus-mt-en-tw",
         "Helsinki-NLP/opus-mt-fr-ar",
         "Helsinki-NLP/opus-mt-ilo-en",
