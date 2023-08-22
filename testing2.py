@@ -47,6 +47,12 @@ class dashboard():
                     lastrun = runs["workflow_runs"][0]
                     self.workflow_name_ext = lastrun["name"].replace(self.workflow_path, "")
                     badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
+                    id = lastrun['id']
+                    job_id_url = f"https://github.com/{self.repo_full_name}/actions/runs/{id}/jobs"
+                    job_details = requests.get(job_id_url, headers=headers)
+                    job_detail = job_details["jobs"][0]
+                    job_id = job_detail["id"]
+                    final_job_url = f"https://github.com/{self.repo_full_name}/actions/runs/{id}/job/{job_id}"
 
                     self.dict["workflow_id"].append(lastrun["workflow_id"])
                     self.dict["workflow_name"].append(self.workflow_name_ext.replace(".yml", ""))
@@ -55,12 +61,14 @@ class dashboard():
                     self.dict["updated_at"].append(lastrun["updated_at"])
                     self.dict["status"].append(lastrun["status"])
                     self.dict["conclusion"].append(lastrun["conclusion"])
-                    self.dict["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
+                    #self.dict["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
+                    self.dict["badge"].append(f"[![{workflow_name}]({final_job_url})]({badgeurl.replace('/badge.svg', '')})")
 
             except requests.exceptions.RequestException as e:
                 _, _, exc_tb = sys.exc_info()
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
                 print(f"The exception occured at this line no : {exc_tb.tb_lineno} ")
+            break
 
 
         return self.dict
