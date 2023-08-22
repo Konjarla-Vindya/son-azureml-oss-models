@@ -15,4 +15,3 @@ Helsinki-NLP/opus-mt-en-hy
 Helsinki-NLP/opus-mt-en-inc
 Helsinki-NLP/opus-mt-en-is
 Helsinki-NLP/opus-mt-en-map
-Helsinki-NLP/opus-mt-en-mk
