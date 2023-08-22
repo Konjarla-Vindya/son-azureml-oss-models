@@ -13,9 +13,3 @@ JuliusAlphonso/distilbert-plutchik
 Kayvane/distilbert-complaints-product
 KoichiYasuoka/roberta-base-english-upos
 Lowin/chinese-bigbird-mini-1024
-Luciano/bertimbau-base-lener_br
-Luciano/gpt2-small-portuguese-finetuned-peticoes
-M47Labs/italian_news_classification_headlines
-MariamD/my-t5-qa-legal
-M-FAC/bert-tiny-finetuned-mnli
-M-FAC/bert-tiny-finetuned-sst2
