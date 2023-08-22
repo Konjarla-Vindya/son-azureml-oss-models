@@ -50,7 +50,8 @@ class dashboard():
                     id = lastrun['id']
                     job_id_url = f"https://github.com/{self.repo_full_name}/actions/runs/{id}/jobs"
                     job_details = requests.get(job_id_url, headers=headers)
-                    job_detail = job_details.json()["jobs"][0]
+                    job_detail_json = job_details.json()
+                    job_detail = job_detail_json["jobs"][0]
                     job_id = job_detail["id"]
                     final_job_url = f"https://github.com/{self.repo_full_name}/actions/runs/{id}/job/{job_id}"
 
