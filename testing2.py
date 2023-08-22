@@ -40,6 +40,8 @@ class dashboard():
                 
                 runs = response.json()
                 #print(runs)
+                print("Type is : ",type(runs["workflow_runs"]))
+                print("Length is this : ", len(runs["workflow_runs"]))
                 lastrun = runs["workflow_runs"][0]
                 self.workflow_name_ext = lastrun["name"].replace(self.workflow_path, "")
                 badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
