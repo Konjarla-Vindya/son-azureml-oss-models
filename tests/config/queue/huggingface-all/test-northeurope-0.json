@@ -1,26 +1,15 @@
 {
     "queue_name": "test-northeurope-0",
     "models": [
-        "Helsinki-NLP/opus-mt-pl-uk",
-        "alaggung/bart-rl",
-        "ARTeLab/mbart-summarization-fanpage",
-        "albertvillanova/autonlp-wikiann-entity_extraction-1e67664-1301123",
-        "Helsinki-NLP/opus-mt-da-fi",
-        "Helsinki-NLP/opus-mt-de-ar",
-        "D3xter1922/electra-base-discriminator-finetuned-cola",
-        "abhiramtirumala/DialoGPT-sarcastic-medium",
-        "albertvillanova/autonlp-indic_glue-multi_class_classification-1e67664-1311135",
-        "Helsinki-NLP/opus-mt-de-de",
-        "Helsinki-NLP/opus-mt-itc-en",
-        "Jorgeutd/bert-base-uncased-finetuned-surveyclassification",
-        "Alireza1044/albert-base-v2-qnli",
-        "Wikidepia/indobert-lite-squad"
+        "Jean-Baptiste/roberta-ticker",
+        "SEBIS/code_trans_t5_large_source_code_summarization_python_multitask_finetune",
+        "Elron/bleurt-base-512"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-DS3-v2",
-    "instance_type": "Standard_DS3_v2"
+    "compute": "Standard-E32s-v3",
+    "instance_type": "Standard_E32s_v3"
 }

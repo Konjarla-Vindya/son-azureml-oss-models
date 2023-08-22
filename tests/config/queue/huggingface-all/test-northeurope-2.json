@@ -1,25 +1,15 @@
 {
     "queue_name": "test-northeurope-2",
     "models": [
-        "Helsinki-NLP/opus-mt-en-et",
-        "Geotrend/bert-base-es-cased",
-        "Geotrend/distilbert-base-25lang-cased",
-        "akdeniz27/bert-base-hungarian-cased-ner",
-        "abhishek/autonlp-japanese-sentiment-59362",
-        "Helsinki-NLP/opus-mt-de-uk",
-        "MMG/bert-base-spanish-wwm-cased-finetuned-squad2-es",
-        "Intel/dynamic_tinybert",
-        "NTUYG/DeepSCC-RoBERTa",
-        "Kayvane/distilbert-complaints-product",
-        "alenusch/rugpt2-paraphraser",
-        "Helsinki-NLP/opus-mt-el-fr",
-        "Helsinki-NLP/opus-mt-en-tw"
+        "Helsinki-NLP/opus-mt-az-en",
+        "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
+        "VictorSanh/roberta-base-finetuned-yelp-polarity"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-DS3-v2",
-    "instance_type": "Standard_DS3_v2"
+    "compute": "Standard-E32s-v3",
+    "instance_type": "Standard_E32s_v3"
 }

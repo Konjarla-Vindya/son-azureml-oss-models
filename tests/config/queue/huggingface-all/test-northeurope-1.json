@@ -1,26 +1,15 @@
 {
     "queue_name": "test-northeurope-1",
     "models": [
-        "Helsinki-NLP/opus-mt-gl-pt",
-        "IDEA-CCNL/Wenzhong-GPT2-3.5B",
-        "Palak/microsoft_deberta-large_squad",
-        "GroNLP/gpt2-medium-dutch-embeddings",
-        "HooshvareLab/bert-fa-base-uncased-clf-digimag",
-        "DeepESP/gpt2-spanish-medium",
-        "Helsinki-NLP/opus-mt-pt-gl",
-        "abhilash1910/albert-german-ner",
-        "Helsinki-NLP/opus-mt-ig-en",
-        "Helsinki-NLP/opus-mt-ml-en",
-        "Jacobo/aristoBERTo",
-        "Helsinki-NLP/opus-mt-en-gmq",
-        "accelotron/rugpt3-ficbook-bts",
-        "RecordedFuture/Swedish-NER"
+        "Helsinki-NLP/opus-mt-mk-en",
+        "IlyaGusev/rubert_telegram_headlines",
+        "THUMT/mGPT"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-DS3-v2",
-    "instance_type": "Standard_DS3_v2"
+    "compute": "Standard-E32s-v3",
+    "instance_type": "Standard_E32s_v3"
 }

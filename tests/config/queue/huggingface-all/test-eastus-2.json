@@ -1,23 +1,16 @@
 {
     "queue_name": "test-eastus-2",
     "models": [
-        "Geotrend/distilbert-base-zh-cased",
-        "Helsinki-NLP/opus-mt-es-gl",
-        "Rocketknight1/distilbert-base-uncased-finetuned-cola",
-        "SEBIS/code_trans_t5_small_source_code_summarization_sql_multitask_finetune",
-        "Helsinki-NLP/opus-mt-en-af",
-        "Helsinki-NLP/opus-mt-en-az",
-        "Helsinki-NLP/opus-mt-en-rw",
-        "abhibisht89/spanbert-large-cased-finetuned-ade_corpus_v2",
-        "Helsinki-NLP/opus-mt-gl-es",
-        "Helsinki-NLP/opus-mt-ru-sv",
-        "Geotrend/distilbert-base-ru-cased"
+        "Callidior/bert2bert-base-arxiv-titlegen",
+        "SEBIS/code_trans_t5_large_code_documentation_generation_java_transfer_learning_finetune",
+        "CouchCat/ma_ner_v7_distil",
+        "Helsinki-NLP/opus-mt-en-bg"
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-DS3-v2",
-    "instance_type": "Standard_DS3_v2"
+    "compute": "Standard-E32-v3",
+    "instance_type": "Standard_E32_v3"
 }
