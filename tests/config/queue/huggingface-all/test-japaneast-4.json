@@ -1,5 +1,5 @@
 {
-    "queue_name": "test-japaneast-3",
+    "queue_name": "test-japaneast-4",
     "models": [
         "SEBIS/code_trans_t5_large_code_comment_generation_java_multitask",
         "SEBIS/code_trans_t5_large_code_comment_generation_java_multitask_finetune",
