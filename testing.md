@@ -1,7 +1,10 @@
 🚀Total|✅Success|❌Failure|🚫Cancelled|
 -----|-------|-------|-------|
-0|0|0|0|
-100.0%|nan%|nan%|nan%|
+3|2|0|0|
+100.0%|66.67%|0.00%|0.00%|
 
-| Model   | Status   |
-|---------|----------|
+|    | Model                                          | Status                                                                                                                                                                                                                                                                                                                            |
+|---:|:-----------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|  0 | testing                                        | [![testing.yml](https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/testing.yml/badge.svg)](https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/testing.yml)                                                                                                                      |
+|  1 | ahotrod-electra_large_discriminator_squad2_512 | [![ahotrod-electra_large_discriminator_squad2_512.yml](https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/ahotrod-electra_large_discriminator_squad2_512.yml/badge.svg)](https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/ahotrod-electra_large_discriminator_squad2_512.yml) |
+|  2 | ARTeLab-it5-summarization-fanpage              | [![ARTeLab-it5-summarization-fanpage.yml](https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/ARTeLab-it5-summarization-fanpage.yml/badge.svg)](https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/ARTeLab-it5-summarization-fanpage.yml)                                        |
