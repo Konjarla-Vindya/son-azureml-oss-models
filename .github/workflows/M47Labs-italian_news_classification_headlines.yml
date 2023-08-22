@@ -7,7 +7,7 @@ env:
   test_model_name: M47Labs/italian_news_classification_headlines
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: sonata-test-ws-05
+  test_queue: test-koreacentral-4
   test_set: huggingface-all
   test_keep_looping: false
 
