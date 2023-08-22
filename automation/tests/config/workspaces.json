@@ -7,6 +7,5 @@
       "environment": "automate-venv",
       "compute": "Standard-D16as-v4",
       "instance_type": "Standard_D16as_v4"
-    }
-    
+    }    
 }
