@@ -14,7 +14,17 @@ class Dashboard():
             "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
             "updated_at": [], "status": [], "conclusion": [], "badge": []
         }
-        
+    def get_all_workflow_names(self):	
+        headers = {	
+            "Authorization": f"Bearer {self.github_token}",	
+            "Accept": "application/vnd.github.v3+json"	
+        }	
+        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers)	
+        response.raise_for_status()	
+        	
+        workflows = response.json()	
+        workflow_names = [workflow["name"] for workflow in workflows["workflows"]]	
+        return workflow_names
     def workflow_last_run(self):
         headers = {
             "Authorization": f"Bearer {self.github_token}",
@@ -22,27 +32,7 @@ class Dashboard():
             "Accept": "application/vnd.github+json"
         }
         
-        workflows_to_include = [
-            "CAMeL-Lab-bert-base-arabic-camelbert-ca-sentiment.yml",
-            "Helsinki-NLP-opus-mt-trk-en.yml",
-            "Helsinki-NLP-opus-mt-en-bem.yml",
-            "Helsinki-NLP-opus-mt-it-bg.yml",
-            "SauravMaheshkar-clr-finetuned-albert-base.yml",
-            "DoyyingFace-bert-asian-hate-tweets-asian-unclean-freeze-4.yml",
-            "Helsinki-NLP-opus-mt-en-bi.yml",
-            "Helsinki-NLP-opus-mt-ja-pt.yml",
-            "Helsinki-NLP-opus-mt-en-bzs.yml",
-            "Helsinki-NLP-opus-mt-en-ht.yml",
-            "Geotrend-bert-base-uk-cased.yml",
-            "Helsinki-NLP-opus-mt-sv-uk.yml",
-            "Helsinki-NLP-opus-mt-es-zai.yml",
-            "EasthShin-Android_Ios_Classification.yml",
-            "Helsinki-NLP-opus-mt-en-lua.yml",
-
-         
-            "ahotrod-electra_large_discriminator_squad2_512.yml",
-            "ARTeLab-it5-summarization-fanpage.yml"
-        ]
+        workflows_to_include = self.get_all_workflow_names()
 
         for workflow_name in workflows_to_include:
             try:
