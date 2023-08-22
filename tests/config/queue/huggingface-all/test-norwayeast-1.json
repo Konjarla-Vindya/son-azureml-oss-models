@@ -1,10 +1,10 @@
 {
     "queue_name": "test-norwayeast-1",
     "models": [
-        "Helsinki-NLP/opus-mt-hi-en",
-        "Helsinki-NLP/opus-mt-et-en",
-        "Helsinki-NLP/opus-mt-th-en",
-        "Helsinki-NLP/opus-mt-gmw-gmw"
+        "KoboldAI/GPT-J-6B-Skein",
+        "KoboldAI/GPT-Neo-2.7B-Shinen",
+        "KoboldAI/GPT-Neo-2.7B-Janeway",
+        "IlyaGusev/mbart_ru_sum_gazeta"
         
     ],
     "workspace": "test-norwayeast",
