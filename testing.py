@@ -23,6 +23,22 @@ class Dashboard():
         }
         
         workflows_to_include = [
+            "CAMeL-Lab-bert-base-arabic-camelbert-ca-sentiment",
+            "Helsinki-NLP-opus-mt-trk-en",
+            "Helsinki-NLP-opus-mt-en-bem",
+            "Helsinki-NLP-opus-mt-it-bg",
+            "SauravMaheshkar-clr-finetuned-albert-base",
+            "DoyyingFace-bert-asian-hate-tweets-asian-unclean-freeze-4",
+            "Helsinki-NLP-opus-mt-en-bi",
+            "Helsinki-NLP-opus-mt-ja-pt",
+            "Helsinki-NLP-opus-mt-en-bzs",
+            "Helsinki-NLP-opus-mt-en-ht",
+            "Geotrend-bert-base-uk-cased",
+            "Helsinki-NLP-opus-mt-sv-uk",
+            "Helsinki-NLP-opus-mt-es-zai",
+            "EasthShin-Android_Ios_Classification",
+            "Helsinki-NLP-opus-mt-en-lua",
+
          
             "ahotrod-electra_large_discriminator_squad2_512.yml",
             "ARTeLab-it5-summarization-fanpage.yml"
