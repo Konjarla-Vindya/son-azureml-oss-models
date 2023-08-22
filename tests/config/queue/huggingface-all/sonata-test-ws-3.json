@@ -1,10 +1,9 @@
 {
-    "queue_name": "sonata-test-ws-2",
+    "queue_name": "sonata-test-ws-3",
     "models": [
-        "Callidior/bert2bert-base-arxiv-titlegen",
-        "SEBIS/code_trans_t5_large_code_documentation_generation_java_transfer_learning_finetune",
-        "CouchCat/ma_ner_v7_distil",
-        "Helsinki-NLP/opus-mt-en-bg"
+        "NbAiLab/nb-bert-large",
+        "Helsinki-NLP/opus-mt-ru-fr",
+        "SEBIS/code_trans_t5_large_code_documentation_generation_python_multitask"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

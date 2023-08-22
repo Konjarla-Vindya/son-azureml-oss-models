@@ -1,18 +1,9 @@
 {
     "queue_name": "test-southcentralus-2",
     "models": [
-        "Helsinki-NLP/opus-mt-aav-en",
-        "Yanzhu/bertweetfr-base",
-        "Helsinki-NLP/opus-mt-iir-en",
-        "Helsinki-NLP/opus-mt-zlw-fiu",
-        "Helsinki-NLP/opus-mt-bg-de",
-        "Intel/distilbert-base-uncased-sparse-90-unstructured-pruneofa",
-        "HooshvareLab/bert-fa-base-uncased-ner-arman",
-        "Helsinki-NLP/opus-mt-de-et",
-        "Helsinki-NLP/opus-mt-bg-uk",
-        "Helsinki-NLP/opus-mt-af-fr",
-        "abdusah/arabert-ner",
-        "Geotrend/bert-base-de-cased"
+        "Helsinki-NLP/opus-mt-az-en",
+        "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
+        "VictorSanh/roberta-base-finetuned-yelp-polarity"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

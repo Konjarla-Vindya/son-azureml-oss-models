@@ -1,0 +1,49 @@
+{
+    "sonata-test-ws": {
+        "0": [
+            "VietAI/gpt-j-6B-vietnamese-news",
+            "SEBIS/code_trans_t5_base_code_documentation_generation_java_multitask",
+            "TsinghuaAI/CPM-Generate",
+            "PlanTL-GOB-ES/roberta-large-bne-sqac"
+        ],
+        "1": [
+            "CLTL/MedRoBERTa.nl",
+            "Qishuai/distilbert_punctuator_en",
+            "Helsinki-NLP/opus-mt-ga-en",
+            "PremalMatalia/albert-base-best-squad2"
+        ],
+        "2": [
+            "Callidior/bert2bert-base-arxiv-titlegen",
+            "SEBIS/code_trans_t5_large_code_documentation_generation_java_transfer_learning_finetune",
+            "CouchCat/ma_ner_v7_distil",
+            "Helsinki-NLP/opus-mt-en-bg"
+        ],
+        "3": [
+            "NbAiLab/nb-bert-large",
+            "Helsinki-NLP/opus-mt-ru-fr",
+            "SEBIS/code_trans_t5_large_code_documentation_generation_python_multitask"
+        ]
+    },
+    "test-southcentralus": {
+        "0": [
+            "Jean-Baptiste/roberta-ticker",
+            "SEBIS/code_trans_t5_large_source_code_summarization_python_multitask_finetune",
+            "Elron/bleurt-base-512"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-mk-en",
+            "IlyaGusev/rubert_telegram_headlines",
+            "THUMT/mGPT"
+        ],
+        "2": [
+            "Helsinki-NLP/opus-mt-az-en",
+            "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
+            "VictorSanh/roberta-base-finetuned-yelp-polarity"
+        ],
+        "3": [
+            "Lowin/chinese-bigbird-wwm-base-4096",
+            "Helsinki-NLP/opus-mt-ca-es",
+            "Theivaprakasham/layoutlmv2-finetuned-sroie"
+        ]
+    }
+}

@@ -1,19 +1,10 @@
 {
     "queue_name": "sonata-test-ws-1",
     "models": [
-        "Helsinki-NLP/opus-mt-fi-hu",
-        "XSY/albert-base-v2-imdb-calssification",
-        "SEBIS/code_trans_t5_base_source_code_summarization_python_multitask",
-        "Helsinki-NLP/opus-mt-bcl-en",
-        "KoichiYasuoka/chinese-bert-wwm-ext-upos",
-        "Helsinki-NLP/opus-mt-ar-it",
-        "akhooli/gpt2-small-arabic-poetry",
-        "09panesara/distilbert-base-uncased-finetuned-cola",
-        "alexandrainst/da-ner-base",
-        "AdapterHub/roberta-base-pf-hotpotqa",
-        "CAMeL-Lab/bert-base-arabic-camelbert-mix-did-nadi",
-        "airesearch/wangchanberta-base-wiki-spm",
-        "Helsinki-NLP/opus-mt-ko-de"
+        "CLTL/MedRoBERTa.nl",
+        "Qishuai/distilbert_punctuator_en",
+        "Helsinki-NLP/opus-mt-ga-en",
+        "PremalMatalia/albert-base-best-squad2"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
