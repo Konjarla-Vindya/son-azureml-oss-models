@@ -20,7 +20,7 @@ class dashboard():
                    "Accept": "application/vnd.github+json"}
 
         
-        workflows_to_include = ["ahotrod-electra_large_discriminator_squad2_512.yml","ARTeLab-it5-summarization-fanpage.yml"]
+        workflows_to_include = ["testing.yml","ahotrod-electra_large_discriminator_squad2_512.yml","ARTeLab-it5-summarization-fanpage.yml"]
 
 
         for workflow in workflows:
