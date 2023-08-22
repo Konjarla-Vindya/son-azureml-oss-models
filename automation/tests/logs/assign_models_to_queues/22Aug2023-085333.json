@@ -1,0 +1,27 @@
+{
+    "test-southcentralus": {
+        "0": [
+            "2umm3r/distilbert-base-uncased-finetuned-cola",
+            "abhishek/autonlp-japanese-sentiment-59363",
+            "airesearch/wangchanberta-base-wiki-newmm",
+            "BSC-LT/roberta-base-biomedical-es"
+        ],
+        "1": [
+            "9pinus/macbert-base-chinese-medical-collation",
+            "accelotron/rugpt3-ficbook-bts",
+            "akdeniz27/roberta-large-cuad",
+            "BSC-LT/roberta-base-bne"
+        ],
+        "2": [
+            "abhilash1910/french-roberta",
+            "AdapterHub/bert-base-uncased-pf-emotion",
+            "alenusch/rugpt2-paraphraser",
+            "CAMeL-Lab/bert-base-arabic-camelbert-ca-ner"
+        ],
+        "3": [
+            "abhishek/autonlp-japanese-sentiment-59362",
+            "af-ai-center/bert-base-swedish-uncased",
+            "Alireza1044/albert-base-v2-qnli"
+        ]
+    }
+}

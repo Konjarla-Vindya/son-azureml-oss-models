@@ -1,7 +1,10 @@
 {
     "queue_name": "test-southcentralus-1",
     "models": [
-        "9pinus/macbert-base-chinese-medical-collation"
+        "9pinus/macbert-base-chinese-medical-collation",
+        "accelotron/rugpt3-ficbook-bts",
+        "akdeniz27/roberta-large-cuad",
+        "BSC-LT/roberta-base-bne"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
