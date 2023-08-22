@@ -1,0 +1,27 @@
+{
+    "test-japaneast": {
+        "0": [
+            "MoritzLaurer/DeBERTa-v3-small-mnli-fever-docnli-ling-2c",
+            "NbAiLab/nb-gpt-j-6B",
+            "NTUYG/DeepSCC-RoBERTa",
+            "Rostlab/prot_electra_generator_bfd"
+        ],
+        "1": [
+            "MutazYoune/hotel_reviews",
+            "NeuML/bert-small-cord19-squad2",
+            "NYTK/translation-bart-en-hu",
+            "SajjadAyoubi/distil-bigbird-fa-zwnj"
+        ],
+        "2": [
+            "Narrativaai/deberta-v3-small-finetuned-hate_speech18",
+            "Nomi97/Chatbot_QA",
+            "Prompsit/paraphrase-bert-en",
+            "SEBIS/code_trans_t5_base_code_comment_generation_java"
+        ],
+        "3": [
+            "Naveen-k/KanBERTo",
+            "NovelAI/genji-python-6B",
+            "RecordedFuture/Swedish-NER"
+        ]
+    }
+}
