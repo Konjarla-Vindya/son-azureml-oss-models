@@ -5,7 +5,7 @@
         "NlpHUST/vibert4news-base-cased",
         "Rostlab/prot_t5_base_mt_uniref50",
         "alaggung/bart-r3f",
-        "AkshatSurolia/ICD-10-Code-Prediction",
+        "AkshatSurolia/ICD-10-Code-Prediction"
      
     ],
     "workspace": "test-southafricanorth",
