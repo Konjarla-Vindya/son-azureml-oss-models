@@ -1,0 +1,10 @@
+{
+    "test-southcentralus": {
+        "0": [
+            "2umm3r/distilbert-base-uncased-finetuned-cola"
+        ],
+        "1": [
+            "9pinus/macbert-base-chinese-medical-collation"
+        ]
+    }
+}
