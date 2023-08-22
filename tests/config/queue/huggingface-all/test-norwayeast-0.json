@@ -1,19 +1,11 @@
 {
     "queue_name": "test-norwayeast-0",
     "models": [
-        "Helsinki-NLP/opus-mt-en-lg",
-        "SharanSMenon/22-languages-bert-base-cased",
-        "HooshvareLab/roberta-fa-zwnj-base-ner",
-        "SetFit/distilbert-base-uncased__sst5__all-train",
-        "Suchandra/bengali_language_NER",
-        "Davlan/xlm-roberta-large-masakhaner",
-        "Helsinki-NLP/opus-mt-lt-ru",
-        "akhooli/mbart-large-cc25-ar-en",
-        "Helsinki-NLP/opus-mt-en-dra",
-        "Helsinki-NLP/opus-mt-ilo-en",
-        "Helsinki-NLP/opus-mt-ms-ms",
-        "BSC-LT/roberta-base-biomedical-es",
-        "M-FAC/bert-tiny-finetuned-mnli"
+        "Helsinki-NLP/opus-mt-hi-en",
+        "Helsinki-NLP/opus-mt-et-en",
+        "Helsinki-NLP/opus-mt-th-en",
+        "Helsinki-NLP/opus-mt-gmw-gmw"
+        
     ],
     "workspace": "test-norwayeast",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
