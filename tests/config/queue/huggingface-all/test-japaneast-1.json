@@ -4,7 +4,8 @@
         "MutazYoune/hotel_reviews",
         "NeuML/bert-small-cord19-squad2",
         "NYTK/translation-bart-en-hu",
-        "SajjadAyoubi/distil-bigbird-fa-zwnj"
+        "SajjadAyoubi/distil-bigbird-fa-zwnj",
+        "Tanhim/gpt2-model-de"
     ],
     "workspace": "test-japaneast",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
