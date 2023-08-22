@@ -21,4 +21,3 @@ Geotrend/bert-base-ru-cased
 Geotrend/distilbert-base-da-cased
 GroNLP/gpt2-small-dutch
 GroNLP/gpt2-small-italian-embeddings
-Yah216/Sentiment_Analysis_CAMelBERT_msa_sixteenth_HARD
