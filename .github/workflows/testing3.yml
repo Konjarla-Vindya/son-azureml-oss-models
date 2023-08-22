@@ -35,10 +35,10 @@ jobs:
           git config user.email "${{ secrets.USER_EMAIL }}"
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
-          git add testing3.md          
+          git add testing.md          
           # Attempt to commit changes and handle errors
           set +e
-          git commit -m "Add testing3.md"
+          git commit -m "Add testing.md"
           commit_status=$?
           set -e
           if [ $commit_status -eq 0 ]; then
