@@ -35,13 +35,14 @@ class dashboard():
             workflow_name = workflow_name.replace("/", "-")
             
             try:
-                response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name, workflow_name), headers=headers)
+                response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}/runs", headers=headers)
                 response.raise_for_status()  # Raise an error if the response status code is not successful
                 
                 runs = response.json()
+                print(runs)
                 lastrun = runs["workflow_runs"][0]
                 self.workflow_name_ext = lastrun["name"].replace(self.workflow_path, "")
-                self.badgeurl = "https://github.com/{}/actions/workflows/{}/badge.svg".format(self.repo_full_name, self.workflow_name_ext)
+                badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
 
                 self.dict["workflow_id"].append(lastrun["workflow_id"])
                 self.dict["workflow_name"].append(self.workflow_name_ext.replace(".yml", ""))
