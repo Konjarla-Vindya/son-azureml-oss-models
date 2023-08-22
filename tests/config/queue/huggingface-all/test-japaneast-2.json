@@ -4,7 +4,8 @@
         "Narrativaai/deberta-v3-small-finetuned-hate_speech18",
         "Nomi97/Chatbot_QA",
         "Prompsit/paraphrase-bert-en",
-        "SEBIS/code_trans_t5_base_code_comment_generation_java"
+        "SEBIS/code_trans_t5_base_code_comment_generation_java",
+        "UBIAI/en_scibert_ScienceIE"
     ],
     "workspace": "test-japaneast",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
