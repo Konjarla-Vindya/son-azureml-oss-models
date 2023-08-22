@@ -5,8 +5,7 @@
     "CAMeL-Lab/bert-base-arabic-camelbert-da-poetry",
     "CAMeL-Lab/bert-base-arabic-camelbert-mix-did-madar-corpus6",
     "Elron/bleurt-base-128",
-    "Geotrend/bert-base-ru-cased",
-    "Helsinki-NLP/opus-mt-rn-ru"
+    "Geotrend/bert-base-ru-cased"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
