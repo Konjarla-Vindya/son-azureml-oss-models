@@ -1,13 +1,13 @@
-name: Helsinki-NLP/opus-mt-cs-fr
+name: Helsinki-NLP/opus-mt-en-map
 
 on: 
   workflow_dispatch:
 
 env:
-  test_model_name: Helsinki-NLP/opus-mt-cs-fr
+  test_model_name: Helsinki-NLP/opus-mt-en-map
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: sonata-test-ws-3
+  test_queue: sonata-test-ws-1
   test_set: huggingface-all
   test_keep_looping: false
 

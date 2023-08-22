@@ -1,0 +1,31 @@
+{
+    "sonata-test-ws": {
+        "0": [
+            "Guscode/DKbert-hatespeech-detection",
+            "Helsinki-NLP/opus-mt-de-uk",
+            "Helsinki-NLP/opus-mt-en-gem",
+            "Helsinki-NLP/opus-mt-en-is"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-bg-ru",
+            "Helsinki-NLP/opus-mt-el-fr",
+            "Helsinki-NLP/opus-mt-en-gmq",
+            "Helsinki-NLP/opus-mt-en-map"
+        ],
+        "2": [
+            "Helsinki-NLP/opus-mt-ca-nl",
+            "Helsinki-NLP/opus-mt-en-bzs",
+            "Helsinki-NLP/opus-mt-en-ht"
+        ],
+        "3": [
+            "Helsinki-NLP/opus-mt-cs-fr",
+            "Helsinki-NLP/opus-mt-en-chk",
+            "Helsinki-NLP/opus-mt-en-hy"
+        ],
+        "4": [
+            "Helsinki-NLP/opus-mt-de-pl",
+            "Helsinki-NLP/opus-mt-en-dra",
+            "Helsinki-NLP/opus-mt-en-inc"
+        ]
+    }
+}

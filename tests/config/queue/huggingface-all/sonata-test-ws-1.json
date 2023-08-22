@@ -1,0 +1,16 @@
+{
+    "queue_name": "sonata-test-ws-1",
+    "models": [
+        "Helsinki-NLP/opus-mt-bg-ru",
+        "Helsinki-NLP/opus-mt-el-fr",
+        "Helsinki-NLP/opus-mt-en-gmq",
+        "Helsinki-NLP/opus-mt-en-map"
+    ],
+    "workspace": "sonata-test-ws",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "sonata-test-rg",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16as_v4"
+}

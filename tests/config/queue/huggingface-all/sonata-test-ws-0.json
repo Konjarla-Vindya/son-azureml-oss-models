@@ -1,0 +1,16 @@
+{
+    "queue_name": "sonata-test-ws-0",
+    "models": [
+        "Guscode/DKbert-hatespeech-detection",
+        "Helsinki-NLP/opus-mt-de-uk",
+        "Helsinki-NLP/opus-mt-en-gem",
+        "Helsinki-NLP/opus-mt-en-is"
+    ],
+    "workspace": "sonata-test-ws",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "sonata-test-rg",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16as_v4"
+}
