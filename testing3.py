@@ -24,7 +24,9 @@ class Dashboard():
         	
         workflows = response.json()	
         workflow_names = [workflow["name"] for workflow in workflows["workflows"]]	
+        print(workflow_names)
         return workflow_names
+    
     def workflow_last_run(self):
         headers = {
             "Authorization": f"Bearer {self.github_token}",
