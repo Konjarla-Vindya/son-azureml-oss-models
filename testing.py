@@ -23,7 +23,7 @@ class Dashboard():
         }
         
         workflows_to_include = [
-            "testing.yml", 
+         
             "ahotrod-electra_large_discriminator_squad2_512.yml",
             "ARTeLab-it5-summarization-fanpage.yml"
         ]
