@@ -1,19 +1,12 @@
 {
     "queue_name": "test-southafricanorth-0",
     "models": [
-        "akdeniz27/roberta-base-cuad",
-        "TingChenChang/bert-base-chinese-finetuned-squad-colab",
-        "Helsinki-NLP/opus-mt-cs-de",
-        "M-FAC/bert-tiny-finetuned-squadv2",
-        "MoritzLaurer/MiniLM-L6-mnli-binary",
-        "DemangeJeremy/4-sentiments-with-flaubert",
-        "Norod78/distilgpt2-base-pretrained-he",
-        "SEBIS/code_trans_t5_base_code_documentation_generation_python_transfer_learning_finetune",
-        "Peltarion/xlm-roberta-longformer-base-4096",
-        "AdapterHub/bert-base-uncased-pf-newsqa",
-        "Luciano/bertimbau-base-lener_br",
-        "Helsinki-NLP/opus-mt-eo-de",
-        "Geotrend/distilbert-base-da-cased"
+        "KoboldAI/GPT-Neo-2.7B-Picard",
+        "KoboldAI/GPT-J-6B-Shinen",
+        "KoboldAI/GPT-Neo-2.7B-AID",
+        "KoboldAI/fairseq-dense-2.7B",
+        "VietAI/gpt-neo-1.3B-vietnamese-news",
+        "ainize/bart-base-cnn"
     ],
     "workspace": "test-southafricanorth",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
