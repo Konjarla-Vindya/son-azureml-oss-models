@@ -1,18 +1,12 @@
 {
     "queue_name": "test-southafricanorth-2",
     "models": [
-        "ArBert/albert-base-v2-finetuned-ner",
-        "Davlan/bert-base-multilingual-cased-finetuned-amharic",
-        "Alireza1044/albert-base-v2-rte",
-        "Helsinki-NLP/opus-mt-zle-en",
-        "Theivaprakasham/layoutlmv2-finetuned-sroie_mod",
-        "KoichiYasuoka/roberta-large-english-upos",
-        "Capreolus/electra-base-msmarco",
-        "MutazYoune/Ara_DialectBERT",
-        "NYTK/translation-bart-en-hu",
-        "Helsinki-NLP/opus-mt-zh-it",
-        "Tanhim/gpt2-model-de",
-        "Helsinki-NLP/opus-tatoeba-es-zh"
+        "Wellcome/WellcomeBertMesh",
+        "Maltehb/danish-bert-botxo",
+        "KoboldAI/fairseq-dense-13B",
+        "HooshvareLab/bert-base-parsbert-armanner-uncased",
+        "KoboldAI/GPT-Neo-2.7B-Horni-LN",
+        
     ],
     "workspace": "test-southafricanorth",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
