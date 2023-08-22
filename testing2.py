@@ -53,7 +53,7 @@ class dashboard():
                 self.dict["updated_at"].append(lastrun["updated_at"])
                 self.dict["status"].append(lastrun["status"])
                 self.dict["conclusion"].append(lastrun["conclusion"])
-                self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
+                self.dict["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
 
             except requests.exceptions.RequestException as e:
                 _, _, exc_tb = sys.exc_info()
