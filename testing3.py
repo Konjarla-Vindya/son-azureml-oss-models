@@ -15,17 +15,27 @@ class Dashboard():
             "updated_at": [], "status": [], "conclusion": [], "badge": []
         }
         
-    def get_all_workflow_names(self):
+    def fetch_all_workflows(self):
+        query = """
+        query {
+          repository(owner: "Konjarla-Vindya", name: "son-azureml-oss-models") {
+            workflows(first: 100) {
+              nodes {
+                name
+              }
+            }
+          }
+        }
+        """
         headers = {
             "Authorization": f"Bearer {self.github_token}",
-            "Accept": "application/vnd.github.v3+json"
+            "Accept": "application/vnd.github.v4+json"
         }
-        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers)
+        response = requests.post("https://api.github.com/graphql", json={"query": query}, headers=headers)
         response.raise_for_status()
         
-        workflows = response.json()
-        workflow_names = [workflow["name"] for workflow in workflows["workflows"]]
-        print(workflow_names)
+        workflows = response.json()["data"]["repository"]["workflows"]["nodes"]
+        workflow_names = [workflow["name"] for workflow in workflows]
         return workflow_names
         
     def workflow_last_run(self):
@@ -35,7 +45,7 @@ class Dashboard():
             "Accept": "application/vnd.github+json"
         }
         
-        workflows_to_include = self.get_all_workflow_names()
+        workflows_to_include = self.fetch_all_workflows()
 
         for workflow_name in workflows_to_include:
             try:
