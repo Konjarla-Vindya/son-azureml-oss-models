@@ -1,0 +1,27 @@
+{
+    "test-koreacentral": {
+        "0": [
+            "Helsinki-NLP/opus-mt-zh-ms",
+            "Helsinki-NLP/opus-tatoeba-fr-it",
+            "Jacobo/aristoBERTo",
+            "Kayvane/distilbert-complaints-product"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-zh-vi",
+            "IlyaGusev/rubertconv_toxic_editor",
+            "Jorgeutd/bert-base-uncased-finetuned-surveyclassification",
+            "KoichiYasuoka/roberta-base-english-upos"
+        ],
+        "2": [
+            "Helsinki-NLP/opus-mt-zls-en",
+            "Intel/dynamic_tinybert",
+            "JP040/bert-german-sentiment-twitter",
+            "Lowin/chinese-bigbird-mini-1024"
+        ],
+        "3": [
+            "Helsinki-NLP/opus-tatoeba-es-zh",
+            "Ivo/emscad-skill-extraction-conference",
+            "JuliusAlphonso/distilbert-plutchik"
+        ]
+    }
+}
