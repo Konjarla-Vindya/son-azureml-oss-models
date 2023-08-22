@@ -1,0 +1,16 @@
+{
+    "queue_name": "test-northcentralus-0",
+    "models": [
+        "Helsinki-NLP/opus-mt-en-toi",
+        "Helsinki-NLP/opus-mt-fi-et",
+        "Helsinki-NLP/opus-mt-fr-uk",
+        "Helsinki-NLP/opus-mt-ms-ms"
+    ],
+    "workspace": "test-northcentralus",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-DS3-v2",
+    "instance_type": "Standard_DS3_v2"
+}

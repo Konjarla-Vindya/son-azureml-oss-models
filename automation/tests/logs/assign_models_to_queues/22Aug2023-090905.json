@@ -1,0 +1,27 @@
+{
+    "test-northcentralus": {
+        "0": [
+            "Helsinki-NLP/opus-mt-en-toi",
+            "Helsinki-NLP/opus-mt-fi-et",
+            "Helsinki-NLP/opus-mt-fr-uk",
+            "Helsinki-NLP/opus-mt-ms-ms"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-en-tw",
+            "Helsinki-NLP/opus-mt-fr-ar",
+            "Helsinki-NLP/opus-mt-ilo-en",
+            "Helsinki-NLP/opus-mt-nl-ca"
+        ],
+        "2": [
+            "Helsinki-NLP/opus-mt-eo-de",
+            "Helsinki-NLP/opus-mt-fr-el",
+            "Helsinki-NLP/opus-mt-it-uk",
+            "Helsinki-NLP/opus-mt-nl-es"
+        ],
+        "3": [
+            "Helsinki-NLP/opus-mt-fi_nb_no_nn_ru_sv_en-SAMI",
+            "Helsinki-NLP/opus-mt-fr-tw",
+            "Helsinki-NLP/opus-mt-ja-it"
+        ]
+    }
+}
