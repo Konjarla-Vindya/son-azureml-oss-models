@@ -25,14 +25,14 @@ class dashboard():
                    "Accept": "application/vnd.github+json"}
         
         for workflow in workflows:
-            workflow_name = workflow.name.replace(".github/workflows/", "")
+            workflow_temp = workflow.name.replace(".github/workflows/", "")
             print("workflow is this :  ", workflow)
-            print("workflow_name : ", workflow_name)
-            workflow_name = workflow_name + ".yml"
+            workflow_temp = workflow_temp + ".yml"
             # if workflow_name != "":
             #     continue
 
-            workflow_name = workflow_name.replace("/", "-")
+            workflow_name = workflow_temp.replace("/", "-")
+            print("Final workflow_name : ", workflow_name)
             
             try:
                 response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}/runs", headers=headers)
