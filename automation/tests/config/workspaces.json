@@ -1,22 +1,13 @@
 
 { 
-   "test-eastus": {
-      "region": "eastus",
+   "test-southcentralus": {
+      "region": "southcentralus",
       "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
       "resource_group": "huggingface-registry-test1",
       "secret_name": "AZURE_CREDENTIALS",
       "environment": "automate-venv",
-      "compute": "Standard-E32-v3",
-      "instance_type": "Standard_E32_v3"
-    },
-    "test-northeurope": {
-      "region": "northeurope",
-      "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
-      "resource_group": "huggingface-registry-test1",
-      "secret_name": "AZURE_CREDENTIALS",
-      "environment": "automate-venv",
-      "compute": "Standard-E32s-v3",
-      "instance_type": "Standard_E32s_v3"
+      "compute": "Standard-D16as-v4",
+      "instance_type": "Standard_D16as_v4"
     }
     
 }
