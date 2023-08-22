@@ -13,8 +13,3 @@ Alireza1044/albert-base-v2-qnli
 BSC-LT/roberta-base-biomedical-es
 BSC-LT/roberta-base-bne
 CAMeL-Lab/bert-base-arabic-camelbert-ca-ner
-CAMeL-Lab/bert-base-arabic-camelbert-da-poetry
-CAMeL-Lab/bert-base-arabic-camelbert-mix-did-madar-corpus6
-DTAI-KULeuven/robbertje-1-gb-merged
-Elron/bleurt-base-128
-Geotrend/bert-base-ru-cased
