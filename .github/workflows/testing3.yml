@@ -1,4 +1,8 @@
-on: workflow_dispatch
+#on: workflow_dispatch
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+
 jobs:
   testing:
     runs-on: ubuntu-latest
