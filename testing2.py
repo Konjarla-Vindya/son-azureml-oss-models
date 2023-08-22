@@ -42,18 +42,20 @@ class dashboard():
                 #print(runs)
                 print("Type is : ",type(runs["workflow_runs"]))
                 print("Length is this : ", len(runs["workflow_runs"]))
-                lastrun = runs["workflow_runs"][0]
-                self.workflow_name_ext = lastrun["name"].replace(self.workflow_path, "")
-                badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
+                if len(runs["workflow_runs"]) != 0:
+                    #continue
+                    lastrun = runs["workflow_runs"][0]
+                    self.workflow_name_ext = lastrun["name"].replace(self.workflow_path, "")
+                    badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
 
-                self.dict["workflow_id"].append(lastrun["workflow_id"])
-                self.dict["workflow_name"].append(self.workflow_name_ext.replace(".yml", ""))
-                self.dict["last_runid"].append(lastrun["id"])
-                self.dict["created_at"].append(lastrun["created_at"])
-                self.dict["updated_at"].append(lastrun["updated_at"])
-                self.dict["status"].append(lastrun["status"])
-                self.dict["conclusion"].append(lastrun["conclusion"])
-                self.dict["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
+                    self.dict["workflow_id"].append(lastrun["workflow_id"])
+                    self.dict["workflow_name"].append(self.workflow_name_ext.replace(".yml", ""))
+                    self.dict["last_runid"].append(lastrun["id"])
+                    self.dict["created_at"].append(lastrun["created_at"])
+                    self.dict["updated_at"].append(lastrun["updated_at"])
+                    self.dict["status"].append(lastrun["status"])
+                    self.dict["conclusion"].append(lastrun["conclusion"])
+                    self.dict["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
 
             except requests.exceptions.RequestException as e:
                 _, _, exc_tb = sys.exc_info()
