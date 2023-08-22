@@ -7,7 +7,7 @@ env:
   test_model_name: Geotrend/distilbert-base-da-cased
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-southafricanorth-0
+  test_queue: test-southcentralus-4
   test_set: huggingface-all
   test_keep_looping: false
 
