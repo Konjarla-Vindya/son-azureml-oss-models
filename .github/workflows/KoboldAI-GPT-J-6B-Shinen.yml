@@ -4,7 +4,7 @@ on:
 env:
   test_keep_looping: false
   test_model_name: KoboldAI/GPT-J-6B-Shinen
-  test_queue: test-southafricanorth-0
+  test_queue: test-eastus-1
   test_set: huggingface-all
   test_sku_type: cpu
   test_trigger_next_model: true
