@@ -1,9 +1,7 @@
 {
     "queue_name": "test-northeurope-0",
     "models": [
-        "JuliusAlphonso/distilbert-plutchik",
-        "SEBIS/code_trans_t5_small_code_documentation_generation_python",
-        "Narrativaai/deberta-v3-small-finetuned-hate_speech18"
+        "Pollawat/mt5-small-thai-qa-qg"
 
     ],
     "workspace": "test-northeurope",
