@@ -1,13 +1,13 @@
 {
     "queue_name": "test-northcentralus-0",
     "models": [
-        "t5-3b",
-        "t5-11b",
-        "Rostlab/prot_t5_base_mt_uniref50",
-        "Wellcome/WellcomeBertMesh",
-        "NlpHUST/vibert4news-base-cased",
-        "Callidior/bert2bert-base-arxiv-titlegen",
-        "Lowin/chinese-bigbird-wwm-base-4096"
+                "t5-3b",
+                "t5-11b",
+                "Rostlab/prot_t5_base_mt_uniref50",
+                "Wellcome/WellcomeBertMesh",
+                "NlpHUST/vibert4news-base-cased",
+                "Callidior/bert2bert-base-arxiv-titlegen",
+                "Lowin/chinese-bigbird-wwm-base-4096"
   
     ],
     "workspace": "test-northcentralus",
