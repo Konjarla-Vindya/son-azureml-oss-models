@@ -1,16 +1,16 @@
 {
     "queue_name": "test-eastus-1",
     "models": [
-        "CLTL/MedRoBERTa.nl",
-        "Qishuai/distilbert_punctuator_en",
-        "Helsinki-NLP/opus-mt-ga-en",
-        "PremalMatalia/albert-base-best-squad2"
+        "KoboldAI/GPT-J-6B-Janeway",
+        "IlyaGusev/mbart_ru_sum_gazeta",
+        "KoboldAI/GPT-Neo-2.7B-Picard",
+        "KoboldAI/GPT-J-6B-Shinen"
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-E32-v3",
-    "instance_type": "Standard_E32_v3"
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
 }
