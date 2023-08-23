@@ -1,9 +1,7 @@
 {
     "queue_name": "test-northeurope-1",
     "models": [
-        "Naveen-k/KanBERTo",
-        "s-nlp/rubert-base-corruption-detector",
-        "Helsinki-NLP/opus-mt-ar-ru"
+        "KoboldAI/fairseq-dense-13B"
 
     ],
     "workspace": "test-northeurope",
