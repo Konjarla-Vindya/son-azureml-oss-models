@@ -7,7 +7,7 @@ env:
   test_model_name: Shushant/biobert-v1.1-biomedicalQuestionAnswering
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-germanywestcentral-3
+  test_queue: test-northcentralus-4
   test_set: huggingface-all
   test_keep_looping: false
 
