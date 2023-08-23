@@ -1,10 +1,9 @@
 {
     "queue_name": "test-northeurope-2",
     "models": [
-        "Helsinki-NLP/opus-mt-ar-ru",
+        "Helsinki-NLP/opus-mt-sl-ru",
         "KoboldAI/fairseq-dense-13B",
-        "Helsinki-NLP/opus-mt-sl-ru"
-
+        "Pollawat/mt5-small-thai-qa-qg"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
