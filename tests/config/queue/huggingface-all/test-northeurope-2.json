@@ -2,7 +2,7 @@
     "queue_name": "test-northeurope-2",
     "models": [
         "Helsinki-NLP/opus-mt-ar-ru",
-        "Helsinki-NLP/opus-mt-sl-ru",
+        "KoboldAI/fairseq-dense-13B",
         "Helsinki-NLP/opus-tatoeba-fr-it"
 
     ],
