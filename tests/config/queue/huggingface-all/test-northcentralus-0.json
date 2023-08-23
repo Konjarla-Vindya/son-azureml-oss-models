@@ -5,7 +5,8 @@
                 "LeoCordoba/beto2beto",
                 "Rostlab/prot_t5_base_mt_uniref50",
                 "SEBIS/code_trans_t5_base_code_documentation_generation_java",
-                "SEBIS/code_trans_t5_small_code_documentation_generation_java_multitask_finetune"
+                "SEBIS/code_trans_t5_small_code_documentation_generation_java_multitask_finetune",
+                "t5-11b"
                 
     ],
     "workspace": "test-northcentralus",
@@ -13,6 +14,6 @@
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D16s-v3",
-    "instance_type": "Standard_D16s_v3"
+    "compute": "Standard-E32s-v3",
+    "instance_type": "Standard_E32s_v3"
 }
