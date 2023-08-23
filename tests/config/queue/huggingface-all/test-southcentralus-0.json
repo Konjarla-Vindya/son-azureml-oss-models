@@ -1,16 +1,20 @@
 {
     "queue_name": "test-southcentralus-0",
     "models": [
-        "2umm3r/distilbert-base-uncased-finetuned-cola",
-        "abhishek/autonlp-japanese-sentiment-59363",
-        "airesearch/wangchanberta-base-wiki-newmm",
-        "BSC-LT/roberta-base-biomedical-es"
+        "activebus/BERT_Review",
+        "akdeniz27/deberta-v2-xlarge-cuad",
+        "Alireza1044/albert-base-v2-wnli",
+        "ForutanRad/bert-fa-QA-v1",
+        "Helsinki-NLP/opus-mt-af-fi",
+        "Helsinki-NLP/opus-mt-cs-uk",
+        "Helsinki-NLP/opus-mt-en-xh",
+        "Helsinki-NLP/opus-mt-en-zle"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D16as-v4",
-    "instance_type": "Standard_D16as_v4"
+    "compute": "Standard-D64a-v4",
+    "instance_type": "Standard_D64a_v4"
 }
