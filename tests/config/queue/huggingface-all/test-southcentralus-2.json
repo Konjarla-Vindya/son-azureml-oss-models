@@ -1,16 +1,18 @@
 {
     "queue_name": "test-southcentralus-2",
     "models": [
-        "abhilash1910/french-roberta",
-        "AdapterHub/bert-base-uncased-pf-emotion",
-        "alenusch/rugpt2-paraphraser",
-        "CAMeL-Lab/bert-base-arabic-camelbert-ca-ner"
+        "Helsinki-NLP/opus-mt-pt-uk",
+        "Helsinki-NLP/opus-mt-vi-ru",
+        "Helsinki-NLP/opus-mt-zh-nl",
+        "Helsinki-NLP/opus-mt-zls-en",
+        "KoichiYasuoka/bert-large-japanese-upos",
+        "MutazYoune/Absa_AspectSentiment_hotels"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D16as-v4",
-    "instance_type": "Standard_D16as_v4"
+    "compute": "Standard-D64a-v4",
+    "instance_type": "Standard_D64a_v4"
 }
