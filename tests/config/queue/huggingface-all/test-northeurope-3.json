@@ -1,9 +1,10 @@
 {
     "queue_name": "test-northeurope-3",
     "models": [
-        "Lowin/chinese-bigbird-wwm-base-4096",
-        "Helsinki-NLP/opus-mt-ca-es",
-        "Theivaprakasham/layoutlmv2-finetuned-sroie"
+        "Pollawat/mt5-small-thai-qa-qg",
+        "Ivo/emscad-skill-extraction-token-classification",
+        "SEBIS/code_trans_t5_base_code_documentation_generation_python"
+
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
