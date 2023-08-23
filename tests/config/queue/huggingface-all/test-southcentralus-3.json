@@ -1,15 +1,19 @@
 {
     "queue_name": "test-southcentralus-3",
     "models": [
-        "abhishek/autonlp-japanese-sentiment-59362",
-        "af-ai-center/bert-base-swedish-uncased",
-        "Alireza1044/albert-base-v2-qnli"
+        "Narsil/tiny-distilbert-sequence-classification",
+        "NbAiLab/nb-bert-large",
+        "NeuML/bert-small-cord19qa",
+        "NYTK/text-generation-poem-petofi-gpt2-small-hungarian",
+        "PlanTL-GOB-ES/roberta-large-bne-sqac",
+        "Sahajtomar/GBERTQnA",
+        "SEBIS/code_trans_t5_base_code_documentation_generation_java_multitask"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D16as-v4",
-    "instance_type": "Standard_D16as_v4"
+    "compute": "Standard-D64a-v4",
+    "instance_type": "Standard_D64a_v4"
 }
