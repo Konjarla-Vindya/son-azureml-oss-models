@@ -1,15 +1,14 @@
 {
     "queue_name": "test-northcentralus-0",
     "models": [
-        "Helsinki-NLP/opus-mt-pt-ca",
-        "Helsinki-NLP/opus-mt-pt-eo",
-        "Helsinki-NLP/opus-mt-rn-ru"
-    ],
-    "models_1": [
-        "Helsinki-NLP/opus-mt-en-toi",
-        "Helsinki-NLP/opus-mt-fi-et",
-        "Helsinki-NLP/opus-mt-fr-uk",
-        "Helsinki-NLP/opus-mt-ms-ms"
+        "t5-3b",
+        "t5-11b",
+        "Rostlab/prot_t5_base_mt_uniref50",
+        "Wellcome/WellcomeBertMesh",
+        "NlpHUST/vibert4news-base-cased",
+        "Callidior/bert2bert-base-arxiv-titlegen",
+        "Lowin/chinese-bigbird-wwm-base-4096"
+  
     ],
     "workspace": "test-northcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
