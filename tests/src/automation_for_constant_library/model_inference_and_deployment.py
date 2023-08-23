@@ -118,7 +118,7 @@ class ModelInferenceAndDeployemnt:
         self.workspace_ml_client.begin_create_or_update(endpoint).result()
         return model_package
 
-    def create_online_deployment(self, latest_model, online_endpoint_name, model_package):
+    def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type):
         print("In create_online_deployment...")
         # demo_deployment = ManagedOnlineDeployment(
         #     name="demo",
@@ -155,7 +155,7 @@ class ModelInferenceAndDeployemnt:
         # workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
         # endpoint.traffic = {"demo": 100}
         # workspace_ml_client.begin_create_or_update(endpoint).result()
-
+        print("latest_model.name is this : ", latest_model.name)
         latest_model_name = latest_model.name.replace("_", "-")
         if len(latest_model.name) > 32:
             model_name = latest_model_name[:31]
@@ -168,6 +168,7 @@ class ModelInferenceAndDeployemnt:
             model=latest_model,
             endpoint_name=online_endpoint_name,
             environment=model_package,
+            instance_type=instance_type,
             instance_count=1
         )
         deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(
@@ -175,6 +176,7 @@ class ModelInferenceAndDeployemnt:
 
     def delete_online_endpoint(self, online_endpoint_name):
         try:
+            print("\n In delete_online_endpoint.....")
             self.workspace_ml_client.online_endpoints.begin_delete(
                 name=online_endpoint_name).wait()
         except Exception as e:
@@ -208,8 +210,13 @@ class ModelInferenceAndDeployemnt:
         output = loaded_model(scoring_input.inputs)
         print("My outupt is this : ", output)
 
-    def model_infernce_and_deployment(self):
+    def model_infernce_and_deployment(self, instance_type):
         model_name = self.test_model_name.replace("/", "-")
+        # if len(self.test_model_name) > 22:
+        #     model_name = self.test_model_name.replace("/", "-")[:22]
+        #     model_name = model_name.rstrip("-")
+        # else:
+        #     model_name = self.test_model_name
         latest_model = self.get_latest_model_version(
             self.registry_ml_client, model_name)
         task = latest_model.flavors["transformers"]["task"]
@@ -231,7 +238,9 @@ class ModelInferenceAndDeployemnt:
         self.create_online_deployment(
             latest_model=latest_model,
             online_endpoint_name=online_endpoint_name,
-            model_package=model_package)
+            model_package=model_package,
+            instance_type=instance_type
+        )
         self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
         # endpoint = ManagedOnlineEndpoint(
         #     name=online_endpoint_name,
