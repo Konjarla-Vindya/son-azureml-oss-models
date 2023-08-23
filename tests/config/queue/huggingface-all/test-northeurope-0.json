@@ -1,9 +1,10 @@
 {
     "queue_name": "test-northeurope-0",
     "models": [
-        "Jean-Baptiste/roberta-ticker",
-        "SEBIS/code_trans_t5_large_source_code_summarization_python_multitask_finetune",
-        "Elron/bleurt-base-512"
+        "JuliusAlphonso/distilbert-plutchik",
+        "SEBIS/code_trans_t5_small_code_documentation_generation_python",
+        "Narrativaai/deberta-v3-small-finetuned-hate_speech18"
+
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
