@@ -1,10 +1,12 @@
 {
     "queue_name": "test-norwayeast-0",
     "models": [
-        "EleutherAI/gpt-neo-2.7B",
-        "KoboldAI/GPT-J-6B-Janeway",
-        "KoboldAI/GPT-Neo-2.7B-Horni"
-        
+        "SEBIS/code_trans_t5_small_source_code_summarization_csharp_multitask",
+"MariamD/my-t5-qa-legal",
+"Luciano/bertimbau-base-lener_br",
+"NbAiLab/nb-bert-base",
+"AdapterHub/roberta-base-pf-hotpotqa",
+"AkshatSurolia/ICD-10-Code-Prediction"        
     ],
     "workspace": "test-norwayeast",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
