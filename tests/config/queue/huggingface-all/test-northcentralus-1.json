@@ -3,10 +3,10 @@
     "models": [
                 "t5-3b",
                 "Wellcome/WellcomeBertMesh",
-                "09panesara/distilbert-base-uncased-finetuned-cola",
-                "18811449050/bert_finetuning_test",
-                "2umm3r/distilbert-base-uncased-finetuned-cola",
-                "CLTL/MedRoBERTa.nl"
+                "AdapterHub/bert-base-uncased-pf-newsqa",
+                "akdeniz27/bert-base-hungarian-cased-ner",
+                "CAMeL-Lab/bert-base-arabic-camelbert-mix-pos-glf",
+                "Helsinki-NLP/opus-mt-fi-fr"
     
     ],
     "workspace": "test-northcentralus",
