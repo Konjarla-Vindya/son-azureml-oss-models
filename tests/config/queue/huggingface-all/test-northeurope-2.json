@@ -1,8 +1,10 @@
 {
     "queue_name": "test-northeurope-2",
     "models": [
-        "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
-        "VictorSanh/roberta-base-finetuned-yelp-polarity"
+        "Helsinki-NLP/opus-mt-ar-ru",
+        "Helsinki-NLP/opus-mt-sl-ru",
+        "Helsinki-NLP/opus-tatoeba-fr-it"
+
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
