@@ -1,14 +1,12 @@
 {
     "queue_name": "test-northcentralus-2",
     "models": [
-       "Helsinki-NLP/opus-mt-tll-en",
-       "Helsinki-NLP/opus-mt-uk-pt"
-    ],
-    "models_1": [
-        "Helsinki-NLP/opus-mt-eo-de",
-        "Helsinki-NLP/opus-mt-fr-el",
-        "Helsinki-NLP/opus-mt-it-uk",
-        "Helsinki-NLP/opus-mt-nl-es"
+                   "Helsinki-NLP/opus-mt-itc-en",
+                   "Helsinki-NLP/opus-mt-ml-en",
+                   "Helsinki-NLP/opus-mt-pt-tl",
+                   "Helsinki-NLP/opus-mt-ro-fi",
+                   "KoichiYasuoka/roberta-classical-chinese-base-sentence-segmentation"
+    
     ],
     "workspace": "test-northcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
