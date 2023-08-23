@@ -7,7 +7,7 @@ env:
   test_model_name: Helsinki-NLP/opus-mt-en-xh
   test_sku_type: cpu
   test_trigger_next_model: false
-  test_queue: test-japanwest-0
+  test_queue: test-southcentralus-0
   test_set: huggingface-all
   test_keep_looping: false
 
