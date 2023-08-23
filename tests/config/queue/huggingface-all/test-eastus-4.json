@@ -1,0 +1,16 @@
+{
+    "queue_name": "test-eastus-4",
+    "models": [
+        "Norod78/hebrew-gpt_neo-xl",
+        "NovelAI/genji-jp",
+        "NbAiLab/nb-gpt-j-6B",
+        "Soonhwan-Kwon/xlm-roberta-xxlarge"
+    ],
+    "workspace": "test-eastus",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}

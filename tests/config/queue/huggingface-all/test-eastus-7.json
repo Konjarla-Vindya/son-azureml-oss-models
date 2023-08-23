@@ -1,0 +1,15 @@
+{
+    "queue_name": "test-eastus-7",
+    "models": [
+        "albertvillanova/autonlp-wikiann-entity_extraction-1e67664-1301123",
+        "Rocketknight1/distilbert-base-uncased-finetuned-cola",
+        "UBIAI/en_scibert_ScienceIE"
+    ],
+    "workspace": "test-eastus",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}
