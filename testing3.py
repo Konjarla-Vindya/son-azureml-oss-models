@@ -24,8 +24,9 @@ class Dashboard():
         response.raise_for_status()
         
         workflows = response.json()
-        workflow_names = [workflow["name"] for workflow in workflows["workflows"]]
-        return workflow_names
+        workflow_name = [workflow["name"] for workflow in workflows["workflows"]]
+        print workflow_name
+        return workflow_name
         
     def workflow_last_run(self):
         headers = {
@@ -43,11 +44,11 @@ class Dashboard():
                 
                 runs = response.json()
                 if not runs["workflow_runs"]: 
-                    print(f"No runs found for workflow '{workflow_name}'. Skipping...")
+                    print(f"No runs found for workflow '{workflow_names}'. Skipping...")
                     continue
                 
                 lastrun = runs["workflow_runs"][0]
-                badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
+                badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_names}/badge.svg"
 
                 self.data["workflow_id"].append(lastrun["workflow_id"])
                 self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
