@@ -1,13 +1,10 @@
 {
     "queue_name": "test-northcentralus-0",
     "models": [
-                "ainize/bart-base-cnn",
-                "LeoCordoba/beto2beto",
-                "Rostlab/prot_t5_base_mt_uniref50",
-                "SEBIS/code_trans_t5_base_code_documentation_generation_java",
-                "SEBIS/code_trans_t5_small_code_documentation_generation_java_multitask_finetune",
-                "t5-11b",
-                "Palak/microsoft_deberta-base_squad"
+                "VietAI/gpt-neo-1.3B-vietnamese-news",
+                "09panesara/distilbert-base-uncased-finetuned-cola",
+                "18811449050/bert_finetuning_test",
+                "2umm3r/distilbert-base-uncased-finetuned-cola"
                 
     ],
     "workspace": "test-northcentralus",
