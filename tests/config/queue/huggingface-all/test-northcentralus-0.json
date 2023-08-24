@@ -6,7 +6,8 @@
                 "Rostlab/prot_t5_base_mt_uniref50",
                 "SEBIS/code_trans_t5_base_code_documentation_generation_java",
                 "SEBIS/code_trans_t5_small_code_documentation_generation_java_multitask_finetune",
-                "t5-11b"
+                "t5-11b",
+                "Palak/microsoft_deberta-base_squad"
                 
     ],
     "workspace": "test-northcentralus",
