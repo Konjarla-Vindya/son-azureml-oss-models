@@ -24,7 +24,7 @@ class Dashboard():
         response.raise_for_status()	
         	
         workflows = response.json()	
-        workflow_names = [workflows["name"] for workflow in workflows["workflows"]]	
+        workflow_names = [workflow["name"] for workflow in workflows["workflows"]]	
         print(workflow_names)
         return workflow_names
     
