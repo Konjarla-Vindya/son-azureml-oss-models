@@ -38,7 +38,7 @@ class Dashboard():
 
         for workflow_name in workflows_to_include:
             try:
-                response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}/runs", headers=headers)
+                response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs", headers=headers)
                 response.raise_for_status()
                 
                 runs = response.json()
