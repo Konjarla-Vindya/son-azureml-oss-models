@@ -1,7 +1,9 @@
 {
     "queue_name": "test-northeurope-0",
     "models": [
-        "Pollawat/mt5-small-thai-qa-qg"
+        "Helsinki-NLP/opus-mt-en-ga",
+        "Helsinki-NLP/opus-mt-en-zlw",
+        "Helsinki-NLP/opus-mt-ja-ru"
 
     ],
     "workspace": "test-northeurope",
