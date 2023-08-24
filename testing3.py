@@ -36,8 +36,10 @@ class Dashboard():
         }
         
         workflows_to_include = self.get_all_workflow_names()
+        normalized_workflows = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
 
-        for workflow_name in workflows_to_include:
+
+        for workflow_name in normalized_workflows:
             try:
                 response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs", headers=headers)
                 response.raise_for_status()
