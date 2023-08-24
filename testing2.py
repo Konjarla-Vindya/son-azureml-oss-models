@@ -60,7 +60,9 @@ class dashboard():
                 self.dict["badge"].append("[![{}]({})]({})".format(self.workflow_name_ext,self.badgeurl,self.runurl ))
 
             else:
-                raise Exception("Failed to get latest run id: {}".format(response.status_code))
+                #raise Exception("Failed to get latest run id: {}".format(response.status_code))
+                print("Failed to get latest run id for workflow '{}': {}".format(workflow_name, response.status_code))
+                continue  # Skip this workflow and continue with the next one
              
         return self.dict
 
