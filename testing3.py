@@ -24,7 +24,7 @@ class Dashboard():
         response.raise_for_status()	
         	
         workflows = response.json()	
-        workflow_names = [workflow["name"] for workflow in workflows["workflows"]]	
+        workflow_names = [workflows["name"] for workflow in workflows["workflows"]]	
         print(workflow_names)
         return workflow_names
     
@@ -41,7 +41,7 @@ class Dashboard():
             # try:
             #     #response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs", headers=headers)
             #     #response.raise_for_status()
-            workflow_name = workflow.name.replace(".github/workflows/","")
+            workflow_name = workflows.name.replace(".github/workflows/","")
             response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name,workflow_name), headers = headers)         
             if response.status_code == 200:
                 runs = response.json()
