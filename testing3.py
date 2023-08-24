@@ -25,7 +25,7 @@ class Dashboard():
         
         workflows = response.json()
         workflow_name = [workflow["name"] for workflow in workflows["workflows"]]
-        print workflow_name
+        print(workflow_name)
         return workflow_name
         
     def workflow_last_run(self):
