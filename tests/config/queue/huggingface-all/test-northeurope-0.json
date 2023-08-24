@@ -1,10 +1,9 @@
 {
     "queue_name": "test-northeurope-0",
     "models": [
-        "Helsinki-NLP/opus-mt-en-ga",
-        "Helsinki-NLP/opus-mt-en-zlw",
-        "Helsinki-NLP/opus-mt-ja-ru"
-
+        "GroNLP/gpt2-small-dutch-embeddings",
+        "IDEA-CCNL/Wenzhong-GPT2-3.5B",
+        "Yah216/Sentiment_Analysis_CAMelBERT_msa_sixteenth_HARD"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
