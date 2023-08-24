@@ -1,9 +1,10 @@
 {
     "queue_name": "test-northeurope-1",
     "models": [
-        "UWB-AIR/Czert-B-base-cased",
-        "Yanzhu/bertweetfr_ner",
-        "NlpHUST/gpt-neo-vi-small"
+        "TehranNLP-org/bert-base-uncased-cls-sst2",
+        "KoboldAI/GPT-Neo-125M-AID",
+        "NovelAI/genji-python-6B",
+        "Soonhwan-Kwon/xlm-roberta-xxlarge"
 
     ],
     "workspace": "test-northeurope",
