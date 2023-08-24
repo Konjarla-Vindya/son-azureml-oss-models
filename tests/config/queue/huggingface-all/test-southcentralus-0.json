@@ -3,7 +3,6 @@
     "models": [
         "Cedille/fr-boris",
         "DJSammy/bert-base-danish-uncased_BotXO-ai",
-        "Alireza1044/albert-base-v2-wnli",
         "HooshvareLab/albert-fa-zwnj-base-v2-ner"
         
     ],
