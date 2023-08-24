@@ -49,7 +49,7 @@ class dashboard():
                     badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
                     id = lastrun['id']
                     job_id_url = f"https://github.com/{self.repo_full_name}/actions/runs/{id}/jobs"
-                    job_details = requests.get(job_id_url, headers=headers)
+                    job_details = requests.get(job_id_url)
                     job_details.raise_for_status()
                     
                     job_detail_json = job_details.json()
