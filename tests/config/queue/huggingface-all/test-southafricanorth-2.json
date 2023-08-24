@@ -5,7 +5,8 @@
         "Maltehb/danish-bert-botxo",
         "KoboldAI/fairseq-dense-13B",
         "HooshvareLab/bert-base-parsbert-armanner-uncased",
-        "KoboldAI/GPT-Neo-2.7B-Horni-LN"
+        "KoboldAI/GPT-Neo-2.7B-Horni-LN",
+        "Theivaprakasham/layoutlmv2-finetuned-sroie_mod"
         
     ],
     "workspace": "test-southafricanorth",
