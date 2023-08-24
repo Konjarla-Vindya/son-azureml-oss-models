@@ -53,7 +53,7 @@ class Dashboard():
                     URL_1 = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
                     jobresponse = requests.get(URL_1) 
                     print("URL : ",URL_1)
-                    print("URL : ",url)
+                    #print("URL : ",url)
                     job = jobresponse.json()
                     print(job["jobs"][0]["id"])
                     
