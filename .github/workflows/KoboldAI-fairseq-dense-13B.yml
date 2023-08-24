@@ -7,7 +7,7 @@ env:
   test_model_name: KoboldAI/fairseq-dense-13B
   test_sku_type: gpu
   test_trigger_next_model: true
-  test_queue: test-northeurope-1
+  test_queue: test-northeurope-2
   test_set: huggingface-all
   test_keep_looping: false
 
