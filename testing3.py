@@ -52,6 +52,11 @@ class Dashboard():
                 job = jobresponse.json()
                 
                 badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
+                if job["jobs"]:
+                    runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name, lastrun["id"], job["jobs"][0]["id"])
+                else:
+                    print("No jobs found in the 'job' list.")
+
                 runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
 
                 self.data["workflow_id"].append(lastrun["workflow_id"])
