@@ -1,7 +1,9 @@
 {
     "queue_name": "test-northeurope-1",
     "models": [
-        "KoboldAI/fairseq-dense-13B"
+        "UWB-AIR/Czert-B-base-cased",
+        "Yanzhu/bertweetfr_ner",
+        "NlpHUST/gpt-neo-vi-small"
 
     ],
     "workspace": "test-northeurope",
