@@ -14,20 +14,19 @@ class Dashboard():
             "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
             "updated_at": [], "status": [], "conclusion": [], "badge": []
         }
-        self.workflow_path = ".github/workflows/"
-    def get_all_workflow_names(self):	
-        headers = {	
-            "Authorization": f"Bearer {self.github_token}",	
-            "Accept": "application/vnd.github.v3+json"	
-        }	
-        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers)	
-        response.raise_for_status()	
-        	
-        workflows = response.json()	
-        workflow_names = [workflow["name"] for workflow in workflows["workflows"]]	
-        print(workflow_names)
+        
+    def get_all_workflow_names(self):
+        headers = {
+            "Authorization": f"Bearer {self.github_token}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers)
+        response.raise_for_status()
+        
+        workflows = response.json()
+        workflow_names = [workflow["name"] for workflow in workflows["workflows"]]
         return workflow_names
-    
+        
     def workflow_last_run(self):
         headers = {
             "Authorization": f"Bearer {self.github_token}",
@@ -38,66 +37,33 @@ class Dashboard():
         workflows_to_include = self.get_all_workflow_names()
 
         for workflow_name in workflows_to_include:
-            # try:
-            #     #response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs", headers=headers)
-            #     #response.raise_for_status()
-            workflow_name = workflows.name.replace(".github/workflows/","")
-            response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name,workflow_name), headers = headers)         
-            if response.status_code == 200:
+            try:
+                response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}/runs", headers=headers)
+                response.raise_for_status()
+                
                 runs = response.json()
+                if not runs["workflow_runs"]: 
+                    print(f"No runs found for workflow '{workflow_name}'. Skipping...")
+                    continue
+                
                 lastrun = runs["workflow_runs"][0]
-                self.workflow_name_ext=lastrun["name"].replace(self.workflow_path,"")
-                jobresponse = requests.get("https://api.github.com/repos/{}/actions/runs/{}/jobs".format(self.repo_full_name,lastrun["id"]), headers = headers)  
-                job = jobresponse.json()
-                print(job["jobs"][0]["id"])
-                self.badgeurl = "https://github.com/{}/actions/workflows/{}/badge.svg".format(self.repo_full_name,self.workflow_name_ext)
-                self.runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
+                badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
 
                 self.data["workflow_id"].append(lastrun["workflow_id"])
-                self.data["workflow_name"].append(self.workflow_name_ext.replace(".yml",""))
+                self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
                 self.data["last_runid"].append(lastrun["id"])
                 self.data["created_at"].append(lastrun["created_at"])
                 self.data["updated_at"].append(lastrun["updated_at"])
                 self.data["status"].append(lastrun["status"])
                 self.data["conclusion"].append(lastrun["conclusion"])
-                self.data["badge"].append("[![{}]({})]({})".format(self.workflow_name_ext,self.badgeurl,self.runurl ))
-
-            else:
-                raise Exception("Failed to get latest run id: {}".format(response.status_code))   
-                # if response.status_code == 200:	
-                #   runs = response.json()	
-                #   lastrun = runs["workflow_runs"][0]	
-                #   self.workflow_name_ext=lastrun["name"].replace(self.workflow_path,"")
-                #   print(job["jobs"][0]["id"])	
-                # badgeurl = "https://github.com/{}/actions/workflows/{}/badge.svg".format(self.repo_full_name,self.workflow_name_ext)	
-                # runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
-
-                # jobresponse = requests.get("https://api.github.com/repos/{}/actions/runs/{}/jobs".format(self.repo_full_name,lastrun["id"]), headers = headers)  
-                # job = jobresponse.json()
-                
-                # badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
-                # if job["jobs"]:
-            #         runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name, lastrun["id"], job["jobs"][0]["id"])
-            #     else:
-            #         print("No jobs found in the 'job' list.")
-
-            #     runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
-
-            #     self.data["workflow_id"].append(lastrun["workflow_id"])
-            #     self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
-            #     self.data["last_runid"].append(lastrun["id"])
-            #     self.data["created_at"].append(lastrun["created_at"])
-            #     self.data["updated_at"].append(lastrun["updated_at"])
-            #     self.data["status"].append(lastrun["status"])
-            #     self.data["conclusion"].append(lastrun["conclusion"])
-            #     #self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
-            #     self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,runurl ))
-            # except requests.exceptions.RequestException as e:
-            #     print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
+                self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
+            except requests.exceptions.RequestException as e:
+                print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
         return self.data
 
-    def results(self, last_runs_dict):
+    
+ def results(self, last_runs_dict):
         results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0, "not_tested": 0, "total_duration": 0}
         summary = []
 
