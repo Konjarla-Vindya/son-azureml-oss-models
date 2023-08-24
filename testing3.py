@@ -38,10 +38,11 @@ class Dashboard():
         workflows_to_include = self.get_all_workflow_names()
 
         for workflow_name in workflows_to_include:
-            try:
-                #response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs", headers=headers)
-                #response.raise_for_status()
-                response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name,workflow_name), headers = headers)         
+            # try:
+            #     #response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs", headers=headers)
+            #     #response.raise_for_status()
+            workflow_name = workflow.name.replace(".github/workflows/","")
+            response = requests.get("https://api.github.com/repos/{}/actions/workflows/{}/runs".format(self.repo_full_name,workflow_name), headers = headers)         
             if response.status_code == 200:
                 runs = response.json()
                 lastrun = runs["workflow_runs"][0]
