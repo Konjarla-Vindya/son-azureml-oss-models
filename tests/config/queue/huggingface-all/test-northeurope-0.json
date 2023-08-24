@@ -2,7 +2,7 @@
     "queue_name": "test-northeurope-0",
     "models": [
         "GroNLP/gpt2-small-dutch-embeddings",
-        "IDEA-CCNL/Wenzhong-GPT2-3.5B",
+        "Intel/bert-base-uncased-sparse-90-unstructured-pruneofa",
         "Yah216/Sentiment_Analysis_CAMelBERT_msa_sixteenth_HARD"
     ],
     "workspace": "test-northeurope",
