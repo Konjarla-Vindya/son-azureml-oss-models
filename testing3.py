@@ -56,7 +56,7 @@ class Dashboard():
                     job = jobresponse.json()
                     print(job["jobs"][0]["id"])
                     
-                    badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
+                    badgeurl = f"https://api.github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
                     #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
     
                     self.data["workflow_id"].append(lastrun["workflow_id"])
