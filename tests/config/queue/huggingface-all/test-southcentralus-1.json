@@ -1,12 +1,10 @@
 {
     "queue_name": "test-southcentralus-1",
     "models": [
-        "Helsinki-NLP/opus-mt-en-zls",
-        "Helsinki-NLP/opus-mt-es-uk",
-        "Helsinki-NLP/opus-mt-hu-de",
-        "Helsinki-NLP/opus-mt-ja-es",
-        "Helsinki-NLP/opus-mt-ko-fi",
-        "Helsinki-NLP/opus-mt-ko-ru"
+        "HooshvareLab/bert-base-parsbert-peymaner-uncased",
+        "IlyaGusev/rugpt3medium_sum_gazeta",
+        "KoboldAI/fairseq-dense-2.7B-Janeway"
+        
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
