@@ -1,14 +1,11 @@
 {
     "queue_name": "test-southcentralus-0",
     "models": [
-        "activebus/BERT_Review",
-        "akdeniz27/deberta-v2-xlarge-cuad",
+        "Cedille/fr-boris",
+        "DJSammy/bert-base-danish-uncased_BotXO-ai",
         "Alireza1044/albert-base-v2-wnli",
-        "ForutanRad/bert-fa-QA-v1",
-        "Helsinki-NLP/opus-mt-af-fi",
-        "Helsinki-NLP/opus-mt-cs-uk",
-        "Helsinki-NLP/opus-mt-en-xh",
-        "Helsinki-NLP/opus-mt-en-zle"
+        "HooshvareLab/albert-fa-zwnj-base-v2-ner"
+        
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
