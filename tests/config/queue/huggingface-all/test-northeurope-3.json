@@ -1,9 +1,10 @@
 {
     "queue_name": "test-northeurope-3",
     "models": [
-        "Pollawat/mt5-small-thai-qa-qg",
-        "Ivo/emscad-skill-extraction-token-classification",
-        "SEBIS/code_trans_t5_base_code_documentation_generation_python"
+        "Geotrend/bert-base-fr-cased",
+        "ctrl",
+        "KoboldAI/GPT-J-6B-Shinen"
+        
 
     ],
     "workspace": "test-northeurope",
