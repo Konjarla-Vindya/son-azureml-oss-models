@@ -1,10 +1,7 @@
 {
     "queue_name": "test-northcentralus-0",
     "models": [
-                "VietAI/gpt-neo-1.3B-vietnamese-news",
-                "09panesara/distilbert-base-uncased-finetuned-cola",
-                "18811449050/bert_finetuning_test",
-                "2umm3r/distilbert-base-uncased-finetuned-cola"
+                "Palak/microsoft_deberta-base_squad"
                 
     ],
     "workspace": "test-northcentralus",
