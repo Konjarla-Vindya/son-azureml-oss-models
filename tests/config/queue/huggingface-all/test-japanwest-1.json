@@ -15,7 +15,6 @@
         "Helsinki-NLP/opus-mt-en-ha",
         "Helsinki-NLP/opus-mt-en-ber",
         "M-FAC/bert-tiny-finetuned-qnli",
-        "GKLMIP/bert-myanmar-base-uncased",
         "Cinnamon/electra-small-japanese-generator",
         "BSC-LT/roberta-base-bne-capitel-ner",
         "Helsinki-NLP/opus-mt-af-sv",
@@ -23,7 +22,8 @@
         "addy88/programming-lang-identifier",
         "SEBIS/code_trans_t5_small_source_code_summarization_python",
         "Helsinki-NLP/opus-mt-en-bat",
-        "Geotrend/bert-base-en-fr-cased"
+        "Geotrend/bert-base-en-fr-cased",
+        "GKLMIP/bert-myanmar-base-uncased"
     ],
     "workspace": "test-japanwest",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
