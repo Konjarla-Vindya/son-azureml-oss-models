@@ -14,7 +14,7 @@ from azure.ai.ml.entities import (
 )
 import mlflow
 from box import ConfigBox
-
+import re
 
 class ModelInferenceAndDeployemnt:
     def __init__(self, test_model_name, workspace_ml_client, registry_ml_client, registry) -> None:
@@ -157,6 +157,11 @@ class ModelInferenceAndDeployemnt:
         # workspace_ml_client.begin_create_or_update(endpoint).result()
         print("latest_model.name is this : ", latest_model.name)
         latest_model_name = latest_model.name.replace("_", "-")
+        if latest_model_name[0].isdigit():
+            num_pattern = "[0-9]"
+            latest_model_name = re.sub(num_pattern, '', latest_model_name)
+            latest_model_name = latest_model_name.strip("-")
+            
         if len(latest_model.name) > 32:
             model_name = latest_model_name[:31]
             deployment_name = model_name.rstrip("-")
