@@ -45,29 +45,62 @@ class Dashboard():
                 response.raise_for_status()
                 
                 runs = response.json()
-                if not runs["workflow_runs"]: 
-                    print(f"No runs found for workflow '{workflow_names}'. Skipping...")
-                    continue
-                
-                lastrun = runs["workflow_runs"][0]
-                jobresponse = requests.get("https://api.github.com/repos/{}/actions/runs/{}/jobs".format(self.repo_full_name,lastrun["id"]), headers = headers) 
-                job = jobresponse.json()
-                print(job["jobs"][0]["id"])
-                
-                badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
-                runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
 
-                self.data["workflow_id"].append(lastrun["workflow_id"])
-                self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
-                self.data["last_runid"].append(lastrun["id"])
-                self.data["created_at"].append(lastrun["created_at"])
-                self.data["updated_at"].append(lastrun["updated_at"])
-                self.data["status"].append(lastrun["status"])
-                self.data["conclusion"].append(lastrun["conclusion"])
+                #print(runs)
+                print("Type is : ",type(runs["workflow_runs"]))
+                print("Length is this : ", len(runs["workflow_runs"]))
+                if len(runs["workflow_runs"]) != 0:
+                    #continue
+                    lastrun = runs["workflow_runs"][0]
+                    self.workflow_name_ext = lastrun["name"].replace(self.workflow_path, "")
+                    badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
+                    id = lastrun['id']
+                    job_id_url = f"https://github.com/{self.repo_full_name}/actions/runs/{id}/jobs"
+                    job_details = requests.get(job_id_url, headers=headers)
+                    job_details.raise_for_status()
+                    
+                    job_detail_json = job_details.json()
+                    job_detail = job_detail_json["jobs"][0]
+                    job_id = job_detail["id"]
+                    final_job_url = f"https://github.com/{self.repo_full_name}/actions/runs/{id}/job/{job_id}"
+
+                    self.data["workflow_id"].append(lastrun["workflow_id"])
+                    self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
+                    self.data["last_runid"].append(lastrun["id"])
+                    self.data["created_at"].append(lastrun["created_at"])
+                    self.data["updated_at"].append(lastrun["updated_at"])
+                    self.data["status"].append(lastrun["status"])
+                    self.data["conclusion"].append(lastrun["conclusion"])
                 #self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
-                self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,runurl))
+                    self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,runurl))
             except requests.exceptions.RequestException as e:
+                _, _, exc_tb = sys.exc_info()
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
+                print(f"The exception occured at this line no : {exc_tb.tb_lineno} ")
+            break
+                # if not runs["workflow_runs"]: 
+                #     print(f"No runs found for workflow '{workflow_names}'. Skipping...")
+                #     continue
+                
+                # lastrun = runs["workflow_runs"][0]
+                # jobresponse = requests.get("https://api.github.com/repos/{}/actions/runs/{}/jobs".format(self.repo_full_name,lastrun["id"]), headers = headers) 
+                # job = jobresponse.json()
+                # print(job["jobs"][0]["id"])
+                
+                # badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
+                # runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
+
+                # self.data["workflow_id"].append(lastrun["workflow_id"])
+                # self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
+                # self.data["last_runid"].append(lastrun["id"])
+                # self.data["created_at"].append(lastrun["created_at"])
+                # self.data["updated_at"].append(lastrun["updated_at"])
+                # self.data["status"].append(lastrun["status"])
+            #     self.data["conclusion"].append(lastrun["conclusion"])
+            #     #self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
+            #     self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,runurl))
+            # except requests.exceptions.RequestException as e:
+            #     print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
         return self.data
 
