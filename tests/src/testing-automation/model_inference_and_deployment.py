@@ -223,10 +223,10 @@ class ModelInferenceAndDeployemnt:
                   " the exception is this one :", e)
             print(f"{e}\n\n check logs:\n\n")
             self.prase_logs(str(e))
-            # self.get_online_endpoint_logs(
-            #     deployment_name, online_endpoint_name)
-            # self.workspace_ml_client.online_endpoints.begin_delete(
-            #     name=online_endpoint_name).wait()
+            self.get_online_endpoint_logs(
+                deployment_name, online_endpoint_name)
+            self.workspace_ml_client.online_endpoints.begin_delete(
+                name=online_endpoint_name).wait()
             exit(1)
         endpoint.traffic = {deployment_name: 100}
         try:
@@ -237,10 +237,10 @@ class ModelInferenceAndDeployemnt:
             print(f"The exception occured at this line no : {exc_tb.tb_lineno}"+
                   " the exception is this one :", e)
             print(f"{e}\n\n check logs:\n\n")
-            # self.get_online_endpoint_logs(
-            #     deployment_name, online_endpoint_name)
-            # self.workspace_ml_client.online_endpoints.begin_delete(
-            #     name=endpoint.name).wait()
+            self.get_online_endpoint_logs(
+                deployment_name, online_endpoint_name)
+            self.workspace_ml_client.online_endpoints.begin_delete(
+                name=endpoint.name).wait()
             exit(1)
         print(self.workspace_ml_client.online_deployments.get(
             name=deployment_name, endpoint_name=endpoint.name))
