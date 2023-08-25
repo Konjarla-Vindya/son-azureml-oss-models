@@ -1,7 +1,7 @@
 {
     "queue_name": "test-southcentralus-2",
     "models": [
-        "ARTeLab/mbart-summarization-fanpage"
+        "Sahajtomar/German-question-answer-Electra"
        
       
     ],
