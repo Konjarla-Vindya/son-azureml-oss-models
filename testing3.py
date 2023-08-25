@@ -75,11 +75,11 @@ class Dashboard():
                     self.data["conclusion"].append(lastrun["conclusion"])
                     #self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
                     if len(html_url)!=0:
-                        self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,runurl))
-                        self.data["jobs_url"].append(runurl)
-                    else:
                         self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,html_url))
                         self.data["jobs_url"].append(html_url)
+                    #else:
+                        ##self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,html_url))
+                        #self.data["jobs_url"].append(html_url)
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
