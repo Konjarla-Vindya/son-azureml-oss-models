@@ -137,7 +137,7 @@ class Model:
         """
         # Load the transformer pipeline with the help of model and task
         model_pipeline = transformers.pipeline(
-            task=task, model=self.model_name)
+            task=task, model=model_and_tokenizer["model"], tokenizer=model_and_tokenizer["tokenizer"])
         # If the task is fill-mask then get the mask_token and replace the input data with that mask token
         if task == "fill-mask":
             pipeline_tokenizer = model_pipeline.tokenizer
@@ -157,7 +157,7 @@ class Model:
 
         # With the help of mlflow log and register the model in the workspace
         mlflow.transformers.log_model(
-            transformers_model=model_and_tokenizer,
+            transformers_model=model_pipeline,
             task=task,
             artifact_path=artifact_path,
             registered_model_name=registered_model_name,

@@ -15,6 +15,7 @@ from azure.ai.ml.entities import (
 import mlflow
 from box import ConfigBox
 import re
+import sys
 
 
 class ModelInferenceAndDeployemnt:
@@ -216,24 +217,30 @@ class ModelInferenceAndDeployemnt:
             self.workspace_ml_client.online_deployments.begin_create_or_update(
                 deployment_config).wait()
         except Exception as e:
+            _, _, exc_tb = sys.exc_info()
             print(f"::error:: Could not create deployment\n")
+            print(f"The exception occured at this line no : {exc_tb.tb_lineno}"+
+                  " the exception is this one :", e)
             print(f"{e}\n\n check logs:\n\n")
             self.prase_logs(str(e))
-            self.get_online_endpoint_logs(
-                deployment_name, online_endpoint_name)
-            self.workspace_ml_client.online_endpoints.begin_delete(
-                name=online_endpoint_name).wait()
+            # self.get_online_endpoint_logs(
+            #     deployment_name, online_endpoint_name)
+            # self.workspace_ml_client.online_endpoints.begin_delete(
+            #     name=online_endpoint_name).wait()
             exit(1)
         endpoint.traffic = {"demo": 100}
         try:
             self.workspace_ml_client.begin_create_or_update(endpoint).result()
         except Exception as e:
+            _, _, exc_tb = sys.exc_info()
             print(f"::error:: Could not create deployment\n")
+            print(f"The exception occured at this line no : {exc_tb.tb_lineno}"+
+                  " the exception is this one :", e)
             print(f"{e}\n\n check logs:\n\n")
-            self.get_online_endpoint_logs(
-                deployment_name, online_endpoint_name)
-            self.workspace_ml_client.online_endpoints.begin_delete(
-                name=endpoint.name).wait()
+            # self.get_online_endpoint_logs(
+            #     deployment_name, online_endpoint_name)
+            # self.workspace_ml_client.online_endpoints.begin_delete(
+            #     name=endpoint.name).wait()
             exit(1)
         print(self.workspace_ml_client.online_deployments.get(
             name=deployment_name, endpoint_name=endpoint.name))
