@@ -1,9 +1,9 @@
 {
     "queue_name": "test-southcentralus-1",
     "models": [
-        "HooshvareLab/bert-base-parsbert-peymaner-uncased",
-        "IlyaGusev/rugpt3medium_sum_gazeta",
-        "KoboldAI/fairseq-dense-2.7B-Janeway"
+        "ProsusAI-finbert",
+        "Jean-Baptiste-camembert-ner",
+        "t5-small"
         
     ],
     "workspace": "test-southcentralus",
