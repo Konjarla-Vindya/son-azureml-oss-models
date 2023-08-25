@@ -48,7 +48,8 @@ class Dashboard():
                 if not runs["workflow_runs"]: 
                     print(f"No runs found for workflow '{workflow_names}'. Skipping...")
                     continue
-                if len(runs["workflow_runs"]) != 0:
+                else:
+                #if len(runs["workflow_runs"]) != 0:
                     lastrun = runs["workflow_runs"][0]
                     #URL_1 = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
                     jobresponse = requests.get(lastrun["jobs_url"]) 
