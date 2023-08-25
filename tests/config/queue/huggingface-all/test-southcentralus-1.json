@@ -1,7 +1,7 @@
 {
     "queue_name": "test-southcentralus-1",
     "models": [
-        "ProsusAI/finbertt",
+        "ProsusAI/finbert",
         "Jean-Baptiste/camembert-ner",
         "t5-small"
         
