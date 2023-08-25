@@ -246,7 +246,7 @@ class ModelInferenceAndDeployemnt:
             model_package=model_package,
             instance_type=instance_type
         )
-        self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
+        #self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
         # endpoint = ManagedOnlineEndpoint(
         #     name=online_endpoint_name,
         #     auth_mode="key",
