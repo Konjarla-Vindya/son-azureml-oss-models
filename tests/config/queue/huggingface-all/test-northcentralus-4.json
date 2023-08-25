@@ -3,7 +3,24 @@
     "models": [
                 "IlyaGusev/rubert_telegram_headlines",
                 "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
-                "TsinghuaAI/CPM-Generate"
+                "TsinghuaAI/CPM-Generate",
+                "NlpHUST/vibert4news-base-cased",
+                "Callidior/bert2bert-base-arxiv-titlegen",
+                "Lowin/chinese-bigbird-wwm-base-4096",
+                "airesearch/wangchanberta-base-wiki-spm",
+                "CodeNinja1126/xlm-roberta-large-kor-mrc",
+                "CoffeeAddict93/gpt1-modest-proposal",
+                "DemangeJeremy/4-sentiments-with-flaubert",
+                "EMBO/bio-lm",
+                "Lowin/chinese-bigbird-mini-1024",
+                "Lowin/chinese-bigbird-base-4096",
+                "MYX4567/distilgpt2-finetuned-wikitext2",
+                "KoichiYasuoka/bert-base-japanese-unidic-luw-upos"
+
+
+ 
+
+ 
                 
     ],
     "workspace": "test-northcentralus",
