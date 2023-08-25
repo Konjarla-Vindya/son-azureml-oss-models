@@ -16,11 +16,6 @@
                 "Lowin/chinese-bigbird-base-4096",
                 "MYX4567/distilgpt2-finetuned-wikitext2",
                 "KoichiYasuoka/bert-base-japanese-unidic-luw-upos"
-
-
- 
-
- 
                 
     ],
     "workspace": "test-northcentralus",
