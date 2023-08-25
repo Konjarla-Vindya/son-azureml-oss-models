@@ -206,7 +206,7 @@ class ModelInferenceAndDeployemnt:
         # )
         deployment_config = ManagedOnlineDeployment(
             name=deployment_name,
-            model=latest_model,
+            model=latest_model.id,
             endpoint_name=online_endpoint_name,
             instance_type=instance_type,
             instance_count=1
@@ -228,7 +228,7 @@ class ModelInferenceAndDeployemnt:
             # self.workspace_ml_client.online_endpoints.begin_delete(
             #     name=online_endpoint_name).wait()
             exit(1)
-        endpoint.traffic = {"demo": 100}
+        endpoint.traffic = {deployment_name: 100}
         try:
             self.workspace_ml_client.begin_create_or_update(endpoint).result()
         except Exception as e:
