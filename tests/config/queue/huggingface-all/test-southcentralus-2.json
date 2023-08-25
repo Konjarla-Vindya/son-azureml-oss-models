@@ -1,9 +1,8 @@
 {
     "queue_name": "test-southcentralus-2",
     "models": [
-        "KoboldAI/fairseq-dense-6.7B",
-        "MrBananaHuman/kogpt_6b_fp16",
-        "Narrativa/mbart-large-50-finetuned-opus-pt-en-translation"
+        "Sahajtomar/German-question-answer-Electra",
+       
       
     ],
     "workspace": "test-southcentralus",
