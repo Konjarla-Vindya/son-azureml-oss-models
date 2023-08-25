@@ -1,7 +1,7 @@
 {
     "queue_name": "test-southcentralus-2",
     "models": [
-        "Sahajtomar/German-question-answer-Electra",
+        "Sahajtomar/German-question-answer-Electra"
        
       
     ],
