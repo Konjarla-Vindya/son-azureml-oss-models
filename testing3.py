@@ -12,7 +12,7 @@ class Dashboard():
         self.repo_full_name = self.repo.full_name
         self.data = {
             "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
-            "updated_at": [], "status": [], "conclusion": [], "badge": [], "url": []
+            "updated_at": [], "status": [], "conclusion": [], "badge": [], "jobs_url": []
         }
         
     def get_all_workflow_names(self):
@@ -50,12 +50,12 @@ class Dashboard():
                     continue
                 if len(runs["workflow_runs"]) != 0:
                     lastrun = runs["workflow_runs"][0]
-                    URL_1 = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
-                    jobresponse = requests.get(URL_1) 
+                    #URL_1 = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
+                    jobresponse = requests.get(lastrun["jobs_url") 
                     print("URL : ",URL_1)
                     #print("URL : ",url)
                     job = jobresponse.json()
-                    print(job["jobs"][0]["id"])
+                    print(job)
                     
                     badgeurl = f"https://api.github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
                     #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
@@ -68,8 +68,8 @@ class Dashboard():
                     self.data["status"].append(lastrun["status"])
                     self.data["conclusion"].append(lastrun["conclusion"])
                     #self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
-                    self.data["url"].append(lastrun["url"])
-                    self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,URL_1))
+                    self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,job["html_url"]))
+                    self.data["jobs_url"].append(job["html_url"])
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
