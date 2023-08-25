@@ -16,6 +16,7 @@ import mlflow
 from box import ConfigBox
 import re
 
+
 class ModelInferenceAndDeployemnt:
     def __init__(self, test_model_name, workspace_ml_client, registry_ml_client, registry) -> None:
         self.test_model_name = test_model_name
@@ -23,14 +24,39 @@ class ModelInferenceAndDeployemnt:
         self.registry_ml_client = registry_ml_client
         self.registry = registry
 
-    def get_latest_model_version(self, registry_ml_client, model_name):
+    def get_error_messages(self):
+        # load ../config/errors.json into a dictionary
+        with open('errors.json', 'w+') as f:
+            return json.load(f)
+
+    def get_online_endpoint_logs(self, deployment_name, online_endpoint_name):
+        print("Deployment logs: \n\n")
+        logs = self.workspace_ml_client.online_deployments.get_logs(
+            name=deployment_name, endpoint_name=online_endpoint_name, lines=100000)
+        print(logs)
+        self.prase_logs(logs)
+
+    def prase_logs(self, logs):
+        error_messages = self.get_error_messages()
+        # split logs by \n
+        logs_list = logs.split("\n")
+        # loop through each line in logs_list
+        for line in logs_list:
+            # loop through each error in errors
+            for error in error_messages:
+                # if error is found in line, print error message
+                if error['parse_string'] in line:
+                    print(
+                        f"::error:: {error_messages['error_category']}: {line}")
+
+    def get_latest_model_version(self, workspace_ml_client, model_name):
         print("In get_latest_model_version...")
-        version_list = list(registry_ml_client.models.list(model_name))
+        version_list = list(workspace_ml_client.models.list(model_name))
         if len(version_list) == 0:
             print("Model not found in registry")
         else:
             model_version = version_list[0].version
-            foundation_model = registry_ml_client.models.get(
+            foundation_model = workspace_ml_client.models.get(
                 model_name, model_version)
             print(
                 "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
@@ -86,28 +112,29 @@ class ModelInferenceAndDeployemnt:
 
     def create_online_endpoint(self, latest_model, endpoint):
         print("In create_online_endpoint...")
-        # try:
-        #     workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).wait()
-        # except Exception as e:
-        #     print (f"::error:: Could not create endpoint: \n")
-        #     print (f"{e}\n\n check logs:\n\n")
-        #     prase_logs(str(e))
-        #     exit (1)
+        try:
+            self.workspace_ml_client.online_endpoints.begin_create_or_update(
+                endpoint).wait()
+        except Exception as e:
+            print(f"::error:: Could not create endpoint: \n")
+            print(f"{e}\n\n check logs:\n\n")
+            self.prase_logs(str(e))
+            exit(1)
 
-        # print(workspace_ml_client.online_endpoints.get(name=endpoint.name))
+        print(self.workspace_ml_client.online_endpoints.get(name=endpoint.name))
 
-        model_configuration = ModelConfiguration(mode="download")
-        package_name = f"package-v2-{latest_model.name}"
-        package_config = ModelPackage(
-            target_environment_name=package_name,
-            inferencing_server=AzureMLOnlineInferencingServer(),
-            model_configuration=model_configuration
-        )
-        model_package = self.workspace_ml_client.models.package(
-            latest_model.name,
-            latest_model.version,
-            package_config
-        )
+        # model_configuration = ModelConfiguration(mode="download")
+        # package_name = f"package-v2-{latest_model.name}"
+        # package_config = ModelPackage(
+        #     target_environment_name=package_name,
+        #     inferencing_server=AzureMLOnlineInferencingServer(),
+        #     model_configuration=model_configuration
+        # )
+        # model_package = self.workspace_ml_client.models.package(
+        #     latest_model.name,
+        #     latest_model.version,
+        #     package_config
+        # )
         # timestamp = int(time.time())
         # online_endpoint_name = "Testing" + str(timestamp)
         # print (f"online_endpoint_name: {online_endpoint_name}")
@@ -115,10 +142,10 @@ class ModelInferenceAndDeployemnt:
         #      name=online_endpoint_name,
         #      auth_mode="key",
         #  )
-        self.workspace_ml_client.begin_create_or_update(endpoint).result()
-        return model_package
+        # self.workspace_ml_client.begin_create_or_update(endpoint).result()
+        # return model_package
 
-    def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type):
+    def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type, endpoint):
         print("In create_online_deployment...")
         # demo_deployment = ManagedOnlineDeployment(
         #     name="demo",
@@ -161,23 +188,55 @@ class ModelInferenceAndDeployemnt:
             num_pattern = "[0-9]"
             latest_model_name = re.sub(num_pattern, '', latest_model_name)
             latest_model_name = latest_model_name.strip("-")
-            
+
         if len(latest_model.name) > 32:
             model_name = latest_model_name[:31]
             deployment_name = model_name.rstrip("-")
         else:
             deployment_name = latest_model_name
         print("deployment name is this one : ", deployment_name)
+        # deployment_config = ManagedOnlineDeployment(
+        #     name=deployment_name,
+        #     model=latest_model,
+        #     endpoint_name=online_endpoint_name,
+        #     environment=model_package,
+        #     instance_type=instance_type,
+        #     instance_count=1
+        # )
         deployment_config = ManagedOnlineDeployment(
             name=deployment_name,
             model=latest_model,
             endpoint_name=online_endpoint_name,
-            environment=model_package,
             instance_type=instance_type,
             instance_count=1
         )
-        deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(
-            deployment_config).result()
+        # deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(
+        #     deployment_config).result()
+        try:
+            self.workspace_ml_client.online_deployments.begin_create_or_update(
+                deployment_config).wait()
+        except Exception as e:
+            print(f"::error:: Could not create deployment\n")
+            print(f"{e}\n\n check logs:\n\n")
+            self.prase_logs(str(e))
+            self.get_online_endpoint_logs(
+                deployment_name, online_endpoint_name)
+            self.workspace_ml_client.online_endpoints.begin_delete(
+                name=online_endpoint_name).wait()
+            exit(1)
+        endpoint.traffic = {"demo": 100}
+        try:
+            self.workspace_ml_client.begin_create_or_update(endpoint).result()
+        except Exception as e:
+            print(f"::error:: Could not create deployment\n")
+            print(f"{e}\n\n check logs:\n\n")
+            self.get_online_endpoint_logs(
+                deployment_name, online_endpoint_name)
+            self.workspace_ml_client.online_endpoints.begin_delete(
+                name=endpoint.name).wait()
+            exit(1)
+        print(self.workspace_ml_client.online_deployments.get(
+            name=deployment_name, endpoint_name=endpoint.name))
 
     def delete_online_endpoint(self, online_endpoint_name):
         try:
@@ -223,7 +282,7 @@ class ModelInferenceAndDeployemnt:
         # else:
         #     model_name = self.test_model_name
         latest_model = self.get_latest_model_version(
-            self.registry_ml_client, model_name)
+            self.workspace_ml_client, model_name)
         task = latest_model.flavors["transformers"]["task"]
         print("latest_model:", latest_model)
         print("Task is : ", task)
@@ -238,13 +297,22 @@ class ModelInferenceAndDeployemnt:
             name=online_endpoint_name,
             auth_mode="key",
         )
-        model_package = self.create_online_endpoint(
+        # model_package = self.create_online_endpoint(
+        #     latest_model=latest_model, endpoint=endpoint)
+        self.create_online_endpoint(
             latest_model=latest_model, endpoint=endpoint)
+        # self.create_online_deployment(
+        #     latest_model=latest_model,
+        #     online_endpoint_name=online_endpoint_name,
+        #     model_package=model_package,
+        #     instance_type=instance_type
+        # )
         self.create_online_deployment(
             latest_model=latest_model,
             online_endpoint_name=online_endpoint_name,
-            model_package=model_package,
-            instance_type=instance_type
+            model_package=" ",
+            instance_type=instance_type,
+            endpoint=endpoint
         )
         self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
         # endpoint = ManagedOnlineEndpoint(
