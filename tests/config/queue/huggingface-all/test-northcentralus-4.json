@@ -1,12 +1,9 @@
 {
     "queue_name": "test-northcentralus-4",
     "models": [
-                "2umm3r/distilbert-base-uncased-finetuned-cola",
-                "CLTL/MedRoBERTa.nl",
-                "KoboldAI/fairseq-dense-1.3B",
-                "Milos/slovak-gpt-j-1.4B",
-                "Shushant/biobert-v1.1-biomedicalQuestionAnswering"
-               
+                "IlyaGusev/rubert_telegram_headlines",
+                "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
+                "TsinghuaAI/CPM-Generate"
                 
     ],
     "workspace": "test-northcentralus",
