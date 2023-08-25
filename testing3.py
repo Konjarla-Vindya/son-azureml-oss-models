@@ -61,7 +61,7 @@ class Dashboard():
                     print(job)
                     
                     badgeurl = f"https://api.github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
-                    #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
+                    runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
                     html_url=""
                     if len(job["jobs"])!=0:
                       html_url = job["jobs"][0]["html_url"]
@@ -78,8 +78,8 @@ class Dashboard():
                         self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,html_url))
                         self.data["jobs_url"].append(html_url)
                     else:
-                        self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,workflow_runs))
-                        self.data["jobs_url"].append(workflow_runs)
+                        self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,runurl))
+                        self.data["jobs_url"].append(runurl)
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
