@@ -2,7 +2,7 @@
     "queue_name": "test-southcentralus-0",
     "models": [
         "bert-base-uncased",
-        "roberta-base"
+        "roberta-base",
         "gpt2",
         "NYTK/summarization-hi-bart-base-1024-hungarian"
         
