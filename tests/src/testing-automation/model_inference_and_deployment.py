@@ -280,6 +280,8 @@ class ModelInferenceAndDeployemnt:
 
         output = loaded_model(scoring_input.inputs)
         print("My outupt is this : ", output)
+        registered_output = latest_model(scoring_input.inputs)
+        print("This is my registered output", registered_output)
 
     def model_infernce_and_deployment(self, instance_type):
         model_name = self.test_model_name.replace("/", "-")
@@ -321,7 +323,7 @@ class ModelInferenceAndDeployemnt:
             instance_type=instance_type,
             endpoint=endpoint
         )
-        # self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
+        self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
         # endpoint = ManagedOnlineEndpoint(
         #     name=online_endpoint_name,
         #     auth_mode="key",
