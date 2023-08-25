@@ -1,9 +1,9 @@
 {
     "queue_name": "test-southcentralus-0",
     "models": [
-        "Cedille/fr-boris",
-        "DJSammy/bert-base-danish-uncased_BotXO-ai",
-        "HooshvareLab/albert-fa-zwnj-base-v2-ner"
+        "bert-base-uncased",
+        "gpt2",
+        "NYTK-summarization-hi-bart-base-1024-hungarian"
         
     ],
     "workspace": "test-southcentralus",
