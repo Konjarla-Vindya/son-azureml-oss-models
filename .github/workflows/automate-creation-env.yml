@@ -26,6 +26,6 @@ jobs:
           pip install -r autoenv_requirements.txt
 
       - name: Run Python Script to Setup Azure ML Environment
-        run: python automate-create-env.py  
+        run: python automate_create_env.py  
 
       
