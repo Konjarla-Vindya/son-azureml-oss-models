@@ -5,13 +5,6 @@ on:
 
 env:
   test_model_name: bert-base-uncased
- name: gpt2
-
-on: 
-  workflow_dispatch:
-
-env:
-  test_model_name: gpt2
   test_sku_type: cpu
   test_trigger_next_model: true
   test_queue: test-southcentralus-0
@@ -57,4 +50,3 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
       run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
-
