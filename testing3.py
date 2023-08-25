@@ -62,7 +62,7 @@ class Dashboard():
                     badgeurl = f"https://api.github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
                     #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
                     html_url=""
-                    if len(job["jobs"]!=0):
+                    if len(job["jobs"])!=0:
                       html_url = job["jobs"][0]["html_url"]
                     
                     self.data["workflow_id"].append(lastrun["workflow_id"])
