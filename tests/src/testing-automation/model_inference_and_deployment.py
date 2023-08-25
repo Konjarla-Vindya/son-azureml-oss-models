@@ -19,10 +19,9 @@ import sys
 
 
 class ModelInferenceAndDeployemnt:
-    def __init__(self, test_model_name, workspace_ml_client, registry_ml_client, registry) -> None:
+    def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
         self.test_model_name = test_model_name
         self.workspace_ml_client = workspace_ml_client
-        self.registry_ml_client = registry_ml_client
         self.registry = registry
 
     def get_error_messages(self):
@@ -69,47 +68,47 @@ class ModelInferenceAndDeployemnt:
         #print(f"Model Config : {latest_model.config}")
         return foundation_model
 
-    def sample_inference(self, latest_model, registry, workspace_ml_client, online_endpoint_name):
-        # get the task tag from the latest_model.tags
-        tags = str(latest_model.tags)
-        # replace single quotes with double quotes in tags
-        tags = tags.replace("'", '"')
-        # convert tags to dictionary
-        tags_dict = json.loads(tags)
-        task = tags_dict['task']
-        print(f"task: {task}")
-        scoring_file = f"../../config/sample_inputs/{registry}/{task}.json"
-        # check of scoring_file exists
-        try:
-            with open(scoring_file) as f:
-                scoring_input = json.load(f)
-                print(f"scoring_input file:\n\n {scoring_input}\n\n")
-        except Exception as e:
-            print(
-                f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
+    # def sample_inference(self, latest_model, registry, workspace_ml_client, online_endpoint_name):
+    #     # get the task tag from the latest_model.tags
+    #     tags = str(latest_model.tags)
+    #     # replace single quotes with double quotes in tags
+    #     tags = tags.replace("'", '"')
+    #     # convert tags to dictionary
+    #     tags_dict = json.loads(tags)
+    #     task = tags_dict['task']
+    #     print(f"task: {task}")
+    #     scoring_file = f"../../config/sample_inputs/{registry}/{task}.json"
+    #     # check of scoring_file exists
+    #     try:
+    #         with open(scoring_file) as f:
+    #             scoring_input = json.load(f)
+    #             print(f"scoring_input file:\n\n {scoring_input}\n\n")
+    #     except Exception as e:
+    #         print(
+    #             f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
 
-        # invoke the endpoint
-        try:
-            response = workspace_ml_client.online_endpoints.invoke(
-                endpoint_name=online_endpoint_name,
-                deployment_name="demo",
-                request_file=scoring_file,
-            )
-            response_json = json.loads(response)
-            output = json.dumps(response_json, indent=2)
-            print(f"response: \n\n{output}")
-            with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as fh:
-                print(f'####Sample input', file=fh)
-                print(f'```json', file=fh)
-                print(f'{scoring_input}', file=fh)
-                print(f'```', file=fh)
-                print(f'####Sample output', file=fh)
-                print(f'```json', file=fh)
-                print(f'{output}', file=fh)
-                print(f'```', file=fh)
-        except Exception as e:
-            print(f"::error:: Could not invoke endpoint: \n")
-            print(f"{e}\n\n check logs:\n\n")
+    #     # invoke the endpoint
+    #     try:
+    #         response = workspace_ml_client.online_endpoints.invoke(
+    #             endpoint_name=online_endpoint_name,
+    #             deployment_name="demo",
+    #             request_file=scoring_file,
+    #         )
+    #         response_json = json.loads(response)
+    #         output = json.dumps(response_json, indent=2)
+    #         print(f"response: \n\n{output}")
+    #         with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as fh:
+    #             print(f'####Sample input', file=fh)
+    #             print(f'```json', file=fh)
+    #             print(f'{scoring_input}', file=fh)
+    #             print(f'```', file=fh)
+    #             print(f'####Sample output', file=fh)
+    #             print(f'```json', file=fh)
+    #             print(f'{output}', file=fh)
+    #             print(f'```', file=fh)
+    #     except Exception as e:
+    #         print(f"::error:: Could not invoke endpoint: \n")
+    #         print(f"{e}\n\n check logs:\n\n")
 
     def create_online_endpoint(self, latest_model, endpoint):
         print("In create_online_endpoint...")
@@ -280,8 +279,8 @@ class ModelInferenceAndDeployemnt:
 
         output = loaded_model(scoring_input.inputs)
         print("My outupt is this : ", output)
-        registered_output = latest_model(scoring_input.inputs)
-        print("This is my registered output", registered_output)
+        # registered_output = latest_model(scoring_input.inputs)
+        # print("This is my registered output", registered_output)
 
     def model_infernce_and_deployment(self, instance_type):
         model_name = self.test_model_name.replace("/", "-")
