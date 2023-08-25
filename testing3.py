@@ -73,34 +73,38 @@ class Dashboard():
         return self.data
 
     def results(self, last_runs_dict):
-    results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0}
-    summary = []
+        results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0}
+        summary = []
+        df = pd.DataFrame.from_dict(last_runs_dict)  
+        results_dict["total"] = df.shape[0]  # Get the total number of rows (workflow runs)
+        if results_dict["total"] > 0: 
+            results_dict["success"] = df.loc[df['conclusion'] == 'success'].shape[0]
+            results_dict["failure"] = df.loc[df['conclusion'] == 'failure'].shape[0]
+            results_dict["cancelled"] = df.loc[df['conclusion'] == 'cancelled'].shape[0]
+            success_rate = results_dict["success"] / results_dict["total"] * 100.00
+            failure_rate = results_dict["failure"] / results_dict["total"] * 100.00
+            cancel_rate = results_dict["cancelled"] / results_dict["total"] * 100.00
+        else:
+            success_rate = 0.0 
+            failure_rate = 0.0
+            cancel_rate = 0.0
 
-    df = pd.DataFrame.from_dict(last_runs_dict)
-    results_dict["total"] = df.shape[0]  # Get the total number of rows (workflow runs)
-
-    if results_dict["total"] > 0:
-        results_dict["success"] = df.loc[df['conclusion'] == 'success'].shape[0]
-        results_dict["failure"] = df.loc[df['conclusion'] == 'failure'].shape[0]
-        results_dict["cancelled"] = df.loc[df['conclusion'] == 'cancelled'].shape[0]
+        summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|")
+        summary.append("-----|-------|-------|-------|")
+        summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|")
+        summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|")
     
-        success_rate = results_dict["success"] / results_dict["total"] * 100.00
-        failure_rate = results_dict["failure"] / results_dict["total"] * 100.00
-        cancel_rate = results_dict["cancelled"] / results_dict["total"] * 100.00
-    else:
-        success_rate = 0.0
-        failure_rate = 0.0
-        cancel_rate = 0.0
+        models = {"Model": last_runs_dict["workflow_name"], "Badge": last_runs_dict["badge"]}
+        models_df = pd.DataFrame.from_dict(models)
 
-    summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|")
-    summary.append("-----|-------|-------|-------|")
-    summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|")
-    summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|")
+        with open("testing.md", "w", encoding="utf-8") as f:
+            f.write("\n".join(summary))
+            f.write("\n\n")
+            f.write(models_df.to_markdown(index=False))
+def main():
+    my_class = Dashboard()
+    last_runs_dict = my_class.workflow_last_run()
+    my_class.results(last_runs_dict)
 
-    models = {"Model": last_runs_dict["workflow_name"], "Badge": last_runs_dict["badge"]}
-    models_df = pd.DataFrame.from_dict(models)
-
-    with open("testing.md", "w", encoding="utf-8") as f:
-        f.write("\n".join(summary))
-        f.write("\n\n")
-        f.write(models_df.to_markdown(index=False))
+if __name__ == "__main__":
+    main()
