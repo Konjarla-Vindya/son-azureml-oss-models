@@ -53,7 +53,7 @@ class Dashboard():
                     lastrun = runs["workflow_runs"][0]
                     #URL_1 = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
                     jobresponse = requests.get(lastrun["jobs_url"]) 
-                    #print("URL : ",URL_1)
+                    print("URL : ",lastrun["jobs_url"])
                     #print("URL : ",url)
                     job = jobresponse.json()
                     print(job)
