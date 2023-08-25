@@ -196,9 +196,9 @@ if __name__ == "__main__":
     latest_env = workspace_ml_client.environments.get(
         name=queue.environment, version=str(latest_version))
     print("Latest Environment :", latest_env)
-    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py",
-                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
-    create_and_get_job_studio_url(command_job, workspace_ml_client)
+    # command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py",
+    #                                environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
+    # create_and_get_job_studio_url(command_job, workspace_ml_client)
 
     # ml_client_registry = MLClient(credential, registry_name=queue.registry)
     # import_model = ml_client_registry.components.get(name="import_model", label="latest")
