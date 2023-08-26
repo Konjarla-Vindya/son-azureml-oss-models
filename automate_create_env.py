@@ -17,9 +17,9 @@ response.raise_for_status()
 config_content = response.json()
 # Connect to Azure ML Workspace using the fetched config.json
 
- subscription_id: "80c77c76-74ba-4c8c-8229-4c3b2957990c"
- resource_group: "huggingface-registry-test1"
- workspace_name: "test-eastus"
+ subscription_id = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
+ resource_group = "huggingface-registry-test1"
+ workspace_name = "test-eastus"
 
 ws = Workspace(
     subscription_id=config_content.get(subscription_id),
