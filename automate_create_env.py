@@ -22,9 +22,9 @@ config_content = response.json()
  workspace_name = "test-eastus"
 
 ws = Workspace(
-    subscription_id=config_content.get(subscription_id),
-    resource_group=config_content.get(resource_group),
-    workspace_name=config_content.get(workspace_name)
+    subscription_id=subscription_id,
+    resource_group=resource_group,
+    workspace_name=workspace_name
 )
 
 
