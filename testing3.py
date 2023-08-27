@@ -78,7 +78,7 @@ class Dashboard():
                         self.data["jobs_url"].append(html_url)
                     else:
                         self.data["badge"].append("[![{}]({})]".format(workflow_name,badgeurl))
-                        #self.data["jobs_url"].append(workflow_runs)
+                        self.data["jobs_url"].append(workflow_runs)
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
