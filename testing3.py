@@ -59,7 +59,8 @@ class Dashboard():
                     job = jobresponse.json()
                     print(job)
                     
-                    badgeurl = f"https://api.github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg?"
+                    badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
+                    #https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/TRIGGER_TESTS.yml/badge.svg
                     #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
                     html_url=""
                     if len(job["jobs"])!=0:
