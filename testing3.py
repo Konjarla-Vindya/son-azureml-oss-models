@@ -1,4 +1,4 @@
-import os
+import os, sys
 import requests
 import pandas as pd
 from github import Github, Auth
@@ -40,43 +40,32 @@ class Dashboard():
         for workflow_name in workflows_to_include:
             try:
                 workflow_runs_url = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}/runs"
+                response = requests.get(workflow_runs_url, headers=headers)
+                response.raise_for_status()
                 
-                page = 1
-                per_page = 100
+                runs = response.json()["workflow_runs"]
+                if not runs: 
+                    print(f"No runs found for workflow '{workflow_name}'. Skipping...")
+                    continue
                 
-                while True:
-                    params = {
-                        "page": page,
-                        "per_page": per_page
-                    }
-                    response = requests.get(workflow_runs_url, headers=headers, params=params)
-                    response.raise_for_status()
-                    
-                    runs = response.json()["workflow_runs"]
-                    if not runs:
-                        print(f"No runs found for workflow '{workflow_name}'. Skipping...")
-                        break
-                    
-                    for lastrun in runs:
-                        jobs_url = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
-                        jobresponse = requests.get(jobs_url)
-                        job = jobresponse.json()["jobs"][0] if jobresponse.json()["jobs"] else {}
-                        
-                        badgeurl = f"https://github.com/{self.repo_full_name}/workflows/{workflow_name}/badge.svg"
-                        runurl = f"https://github.com/{self.repo_full_name}/actions/runs/{lastrun['id']}"
-                        html_url = job.get("html_url", runurl)
+                lastrun = runs[0]
+                jobs_url = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
+                jobresponse = requests.get(jobs_url)
+                job = jobresponse.json()["jobs"][0] if jobresponse.json()["jobs"] else {}
 
-                        self.data["workflow_id"].append(lastrun["workflow_id"])
-                        self.data["workflow_name"].append(workflow_name)
-                        self.data["last_runid"].append(lastrun["id"])
-                        self.data["created_at"].append(lastrun["created_at"])
-                        self.data["updated_at"].append(lastrun["updated_at"])
-                        self.data["status"].append(lastrun["status"])
-                        self.data["conclusion"].append(lastrun["conclusion"])
-                        self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({html_url})")
-                        self.data["jobs_url"].append(html_url)
-                    
-                    page += 1
+                badgeurl = f"https://github.com/{self.repo_full_name}/workflows/{workflow_name}/badge.svg"
+                runurl = f"https://github.com/{self.repo_full_name}/actions/runs/{lastrun['id']}"
+                html_url = job.get("html_url", runurl)
+
+                self.data["workflow_id"].append(lastrun["workflow_id"])
+                self.data["workflow_name"].append(workflow_name)
+                self.data["last_runid"].append(lastrun["id"])
+                self.data["created_at"].append(lastrun["created_at"])
+                self.data["updated_at"].append(lastrun["updated_at"])
+                self.data["status"].append(lastrun["status"])
+                self.data["conclusion"].append(lastrun["conclusion"])
+                self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({html_url})")
+                self.data["jobs_url"].append(html_url)
                 
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
@@ -87,8 +76,7 @@ class Dashboard():
         results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0}
         summary = []
         df = pd.DataFrame.from_dict(last_runs_dict)  
-        results_dict["total"] = df.shape[0]
-        
+        results_dict["total"] = df.shape[0]  # Get the total number of rows (workflow runs)
         if results_dict["total"] > 0: 
             results_dict["success"] = df.loc[df['conclusion'] == 'success'].shape[0]
             results_dict["failure"] = df.loc[df['conclusion'] == 'failure'].shape[0]
@@ -113,7 +101,6 @@ class Dashboard():
             f.write("\n".join(summary))
             f.write("\n\n")
             f.write(models_df.to_markdown(index=False))
-            
 def main():
     my_class = Dashboard()
     last_runs_dict = my_class.workflow_last_run()
