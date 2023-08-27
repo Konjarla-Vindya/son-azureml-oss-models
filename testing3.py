@@ -5,7 +5,7 @@ from github import Github, Auth
 
 class Dashboard():
     def __init__(self): 
-        self.github_token = os.environ["GIT_TOKEN"]
+        self.github_token = os.environ["GITHUB_TOKEN"]
         self.workflow_token = os.environ["WORKFLOW_TOKEN"]
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
