@@ -47,7 +47,7 @@ class Dashboard():
             offset = limit + offset
         
             # If this is 0, we'll exit the while loop.
-            results_len = len(results) 
+            results_len = len(workflows["workflows"]) 
         # response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=50", headers=headers)
         # response.raise_for_status()
         
