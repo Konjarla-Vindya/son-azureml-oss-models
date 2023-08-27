@@ -1,6 +1,6 @@
 import os
 import requests
-import pandas
+import pandas as pd
 from github import Github, Auth
 
 class Dashboard():
@@ -24,9 +24,9 @@ class Dashboard():
         response.raise_for_status()
         
         workflows = response.json()
-        workflow_name = [workflow["name"] for workflow in workflows["workflows"]]
-        print(workflow_name)
-        return workflow_name
+        workflow_names = [workflow["name"] for workflow in workflows["workflows"]]
+        print(workflow_names)
+        return workflow_names
         
     def workflow_last_run(self):
         headers = {
@@ -36,85 +36,84 @@ class Dashboard():
         }
         
         workflows_to_include = self.get_all_workflow_names()
-        normalized_workflows = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
 
-
-        for workflow_name in normalized_workflows:
+        for workflow_name in workflows_to_include:
             try:
-                workflow_runs = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
-                response = requests.get(workflow_runs, headers=headers)
-                response.raise_for_status()
+                workflow_runs_url = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}/runs"
                 
-                runs = response.json()
-                if not runs["workflow_runs"]: 
-                    print(f"No runs found for workflow '{workflow_names}'. Skipping...")
-                    continue
-                else:
-                #if len(runs["workflow_runs"]) != 0:
-                    lastrun = runs["workflow_runs"][0]
-                    #URL_1 = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
-                    jobresponse = requests.get(lastrun["jobs_url"]) 
-                    print("URL : ",lastrun["jobs_url"])
-                    #print("URL : ",url)
-                    job = jobresponse.json()
-                    print(job)
+                page = 1
+                per_page = 100
+                
+                while True:
+                    params = {
+                        "page": page,
+                        "per_page": per_page
+                    }
+                    response = requests.get(workflow_runs_url, headers=headers, params=params)
+                    response.raise_for_status()
                     
-                    badgeurl = f"https://api.github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
-                    #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
-                    html_url=""
-                    if len(job["jobs"])!=0:
-                      html_url = job["jobs"][0]["html_url"]
+                    runs = response.json()["workflow_runs"]
+                    if not runs:
+                        print(f"No runs found for workflow '{workflow_name}'. Skipping...")
+                        break
                     
-                    self.data["workflow_id"].append(lastrun["workflow_id"])
-                    self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
-                    self.data["last_runid"].append(lastrun["id"])
-                    self.data["created_at"].append(lastrun["created_at"])
-                    self.data["updated_at"].append(lastrun["updated_at"])
-                    self.data["status"].append(lastrun["status"])
-                    self.data["conclusion"].append(lastrun["conclusion"])
-                    #self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
-                    if len(html_url)!=0:
-                        self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,html_url))
+                    for lastrun in runs:
+                        jobs_url = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
+                        jobresponse = requests.get(jobs_url)
+                        job = jobresponse.json()["jobs"][0] if jobresponse.json()["jobs"] else {}
+                        
+                        badgeurl = f"https://github.com/{self.repo_full_name}/workflows/{workflow_name}/badge.svg"
+                        runurl = f"https://github.com/{self.repo_full_name}/actions/runs/{lastrun['id']}"
+                        html_url = job.get("html_url", runurl)
+
+                        self.data["workflow_id"].append(lastrun["workflow_id"])
+                        self.data["workflow_name"].append(workflow_name)
+                        self.data["last_runid"].append(lastrun["id"])
+                        self.data["created_at"].append(lastrun["created_at"])
+                        self.data["updated_at"].append(lastrun["updated_at"])
+                        self.data["status"].append(lastrun["status"])
+                        self.data["conclusion"].append(lastrun["conclusion"])
+                        self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({html_url})")
                         self.data["jobs_url"].append(html_url)
-                    else:
-                        self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,workflow_runs))
-                        self.data["jobs_url"].append(workflow_runs)
+                    
+                    page += 1
+                
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
         return self.data
 
     def results(self, last_runs_dict):
-        results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0, "not_tested": 0, "total_duration": 0}
+        results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0}
         summary = []
-
-        df = pandas.DataFrame.from_dict(last_runs_dict)
-        results_dict["total"] = df["workflow_id"].count()
-        results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
-        results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
-        results_dict["cancelled"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled')]['workflow_id'].count()
-    
-        success_rate = results_dict["success"]/results_dict["total"]*100.00
-        failure_rate = results_dict["failure"]/results_dict["total"]*100.00
-        cancel_rate = results_dict["cancelled"]/results_dict["total"]*100.00
+        df = pd.DataFrame.from_dict(last_runs_dict)  
+        results_dict["total"] = df.shape[0]
+        
+        if results_dict["total"] > 0: 
+            results_dict["success"] = df.loc[df['conclusion'] == 'success'].shape[0]
+            results_dict["failure"] = df.loc[df['conclusion'] == 'failure'].shape[0]
+            results_dict["cancelled"] = df.loc[df['conclusion'] == 'cancelled'].shape[0]
+            success_rate = results_dict["success"] / results_dict["total"] * 100.00
+            failure_rate = results_dict["failure"] / results_dict["total"] * 100.00
+            cancel_rate = results_dict["cancelled"] / results_dict["total"] * 100.00
+        else:
+            success_rate = 0.0 
+            failure_rate = 0.0
+            cancel_rate = 0.0
 
         summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|")
         summary.append("-----|-------|-------|-------|")
         summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|")
         summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|")
-
-        models = {"Model": last_runs_dict["workflow_name"], "Status": last_runs_dict["badge"]}
-        models_md = pandas.DataFrame.from_dict(models).to_markdown()
-
-        summary_text = "\n".join(summary)
+    
+        models = {"Model": last_runs_dict["workflow_name"], "Badge": last_runs_dict["badge"]}
+        models_df = pd.DataFrame.from_dict(models)
 
         with open("testing.md", "w", encoding="utf-8") as f:
-            f.write(summary_text)
-            f.write(os.linesep)
-            f.write(os.linesep)
-            f.write(models_md)
-       
-
+            f.write("\n".join(summary))
+            f.write("\n\n")
+            f.write(models_df.to_markdown(index=False))
+            
 def main():
     my_class = Dashboard()
     last_runs_dict = my_class.workflow_last_run()
