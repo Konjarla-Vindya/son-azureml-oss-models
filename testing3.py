@@ -59,11 +59,13 @@ class Dashboard():
                     job = jobresponse.json()
                     print(job)
                     
-                    badgeurl = f"https://api.github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
+                    badgeurl = f"https://api.github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
                     #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
                     html_url=""
                     if len(job["jobs"])!=0:
                       html_url = job["jobs"][0]["html_url"]
+                    else:
+                      url = 
                     
                     self.data["workflow_id"].append(lastrun["workflow_id"])
                     self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
