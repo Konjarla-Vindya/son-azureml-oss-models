@@ -17,7 +17,7 @@ class Dashboard():
         
     def get_all_workflow_names(self):
         headers = {
-            "Authorization": f"Bearer {self.github_token}",
+            "Authorization": f"Bearer {self.WORKFLOW_TOKEN}",
             "Accept": "application/vnd.github.v3+json"
         }
         params = {
@@ -35,7 +35,7 @@ class Dashboard():
         
     def workflow_last_run(self):
         headers = {
-            "Authorization": f"Bearer {self.github_token}",
+            "Authorization": f"Bearer {self.WORKFLOW_TOKEN}",
             "X-GitHub-Api-Version": "2022-11-28",
             "Accept": "application/vnd.github+json"
         }
