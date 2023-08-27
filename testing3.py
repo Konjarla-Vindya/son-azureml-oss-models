@@ -20,11 +20,18 @@ class Dashboard():
             "Authorization": f"Bearer {self.github_token}",
             "Accept": "application/vnd.github.v3+json"
         }
-        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=50", headers=headers)
-        response.raise_for_status()
+        workflow_name = []
+        page = 1
+        while True:
+            response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=50&page={page}", headers=headers)
+            response.raise_for_status()
         
-        workflows = response.json()
-        workflow_name = [workflow["name"] for workflow in workflows["workflows"]]
+            workflows = response.json()
+            if not workflows["workflows"]:
+                break
+            
+            workflow_name.extend([workflow["name"] for workflow in workflows["workflows"]])
+            page+=1
         print(workflow_name)
         return workflow_name
         
