@@ -5,7 +5,8 @@ from github import Github, Auth
 
 class Dashboard():
     def __init__(self): 
-        self.github_token = os.environ["WORKFLOW_TOKEN"]
+        self.github_token = os.environ["GIT_TOKEN"]
+        self.workflow_token = os.environ["WORKFLOW_TOKEN"]
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
         self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
@@ -17,7 +18,7 @@ class Dashboard():
         
     def get_all_workflow_names(self):
         headers = {
-            "Authorization": f"Bearer {self.WORKFLOW_TOKEN}",
+            "Authorization": f"Bearer {self.workflow_token}",
             "Accept": "application/vnd.github.v3+json"
         }
         params = {
@@ -35,7 +36,7 @@ class Dashboard():
         
     def workflow_last_run(self):
         headers = {
-            "Authorization": f"Bearer {self.WORKFLOW_TOKEN}",
+            "Authorization": f"Bearer {self.workflow_token}",
             "X-GitHub-Api-Version": "2022-11-28",
             "Accept": "application/vnd.github+json"
         }
