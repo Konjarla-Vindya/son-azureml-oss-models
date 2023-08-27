@@ -20,7 +20,7 @@ class Dashboard():
             "Authorization": f"Bearer {self.github_token}",
             "Accept": "application/vnd.github.v3+json"
         }
-        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=70", headers=headers)
+        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=50", headers=headers)
         response.raise_for_status()
         
         workflows = response.json()
