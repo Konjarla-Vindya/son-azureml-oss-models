@@ -5,8 +5,7 @@ from github import Github, Auth
 
 class Dashboard():
     def __init__(self): 
-        self.github_token = os.environ["GITHUB_TOKEN"]
-        self.workflow_token = os.environ["WORKFLOW_TOKEN"]
+        self.github_token = os.environ["GIT_TOKEN"]
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
         self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
@@ -18,15 +17,10 @@ class Dashboard():
         
     def get_all_workflow_names(self):
         headers = {
-            "Authorization": f"Bearer {self.workflow_token}",
+            "Authorization": f"Bearer {self.github_token}",
             "Accept": "application/vnd.github.v3+json"
         }
-        params = {
-            "owner": "Konjarla-Vindya",
-            "repo": "son-azureml-oss-models",
-            "per_page": 100
-        }
-        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers, params = params)
+        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=50", headers=headers)
         response.raise_for_status()
         
         workflows = response.json()
@@ -36,15 +30,11 @@ class Dashboard():
         
     def workflow_last_run(self):
         headers = {
-            "Authorization": f"Bearer {self.workflow_token}",
+            "Authorization": f"Bearer {self.github_token}",
             "X-GitHub-Api-Version": "2022-11-28",
             "Accept": "application/vnd.github+json"
         }
-        params = {
-            "owner": "Konjarla-Vindya",
-            "repo": "son-azureml-oss-models",
-            "per_page": 100
-        }
+        
         workflows_to_include = self.get_all_workflow_names()
         normalized_workflows = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
 
@@ -52,7 +42,7 @@ class Dashboard():
         for workflow_name in normalized_workflows:
             try:
                 workflow_runs = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
-                response = requests.get(workflow_runs, headers=headers, params=params)
+                response = requests.get(workflow_runs, headers=headers)
                 response.raise_for_status()
                 
                 runs = response.json()
