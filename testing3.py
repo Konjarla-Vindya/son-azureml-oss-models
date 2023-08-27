@@ -12,7 +12,7 @@ class Dashboard():
         self.repo_full_name = self.repo.full_name
         self.data = {
             "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
-            "updated_at": [], "status": [], "conclusion": [], "badge": []
+            "updated_at": [], "status": [], "conclusion": [], "badge": [], "jobs_url": []
         }
         
     def get_all_workflow_names(self):
@@ -41,31 +41,44 @@ class Dashboard():
 
         for workflow_name in normalized_workflows:
             try:
-                response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs", headers=headers)
+                workflow_runs = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
+                response = requests.get(workflow_runs, headers=headers)
                 response.raise_for_status()
                 
                 runs = response.json()
                 if not runs["workflow_runs"]: 
                     print(f"No runs found for workflow '{workflow_names}'. Skipping...")
                     continue
-                if len(runs["workflow_runs"]) != 0:
-                lastrun = runs["workflow_runs"][0]
-                jobresponse = requests.get("https://api.github.com/repos/{}/actions/runs/{}/jobs".format(self.repo_full_name,lastrun["id"]), headers = headers) 
-                job = jobresponse.json()
-                print(job["jobs"][0]["id"])
-                
-                badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
-                runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
-
-                self.data["workflow_id"].append(lastrun["workflow_id"])
-                self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
-                self.data["last_runid"].append(lastrun["id"])
-                self.data["created_at"].append(lastrun["created_at"])
-                self.data["updated_at"].append(lastrun["updated_at"])
-                self.data["status"].append(lastrun["status"])
-                self.data["conclusion"].append(lastrun["conclusion"])
-                #self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
-                self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,runurl))
+                else:
+                #if len(runs["workflow_runs"]) != 0:
+                    lastrun = runs["workflow_runs"][0]
+                    #URL_1 = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
+                    jobresponse = requests.get(lastrun["jobs_url"]) 
+                    print("URL : ",lastrun["jobs_url"])
+                    #print("URL : ",url)
+                    job = jobresponse.json()
+                    print(job)
+                    
+                    badgeurl = f"https://api.github.com/{self.repo_full_name}/actions/workflows/{workflow_name}/badge.svg"
+                    #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
+                    html_url=""
+                    if len(job["jobs"])!=0:
+                      html_url = job["jobs"][0]["html_url"]
+                    
+                    self.data["workflow_id"].append(lastrun["workflow_id"])
+                    self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
+                    self.data["last_runid"].append(lastrun["id"])
+                    self.data["created_at"].append(lastrun["created_at"])
+                    self.data["updated_at"].append(lastrun["updated_at"])
+                    self.data["status"].append(lastrun["status"])
+                    self.data["conclusion"].append(lastrun["conclusion"])
+                    #self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
+                    if len(html_url)!=0:
+                        self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,html_url))
+                        self.data["jobs_url"].append(html_url)
+                    else:
+                        self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,workflow_runs))
+                        self.data["jobs_url"].append(workflow_runs)
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
