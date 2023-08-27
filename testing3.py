@@ -149,9 +149,13 @@ class Dashboard():
        
 
 def main():
-    my_class = Dashboard()
-    last_runs_dict = my_class.workflow_last_run()
-    my_class.results(last_runs_dict)
-
+        try:
+            my_class = Dashboard()
+            last_runs_dict = my_class.workflow_last_run()
+            my_class.results(last_runs_dict)
+        except HTTPError as http_err:
+            print(f"HTTP error occurred: {http_err}")
+        except Exception as e:
+            print(f"An error occurred: {e}")
 if __name__ == "__main__":
     main()
