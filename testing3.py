@@ -41,7 +41,7 @@ class Dashboard():
 
         for workflow_name in normalized_workflows:
             try:
-                workflow_runs = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs?per_page=100"
+                workflow_runs = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
                 response = requests.get(workflow_runs, headers=headers)
                 response.raise_for_status()
                 
@@ -59,7 +59,7 @@ class Dashboard():
                     job = jobresponse.json()
                     print(job)
                     
-                    badgeurl = f"https://api.github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg?per_page=100"
+                    badgeurl = f"https://api.github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg?"
                     #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
                     html_url=""
                     if len(job["jobs"])!=0:
