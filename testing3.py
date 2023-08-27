@@ -20,7 +20,12 @@ class Dashboard():
             "Authorization": f"Bearer {self.github_token}",
             "Accept": "application/vnd.github.v3+json"
         }
-        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=50", headers=headers)
+        params = {
+            "owner": "Konjarla-Vindya",
+            "repo": "son-azureml-oss-models",
+            "per_page": 100
+        }
+        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers, params = params)
         response.raise_for_status()
         
         workflows = response.json()
@@ -34,7 +39,11 @@ class Dashboard():
             "X-GitHub-Api-Version": "2022-11-28",
             "Accept": "application/vnd.github+json"
         }
-        
+        params = {
+            "owner": "Konjarla-Vindya",
+            "repo": "son-azureml-oss-models",
+            "per_page": 100
+        }
         workflows_to_include = self.get_all_workflow_names()
         normalized_workflows = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
 
@@ -42,7 +51,7 @@ class Dashboard():
         for workflow_name in normalized_workflows:
             try:
                 workflow_runs = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
-                response = requests.get(workflow_runs, headers=headers)
+                response = requests.get(workflow_runs, headers=headers, params=params)
                 response.raise_for_status()
                 
                 runs = response.json()
