@@ -47,7 +47,7 @@ class Dashboard():
                     params = {
                         "page" : page,
                         "per_page" : per_page
-                
+                    }
                     response = requests.get(workflow_runs_url, headers=headers, params=params)
                     response.raise_for_status()
                 
