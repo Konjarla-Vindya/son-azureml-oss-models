@@ -82,7 +82,7 @@ class Dashboard():
                     else:
                         #f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
                         url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml"
-                        self.data["badge"].append("[![{}]({})]".format(workflow_name,badgeurl,url))
+                        self.data["badge"].append("[![{}]({})({})]".format(workflow_name,badgeurl,url))
                         
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
