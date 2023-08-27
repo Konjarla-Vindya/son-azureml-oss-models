@@ -64,8 +64,7 @@ class Dashboard():
                     html_url=""
                     if len(job["jobs"])!=0:
                       html_url = job["jobs"][0]["html_url"]
-                    else:
-                      url = 
+            
                     
                     self.data["workflow_id"].append(lastrun["workflow_id"])
                     self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
