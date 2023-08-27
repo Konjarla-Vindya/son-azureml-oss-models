@@ -40,33 +40,43 @@ class Dashboard():
         for workflow_name in workflows_to_include:
             try:
                 workflow_runs_url = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}/runs"
-                response = requests.get(workflow_runs_url, headers=headers)
-                response.raise_for_status()
-                
-                runs = response.json()["workflow_runs"]
-                if not runs: 
-                    print(f"No runs found for workflow '{workflow_name}'. Skipping...")
-                    continue
-                
-                lastrun = runs[0]
-                jobs_url = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
-                jobresponse = requests.get(jobs_url)
-                job = jobresponse.json()["jobs"][0] if jobresponse.json()["jobs"] else {}
+                page = 1
+                per_page = 100
 
-                badgeurl = f"https://github.com/{self.repo_full_name}/workflows/{workflow_name}/badge.svg"
-                runurl = f"https://github.com/{self.repo_full_name}/actions/runs/{lastrun['id']}"
-                html_url = job.get("html_url", runurl)
-
-                self.data["workflow_id"].append(lastrun["workflow_id"])
-                self.data["workflow_name"].append(workflow_name)
-                self.data["last_runid"].append(lastrun["id"])
-                self.data["created_at"].append(lastrun["created_at"])
-                self.data["updated_at"].append(lastrun["updated_at"])
-                self.data["status"].append(lastrun["status"])
-                self.data["conclusion"].append(lastrun["conclusion"])
-                self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({html_url})")
-                self.data["jobs_url"].append(html_url)
+                while True:
+                    params = {
+                        "page" : page,
+                        "per_page" : per_page
                 
+                    response = requests.get(workflow_runs_url, headers=headers, params=params)
+                    response.raise_for_status()
+                
+                    runs = response.json()["workflow_runs"]
+                    if not runs: 
+                        print(f"No runs found for workflow '{workflow_name}'. Skipping...")
+                        continue
+                
+                    lastrun = runs[0]
+                    jobs_url = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
+                    jobresponse = requests.get(jobs_url)
+                    job = jobresponse.json()["jobs"][0] if jobresponse.json()["jobs"] else {}
+
+                    badgeurl = f"https://github.com/{self.repo_full_name}/workflows/{workflow_name}/badge.svg"
+                    runurl = f"https://github.com/{self.repo_full_name}/actions/runs/{lastrun['id']}"
+                    html_url = job.get("html_url", runurl)
+
+                    self.data["workflow_id"].append(lastrun["workflow_id"])
+                    self.data["workflow_name"].append(workflow_name)
+                    self.data["last_runid"].append(lastrun["id"])
+                    self.data["created_at"].append(lastrun["created_at"])
+                    self.data["updated_at"].append(lastrun["updated_at"])
+                    self.data["status"].append(lastrun["status"])
+                    self.data["conclusion"].append(lastrun["conclusion"])
+                    self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({html_url})")
+                    self.data["jobs_url"].append(html_url)
+                
+                page+=1
+              
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
