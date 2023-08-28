@@ -2,6 +2,7 @@ import os
 import requests
 import pandas
 from github import Github, Auth
+from requests.exceptions import HTTPError
 
 class Dashboard():
     def __init__(self): 
