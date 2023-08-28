@@ -1,3 +1,4 @@
+from azureml.core import Workspace, Environment
 import yaml
 
 def create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name):
@@ -28,3 +29,21 @@ pip_dependencies = [
 env_name = "auto_testenv"
 
 create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name)
+
+# Connect to existing Azure ML Workspace
+subscription_id = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
+resource_group = "huggingface-registry-test1"
+workspace_name = "test-eastus"
+
+ws = Workspace(
+    subscription_id=subscription_id,
+    resource_group=resource_group,
+    workspace_name=workspace_name
+)
+
+# Create and register the environment
+env_name = "automate-create-env"
+
+
+env_name.register(workspace=ws)
+
