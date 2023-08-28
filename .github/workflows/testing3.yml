@@ -3,6 +3,8 @@ on:
   schedule:
     - cron: '0 */4 * * *'
   workflow_dispatch:
+  
+
 
 jobs:
   testing:
@@ -10,7 +12,17 @@ jobs:
 
     env:
         GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
+    permissions:
+        actions: write
+        checks: write
+        contents: write
+        deployments: write
+        issues: write
+        packages: write
+        pull-requests: write
+        repository-projects: write
+        security-events: write
+        statuses: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -19,7 +31,7 @@ jobs:
         # ref: main
           lfs: true
           repository: Konjarla-Vindya/son-azureml-oss-models
-          branh: main
+          branch: main
         #     git config global init.defaultBranch main
           token: ${{ secrets.WORKFLOW_TOKEN }}
           
