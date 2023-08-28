@@ -25,26 +25,27 @@ class Dashboard():
         results_len = 1
         workflow_name = []
         while results_len != 0:
+            while offset<49000:
 
             # Set the parameters in the URL.
-            params = {'limit': limit, 'offset': offset}
-        
-            # Make the request combining the endpoint, headers and params above.
-            #r = requests.get(endpoint, headers=headers, params=params)
-            response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers, params=params)
-            response.raise_for_status()
-            # Capture the results
-            #print "Getting results for {}".format(r.url)
-            #results = r.json()['Results']
-            workflows = response.json()
-            # We append all the results to the all_calls array.
-            # for result in results:
-            #     all_calls.append(result)
-            for workflow in workflows["workflows"]:
-                workflow_name.append(workflow)
-        
-            # Set the next limit.
-            offset = limit + offset
+                params = {'limit': limit, 'offset': offset}
+            
+                # Make the request combining the endpoint, headers and params above.
+                #r = requests.get(endpoint, headers=headers, params=params)
+                response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers, params=params)
+                response.raise_for_status()
+                # Capture the results
+                #print "Getting results for {}".format(r.url)
+                #results = r.json()['Results']
+                workflows = response.json()
+                # We append all the results to the all_calls array.
+                # for result in results:
+                #     all_calls.append(result)
+                for workflow in workflows["workflows"]:
+                    workflow_name.append(workflow)
+            
+                # Set the next limit.
+                offset = limit + offset
         
             # If this is 0, we'll exit the while loop.
             results_len = len(workflows["workflows"]) 
