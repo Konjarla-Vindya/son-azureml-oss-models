@@ -1,16 +1,16 @@
 import yaml
 
 def create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name):
-   
+    # Define the environment
     environment = {
         'name': env_name,
         'channels': channels,
-        'dependencies': conda_dependencies + [{"pip": pip_dependencies}]
+        'dependencies': conda_dependencies + [{'pip': pip_dependencies}]
     }
 
+    # Write to a YAML file
     with open("conda.yaml", "w") as file:
-        yaml.dump(environment, file, default_flow_style=False)
-
+        yaml.safe_dump(environment, file)
 # Usage
 channels = ["conda-forge", "defaults"]
 conda_dependencies = ["python=3.10", "numpy", "pandas", "pip"]
