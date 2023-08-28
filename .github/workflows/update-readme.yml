@@ -42,10 +42,10 @@ jobs:
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
           cd dashboard/HuggingFace
-          git add testing.md          
+          git add README.md          
           # Attempt to commit changes and handle errors
           set +e
-          git commit -m "Add testing.md"
+          git commit -m "Add README.md"
           commit_status=$?
           set -e
           if [ $commit_status -eq 0 ]; then
