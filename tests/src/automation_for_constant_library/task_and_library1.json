@@ -1,8 +1,8 @@
 {
     "text-classification": "AutoModelForSequenceClassification",
     "fill-mask": "AutoModelForMaskedLM",
-    "text-generation": "EncoderDecoderModel",
-    "summarization": "EncoderDecoderModel",
+    "text-generation": "AutoModelForCausalLM",
+    "summarization": "AutoModelForSeq2SeqLM",
     "question-answering": "AutoModelForQuestionAnswering",
     "token-classification": "AutoModelForTokenClassification",
     "translation": "AutoModelForSeq2SeqLM" 
