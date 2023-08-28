@@ -1,13 +1,7 @@
 {
     "queue_name": "test-northcentralus-4",
     "models": [
-                "IlyaGusev/rubert_telegram_headlines",
-                "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
-                "TsinghuaAI/CPM-Generate",
-                "NlpHUST/vibert4news-base-cased",
-                "Callidior/bert2bert-base-arxiv-titlegen",
-                "Lowin/chinese-bigbird-wwm-base-4096",
-                "airesearch/wangchanberta-base-wiki-spm",
+
                 "CodeNinja1126/xlm-roberta-large-kor-mrc",
                 "CoffeeAddict93/gpt1-modest-proposal",
                 "DemangeJeremy/4-sentiments-with-flaubert",
