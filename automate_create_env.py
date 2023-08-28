@@ -32,5 +32,5 @@ env_name = "automate-create-env"
 env = Environment.from_conda_specification(
     name=env_name,
     file_path="https://github.com/Konjarla-Vindya/son-azureml-oss-models/blob/main/.github/conda.yml"  
-
+)
 env.register(workspace=ws)
