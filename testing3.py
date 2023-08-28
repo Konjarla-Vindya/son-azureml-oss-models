@@ -16,56 +16,45 @@ class Dashboard():
         }
         
     def get_all_workflow_names(self):
-        # headers = {
-        #     "Authorization": f"Bearer {self.github_token}",
-        #     "Accept": "application/vnd.github.v3+json"
-        # }
-        # limit=50
-        # offset=0
-        # results_len = 1
-        # workflow_name = []
-        # while results_len != 0:
+        headers = {
+            "Authorization": f"Bearer {self.github_token}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+        limit=50
+        offset=0
+        results_len = 1
+        workflow_name = []
+        while results_len != 0:
 
-        #     # Set the parameters in the URL.
-        #     params = {'limit': limit, 'offset': offset}
+            # Set the parameters in the URL.
+            params = {'limit': limit, 'offset': offset}
         
-        #     # Make the request combining the endpoint, headers and params above.
-        #     #r = requests.get(endpoint, headers=headers, params=params)
-        #     response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers, params=params)
-        #     response.raise_for_status()
-        #     # Capture the results
-        #     #print "Getting results for {}".format(r.url)
-        #     #results = r.json()['Results']
-        #     workflows = response.json()
-        #     # We append all the results to the all_calls array.
-        #     # for result in results:
-        #     #     all_calls.append(result)
-        #     for workflow in workflows["workflows"]:
-        #         workflow_name.append(workflow)
+            # Make the request combining the endpoint, headers and params above.
+            #r = requests.get(endpoint, headers=headers, params=params)
+            response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers, params=params)
+            response.raise_for_status()
+            # Capture the results
+            #print "Getting results for {}".format(r.url)
+            #results = r.json()['Results']
+            workflows = response.json()
+            # We append all the results to the all_calls array.
+            # for result in results:
+            #     all_calls.append(result)
+            for workflow in workflows["workflows"]:
+                workflow_name.append(workflow)
         
-        #     # Set the next limit.
-        #     offset = limit + offset
+            # Set the next limit.
+            offset = limit + offset
         
-        #     # If this is 0, we'll exit the while loop.
-        #     results_len = len(workflows["workflows"]) 
-        # # response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=50", headers=headers)
-        # # response.raise_for_status()
+            # If this is 0, we'll exit the while loop.
+            results_len = len(workflows["workflows"]) 
+        # response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=50", headers=headers)
+        # response.raise_for_status()
         
-        # # workflows = response.json()
-        # # workflow_name = [workflow["name"] for workflow in workflows["workflows"]]
-        # print(workflow_name)
-        # return workflow_name
-        headers = {	
-            "Authorization": f"Bearer {self.github_token}",	
-            "Accept": "application/vnd.github.v3+json"	
-        }	
-        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers)	
-        response.raise_for_status()	
-        	
-        workflows = response.json()	
-        workflow_names = [workflow["name"] for workflow in workflows["workflows"]]	
-        print(workflow_names)
-        return workflow_names
+        # workflows = response.json()
+        # workflow_name = [workflow["name"] for workflow in workflows["workflows"]]
+        print(workflow_name)
+        return workflow_name
         
     def workflow_last_run(self):
         headers = {
