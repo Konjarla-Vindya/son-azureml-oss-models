@@ -34,6 +34,7 @@ jobs:
           pip install -r runs_requirements.txt
       - name: Run Python Script
         run: |
+          cd dashboard/HuggingFace
           python update-readme.py
       - name: Add Generated File
         run: |
