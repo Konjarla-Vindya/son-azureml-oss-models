@@ -1,10 +1,10 @@
 {
     "queue_name": "test-southcentralus-0",
     "models": [
-        "bert-base-uncased",
-        "roberta-base",
-        "gpt2",
-        "NYTK/summarization-hi-bart-base-1024-hungarian"
+        "NlpHUST/vibert4news-base-cased",
+        "Callidior/bert2bert-base-arxiv-titlegen",
+        "Lowin/chinese-bigbird-wwm-base-4096",
+        "IlyaGusev/rubert_telegram_headlines"
         
     ],
     "workspace": "test-southcentralus",
