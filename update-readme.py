@@ -1,37 +1,129 @@
-import json
-import pandas as pd
-import yaml
-with open('runs_json.json') as json_data:
-    data_json = json.load(json_data)
+import os
+import requests
+import pandas
+from github import Github, Auth
 
-df=pd.DataFrame(data_json)
-dict_df = pd.DataFrame(df['workflow_runs'].tolist())
-dict_df = dict_df[["id","name","conclusion","run_attempt"]]
-req_json=dict_df.to_dict(orient='records')
-yaml_string = yaml.dump(req_json)
-with open('runs.yaml', 'w+') as f:
-    f.write(yaml_string)
-with open('runs.yaml') as runyaml:
-    runyaml =yaml.safe_load(runyaml)
-# Generate Markdown table
-markdown_table = "| id | name | conclusion | run_attempt |\n| -- | ---- | ---------- | ----------- |\n"
-for item in runyaml:
-    markdown_table += f"| {item['id']} | {item['name']}  | {item['conclusion']} | {item['run_attempt']} | \n"
+class Dashboard():
+    def __init__(self): 
+        self.github_token = os.environ["GIT_TOKEN"]
+        self.token = Auth.Token(self.github_token)
+        self.auth = Github(auth=self.token)
+        self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
+        self.repo_full_name = self.repo.full_name
+        self.data = {
+            "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
+            "updated_at": [], "status": [], "conclusion": [], "badge": [], "jobs_url": []
+        }
+        
+    def get_all_workflow_names(self):
+        headers = {
+            "Authorization": f"Bearer {self.github_token}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+        response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=50", headers=headers)
+        response.raise_for_status()
+        
+        workflows = response.json()
+        workflow_name = [workflow["name"] for workflow in workflows["workflows"]]
+        print(workflow_name)
+        return workflow_name
+        
+    def workflow_last_run(self):
+        headers = {
+            "Authorization": f"Bearer {self.github_token}",
+            "X-GitHub-Api-Version": "2022-11-28",
+            "Accept": "application/vnd.github+json"
+        }
+        
+        workflows_to_include = self.get_all_workflow_names()
+        normalized_workflows = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
 
-# Write Markdown table to file
-# with open("test.md", "w") as md_file:
-#     md_file.write(markdown_table)
-# output = ""
-# with open("test.md", "r") as readme_file:
-#     output = readme_file.read()
 
-# update_readme.py
-# generate_markdown.py
+        for workflow_name in normalized_workflows:
+            try:
+                workflow_runs = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
+                response = requests.get(workflow_runs, headers=headers)
+                response.raise_for_status()
+                
+                runs = response.json()
+                if not runs["workflow_runs"]: 
+                    print(f"No runs found for workflow '{workflow_names}'. Skipping...")
+                    continue
+                else:
+                #if len(runs["workflow_runs"]) != 0:
+                    lastrun = runs["workflow_runs"][0]
+                    #URL_1 = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
+                    jobresponse = requests.get(lastrun["jobs_url"]) 
+                    print("URL : ",lastrun["jobs_url"])
+                    #print("URL : ",url)
+                    job = jobresponse.json()
+                    print(job)
+                    
+                    badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
+                    #https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/TRIGGER_TESTS.yml/badge.svg
+                    #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
+                    html_url=""
+                    if len(job["jobs"])!=0:
+                      html_url = job["jobs"][0]["html_url"]
+            
+                    
+                    self.data["workflow_id"].append(lastrun["workflow_id"])
+                    self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
+                    self.data["last_runid"].append(lastrun["id"])
+                    self.data["created_at"].append(lastrun["created_at"])
+                    self.data["updated_at"].append(lastrun["updated_at"])
+                    self.data["status"].append(lastrun["status"])
+                    self.data["conclusion"].append(lastrun["conclusion"])
+                    self.data["jobs_url"].append(html_url)
+                    #self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
+                    if len(html_url)!=0:
+                        self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,html_url))
+                        
+                    else:
+                        #f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
+                        url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml"
+                        self.data["badge"].append("[![{}]({})({})]".format(workflow_name,badgeurl,url))
+                        
+            except requests.exceptions.RequestException as e:
+                print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
-def generate_markdown():
-    markdown = markdown_table
-    return markdown
+        return self.data
+
+    def results(self, last_runs_dict):
+        results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0, "not_tested": 0, "total_duration": 0}
+        summary = []
+
+        df = pandas.DataFrame.from_dict(last_runs_dict)
+        results_dict["total"] = df["workflow_id"].count()
+        results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
+        results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
+        results_dict["cancelled"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled')]['workflow_id'].count()
+    
+        success_rate = results_dict["success"]/results_dict["total"]*100.00
+        failure_rate = results_dict["failure"]/results_dict["total"]*100.00
+        cancel_rate = results_dict["cancelled"]/results_dict["total"]*100.00
+
+        summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|")
+        summary.append("-----|-------|-------|-------|")
+        summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|")
+        summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|")
+
+        models = {"Model": last_runs_dict["workflow_name"], "Status": last_runs_dict["badge"]}
+        models_md = pandas.DataFrame.from_dict(models).to_markdown()
+
+        summary_text = "\n".join(summary)
+
+        with open("testing.md", "w", encoding="utf-8") as f:
+            f.write(summary_text)
+            f.write(os.linesep)
+            f.write(os.linesep)
+            f.write(models_md)
+       
+
+def main():
+    my_class = Dashboard()
+    last_runs_dict = my_class.workflow_last_run()
+    my_class.results(last_runs_dict)
 
 if __name__ == "__main__":
-    markdown_content = generate_markdown()
-    print(markdown_content)
+    main()
