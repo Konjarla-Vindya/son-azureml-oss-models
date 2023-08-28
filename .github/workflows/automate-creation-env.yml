@@ -4,41 +4,30 @@ jobs:
   setup_azure_ml_env:
     runs-on: ubuntu-latest
     env:
-        GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        #AZURE_SUBSCRIPTION_ID: ${{secrets.AZURE_SUBSCRIPTION_ID}}
-        #AZURE_CLIENT_ID: ${{secrets.AZURE_CLIENT_ID}}
-        #AZURE_CLIENT_SECRET: ${{secrets.AZURE_CLIENT_SECRET}}
-        #AZURE_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
-
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2  
-        with:
-          lfs: true
-          repository: Konjarla-Vindya/son-azureml-oss-models
-          ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: check-out-repo-step
+      uses: actions/checkout@v2
+    - name: azure-login-step
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
       
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
           python-version: 3.9
       
-      - name: Install dependencies
-        run: |
+    - name: Install dependencies
+      run: |
           python -m pip install --upgrade pip
           pip install -r autoenv_requirements.txt
 
-      - name: Run Python Script to Setup Azure ML Environment
-        run: python automate_create_env.py 
+    - name: Run Python Script to Setup Azure ML Environment
+      run: python automate_create_env.py 
       
-      - name: Add Generated File
-        run: |
+    - name: Add Generated File
+      run: |
           git config user.email "${{ secrets.USER_EMAIL }}"
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
