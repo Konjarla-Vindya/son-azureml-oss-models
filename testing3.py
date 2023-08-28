@@ -2,7 +2,6 @@ import os
 import requests
 import pandas
 from github import Github, Auth
-from requests.exceptions import HTTPError
 
 class Dashboard():
     def __init__(self): 
@@ -150,13 +149,10 @@ class Dashboard():
        
 
 def main():
-        try:
-            my_class = Dashboard()
-            last_runs_dict = my_class.workflow_last_run()
-            my_class.results(last_runs_dict)
-        except HTTPError as http_err:
-            print(f"HTTP error occurred: {http_err}")
-        except Exception as e:
-            print(f"An error occurred: {e}")
+        
+        my_class = Dashboard()
+        last_runs_dict = my_class.workflow_last_run()
+        my_class.results(last_runs_dict)
+        
 if __name__ == "__main__":
     main()
