@@ -5,6 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
         GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        #AZURE_SUBSCRIPTION_ID: ${{secrets.AZURE_SUBSCRIPTION_ID}}
+        #AZURE_CLIENT_ID: ${{secrets.AZURE_CLIENT_ID}}
+        #AZURE_CLIENT_SECRET: ${{secrets.AZURE_CLIENT_SECRET}}
+        #AZURE_TENANT_ID: ${{secrets.AZURE_TENANT_ID}}
 
     steps:
       - name: Checkout code
@@ -13,8 +17,13 @@ jobs:
           lfs: true
           repository: Konjarla-Vindya/son-azureml-oss-models
           ref: main
-          token: ${{ secrets.AZURE_CREDENTIALS }}
+          token: ${{ secrets.GIT_TOKEN }}
 
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{secrets.AZURE_CREDENTIALS}}
+      
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -27,21 +36,19 @@ jobs:
 
       - name: Run Python Script to Setup Azure ML Environment
         run: python automate_create_env.py 
+      
       - name: Add Generated File
         run: |
           git config user.email "${{ secrets.USER_EMAIL }}"
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
           git add testing.md
-          # Attempt to commit changes and handle errors
           set +e
           git commit -m "Add testing.md"
           commit_status=$?
           set -e
           if [ $commit_status -eq 0 ]; then
-            git push origin main  # Added 'origin main' to be explicit about where to push
+            git push origin main
           else
             echo "No changes to commit or there was an error. Skipping commit and push."
           fi
-
-      
