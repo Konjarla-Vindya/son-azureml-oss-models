@@ -25,7 +25,7 @@ class Dashboard():
         results_len = 1
         workflow_name = []
         while results_len != 0:
-            while offset<49000:
+            while offset<1200:
 
             # Set the parameters in the URL.
                 params = {'limit': limit, 'offset': offset}
