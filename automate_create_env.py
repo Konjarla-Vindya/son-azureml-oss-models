@@ -13,7 +13,7 @@ CONDA_YAML_URL = 'https://raw.githubusercontent.com/Konjarla-Vindya/son-azureml-
 # Download conda.yaml file from GitHub
 response = requests.get(CONDA_YAML_URL)
 response.raise_for_status()
-with open('conda.yml', 'wb') as f:
+with open('conda.yaml', 'wb') as f:
     f.write(response.content)
 
 # Connect to Azure ML Workspace
@@ -27,7 +27,7 @@ ws = Workspace(
 env_name = "automate-create-env"
 env = Environment.from_conda_specification(
     name=env_name,
-    file_path="conda.yml"
+    file_path="conda.yaml"
 )
 env.register(workspace=ws)
 
