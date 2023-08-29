@@ -26,9 +26,9 @@ pip_dependencies = [
    "sacremoses","python-box","sentencepiece","fugashi[unidic-lite]"
    ]
    
-env_name = "auto_testenv"
+env_name_str = "auto_testenv"
 
-create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name)
+create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name_str)
 
 # Connect to existing Azure ML Workspace
 subscription_id = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
@@ -42,8 +42,7 @@ ws = Workspace(
 )
 
 # Create and register the environment
-env_name = "automate-create-env"
-
-
+# Create and register the environment
+env_name = Environment.from_conda_specification(name=env_name_str, file_path="conda.yaml")
 env_name.register(workspace=ws)
 
