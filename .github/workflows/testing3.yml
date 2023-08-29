@@ -51,7 +51,7 @@ jobs:
           pip install -r runs_requirements.txt
       - name: Run Python Script
         run: |
-          python testing3.py
+          python testing4.py
       - name: Add Generated File
         run: |
           git config user.email "${{ secrets.USER_EMAIL }}"
