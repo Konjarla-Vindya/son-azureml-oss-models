@@ -11,7 +11,7 @@ def get_github_token():
 
 
 def get_github_workflows(token):
-    RUN_API="https://api.github.com/repos/Azure/azureml-oss-models/actions/runs"
+    RUN_API="https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs"
     print (f"Getting github workflows from {RUN_API}")
     
     total_pages = None
@@ -54,8 +54,8 @@ def calculate_test_status(runs, models):
 # for each run, get the status, conclusion and duration as updated_at - created_at
 # calculate total, success, failure, not_tested, total test duration
     results_per_model = {}
-    workflows_to_include = self.get_github_workflows()
-    models = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
+    # workflows_to_include = self.get_github_workflows()
+    # models = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
     min_time = max_time = runs[0]['updated_at']
     for run in runs:
         model = run['name']
@@ -143,6 +143,9 @@ def create_badge(results_per_model, status, clock_time):
             
 
 def main():
+    runs = get_github_workflows(get_github_token())
+    workflows_to_include = self.get_github_workflows()
+    models = [workflow_name.replace("/", "-") for runs in workflows_to_include]
     # # if mode_workflow is api, get github workflows using github rest api
     # if args.mode_workflow == "api":
     #     runs = get_github_workflows(get_github_token())
