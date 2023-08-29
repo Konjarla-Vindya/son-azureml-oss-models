@@ -12,17 +12,17 @@ jobs:
 
     env:
         GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    permissions:
-        actions: write
-        checks: write
-        contents: write
-        deployments: write
-        issues: write
-        packages: write
-        pull-requests: write
-        repository-projects: write
-        security-events: write
-        statuses: write
+    # permissions:
+    #     actions: write
+    #     checks: write
+    #     contents: write
+    #     deployments: write
+    #     issues: write
+    #     packages: write
+    #     pull-requests: write
+    #     repository-projects: write
+    #     security-events: write
+    #     statuses: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
