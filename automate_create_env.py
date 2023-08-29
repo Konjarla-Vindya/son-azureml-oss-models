@@ -31,17 +31,17 @@ env_name_str = "auto_testenv"
 create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name_str)
 
 # Connect to existing Azure ML Workspace
+workspace_names =  ["test-koreacentral","test-japaneast","test-northcentralus","test-northeurope","test-southafricanorth"]
 subscription_id = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
 resource_group = "huggingface-registry-test1"
-workspace_name = "test-eastus"
 
-ws = Workspace(
-    subscription_id=subscription_id,
-    resource_group=resource_group,
-    workspace_name=workspace_name
-)
+for workspace_name in workspace_names:
+    ws = Workspace(
+        subscription_id=subscription_id,
+        resource_group=resource_group,
+        workspace_name=workspace_name
+    )
 
-# Create and register the environment
 # Create and register the environment
 env_name = Environment.from_conda_specification(name=env_name_str, file_path="conda.yaml")
 env_name.register(workspace=ws)
