@@ -1,5 +1,6 @@
 from azureml.core import Workspace, Environment
 import yaml
+import json
 
 def create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name):
     # Define the environment
@@ -12,6 +13,7 @@ def create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name):
     # Write to a YAML file
     with open("conda.yaml", "w") as file:
         yaml.safe_dump(environment, file)
+
 # Usage
 channels = ["conda-forge", "defaults"]
 conda_dependencies = ["python=3.10", "numpy", "pandas", "pip"]
@@ -30,16 +32,16 @@ env_name_str = "auto_testenv"
 
 create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name_str)
 
-# Connect to existing Azure ML Workspace
-workspace_names =  ["test-koreacentral","test-japaneast","test-northcentralus","test-northeurope","test-southafricanorth"]
-subscription_id = "80c77c76-74ba-4c8c-8229-4c3b2957990c"
-resource_group = "huggingface-registry-test1"
+# Read the JSON configuration file
+with open("workspaces.json") as file:
+    config = json.load(file)
 
-for workspace_name in workspace_names:
+# Connect to multiple Azure ML Workspaces
+for workspace_config in config["workspaces"]:
     ws = Workspace(
-        subscription_id=subscription_id,
-        resource_group=resource_group,
-        workspace_name=workspace_name
+        subscription_id=workspace_config["subscription_id"],
+        resource_group=workspace_config["resource_group"],
+        workspace_name=workspace_config["workspace_name"]
     )
 
     # Create and register the environment
@@ -48,4 +50,3 @@ for workspace_name in workspace_names:
 
     # Build the environment
     env_name.build(workspace=ws)
-
