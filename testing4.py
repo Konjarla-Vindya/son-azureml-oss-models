@@ -82,12 +82,10 @@ class Dashboard():
                     response = requests.get(workflow_runs, headers=headers, params=params)
                     response.raise_for_status()
                     if response.status_code == 200:
-                        runs = response.json()
+                        json_runs = response.json()
                         # append workflow_runs to runs list
-                        for run in runs["workflow_runs"]:
-                            runs.append(workflow["name"])
-                        if not runs["workflows_runs"]:
-                            break
+                        #for run in json_runs["workflow_runs"]:
+                        runs.extend(json_runs['workflow_runs'])
                         # workflow_name.extend(json_response['workflows["name"]'])
                         if current_page == 1:
                         # divide total_count by per_page and round up to get total_pages
