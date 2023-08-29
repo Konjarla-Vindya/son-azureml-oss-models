@@ -1,9 +1,8 @@
 {
     "queue_name": "test-southcentralus-0",
     "models": [
-        "Callidior/bert2bert-base-arxiv-titlegen",
-        "Narrativa/bsc_roberta2roberta_shared-spanish-finetuned-mlsum-summarization",
-        "IlyaGusev/rubert_telegram_headlines"
+        "Lowin/chinese-bigbird-wwm-base-4096"
+        
         
     ],
     "workspace": "test-southcentralus",
