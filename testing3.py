@@ -58,48 +58,9 @@ class Dashboard():
         # with open(f"../logs/get_all_workflow_names/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
         #     json.dump(workflow_name, f, indent=4)
         return workflow_name
-    
-    # limit=50
-        # offset=0
-        # results_len = 1
-        # workflow_name = []
-            
-        # while results_len != 0:
-            
 
-        #     # Set the parameters in the URL.
-        #         params = {'per_page': limit, 'page': offset//limit+1}
-            
-        #         # Make the request combining the endpoint, headers and params above.
-        #         #r = requests.get(endpoint, headers=headers, params=params)
-        #         response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers, params=params)
-        #         response.raise_for_status()
-                # # Capture the results
-                # #print "Getting results for {}".format(r.url)
-                # #results = r.json()['Results']
-                # workflows = response.json()
-                # # We append all the results to the all_calls array.
-                # # for result in results:
-                # #     all_calls.append(result)
-                # for workflow in workflows["workflows"]:
-                #     workflow_name.append(workflow["name"])
-                # if not workflows["workflows"]:
-            #         break
-            
-            #     # Set the next limit.
-            #     offset+=limit
-        
-            # # If this is 0, we'll exit the while loop.
-            #     results_len = len(workflows["workflows"]) 
-        # response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=50", headers=headers)
-        # response.raise_for_status()
-        
-        # workflows = response.json()
-        # # workflow_name = [workflow["name"] for workflow in workflows["workflows"]]
-        # print(workflow_name)
-        # return workflow_name
-        
-    def workflow_last_run(self):
+
+   def workflow_last_run(self):
         headers = {
             "Authorization": f"Bearer {self.github_token}",
             "X-GitHub-Api-Version": "2022-11-28",
@@ -199,3 +160,9 @@ def main():
         
 if __name__ == "__main__":
     main()
+
+
+
+    
+        
+   
