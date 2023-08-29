@@ -1,6 +1,7 @@
 import os,sys
 import requests
 import pandas
+from datetime import datetime
 from github import Github, Auth
 
 class Dashboard():
@@ -45,7 +46,7 @@ class Dashboard():
                     total_pages = int(workflows['total_count'] / per_page) + 1
                 current_page += 1
                 # print a single dot to show progress
-                print (f"\rRuns fetched: {len(workflow_name)}", end="", flush=True)
+                print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
             else:
                 print (f"Error: {response.status_code} {response.text}")
                 exit(1)
