@@ -18,7 +18,7 @@ class Dashboard():
         }
         
     def get_all_workflow_names():
-        API = "https://api.github.com/repos/{self.repo_full_name}/actions/runs
+        API = "https://api.github.com/repos/{self.repo_full_name}/actions/runs"
         print (f"Getting github workflows from {RUN_API}")
         total_pages = None
         current_page = 1
