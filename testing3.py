@@ -25,8 +25,9 @@ class Dashboard():
         per_page = 100
         workflow_name = []
         while total_pages is None or current_page <= total_pages:
+            
             headers = {
-                "Authorization": f"Bearer {self.github_token}"
+                "Authorization": f"Bearer {self.github_token}",
                 "Accept": "application/vnd.github.v3+json"
             }
             params = { "per_page": per_page, "page": current_page }
