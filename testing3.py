@@ -30,7 +30,7 @@ class Dashboard():
                 "Accept": "application/vnd.github.v3+json"
             }
             params = { "per_page": per_page, "page": current_page }
-            response = requests.get(RUN_API, headers=headers, params=params)
+            response = requests.get(API, headers=headers, params=params)
             if response.status_code == 200:
                 json_response = response.json()
                 # append workflow_runs to runs list
