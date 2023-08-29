@@ -46,3 +46,6 @@ ws = Workspace(
 env_name = Environment.from_conda_specification(name=env_name_str, file_path="conda.yaml")
 env_name.register(workspace=ws)
 
+# Build the environment
+env_name.build(workspace=ws)
+
