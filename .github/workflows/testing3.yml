@@ -12,7 +12,7 @@ jobs:
 
     env:
         token: ${{ secrets.API_TOKEN }}
-        #GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
     # permissions:
     #     actions: read
     #     checks: read
