@@ -145,7 +145,7 @@ def create_badge(results_per_model, status, clock_time):
 def main():
     runs = get_github_workflows(get_github_token())
     workflows_to_include = get_github_workflows(get_github_token())
-    models = [run.replace("/", "-") for run in runs] 
+    models = [str(run).replace("/", "-") for run in runs] 
     # # if mode_workflow is api, get github workflows using github rest api
     # if args.mode_workflow == "api":
     #     runs = get_github_workflows(get_github_token())
