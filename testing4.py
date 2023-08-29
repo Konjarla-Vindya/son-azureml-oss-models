@@ -60,82 +60,48 @@ class Dashboard():
         return workflow_name
 
 
-    def workflow_last_run(self):  
+    def workflow_last_run(self): 
         workflows_to_include = self.get_all_workflow_names()
         normalized_workflows = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
 
-
         for workflow_name in normalized_workflows:
             try:
-                workflow_runs = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
-                total_pages = None
-                current_page = 1
-                per_page = 100
-                runs = []
-                while total_pages is None or current_page <= total_pages:
-                    
-                    headers = {
-                        "Authorization": f"Bearer {self.github_token}",
-                        "Accept": "application/vnd.github.v3+json"
-                    }
-                    params = { "per_page": per_page, "page": current_page }
-                    response = requests.get(workflow_runs, headers=headers, params=params)
-                    response.raise_for_status()
-                    if response.status_code == 200:
-                        json_runs = response.json()
-                        # append workflow_runs to runs list
-                        #for run in json_runs["workflow_runs"]:
-                        runs.extend(json_runs['workflow_runs'])
-                        # workflow_name.extend(json_response['workflows["name"]'])
-                        if current_page == 1:
-                        # divide total_count by per_page and round up to get total_pages
-                            total_pages = int(runs['total_count'] / per_page) + 1
-                        current_page += 1
-                        # print a single dot to show progress
-                        print (f"\rRuns fetched: {len(runs)}", end="", flush=True)
-                    else:
-                        print (f"Error: {response.status_code} {response.text}")
-                        exit(1)
-                print (f"\n")
-                
-                if not runs["workflow_runs"]: 
-                    print(f"No runs found for workflow '{workflow_names}'. Skipping...")
+                workflow_runs_url = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
+                response = requests.get(workflow_runs_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
+                response.raise_for_status()
+                runs_data = response.json()
+
+                if "workflow_runs" not in runs_data:
+                    print(f"No runs found for workflow '{workflow_name}'. Skipping...")
                     continue
+
+                workflow_runs = runs_data["workflow_runs"]
+                if not workflow_runs:
+                    print(f"No runs found for workflow '{workflow_name}'. Skipping...")
+                    continue
+
+                last_run = workflow_runs[0]
+                jobs_response = requests.get(last_run["jobs_url"], headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
+                jobs_data = jobs_response.json()
+
+                badge_url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
+                html_url = jobs_data["jobs"][0]["html_url"] if jobs_data.get("jobs") else ""
+
+                self.data["workflow_id"].append(last_run["workflow_id"])
+                self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
+                self.data["last_runid"].append(last_run["id"])
+                self.data["created_at"].append(last_run["created_at"])
+                self.data["updated_at"].append(last_run["updated_at"])
+                self.data["status"].append(last_run["status"])
+                self.data["conclusion"].append(last_run["conclusion"])
+                self.data["jobs_url"].append(html_url)
+
+                if html_url:
+                    self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({html_url})")
                 else:
-                #if len(runs["workflow_runs"]) != 0:
-                    lastrun = runs["workflow_runs"][0]
-                    #URL_1 = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
-                    jobresponse = requests.get(lastrun["jobs_url"]) 
-                    print("URL : ",lastrun["jobs_url"])
-                    #print("URL : ",url)
-                    job = jobresponse.json()
-                    print(job)
-                    
-                    badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
-                    #https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/TRIGGER_TESTS.yml/badge.svg
-                    #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
-                    html_url=""
-                    if len(job["jobs"])!=0:
-                      html_url = job["jobs"][0]["html_url"]
-            
-                    
-                    self.data["workflow_id"].append(lastrun["workflow_id"])
-                    self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
-                    self.data["last_runid"].append(lastrun["id"])
-                    self.data["created_at"].append(lastrun["created_at"])
-                    self.data["updated_at"].append(lastrun["updated_at"])
-                    self.data["status"].append(lastrun["status"])
-                    self.data["conclusion"].append(lastrun["conclusion"])
-                    self.data["jobs_url"].append(html_url)
-                    #self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
-                    if len(html_url)!=0:
-                        self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,html_url))
-                        
-                    else:
-                        #f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
-                        url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml"
-                        self.data["badge"].append("[![{}]({})({})]".format(workflow_name,badgeurl,url))
-                        
+                    url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml"
+                    self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({url})")
+
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
