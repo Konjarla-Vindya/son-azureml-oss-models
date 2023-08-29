@@ -29,7 +29,7 @@ def get_github_workflows(token):
         if response.status_code == 200:
             json_response = response.json()
             # append workflow_runs to runs list
-            runs.extend(json_response['workflow_runs'])
+            runs.append(json_response['workflow_runs'])
             if current_page == 1:
             # divide total_count by per_page and round up to get total_pages
                 total_pages = int(json_response['total_count'] / per_page) + 1
@@ -41,11 +41,11 @@ def get_github_workflows(token):
             exit(1)
     print (f"\n")
     # create ../logs/get_github_workflows/ if it does not exist
-    if not os.path.exists("../logs/get_github_workflows"):
-        os.makedirs("../logs/get_github_workflows")
-    # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
-    with open(f"../logs/get_github_workflows/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
-        json.dump(runs, f, indent=4)
+    # if not os.path.exists("../logs/get_github_workflows"):
+    #     os.makedirs("../logs/get_github_workflows")
+    # # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
+    # with open(f"../logs/get_github_workflows/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
+    #     json.dump(runs, f, indent=4)
     return runs
     
 # function to calculate test status based on models - total tests, success, failure, not_tested, total test duration
