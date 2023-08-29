@@ -18,7 +18,7 @@ class Dashboard():
         }
         
     def get_all_workflow_names(self):
-        API = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss/actions/workflows"
+        API = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/workflows"
         print (f"Getting github workflows from {API}")
         total_pages = None
         current_page = 1
