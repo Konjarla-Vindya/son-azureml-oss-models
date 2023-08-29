@@ -24,30 +24,30 @@ class ModelInferenceAndDeployemnt:
         self.workspace_ml_client = workspace_ml_client
         self.registry = registry
 
-    def get_error_messages(self):
-        # load ../config/errors.json into a dictionary
-        with open('errors.json', 'w+') as f:
-            return json.load(f)
+    # def get_error_messages(self):
+    #     # load ../config/errors.json into a dictionary
+    #     with open('errors.json', 'w+') as f:
+    #         return json.load(f)
 
     def get_online_endpoint_logs(self, deployment_name, online_endpoint_name):
         print("Deployment logs: \n\n")
         logs = self.workspace_ml_client.online_deployments.get_logs(
             name=deployment_name, endpoint_name=online_endpoint_name, lines=100000)
         print(logs)
-        self.prase_logs(logs)
+        #self.prase_logs(logs)
 
-    def prase_logs(self, logs):
-        error_messages = self.get_error_messages()
-        # split logs by \n
-        logs_list = logs.split("\n")
-        # loop through each line in logs_list
-        for line in logs_list:
-            # loop through each error in errors
-            for error in error_messages:
-                # if error is found in line, print error message
-                if error['parse_string'] in line:
-                    print(
-                        f"::error:: {error_messages['error_category']}: {line}")
+    # def prase_logs(self, logs):
+    #     error_messages = self.get_error_messages()
+    #     # split logs by \n
+    #     logs_list = logs.split("\n")
+    #     # loop through each line in logs_list
+    #     for line in logs_list:
+    #         # loop through each error in errors
+    #         for error in error_messages:
+    #             # if error is found in line, print error message
+    #             if error['parse_string'] in line:
+    #                 print(
+    #                     f"::error:: {error_messages['error_category']}: {line}")
 
     def get_latest_model_version(self, workspace_ml_client, model_name):
         print("In get_latest_model_version...")
@@ -118,7 +118,7 @@ class ModelInferenceAndDeployemnt:
         except Exception as e:
             print(f"::error:: Could not create endpoint: \n")
             print(f"{e}\n\n check logs:\n\n")
-            self.prase_logs(str(e))
+            #self.prase_logs(str(e))
             exit(1)
 
         print(self.workspace_ml_client.online_endpoints.get(name=endpoint.name))
@@ -147,41 +147,6 @@ class ModelInferenceAndDeployemnt:
 
     def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type, endpoint):
         print("In create_online_deployment...")
-        # demo_deployment = ManagedOnlineDeployment(
-        #     name="demo",
-        #     endpoint_name=endpoint.name,
-        #     model=latest_model.id,
-        #     instance_type="Standard_D13",
-        #     instance_count=1,
-        # )
-        # demo_deployment = ManagedOnlineDeployment(
-        #     name="default",
-        #     endpoint_name=endpoint.name,
-        #     model=latest_model.id,
-        #     instance_type="Standard_DS2_v2",
-        #     instance_count="1",
-        #     request_settings=OnlineRequestSettings(
-        #         max_concurrent_requests_per_instance=1,
-        #         request_timeout_ms=50000,
-        #         max_queue_wait_ms=500,
-        #     ),
-        #     liveness_probe=ProbeSettings(
-        #         failure_threshold=10,
-        #         timeout=10,
-        #         period=10,
-        #         initial_delay=480,
-        #     ),
-        #     readiness_probe=ProbeSettings(
-        #         failure_threshold=10,
-        #         success_threshold=1,
-        #         timeout=10,
-        #         period=10,
-        #         initial_delay=10,
-        #     ),
-        # )
-        # workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
-        # endpoint.traffic = {"demo": 100}
-        # workspace_ml_client.begin_create_or_update(endpoint).result()
         print("latest_model.name is this : ", latest_model.name)
         latest_model_name = latest_model.name.replace("_", "-")
         if latest_model_name[0].isdigit():
@@ -221,7 +186,7 @@ class ModelInferenceAndDeployemnt:
             print(f"The exception occured at this line no : {exc_tb.tb_lineno}"+
                   " the exception is this one :", e)
             print(f"{e}\n\n check logs:\n\n")
-            self.prase_logs(str(e))
+            #self.prase_logs(str(e))
             self.get_online_endpoint_logs(
                 deployment_name, online_endpoint_name)
             self.workspace_ml_client.online_endpoints.begin_delete(
@@ -265,19 +230,21 @@ class ModelInferenceAndDeployemnt:
                 f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
         print(
             f"Latest model name : {latest_model.name} and latest model version : {latest_model.version}", )
-        downloaded_model = self.workspace_ml_client.models.download(
-            name=latest_model.name, version=latest_model.version, download_path=f"./model_download")
-        loaded_model = mlflow.transformers.load_model(
-            model_uri=f"./model_download/{latest_model.name}/{latest_model.name}-artifact", return_type="pipeline")
-        print(type(loaded_model))
+        # downloaded_model = self.workspace_ml_client.models.download(
+        #     name=latest_model.name, version=latest_model.version, download_path=f"./model_download")
+        # loaded_model = mlflow.transformers.load_model(
+        #     model_uri=f"./model_download/{latest_model.name}/{latest_model.name}-artifact", return_type="pipeline")
+        model_sourceuri = latest_model.properties["mlflow.modelSourceUri"]
+        loaded_model_pipeline = mlflow.transformers.load_model(model_uri=model_sourceuri)
+        print(type(loaded_model_pipeline))
 
         if task == "fill-mask":
-            pipeline_tokenizer = loaded_model.tokenizer
+            pipeline_tokenizer = loaded_model_pipeline.tokenizer
             for index in range(len(scoring_input.inputs)):
                 scoring_input.inputs[index] = scoring_input.inputs[index].replace(
                     "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
 
-        output = loaded_model(scoring_input.inputs)
+        output = loaded_model_pipeline(scoring_input.inputs)
         print("My outupt is this : ", output)
         # registered_output = latest_model(scoring_input.inputs)
         # print("This is my registered output", registered_output)
@@ -327,33 +294,3 @@ class ModelInferenceAndDeployemnt:
         #     name=online_endpoint_name,
         #     auth_mode="key",
         # )
-
-        #print("endpoint name:",endpoint)
-        #self.create_online_endpoint(self.workspace_ml_client, endpoint)
-        #self.create_online_deployment(self.workspace_ml_client, endpoint, latest_model)
-        # task = latest_model.flavors["transformers"]["task"]
-        #model_for_package = Model(name=latest_model.name, version=latest_model.version, type=AssetTypes.MLFLOW_MODEL)
-
-        # timestamp = int(time.time())
-        # online_endpoint_name = "fill-mask" + str(timestamp)
-        # endpoint = ManagedOnlineEndpoint(
-        #     name=online_endpoint_name,
-        #     description="Online endpoint for "
-        #     + latest_model.name
-        #     + ", for fill-mask task",
-        #     auth_mode="key",
-        # )
-        # self.workspace_ml_client.online_endpoints.begin_create_or_update(endpoint).result()
-        # demo_deployment = ManagedOnlineDeployment(
-        #     name="demo",
-        #     endpoint_name=online_endpoint_name,
-        #     model=latest_model.id,
-        #     #instance_type="Standard-D13",
-        #     instance_count=1,
-        #     request_settings=OnlineRequestSettings(
-        #         request_timeout_ms=60000,
-        #     ),
-        # )
-        # self.workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).result()
-        # endpoint.traffic = {"demo": 100}
-        # self.workspace_ml_client.begin_create_or_update(endpoint).result()
