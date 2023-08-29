@@ -52,11 +52,11 @@ class Dashboard():
                 exit(1)
         print (f"\n")
         #create ../logs/get_github_workflows/ if it does not exist
-        if not os.path.exists("../logs/get_all_workflow_names"):
-            os.makedirs("../logs/get_all_workflow_names")
-        # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
-        with open(f"../logs/get_all_workflow_names/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
-            json.dump(workflow_name, f, indent=4)
+        # if not os.path.exists("../logs/get_all_workflow_names"):
+        #     os.makedirs("../logs/get_all_workflow_names")
+        # # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
+        # with open(f"../logs/get_all_workflow_names/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
+        #     json.dump(workflow_name, f, indent=4)
         return workflow_name
     
     # limit=50
