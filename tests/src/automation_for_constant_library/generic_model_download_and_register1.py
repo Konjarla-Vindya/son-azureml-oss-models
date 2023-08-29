@@ -120,12 +120,9 @@ class Model:
         # Load the library from the transformer 
         model_library = getattr(transformers, model_library_name)
         # From the library load the model
-        model = model_library.from_pretrained(self.model_name)
-        for i in list1:
-            if i==i:
-                tokenizer = BertTokenizer.from_pretrained(self.i)
-            else:    
-                tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+        model = model_library.from_pretrained(self.model_name)  
+        token= AutoTokenizer.from_pretrained(self.model_name)
+        tokenizer=token.from_pretrained(self.model_name)
         model_and_tokenizer = {"model": model, "tokenizer": tokenizer}
         return model_and_tokenizer
 
