@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+        token: ${{ secrets.WORKFLOW_TOKEN }}
         GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
     # permissions:
     #     actions: read
@@ -33,7 +34,7 @@ jobs:
           repository: Konjarla-Vindya/son-azureml-oss-models
           branch: main
         #     git config global init.defaultBranch main
-          token: ${{ secrets.WORKFLOW_TOKEN }}
+          
           
       - name: Clear Python cache
         run: sudo rm -rf /opt/hostedtoolcache/Python/*
