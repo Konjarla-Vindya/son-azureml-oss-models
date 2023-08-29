@@ -42,10 +42,10 @@ for workspace_name in workspace_names:
         workspace_name=workspace_name
     )
 
-# Create and register the environment
-env_name = Environment.from_conda_specification(name=env_name_str, file_path="conda.yaml")
-env_name.register(workspace=ws)
+    # Create and register the environment
+    env_name = Environment.from_conda_specification(name=env_name_str, file_path="conda.yaml")
+    env_name.register(workspace=ws)
 
-# Build the environment
-env_name.build(workspace=ws)
+    # Build the environment
+    env_name.build(workspace=ws)
 
