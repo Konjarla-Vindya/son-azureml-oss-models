@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-        token: ${{ secrets.WORKFLOW_TOKEN }}
+        token: ${{ secrets.API_TOKEN }}
         GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
     # permissions:
     #     actions: read
