@@ -6,6 +6,7 @@ from github import Github, Auth
 class Dashboard():
     def __init__(self): 
         self.github_token = os.environ['token']
+        print("token: ", self.github_token)
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
         self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
