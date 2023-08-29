@@ -25,10 +25,10 @@ class Dashboard():
         results_len = 1
         workflow_name = []
         while results_len != 0:
-            while offset<1200:
+            
 
             # Set the parameters in the URL.
-                params = {'limit': limit, 'offset': offset}
+                params = {'per_page': limit, 'page': offset//limit+1}
             
                 # Make the request combining the endpoint, headers and params above.
                 #r = requests.get(endpoint, headers=headers, params=params)
@@ -43,9 +43,11 @@ class Dashboard():
                 #     all_calls.append(result)
                 for workflow in workflows["workflows"]:
                     workflow_name.append(workflow)
+                if not workflows["workflows"]:
+                    break
             
                 # Set the next limit.
-                offset = limit + offset
+                offset+=limit
         
             # If this is 0, we'll exit the while loop.
             results_len = len(workflows["workflows"]) 
