@@ -26,18 +26,22 @@ class Dashboard():
         workflow_name = []
         while total_pages is None or current_page <= total_pages:
             headers = {
-                "Authorization": f"Bearer {self.github_token}",
+                "Authorization": f"Bearer {self.github_token}"
                 "Accept": "application/vnd.github.v3+json"
             }
             params = { "per_page": per_page, "page": current_page }
             response = requests.get(API, headers=headers, params=params)
             if response.status_code == 200:
-                json_response = response.json()
+                workflows = response.json()
                 # append workflow_runs to runs list
-                workflow_name.extend(json_response['workflow_runs'])
+                for workflow in workflows["workflows"]:
+                    workflow_name.append(workflow["name"])
+                if not workflows["workflows"]:
+                    break
+                # workflow_name.extend(json_response['workflows["name"]'])
                 if current_page == 1:
                 # divide total_count by per_page and round up to get total_pages
-                    total_pages = int(json_response['total_count'] / per_page) + 1
+                    total_pages = int(workflows['total_count'] / per_page) + 1
                 current_page += 1
                 # print a single dot to show progress
                 print (f"\rRuns fetched: {len(workflow_name)}", end="", flush=True)
