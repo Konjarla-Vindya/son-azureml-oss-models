@@ -42,7 +42,7 @@ class Dashboard():
                 # for result in results:
                 #     all_calls.append(result)
                 for workflow in workflows["workflows"]:
-                    workflow_name.append(workflow)
+                    workflow_name.append(workflow["name"])
                 if not workflows["workflows"]:
                     break
             
