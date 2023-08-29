@@ -2,14 +2,9 @@
     "queue_name": "test-northcentralus-4",
     "models": [
 
-                "CodeNinja1126/xlm-roberta-large-kor-mrc",
-                "CoffeeAddict93/gpt1-modest-proposal",
-                "DemangeJeremy/4-sentiments-with-flaubert",
-                "EMBO/bio-lm",
-                "Lowin/chinese-bigbird-mini-1024",
-                "Lowin/chinese-bigbird-base-4096",
-                "MYX4567/distilgpt2-finetuned-wikitext2",
-                "KoichiYasuoka/bert-base-japanese-unidic-luw-upos"
+                "bert-base-uncased",
+                "gpt2",
+                "bert-base-cased"
                 
     ],
     "workspace": "test-northcentralus",
