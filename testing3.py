@@ -17,49 +17,81 @@ class Dashboard():
             "updated_at": [], "status": [], "conclusion": [], "badge": [], "jobs_url": []
         }
         
-    def get_all_workflow_names(self):
-        headers = {
-            "Authorization": f"Bearer {self.github_token}",
-            "Accept": "application/vnd.github.v3+json"
-        }
-        limit=50
-        offset=0
-        results_len = 1
+    def get_all_workflow_names():
+        API = "https://api.github.com/repos/{self.repo_full_name}/actions/runs
+        print (f"Getting github workflows from {RUN_API}")
+        total_pages = None
+        current_page = 1
+        per_page = 100
         workflow_name = []
-        while results_len != 0:
+        while total_pages is None or current_page <= total_pages:
+            headers = {
+                "Authorization": f"Bearer {self.github_token}",
+                "Accept": "application/vnd.github.v3+json"
+            }
+            params = { "per_page": per_page, "page": current_page }
+            response = requests.get(RUN_API, headers=headers, params=params)
+            if response.status_code == 200:
+                json_response = response.json()
+                # append workflow_runs to runs list
+                workflow_name.extend(json_response['workflow_runs'])
+                if current_page == 1:
+                # divide total_count by per_page and round up to get total_pages
+                    total_pages = int(json_response['total_count'] / per_page) + 1
+                current_page += 1
+                # print a single dot to show progress
+                print (f"\rRuns fetched: {len(workflow_name)}", end="", flush=True)
+            else:
+                print (f"Error: {response.status_code} {response.text}")
+                exit(1)
+        print (f"\n")
+        #create ../logs/get_github_workflows/ if it does not exist
+        if not os.path.exists("../logs/get_all_workflow_names"):
+            os.makedirs("../logs/get_all_workflow_names")
+        # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
+        with open(f"../logs/get_all_workflow_names/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
+            json.dump(workflow_name, f, indent=4)
+        return workflow_name
+    
+    # limit=50
+        # offset=0
+        # results_len = 1
+        # workflow_name = []
+            
+        # while results_len != 0:
             
 
-            # Set the parameters in the URL.
-                params = {'per_page': limit, 'page': offset//limit+1}
+        #     # Set the parameters in the URL.
+        #         params = {'per_page': limit, 'page': offset//limit+1}
             
-                # Make the request combining the endpoint, headers and params above.
-                #r = requests.get(endpoint, headers=headers, params=params)
-                response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers, params=params)
-                response.raise_for_status()
-                # Capture the results
-                #print "Getting results for {}".format(r.url)
-                #results = r.json()['Results']
-                workflows = response.json()
-                # We append all the results to the all_calls array.
-                # for result in results:
-                #     all_calls.append(result)
-                for workflow in workflows["workflows"]:
-                    workflow_name.append(workflow["name"])
-                if not workflows["workflows"]:
-                    break
+        #         # Make the request combining the endpoint, headers and params above.
+        #         #r = requests.get(endpoint, headers=headers, params=params)
+        #         response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows", headers=headers, params=params)
+        #         response.raise_for_status()
+                # # Capture the results
+                # #print "Getting results for {}".format(r.url)
+                # #results = r.json()['Results']
+                # workflows = response.json()
+                # # We append all the results to the all_calls array.
+                # # for result in results:
+                # #     all_calls.append(result)
+                # for workflow in workflows["workflows"]:
+                #     workflow_name.append(workflow["name"])
+                # if not workflows["workflows"]:
+            #         break
             
-                # Set the next limit.
-                offset+=limit
+            #     # Set the next limit.
+            #     offset+=limit
         
-            # If this is 0, we'll exit the while loop.
-                results_len = len(workflows["workflows"]) 
+            # # If this is 0, we'll exit the while loop.
+            #     results_len = len(workflows["workflows"]) 
         # response = requests.get(f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows?per_page=50", headers=headers)
         # response.raise_for_status()
         
         # workflows = response.json()
-        # workflow_name = [workflow["name"] for workflow in workflows["workflows"]]
-        print(workflow_name)
-        return workflow_name
+        # # workflow_name = [workflow["name"] for workflow in workflows["workflows"]]
+        # print(workflow_name)
+        # return workflow_name
         
     def workflow_last_run(self):
         headers = {
