@@ -1,176 +1,187 @@
 import os,sys
+import requests
 import pandas
 from datetime import datetime
 from github import Github, Auth
-import json
-import requests
 
-
-def get_github_token():
-    return os.environ["token"]
-
-
-def get_github_workflows(token):
-    RUN_API="https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs"
-    print (f"Getting github workflows from {RUN_API}")
-    
-    total_pages = None
-    current_page = 1
-    per_page = 100
-    runs = []
-    while total_pages is None or current_page <= total_pages:
-        # create a requests session object with 
-        headers = { "Authorization": f"Bearer {token}",
-                    "X-GitHub-Api-Version": "2022-11-28",
-                    "Accept": "application/vnd.github+json"
+class Dashboard():
+    def __init__(self): 
+        self.github_token = os.environ['token']
+        #self.github_token = "API_TOKEN"
+        print("token: ", self.github_token)
+        self.token = Auth.Token(self.github_token)
+        self.auth = Github(auth=self.token)
+        self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
+        self.repo_full_name = self.repo.full_name
+        self.data = {
+            "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
+            "updated_at": [], "status": [], "conclusion": [], "badge": [], "jobs_url": []
         }
-        params = { "per_page": per_page, "page": current_page }
-        response = requests.get(RUN_API, headers=headers, params=params)
-        if response.status_code == 200:
-            json_response = response.json()
-            # append workflow_runs to runs list
-            runs.append(json_response['workflow_runs'])
-            if current_page == 1:
-            # divide total_count by per_page and round up to get total_pages
-                total_pages = int(json_response['total_count'] / per_page) + 1
-            current_page += 1
-            # print a single dot to show progress
-            print (f"\rRuns fetched: {len(runs)}", end="", flush=True)
-        else:
-            print (f"Error: {response.status_code} {response.text}")
-            exit(1)
-    print (f"\n")
-    # create ../logs/get_github_workflows/ if it does not exist
-    # if not os.path.exists("../logs/get_github_workflows"):
-    #     os.makedirs("../logs/get_github_workflows")
-    # # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
-    # with open(f"../logs/get_github_workflows/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
-    #     json.dump(runs, f, indent=4)
-    return runs
-    
-# function to calculate test status based on models - total tests, success, failure, not_tested, total test duration
-def calculate_test_status(runs, models):
-# get the latest run for each model
-# for each run, get the status, conclusion and duration as updated_at - created_at
-# calculate total, success, failure, not_tested, total test duration
-    results_per_model = {}
-    # workflows_to_include = self.get_github_workflows()
-    # models = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
-    min_time = max_time = runs[0]['updated_at']
-    for run in runs:
-        model = run['name']
-        if model not in models:
-            continue
-        status = run['status']
-        conclusion = run['conclusion']
-        if model not in results_per_model:
-            results_per_model[model] = {"success": 0, "failure": 0, "unknown": 0,"not_tested": 0, "duration": 0, "last_tested": ""}
-            if status == "completed":
-                # if min_time is greater than run['created_at'], set min_time to run['created_at']
-                if min_time > run['created_at']:
-                    min_time = run['created_at']
-                if conclusion == "success":
-                    results_per_model[model]["success"] = 1
-                elif conclusion == "failure":
-                    results_per_model[model]["failure"] = 1
-                else:
-                    results_per_model[model]["unknown"] = 1
-                results_per_model[model]['last_tested'] = run['updated_at']
-                # load updated_at and created_at as datetime objects and assign the difference to duration in minutes
-                updated_at = datetime.strptime(run['updated_at'], "%Y-%m-%dT%H:%M:%SZ")
-                created_at = datetime.strptime(run['created_at'], "%Y-%m-%dT%H:%M:%SZ")
-                results_per_model[model]['duration'] = (updated_at - created_at).total_seconds() / 60
-            else:
-                results_per_model[model]["not_tested"] = 1
-                results_per_model[model]['last_tested'] = None
-    # for models not in results_per_model, set not_tested to 1
-    for model in models:
-        if model not in results_per_model:
-            results_per_model[model] = {"success": 0, "failure": 0, "unknown": 0,"not_tested": 1, "duration": 0, "last_tested": None}
-    # dump results_per_model as json to stdout
-    # load max_time and min_time as datetime objects and assign the difference to clock_time in minutes
-    max_time = datetime.strptime(max_time, "%Y-%m-%dT%H:%M:%SZ")
-    min_time = datetime.strptime(min_time, "%Y-%m-%dT%H:%M:%SZ")
-    clock_time = (max_time - min_time).total_seconds() / 60
-
-    return results_per_model, clock_time
-
-def summarize_test_status(results_per_model):
-    status = {"total": 0, "success": 0, "failure": 0, "unknown": 0, "not_tested": 0, "total_duration": 0}
-    #print (json.dumps(status, indent=4))
-    for model in results_per_model:
-        status["total"] += 1
-        status["success"] += results_per_model[model]["success"]
-        status["failure"] += results_per_model[model]["failure"]
-        status["unknown"] += results_per_model[model]["unknown"]
-        status["not_tested"] += results_per_model[model]["not_tested"]
-        if results_per_model[model]["last_tested"]:
-            status["total_duration"] += results_per_model[model]["duration"]
-    return status
-
-def create_badge(results_per_model, status, clock_time):
-    lines=[]
-    # generate test_duration_srt as hours and minutes from total_duration
-    test_duration_str = f"{int(status['total_duration'] / 60)}h {int(status['total_duration'] % 60)}m"
-    # generate clock_time_str as hours and minutes from clock_time
-    clock_time_str = f"{int(clock_time / 60)}h {int(clock_time % 60)}m"
-    # print status as markdown table
-    lines.append(f"### Summary\n")
-    lines.append(f"🚀Total|✅Success|❌Failure|❔Unknown|🧪Not Tested|🕰️Total Duration|⏱️Clock duration")
-    lines.append(f"-----|-------|-------|-------|----------|----------------|-----------------")
-    lines.append(f"{status['total']}|{status['success']}|{status['failure']}|{status['unknown']}|{status['not_tested']}|{test_duration_str}|{clock_time_str}")
-    # print all percentages accurate to 2 decimal places
-    lines.append(f"{round(status['total'] / status['total'] * 100, 2)}%|{round(status['success'] / status['total'] * 100, 2)}%|{round(status['failure'] / status['total'] * 100, 2)}%|{round(status['unknown'] / status['total'] * 100, 2)}%|{round(status['not_tested'] / status['total'] * 100, 2)}%||\n")
-    
-    lines.append("### Models\n")
-    
-    lines.append("|Model|Status|")
-    lines.append("|-----|-----|")
-    for model in results_per_model:
-        # print model to stdout if label is Failure or Unknown or Not Tested         
-        lines.append(f"{model}|[![{model}](https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/{model}.yml/badge.svg)](https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/{model}.yml)")
-
-
-    # write to markdown file
-    # count number of lines in markdown file
-    i=0
-    #print (f"Writing to {args.markdown_file}")
-    with open("testing.md", 'w') as f:
-        for line in lines:
-            f.write(line + "\n")
-            i = i + 1
-    print (f"Total lines written: {i}")    
+        
+    def get_all_workflow_names(self):
+        API = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/workflows"
+        print (f"Getting github workflows from {API}")
+        total_pages = None
+        current_page = 1
+        per_page = 100
+        workflow_name = []
+        while total_pages is None or current_page <= total_pages:
             
+            headers = {
+                "Authorization": f"Bearer {self.github_token}",
+                "Accept": "application/vnd.github.v3+json"
+            }
+            params = { "per_page": per_page, "page": current_page }
+            response = requests.get(API, headers=headers, params=params)
+            if response.status_code == 200:
+                workflows = response.json()
+                # append workflow_runs to runs list
+                for workflow in workflows["workflows"]:
+                    workflow_name.append(workflow["name"])
+                if not workflows["workflows"]:
+                    break
+                # workflow_name.extend(json_response['workflows["name"]'])
+                if current_page == 1:
+                # divide total_count by per_page and round up to get total_pages
+                    total_pages = int(workflows['total_count'] / per_page) + 1
+                current_page += 1
+                # print a single dot to show progress
+                print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
+            else:
+                print (f"Error: {response.status_code} {response.text}")
+                exit(1)
+        print (f"\n")
+        #create ../logs/get_github_workflows/ if it does not exist
+        # if not os.path.exists("../logs/get_all_workflow_names"):
+        #     os.makedirs("../logs/get_all_workflow_names")
+        # # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
+        # with open(f"../logs/get_all_workflow_names/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
+        #     json.dump(workflow_name, f, indent=4)
+        return workflow_name
+
+
+   def workflow_last_run(self):
+           
+        workflows_to_include = self.get_all_workflow_names()
+        normalized_workflows = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
+
+
+        for workflow_name in normalized_workflows:
+            try:
+                workflow_runs = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
+                total_pages = None
+                current_page = 1
+                per_page = 100
+                runs = []
+                while total_pages is None or current_page <= total_pages:
+                    
+                    headers = {
+                        "Authorization": f"Bearer {self.github_token}",
+                        "Accept": "application/vnd.github.v3+json"
+                    }
+                    params = { "per_page": per_page, "page": current_page }
+                    response = requests.get(workflow_runs, headers=headers, params=params)
+                    response.raise_for_status()
+                    if response.status_code == 200:
+                        runs = response.json()
+                        # append workflow_runs to runs list
+                        for run in runs["workflow_runs"]:
+                            runs.append(workflow["name"])
+                        if not runs["workflows_runs"]:
+                            break
+                        # workflow_name.extend(json_response['workflows["name"]'])
+                        if current_page == 1:
+                        # divide total_count by per_page and round up to get total_pages
+                            total_pages = int(runs['total_count'] / per_page) + 1
+                        current_page += 1
+                        # print a single dot to show progress
+                        print (f"\rRuns fetched: {len(runs)}", end="", flush=True)
+                    else:
+                        print (f"Error: {response.status_code} {response.text}")
+                        exit(1)
+                print (f"\n")
+                
+                if not runs["workflow_runs"]: 
+                    print(f"No runs found for workflow '{workflow_names}'. Skipping...")
+                    continue
+                else:
+                #if len(runs["workflow_runs"]) != 0:
+                    lastrun = runs["workflow_runs"][0]
+                    #URL_1 = f"https://api.github.com/repos/{self.repo_full_name}/actions/runs/{lastrun['id']}/jobs"
+                    jobresponse = requests.get(lastrun["jobs_url"]) 
+                    print("URL : ",lastrun["jobs_url"])
+                    #print("URL : ",url)
+                    job = jobresponse.json()
+                    print(job)
+                    
+                    badgeurl = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
+                    #https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/TRIGGER_TESTS.yml/badge.svg
+                    #runurl = "https://github.com/{}/actions/runs/{}/job/{}".format(self.repo_full_name,lastrun["id"],job["jobs"][0]["id"])
+                    html_url=""
+                    if len(job["jobs"])!=0:
+                      html_url = job["jobs"][0]["html_url"]
+            
+                    
+                    self.data["workflow_id"].append(lastrun["workflow_id"])
+                    self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
+                    self.data["last_runid"].append(lastrun["id"])
+                    self.data["created_at"].append(lastrun["created_at"])
+                    self.data["updated_at"].append(lastrun["updated_at"])
+                    self.data["status"].append(lastrun["status"])
+                    self.data["conclusion"].append(lastrun["conclusion"])
+                    self.data["jobs_url"].append(html_url)
+                    #self.data["badge"].append(f"[![{workflow_name}]({badgeurl})]({badgeurl.replace('/badge.svg', '')})")
+                    if len(html_url)!=0:
+                        self.data["badge"].append("[![{}]({})]({})".format(workflow_name,badgeurl,html_url))
+                        
+                    else:
+                        #f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
+                        url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml"
+                        self.data["badge"].append("[![{}]({})({})]".format(workflow_name,badgeurl,url))
+                        
+            except requests.exceptions.RequestException as e:
+                print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
+
+        return self.data
+
+    def results(self, last_runs_dict):
+        results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0, "not_tested": 0, "total_duration": 0}
+        summary = []
+
+        df = pandas.DataFrame.from_dict(last_runs_dict)
+        results_dict["total"] = df["workflow_id"].count()
+        results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
+        results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
+        results_dict["cancelled"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled')]['workflow_id'].count()
+    
+        success_rate = results_dict["success"]/results_dict["total"]*100.00
+        failure_rate = results_dict["failure"]/results_dict["total"]*100.00
+        cancel_rate = results_dict["cancelled"]/results_dict["total"]*100.00
+
+        summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|")
+        summary.append("-----|-------|-------|-------|")
+        summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|")
+        summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|")
+
+        models = {"Model": last_runs_dict["workflow_name"], "Status": last_runs_dict["badge"]}
+        models_md = pandas.DataFrame.from_dict(models).to_markdown()
+
+        summary_text = "\n".join(summary)
+
+        with open("testing.md", "w", encoding="utf-8") as f:
+            f.write(summary_text)
+            f.write(os.linesep)
+            f.write(os.linesep)
+            f.write(models_md)
+       
 
 def main():
-    runs = get_github_workflows(get_github_token())
-    workflows_to_include = get_github_workflows(get_github_token())
-    models = [str(run).replace("/", "-") for run in runs] 
-    # # if mode_workflow is api, get github workflows using github rest api
-    # if args.mode_workflow == "api":
-    #     runs = get_github_workflows(get_github_token())
-    # elif args.mode_workflow == "file":
-    # # else, load github workflows from file
-    #     with open(args.github_workflows_file) as f:
-    #         runs = json.load(f)
-    # else:
-    #     print (f"Error: Invalid mode_workflow {args.mode_workflow}")
-    #     exit(1)
-    # print (f"Total runs: {len(runs)}")
-    # # if mode_model is api, get model containers using azure ml sdk
-    # if args.mode_model == "api":
-    #     models = get_model_containers(args.registry_name, templates)
-    # elif args.mode_model == "file":
-    # # else, load model containers from file
-    #     models = load_model_list_file(args.model_list_file)
-    print (f"Total models: {len(models)}")
-    results_per_model, clock_time = calculate_test_status(runs, models)
-    print (f"Total results: {len(results_per_model)}")
-    # print
-    status = summarize_test_status(results_per_model)
-    # dump status to STDOUT
-    create_badge(results_per_model, status, clock_time)
-
-
+        
+        my_class = Dashboard()
+        last_runs_dict = my_class.workflow_last_run()
+        my_class.results(last_runs_dict)
+        
 if __name__ == "__main__":
     main()
+
+
