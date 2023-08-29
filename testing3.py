@@ -1,4 +1,4 @@
-import os
+import os,sys
 import requests
 import pandas
 from github import Github, Auth
@@ -17,7 +17,7 @@ class Dashboard():
             "updated_at": [], "status": [], "conclusion": [], "badge": [], "jobs_url": []
         }
         
-    def get_all_workflow_names():
+    def get_all_workflow_names(self):
         API = "https://api.github.com/repos/{self.repo_full_name}/actions/runs"
         print (f"Getting github workflows from {RUN_API}")
         total_pages = None
