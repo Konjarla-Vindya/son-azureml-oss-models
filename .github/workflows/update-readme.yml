@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+        token: ${{ secrets.API_TOKEN }}
         GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     steps:
