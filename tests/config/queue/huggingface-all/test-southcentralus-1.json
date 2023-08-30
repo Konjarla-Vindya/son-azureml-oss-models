@@ -1,9 +1,9 @@
 {
     "queue_name": "test-southcentralus-1",
     "models": [
-        "ProsusAI/finbert",
-        "Jean-Baptiste/camembert-ner",
-        "t5-small"
+        "Helsinki-NLP/opus-mt-ar-en",
+        "Babelscape/wikineural-multilingual-ner",
+        "Davlan/bert-base-multilingual-cased-ner-hrl"
         
     ],
     "workspace": "test-southcentralus",
