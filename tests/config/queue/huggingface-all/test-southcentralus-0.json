@@ -1,7 +1,10 @@
 {
     "queue_name": "test-southcentralus-0",
     "models": [
-        "Lowin/chinese-bigbird-wwm-base-4096"
+        "Helsinki-NLP/opus-mt-ru-en",
+        "Jean-Baptiste/roberta-large-ner-english",
+        "Helsinki-NLP/opus-mt-en-zh"
+       
         
         
     ],
