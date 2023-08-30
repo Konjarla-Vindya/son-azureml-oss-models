@@ -12,6 +12,10 @@ import argparse
 import sys
 from util import load_model_list_file, get_model_containers
 from pathlib import Path
+import yaml
+import requests
+import textwrap
+# from github import Github
 
 # constants
 LOG = True
@@ -82,27 +86,30 @@ def create_queue_files(queue, workspace_list):
     if not os.path.exists(f"{args.queue_dir}/{args.test_set}"):
         os.makedirs(f"{args.queue_dir}/{args.test_set}")
     # delete any files in test_set folder
-    os.system(f"rm -rf {args.queue_dir}/{args.test_set}/*")
+    # os.system(f"rm -rf {args.queue_dir}/{args.test_set}/*")
     # generate queue files
     for workspace in queue:
         for thread in queue[workspace]:
-            print (f"Generating queue file {args.queue_dir}/{args.test_set}/{workspace}-suchi-{thread}.json")
+            print (f"Generating queue file {args.queue_dir}/{args.test_set}/{workspace}-{thread}.json")
             q_dict = {"queue_name": f"{workspace}-{thread}", "models": queue[workspace][thread]}
             # get the workspace from workspace_list
             q_dict["workspace"] = workspace
             q_dict["subscription"] = workspace_list[workspace]["subscription"]
             q_dict["resource_group"] = workspace_list[workspace]["resource_group"]
             q_dict["registry"] = args.registry_name
+            q_dict["environment"] = workspace_list[workspace]["environment"]
+            q_dict["compute"] = workspace_list[workspace]["compute"]
+            q_dict["instance_type"] = workspace_list[workspace]["instance_type"]
             print("q_dict",q_dict)
             print("workspace",q_dict["workspace"])
             print("subscription",q_dict["subscription"])   
             print("resource_group",q_dict["resource_group"])
             print("registry",q_dict["registry"])
-            with open(f"{args.queue_dir}/{args.test_set}/{workspace}-suchi-{thread}.json", 'w') as f:
+            with open(f"{args.queue_dir}/{args.test_set}/{workspace}-{thread}.json", 'w') as f:
                 print("enterred write file")
                 json.dump(q_dict,f,indent=4)
-                # f.write(jsonserial)
-
+                
+                    
 def assign_models_to_queues(models, workspace_list):
     queue = {}
     i=0
@@ -127,6 +134,7 @@ def assign_models_to_queues(models, workspace_list):
                         print("current working directory is:", os.getcwd())
                         # if assign_models_to_queues under log_dir does not exist, create it
                         print("args.log_dir:", args.log_dir)
+                        
                         if not os.path.exists(f"{args.log_dir}/assign_models_to_queues"):
                             logpath=Path(f"{args.log_dir}/assign_models_to_queues")
                             os.makedirs(logpath)
@@ -149,19 +157,25 @@ def assign_models_to_queues(models, workspace_list):
                     return queue
 # function to create workflow files
 # !!! any existing workflow files in workflow_dir will be overwritten. backup... !!!
-def create_workflow_files(queue, workspace_list):
+def create_workflow_files(q,workspace_list):
     counter=0
     print (f"Creating workflow files")
     # check if workflow_dir exists
     if not os.path.exists(args.workflow_dir):
         os.makedirs(args.workflow_dir)
     # generate workflow files
-    for workspace in queue:
-        for thread in queue[workspace]:
-            for model in queue[workspace][thread]:
-                write_single_workflow_file(model, f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
+    for workspace in q:
+        print("entered q loop:",workspace)
+        for thread in q[workspace]:
+            print("entered q of workspace loop:",thread)
+            for model in q[workspace][thread]:
+                # for model in models:
+                print("entered q of workspace of thread loop:",model)
+                # print("entered model of workspace of thread loop:",workflownames)
+                write_single_workflow_file(model,f"{workspace}-{thread}", workspace_list[workspace]['secret_name'])
                 # print progress
                 counter=counter+1
+                print("counter:",counter)
                 sys.stdout.write(f'{counter}\r')
                 sys.stdout.flush()
     print (f"\nCreated {counter} workflow files")
@@ -169,56 +183,205 @@ def create_workflow_files(queue, workspace_list):
 def write_single_workflow_file(model, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
-    workflow_file=f"{args.workflow_dir}/{model}.yml"
-    #print (f"Generating workflow file: {workflow_file}")
+    workflowname=model.replace('/','-')
+    # os.system(f"sed -i 's/name: .*/name: {model}/g' {args.workflow_template}")
+    workflow_file=f"{args.workflow_dir}/{workflowname}.yml"
+    os.system(f"rm -rf {args.workflow_dir}/demo_{workflowname}.yml") 
+    # print("yml file----------------------------------------",workflow_file)
+    # # print(workflow_file['env']['test_queue'])
+    print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
+    os.system(f"sed -i s/name: .*/name: {model}/g' {workflow_file}")
     # replace <test_queue> with q
-    os.system(f"sed -i 's/<test_queue>/{q}/g' {workflow_file}")
+    os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
+    # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
     # replace <test_sku_type> with test_sku_type in workflow_file
-    os.system(f"sed -i 's/<test_sku_type>/{args.test_sku_type}/g' {workflow_file}")
+    os.system(f"sed -i 's/test_sku_type: .*/test_sku_type: {args.test_sku_type}/g' {workflow_file}")
     # replace <test_registry> with test_registry in workflow_file
-    os.system(f"sed -i 's/<test_trigger_next_model>/{args.test_trigger_next_model}/g' {workflow_file}")
+    os.system(f"sed -i 's/test_trigger_next_model: .*/test_trigger_next_model: {args.test_trigger_next_model}/g' {workflow_file}")
     # replace <test_keep_looping> with test_keep_looping in workflow_file
-    os.system(f"sed -i 's/<test_keep_looping>/{args.test_keep_looping}/g' {workflow_file}")
+    os.system(f"sed -i 's/test_keep_looping: .*/test_keep_looping: {args.test_keep_looping}/g' {workflow_file}")
     # replace <test_model_name> with model_container.name in workflow_file
-    os.system(f"sed -i 's/<test_model_name>/{model}/g' {workflow_file}")
+    os.system(f"sed -i 's=test_model_name: .*=test_model_name: {model}=g' {workflow_file}")
     # replace <test_set> with test_set in workflow_file
-    os.system(f"sed -i 's/<test_set>/{args.test_set}/g' {workflow_file}")
+    os.system(f"sed -i 's/test_set: .*/test_set: {args.test_set}/g' {workflow_file}")
     # replace <test_secret_name> 
-    os.system(f"sed -i 's/<test_secret_name>/{secret_name}/g' {workflow_file}")
-def main():
-    print("args.log_dir:", args.log_dir)
-    logpath=Path(f"{args.log_dir}/assign_models_to_queues")
-    os.makedirs(logpath)
-    # print("local path",os.getcwd())
-    # # get list of models from registry
-    # if args.mode == "registry":
-    #     models = get_model_containers(args.registry_name)
-    # elif args.mode == "file":
-    #     models = load_model_list_file(args.model_list_file)
+    os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
+    # # Read in the file
+
+    # github_token="GITHUB_TOKEN"
+    repository_owner="Konjarla-Vindya"
+    repository_name="son-azureml-oss-models"
+    workflow_filename=f".github/workflows/{workflowname}.yml"
+    # workflow_sha="main"  # You need to provide the correct SHA
+    new_workflow_name={model}
+    new_job_name={model}
+
+    # Construct the API URL
+    api_url = f"https://api.github.com/repositories/655633575/contents/{workflow_filename}"
+    print("api url is genrating:--------------------",api_url)
+    print("type of api_url=============",type(api_url))
+    print("type of workflow_file=============",type(workflow_file))
+
+    github_token = os.environ.get("GITHUB_TOKEN")
+    # print("github_token: is ------------------------------------",github_token)
+   
+    # Prepare the request headers
+    headers = {
+        "Authorization": f"Bearer {github_token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    print("header---------------------",headers)
+    # Make the GET request
+    response = requests.get(api_url, headers=headers)
+    print("response is genrating:--------------------",response)
+    
+    if response.status_code == 200:
+        file_info = response.json()
+        file_sha = file_info["sha"]
+        print(f"SHA of '{workflow_filename}': {file_sha}")
+    else:
+        print(f"Failed to fetch file info. Status code: {response.status_code}")
+
+    # Prepare the request headers
+    # headers = {
+    #     "Authorization": f"Bearer {github_token}",
+    #     "Accept": "application/vnd.github.v3+json"
+    # }
+    
+    # # Fetch the existing workflow data
+    # response = requests.get(api_url, headers=headers)
+    # workflow_data = response.json()
+    
+    # # Update the friendly name in the workflow data
+    # workflow_data["name"] = new_job_name
+    # print("workflow_data----------------",workflow_data)
+    # workflow_data["on"]["push"]["branches"] = list(workflow_data["on"]["push"]["branches"])
+    
+    # # Update the workflow using a PUT request
+    # update_response = requests.put(api_url, headers=headers, json=workflow_data)
+    
+    # if update_response.status_code == 200:
+    #     print("Friendly name updated successfully!")
     # else:
-    #     print (f"::error Invalid mode {args.mode}")
-    #     exit (1)
-    # print (f"Found {len(models)} models")
-    # # load workspace_list_json
-    # workspace_list = load_workspace_config()
-    # print (f"Found {len(workspace_list)} workspaces")
-    # # assign models to queues
-    # queue = assign_models_to_queues(models, workspace_list)
-    # print("queue",queue)
-    # print (f"Created queues")
-    # # create queue files
-    # create_queue_files(queue, workspace_list)
-    # print (f"Created queue files")
-    # # create workflow files
-    # create_workflow_files(queue, workspace_list)
-    # print (f"Created workflow files")
-    # print (f"Summary:")
-    # print (f"  Models: {len(models)}")
-    # print (f"  Workspaces: {len(workspace_list)}")
-    # print (f"  Parallel tests: {parallel_tests}")
-    # print (f"  Total queues: {len(workspace_list)*parallel_tests}")
-    # print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
+    #     print(f"Failed to update friendly name. Status code: {update_response.status_code}")
+
+
+    # workflow_sha=file_sha
+    # # Get the latest commit information for the workflow file
+    # commit_info=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
+    #                "https://api.github.com/repos/$repository_owner/$repository_name/commits?path=$workflow_file")
+    
+    
+    # # Read the current workflow content from GitHub
+    # current_content=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
+    #                   "https://api.github.com/repos/$repository_owner/$repository_name/contents/$workflow_file?ref=$workflow_sha")
+    # # Extract the current content, URL, and other attributes
+    # current_content=$(echo "$current_content" | jq -r .content)
+    # current_url=$(echo "$current_content" | jq -r .url)
+    # current_encoding=$(echo "$current_content" | jq -r .encoding)
+    
+    # # Prepare the updated content with new names
+    # updated_content=$(echo -n "$current_content" | base64 -d | \
+    #                   sed "s/Old Workflow Name/$new_workflow_name/g; s/Old Job Name/$new_job_name/g")
+    
+    # # Encode the updated content in base64
+    # encoded_updated_content=$(echo -n "$updated_content" | base64 -w 0)
+    
+    # # Prepare the JSON payload for updating the content
+    # json_payload="{\"message\":\"Update workflow names\",\"content\":\"$encoded_updated_content\",\"sha\":\"$workflow_sha\"}"
+    
+    # # Make the PATCH request to update the workflow file
+    # curl -X PUT -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
+    #      -d "$json_payload" "$current_url"
+
+    with open(workflow_file, 'rt') as f:
+        yaml_content = f.read()
+        # yaml_content=yaml.safe_load(f)
+    
+    updated_yaml_content = yaml_content.replace("distl", model)
+    yml_content='"""'+'\n'+updated_yaml_content+'\n'+'"""'
+    print("updated_yaml_content-----------------------",yml_content)
+    modified_yaml_content = yml_content.replace('"""', '')
+    with open(workflow_file, 'w') as yaml_file:
+        yaml_file.write(updated_yaml_content)
+    #     # yaml.dump(updated_yaml_content,yaml_file)
+    # with open(api_url, 'rt') as f:
+    #     doc = yaml.safe_load(f)
+    #     # ,Loader=yaml.FullLoader
+    
+    # doc['name'] = model
+    # # doc['onion']['workflow_dispatch']=
+    # # for model in models:
+    # doc['env']['test_model_name'] = model
+    # doc['env']['test_sku_type'] = args.test_sku_type
+    # doc['env']['test_trigger_next_model'] = args.test_trigger_next_model
+    # doc['env']['test_queue'] = q
+    # doc['env']['test_set'] = args.test_set
+    # doc['env']['test_queue'] = q
+    # print("post change of dict------------",doc)
+    # # doc.replace('true:','on:')
+    # # os.system(f"sed -i 's/true: .*/on: .*/g' {workflow_file}")
+    # with open(workflow_file, 'w') as f:
+    #    yml= yaml.dump(doc, f, default_flow_style=False, sort_keys=False,width=float("inf"))
+    #     # yml=yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
+    #     # yaml.dump(doc, f, default_flow_style=True,width=float("inf"))
+    # workflow_filecopy=f"{args.workflow_dir}/suchitest{workflowname}.yml"
+    # os.system(f"cp {workflow_file} {workflow_filecopy}")
+    # # os.system(f"rm -rf {workflow_file}")
+    # # g=Github()
+    # # print("g.workflow(workflow_file)====================",g.workflow(workflow_file))
+    # # print("github.workflow()============================",github.workflow(workflow_file))
+def workflow_names(models):
+    workflownames=[]
+    j=1
+    while j < len(models):
+        for names in models:
+            workflow_modelname=names.replace('/','-')
+            # print(f"workflow_modelname: {workflow_modelname}")
+            # print("beforeworkflow names",workflownames)
+            workflownames.append(workflow_modelname)
+            # print("in loop workflow names",workflownames)
+        j=j+1
+    print("out of loop workflow names:",workflownames)
+    return workflownames
+def main():
+    
+    # get list of models from registry
+    if args.mode == "registry":
+        models = get_model_containers(args.registry_name)
+    elif args.mode == "file":
+        models = load_model_list_file(args.model_list_file)
+    else:
+        print (f"::error Invalid mode {args.mode}")
+        exit (1)
+    
+    print (f"Found {len(models)} models")
+    print (f"models: {models}")
+    workflownames=workflow_names(models)
+    
+    # load workspace_list_json
+    workspace_list = load_workspace_config()
+    print (f"Found {len(workspace_list)} workspaces")
+    # assign models to queues
+    queue = assign_models_to_queues(models, workspace_list)
+    # q=assign_models_to_workflowq(workflownames, workspace_list)
+    q=queue
+    print("q",q)
+    print("queue",queue)
+    print (f"Created queues")
+    # create queue files
+    create_queue_files(queue, workspace_list)
+    print (f"Created queue files")
+    # create workflow files
+    create_workflow_files(q, workspace_list)
+    print (f"Created workflow files")
+    print (f"Summary:")
+    print (f"  Models: {len(models)}")
+    print (f"  Workspaces: {len(workspace_list)}")
+    print (f"  Parallel tests: {parallel_tests}")
+    print (f"  Total queues: {len(workspace_list)*parallel_tests}")
+    print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
 
         
 if __name__ == "__main__":
