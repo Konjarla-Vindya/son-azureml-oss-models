@@ -14,16 +14,16 @@ jobs:
         token: ${{ secrets.API_TOKEN }}
         GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
     permissions:
-        actions: read
+        actions: write
         checks: write
         contents: write
         deployments: write
-        # issues: read
-        packages: read
-        # pull-requests: read
-        # repository-projects: read
-        security-events: read
-        statuses: read
+        issues: write
+        packages: write
+        pull-requests: write
+        repository-projects: write
+        security-events: write
+        statuses: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
