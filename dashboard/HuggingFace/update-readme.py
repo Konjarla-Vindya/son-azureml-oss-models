@@ -131,7 +131,7 @@ class Dashboard():
 
         summary_text = "\n".join(summary)
 
-        with open("testing.md", "w", encoding="utf-8") as f:
+        with open("README.md", "w", encoding="utf-8") as f:
             f.write(summary_text)
             f.write(os.linesep)
             f.write(os.linesep)
