@@ -236,7 +236,7 @@ class ModelInferenceAndDeployemnt:
         #     model_uri=f"./model_download/{latest_model.name}/{latest_model.name}-artifact", return_type="pipeline")
         model_sourceuri = latest_model.properties["mlflow.modelSourceUri"]
         loaded_model_pipeline = mlflow.transformers.load_model(model_uri=model_sourceuri)
-        print(type(loaded_model_pipeline))
+        #print(type(loaded_model_pipeline))
 
         if task == "fill-mask":
             pipeline_tokenizer = loaded_model_pipeline.tokenizer
