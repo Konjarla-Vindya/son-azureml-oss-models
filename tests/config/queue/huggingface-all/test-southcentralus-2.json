@@ -1,15 +1,45 @@
 {
     "queue_name": "test-southcentralus-2",
     "models": [
-        "Sahajtomar/German-question-answer-Electra"
-       
-      
+        "bert-base-multilingual-uncased",
+        "bert-large-cased-whole-word-masking",
+        "Babelscape/wikineural-multilingual-ner",
+        "Helsinki-NLP/opus-mt-en-ru",
+        "ALINEAR/albert-japanese-v2",
+        "Helsinki-NLP/opus-mt-de-nl",
+        "AlexKay/xlm-roberta-large-qa-multilingual-finedtuned-ru",
+        "Helsinki-NLP/opus-mt-sv-fi",
+        "MKaan/multilingual-cpv-sector-classifier",
+        "DeepESP/gpt2-spanish",
+        "Helsinki-NLP/opus-mt-st-en",
+        "Helsinki-NLP/opus-mt-eu-es",
+        "HooshvareLab/bert-fa-zwnj-base-ner",
+        "Davlan/bert-base-multilingual-cased-masakhaner",
+        "akdeniz27/xlm-roberta-base-turkish-ner",
+        "BigSalmon/SimplifyText",
+        "DeepPavlov/xlm-roberta-large-en-ru-mnli",
+        "GroNLP/gpt2-medium-dutch-embeddings",
+        "Helsinki-NLP/opus-mt-zh-ms",
+        "Helsinki-NLP/opus-mt-en-bi",
+        "Helsinki-NLP/opus-mt-en-rw",
+        "Helsinki-NLP/opus-mt-fi-ru",
+        "Helsinki-NLP/opus-mt-itc-en",
+        "Helsinki-NLP/opus-mt-ny-en",
+        "Helsinki-NLP/opus-mt-uk-es",
+        "IlyaGusev/xlm_roberta_large_headline_cause_full",
+        "KoichiYasuoka/roberta-classical-chinese-large-sentence-segmentation",
+        "Narrativa/spanish-gpt2-finetuned-rap-lyrics",
+        "NTUYG/DeepSCC-RoBERTa",
+        "SetFit/distilbert-base-uncased__enron_spam__all-train",
+        "XSY/albert-base-v2-imdb-calssification",
+        "Helsinki-NLP/opus-mt-en-bnt",
+        "Helsinki-NLP/opus-mt-vi-fr"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D32a-v4",
-    "instance_type": "Standard_D32a_v4"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16as_v4"
 }

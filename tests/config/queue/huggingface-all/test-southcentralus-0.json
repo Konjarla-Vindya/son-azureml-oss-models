@@ -1,18 +1,45 @@
 {
     "queue_name": "test-southcentralus-0",
     "models": [
-        "Helsinki-NLP/opus-mt-ru-en",
-        "Jean-Baptiste/roberta-large-ner-english",
-        "Helsinki-NLP/opus-mt-en-zh"
-       
-        
-        
+        "distilbert-base-cased-distilled-squad",
+        "xlm-roberta-large-finetuned-conll02-dutch",
+        "Helsinki-NLP/opus-mt-en-zh",
+        "apanc/russian-inappropriate-messages",
+        "Helsinki-NLP/opus-mt-et-en",
+        "Geotrend/distilbert-base-es-cased",
+        "Helsinki-NLP/opus-mt-en-roa",
+        "SIKU-BERT/sikubert",
+        "Salesforce/grappa_large_jnt",
+        "Langboat/mengzi-bert-base-fin",
+        "GKLMIP/roberta-hindi-devanagari",
+        "Hate-speech-CNERG/bert-base-uncased-hatexplain-rationale-two",
+        "Helsinki-NLP/opus-mt-th-fr",
+        "HooshvareLab/bert-fa-base-uncased-clf-persiannews",
+        "akdeniz27/roberta-base-cuad",
+        "aware-ai/mobilebert-squadv2",
+        "DeepChem/ChemBERTa-5M-MLM",
+        "Geotrend/distilbert-base-zh-cased",
+        "Helsinki-NLP/opus-mt-bg-de",
+        "Helsinki-NLP/opus-mt-en-az",
+        "Helsinki-NLP/opus-mt-en-mt",
+        "Helsinki-NLP/opus-mt-fi-fr",
+        "Helsinki-NLP/opus-mt-it-bg",
+        "Helsinki-NLP/opus-mt-nl-fi",
+        "Helsinki-NLP/opus-mt-trk-en",
+        "Helsinki-NLP/opus-mt-cs-fr",
+        "KoichiYasuoka/roberta-classical-chinese-base-char",
+        "MutazYoune/Ara_DialectBERT",
+        "LeoCordoba/beto2beto-cc-news-es-titles",
+        "SEBIS/code_trans_t5_small_source_code_summarization_sql_multitask_finetune",
+        "Wikidepia/indobert-lite-squadx",
+        "Ferch423/gpt2-small-portuguese-wikipediabio",
+        "Helsinki-NLP/opus-mt-af-sv"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D32a-v4",
-    "instance_type": "Standard_D32a_v4"
+    "compute": "v-sameep",
+    "instance_type": "Standard_D16as_v4"
 }

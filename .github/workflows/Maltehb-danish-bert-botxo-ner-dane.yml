@@ -7,7 +7,7 @@ env:
   test_model_name: Maltehb/danish-bert-botxo-ner-dane
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: sonata-test-ws-2
+  test_queue: test-koreacentral-0
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -26,7 +26,7 @@ jobs:
     - name: pip-install-azureml-core
       run: pip install azureml-core
     - name: pip-install-azureml-mlflow
-      run: pip install azureml-mlflow
+      run: pip install azureml-mlflow====1.53.0
     - name: pip-install-transformers
       run: pip install transformers
     - name: pip-install-transformers[torch]
@@ -41,12 +41,14 @@ jobs:
       run: pip install sacremoses
     - name: pip-install-sentencepiece
       run: pip install sentencepiece
+    - name: pip-install-fugashi[unidic-lite]
+      run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
       run: python generic_initial_automation.py
       working-directory: tests/src/automation_for_constant_library
     - name: trigger-next-model-step
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.API_TOKEN }}
       if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
       run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
