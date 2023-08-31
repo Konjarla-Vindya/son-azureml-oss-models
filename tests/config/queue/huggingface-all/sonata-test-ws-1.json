@@ -40,6 +40,6 @@
     "resource_group": "sonata-test-rg",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "v-sameep",
+    "compute": "v-sameep2",
     "instance_type": "Standard_D16as_v4"
 }
