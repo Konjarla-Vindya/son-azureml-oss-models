@@ -41,12 +41,14 @@ jobs:
       run: pip install sacremoses
     - name: pip-install-sentencepiece
       run: pip install sentencepiece
+    - name: pip-install-fugashi[unidic-lite]
+      run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
       run: python generic_initial_automation.py
-      working-directory: tests/src/testing-automation
+      working-directory: tests/src/automation_for_constant_library
     - name: trigger-next-model-step
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.API_TOKEN }}
       if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
       run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
