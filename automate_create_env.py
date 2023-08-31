@@ -28,7 +28,7 @@ pip_dependencies = [
    "sacremoses","python-box","sentencepiece","fugashi[unidic-lite]"
    ]
    
-env_name_str = "auto_testenv"
+env_name_str = "automate-venv"
 
 create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name_str)
 
