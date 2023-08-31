@@ -230,12 +230,12 @@ class ModelInferenceAndDeployemnt:
                 f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
         print(
             f"Latest model name : {latest_model.name} and latest model version : {latest_model.version}", )
-        # downloaded_model = self.workspace_ml_client.models.download(
-        #     name=latest_model.name, version=latest_model.version, download_path=f"./model_download")
-        # loaded_model = mlflow.transformers.load_model(
-        #     model_uri=f"./model_download/{latest_model.name}/{latest_model.name}-artifact", return_type="pipeline")
-        model_sourceuri = latest_model.properties["mlflow.modelSourceUri"]
-        loaded_model_pipeline = mlflow.transformers.load_model(model_uri=model_sourceuri)
+        downloaded_model = self.workspace_ml_client.models.download(
+            name=latest_model.name, version=latest_model.version, download_path=f"./model_download")
+        loaded_model_pipeline = mlflow.transformers.load_model(
+            model_uri=f"./model_download/{latest_model.name}/{latest_model.name}-artifact", return_type="pipeline")
+        # model_sourceuri = latest_model.properties["mlflow.modelSourceUri"]
+        # loaded_model_pipeline = mlflow.transformers.load_model(model_uri=model_sourceuri)
         #print(type(loaded_model_pipeline))
 
         if task == "fill-mask":
