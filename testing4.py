@@ -6,7 +6,7 @@ from github import Github, Auth
 
 class Dashboard():
     def __init__(self): 
-        self.github_token = os.environ['GIT_TOKEN']
+        self.github_token = os.environ['token']
         #self.github_token = "API_TOKEN"
         print("token: ", self.github_token)
         self.token = Auth.Token(self.github_token)
@@ -101,6 +101,13 @@ class Dashboard():
 
         return self.data
 
+
+    def save_to_excel(self, last_runs_dict):
+        df = pd.DataFrame.from_dict(last_runs_dict)
+        excel_path = "workflow_status.xlsx"
+        df.to_excel(excel_path, index=False)
+        print(f"Data saved to {excel_path}")
+
     def results(self, last_runs_dict):
         results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0, "not_tested": 0, "total_duration": 0}
         summary = []
@@ -137,6 +144,7 @@ def main():
         my_class = Dashboard()
         last_runs_dict = my_class.workflow_last_run()
         my_class.results(last_runs_dict)
+        my_class.save_to_excel(last_runs_dict)
         
 if __name__ == "__main__":
     main()
