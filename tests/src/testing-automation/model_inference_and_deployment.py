@@ -261,7 +261,7 @@ class ModelInferenceAndDeployemnt:
         task = latest_model.flavors["transformers"]["task"]
         print("latest_model:", latest_model)
         print("Task is : ", task)
-        self.model_inference(task=task, latest_model=latest_model)
+        # self.model_inference(task=task, latest_model=latest_model)
         # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
         timestamp = int(time.time())
         online_endpoint_name = task + str(timestamp)
@@ -289,7 +289,7 @@ class ModelInferenceAndDeployemnt:
             instance_type=instance_type,
             endpoint=endpoint
         )
-        self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
+        # self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
         # endpoint = ManagedOnlineEndpoint(
         #     name=online_endpoint_name,
         #     auth_mode="key",
