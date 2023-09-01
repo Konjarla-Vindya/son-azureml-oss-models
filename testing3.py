@@ -1,6 +1,6 @@
 import os,sys
 import requests
-import pandas
+import pandas as pd
 from datetime import datetime
 from github import Github, Auth
 
@@ -130,6 +130,13 @@ class Dashboard():
         models_md = pandas.DataFrame.from_dict(models).to_markdown()
 
         summary_text = "\n".join(summary)
+
+        df = pd.DataFrame(last_runs_dict)
+        df['Run URL'] = df.apply(lambda row: f"[Link]({row['jobs_url']})", axis=1)
+
+        # Save the DataFrame to an Excel file
+        excel_filename = "workflow_runs.xlsx"
+        df.to_excel(excel_filename, index=False)
 
         with open("testing2.md", "w", encoding="utf-8") as f:
             f.write(summary_text)
