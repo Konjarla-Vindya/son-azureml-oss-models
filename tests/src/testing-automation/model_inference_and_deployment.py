@@ -34,7 +34,7 @@ class ModelInferenceAndDeployemnt:
         logs = self.workspace_ml_client.online_deployments.get_logs(
             name=deployment_name, endpoint_name=online_endpoint_name, lines=100000)
         print(logs)
-        #self.prase_logs(logs)
+        # self.prase_logs(logs)
 
     # def prase_logs(self, logs):
     #     error_messages = self.get_error_messages()
@@ -68,47 +68,47 @@ class ModelInferenceAndDeployemnt:
         #print(f"Model Config : {latest_model.config}")
         return foundation_model
 
-    # def sample_inference(self, latest_model, registry, workspace_ml_client, online_endpoint_name):
-    #     # get the task tag from the latest_model.tags
-    #     tags = str(latest_model.tags)
-    #     # replace single quotes with double quotes in tags
-    #     tags = tags.replace("'", '"')
-    #     # convert tags to dictionary
-    #     tags_dict = json.loads(tags)
-    #     task = tags_dict['task']
-    #     print(f"task: {task}")
-    #     scoring_file = f"../../config/sample_inputs/{registry}/{task}.json"
-    #     # check of scoring_file exists
-    #     try:
-    #         with open(scoring_file) as f:
-    #             scoring_input = json.load(f)
-    #             print(f"scoring_input file:\n\n {scoring_input}\n\n")
-    #     except Exception as e:
-    #         print(
-    #             f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
+    def sample_inference(self, scoring_file, scoring_input, online_endpoint_name, deployment_name):
+        # get the task tag from the latest_model.tags
+        # tags = str(latest_model.tags)
+        # # replace single quotes with double quotes in tags
+        # tags = tags.replace("'", '"')
+        # # convert tags to dictionary
+        # tags_dict = json.loads(tags)
+        # task = tags_dict['task']
+        # print(f"task: {task}")
+        # scoring_file = f"../../config/sample_inputs/{registry}/{task}.json"
+        # # check of scoring_file exists
+        # try:
+        #     with open(scoring_file) as f:
+        #         scoring_input = json.load(f)
+        #         print(f"scoring_input file:\n\n {scoring_input}\n\n")
+        # except Exception as e:
+        #     print(
+        #         f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
 
-    #     # invoke the endpoint
-    #     try:
-    #         response = workspace_ml_client.online_endpoints.invoke(
-    #             endpoint_name=online_endpoint_name,
-    #             deployment_name="demo",
-    #             request_file=scoring_file,
-    #         )
-    #         response_json = json.loads(response)
-    #         output = json.dumps(response_json, indent=2)
-    #         print(f"response: \n\n{output}")
-    #         with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as fh:
-    #             print(f'####Sample input', file=fh)
-    #             print(f'```json', file=fh)
-    #             print(f'{scoring_input}', file=fh)
-    #             print(f'```', file=fh)
-    #             print(f'####Sample output', file=fh)
-    #             print(f'```json', file=fh)
-    #             print(f'{output}', file=fh)
-    #             print(f'```', file=fh)
-    #     except Exception as e:
-    #         print(f"::error:: Could not invoke endpoint: \n")
-    #         print(f"{e}\n\n check logs:\n\n")
+        # invoke the endpoint
+        try:
+            response = self.workspace_ml_client.online_endpoints.invoke(
+                endpoint_name=online_endpoint_name,
+                deployment_name=deployment_name,
+                request_file=scoring_file,
+            )
+            response_json = json.loads(response)
+            output = json.dumps(response_json, indent=2)
+            print(f"response: \n\n{output}")
+            with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as fh:
+                print(f'####Sample input', file=fh)
+                print(f'```json', file=fh)
+                print(f'{scoring_input}', file=fh)
+                print(f'```', file=fh)
+                print(f'####Sample output', file=fh)
+                print(f'```json', file=fh)
+                print(f'{output}', file=fh)
+                print(f'```', file=fh)
+        except Exception as e:
+            print(f"::error:: Could not invoke endpoint: \n")
+            print(f"{e}\n\n check logs:\n\n")
 
     def create_online_endpoint(self, latest_model, endpoint):
         print("In create_online_endpoint...")
@@ -118,7 +118,7 @@ class ModelInferenceAndDeployemnt:
         except Exception as e:
             print(f"::error:: Could not create endpoint: \n")
             print(f"{e}\n\n check logs:\n\n")
-            #self.prase_logs(str(e))
+            # self.prase_logs(str(e))
             exit(1)
 
         print(self.workspace_ml_client.online_endpoints.get(name=endpoint.name))
@@ -183,10 +183,10 @@ class ModelInferenceAndDeployemnt:
         except Exception as e:
             _, _, exc_tb = sys.exc_info()
             print(f"::error:: Could not create deployment\n")
-            print(f"The exception occured at this line no : {exc_tb.tb_lineno}"+
+            print(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
                   " the exception is this one :", e)
             print(f"{e}\n\n check logs:\n\n")
-            #self.prase_logs(str(e))
+            # self.prase_logs(str(e))
             self.get_online_endpoint_logs(
                 deployment_name, online_endpoint_name)
             self.workspace_ml_client.online_endpoints.begin_delete(
@@ -198,7 +198,7 @@ class ModelInferenceAndDeployemnt:
         except Exception as e:
             _, _, exc_tb = sys.exc_info()
             print(f"::error:: Could not create deployment\n")
-            print(f"The exception occured at this line no : {exc_tb.tb_lineno}"+
+            print(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
                   " the exception is this one :", e)
             print(f"{e}\n\n check logs:\n\n")
             self.get_online_endpoint_logs(
@@ -208,6 +208,7 @@ class ModelInferenceAndDeployemnt:
             exit(1)
         print(self.workspace_ml_client.online_deployments.get(
             name=deployment_name, endpoint_name=endpoint.name))
+        return deployment_name
 
     def delete_online_endpoint(self, online_endpoint_name):
         try:
@@ -218,7 +219,7 @@ class ModelInferenceAndDeployemnt:
             print(f"::warning:: Could not delete endpoint: : \n{e}")
             exit(0)
 
-    def model_inference(self, task, latest_model):
+    def get_task_specified_input(self, task):
         scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
         # check of scoring_file exists
         try:
@@ -228,16 +229,19 @@ class ModelInferenceAndDeployemnt:
         except Exception as e:
             print(
                 f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
-        print(
-            f"Latest model name : {latest_model.name} and latest model version : {latest_model.version}", )
+        return scoring_file, scoring_input
+
+    def model_inference(self, task, latest_model, scoring_input):
         # downloaded_model = self.workspace_ml_client.models.download(
         #     name=latest_model.name, version=latest_model.version, download_path=f"./model_download")
         # loaded_model = mlflow.transformers.load_model(
         #     model_uri=f"./model_download/{latest_model.name}/{latest_model.name}-artifact", return_type="pipeline")
         model_sourceuri = latest_model.properties["mlflow.modelSourceUri"]
-        loaded_model_pipeline = mlflow.transformers.load_model(model_uri=model_sourceuri)
-        #print(type(loaded_model_pipeline))
-
+        loaded_model_pipeline = mlflow.transformers.load_model(
+            model_uri=model_sourceuri)
+        # print(type(loaded_model_pipeline))
+        print(
+            f"Latest model name : {latest_model.name} and latest model version : {latest_model.version}", )
         if task == "fill-mask":
             pipeline_tokenizer = loaded_model_pipeline.tokenizer
             for index in range(len(scoring_input.inputs)):
@@ -251,17 +255,13 @@ class ModelInferenceAndDeployemnt:
 
     def model_infernce_and_deployment(self, instance_type):
         model_name = self.test_model_name.replace("/", "-")
-        # if len(self.test_model_name) > 22:
-        #     model_name = self.test_model_name.replace("/", "-")[:22]
-        #     model_name = model_name.rstrip("-")
-        # else:
-        #     model_name = self.test_model_name
         latest_model = self.get_latest_model_version(
             self.workspace_ml_client, model_name)
         task = latest_model.flavors["transformers"]["task"]
         print("latest_model:", latest_model)
         print("Task is : ", task)
-        # self.model_inference(task=task, latest_model=latest_model)
+        scoring_file, scoring_input = self.get_task_specified_input(task=task)
+        # self.model_inference(task=task, latest_model=latest_model, scoring_input=scoring_input)
         # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
         timestamp = int(time.time())
         online_endpoint_name = task + str(timestamp)
@@ -282,15 +282,17 @@ class ModelInferenceAndDeployemnt:
         #     model_package=model_package,
         #     instance_type=instance_type
         # )
-        self.create_online_deployment(
+        deployment_name = self.create_online_deployment(
             latest_model=latest_model,
             online_endpoint_name=online_endpoint_name,
             model_package=" ",
             instance_type=instance_type,
             endpoint=endpoint
         )
+        self.sample_inference(
+            scoring_file=scoring_file,
+            scoring_input=scoring_input,
+            online_endpoint_name=online_endpoint_name,
+            deployment_name=deployment_name
+        )
         # self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
-        # endpoint = ManagedOnlineEndpoint(
-        #     name=online_endpoint_name,
-        #     auth_mode="key",
-        # )

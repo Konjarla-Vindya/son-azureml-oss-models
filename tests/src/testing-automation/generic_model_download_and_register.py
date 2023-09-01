@@ -8,6 +8,7 @@ from box import ConfigBox
 from mlflow.models import infer_signature
 from mlflow.transformers import generate_signature_output
 from mlflow.tracking.client import MlflowClient
+from mlflow.store.artifact.models_artifact_repo import ModelsArtifactRepository
 from transformers import pipeline
 import pandas as pd
 import os
@@ -186,13 +187,19 @@ class Model:
             registered_model_name (_type_): _description_
         """
 
-        client = MlflowClient()
-        registered_model_detail = client.get_latest_versions(
-            name=registered_model_name, stages=["None"])
-        model_detail = registered_model_detail[0]
-        print("Latest registered model version is : ", model_detail.version)
-        loaded_model_pipeline = mlflow.transformers.load_model(
-            model_uri=model_detail.source, return_type="pipeline")
+        # client = MlflowClient()
+        # registered_model_detail = client.get_latest_versions(
+        #     name=registered_model_name, stages=["None"])
+        # model_detail = registered_model_detail[0]
+        # print("Latest registered model version is : ", model_detail.version)
+        # loaded_model_pipeline = mlflow.transformers.load_model(
+        #     model_uri=model_detail.source, return_type="pipeline")
+        
+        #Alternate Approach
+        path = f"models:/{registered_model_name}/latest"
+        downloaded_path = ModelsArtifactRepository(path).download_artifacts(artifact_path="")
+        loaded_model_pipeline = mlflow.transformers.load_model(model_uri=downloaded_path, return_type="pipeline")
+
         if task == "fill-mask":
             pipeline_tokenizer = loaded_model_pipeline.tokenizer
             for index in range(len(scoring_input.inputs)):
