@@ -225,9 +225,10 @@ if __name__ == "__main__":
         workspace_ml_client=workspace_ml_client,
         registry=queue.registry
     )
+    model_name = test_model_name.replace("/", "-")
     foundation_model = InferenceAndDeployment.get_latest_model_version(
         workspace_ml_client=workspace_ml_client,
-        model_name=test_model_name
+        model_name=model_name
     )
     downloaded_model = workspace_ml_client.models.download(
         name=foundation_model.name, version=foundation_model.version, download_path=f"./model_download")
