@@ -186,8 +186,9 @@ class Model:
 
     def load_registered_model(self) -> None:
         client = MlflowClient()
+        registered_model_name = self.model_name.replace("/", "-")
         registered_model_list = client.get_latest_versions(
-            self.model_name, stages=["None"])
+            name=registered_model_name, stages=["None"])
         registered_model = registered_model_list[0]
         model_sourceuri = registered_model.properties["mlflow.modelSourceUri"]
         loaded_model_pipeline = mlflow.transformers.load_model(
