@@ -33,7 +33,8 @@
         "SetFit/distilbert-base-uncased__sst5__all-train",
         "Xuhui/ToxDect-roberta-large",
         "Helsinki-NLP/opus-mt-fr-he",
-        "Helsinki-NLP/opus-mt-ro-sv"
+        "Helsinki-NLP/opus-mt-ro-sv",
+        "t5-3b"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
