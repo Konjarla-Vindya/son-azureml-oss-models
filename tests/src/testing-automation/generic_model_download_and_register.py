@@ -192,7 +192,7 @@ class Model:
         model_detail = registered_model_detail[0]
         print("Latest registered model version is : ", model_detail.version)
         loaded_model_pipeline = mlflow.transformers.load_model(
-            model_uri=model_detail.source)
+            model_uri=model_detail.source, return_type="pipeline")
         if task == "fill-mask":
             pipeline_tokenizer = loaded_model_pipeline.tokenizer
             for index in range(len(scoring_input.inputs)):
