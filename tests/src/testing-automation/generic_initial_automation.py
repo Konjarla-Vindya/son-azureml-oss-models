@@ -225,26 +225,22 @@ if __name__ == "__main__":
         workspace_ml_client=workspace_ml_client,
         registry=queue.registry
     )
-    model_name = test_model_name.replace("/", "-")
-    foundation_model = InferenceAndDeployment.get_latest_model_version(
-        workspace_ml_client=workspace_ml_client,
-        model_name=model_name
-    )
-    downloaded_model = workspace_ml_client.models.download(
-        name=foundation_model.name, version=foundation_model.version, download_path=f"./model_download")
-    foundation_model_uri = f"./model_download/{foundation_model.name}/{foundation_model.name}-artifact"
-    task = foundation_model.flavors["transformers"]["task"]
-    environment_variables_deployment = {
-        "foundation_model_uri": foundation_model_uri,
-        "task": task
-    }
-    command_job = run_azure_ml_job(code="./", command_to_run="python load_and_inference.py",
-                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables_deployment)
-    create_and_get_job_studio_url(command_job, workspace_ml_client)
-    InferenceAndDeployment.model_infernce_and_deployment(
-        instance_type=queue.instance_type
-    )
-
-    # model = Model(model_name=test_model_name, queue=queue)
-    # model_and_tokenizer = model.download_and_register_model(workspace=ws)
-    # print("Model config : ", model_and_tokenizer["model"].config)
+    # model_name = test_model_name.replace("/", "-")
+    # foundation_model = InferenceAndDeployment.get_latest_model_version(
+    #     workspace_ml_client=workspace_ml_client,
+    #     model_name=model_name
+    # )
+    # downloaded_model = workspace_ml_client.models.download(
+    #     name=foundation_model.name, version=foundation_model.version, download_path=f"./model_download")
+    # foundation_model_uri = f"./model_download/{foundation_model.name}/{foundation_model.name}-artifact"
+    # task = foundation_model.flavors["transformers"]["task"]
+    # environment_variables_deployment = {
+    #     "foundation_model_uri": foundation_model_uri,
+    #     "task": task
+    # }
+    # command_job = run_azure_ml_job(code="./", command_to_run="python load_and_inference.py",
+    #                                environment=latest_env, compute=queue.compute, environment_variables=environment_variables_deployment)
+    # create_and_get_job_studio_url(command_job, workspace_ml_client)
+    # InferenceAndDeployment.model_infernce_and_deployment(
+    #     instance_type=queue.instance_type
+    # )

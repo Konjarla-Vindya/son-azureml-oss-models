@@ -7,6 +7,7 @@ from urllib.request import urlopen
 from box import ConfigBox
 from mlflow.models import infer_signature
 from mlflow.transformers import generate_signature_output
+from mlflow.tracking.client import MlflowClient
 from transformers import pipeline
 import pandas as pd
 import os
@@ -31,7 +32,7 @@ class Model:
     def __init__(self, model_name) -> None:
         self.model_name = model_name
 
-    def get_library_to_load_model(self, task:str) -> str:
+    def get_library_to_load_model(self, task: str) -> str:
         """ Takes the task name and load the  json file findout the library 
         which is applicable for that task and retyrun it 
 
@@ -57,7 +58,7 @@ class Model:
             str: task name
         """
         response = urlopen(URL)
-        #Load all the data with the help of json
+        # Load all the data with the help of json
         data_json = json.loads(response.read())
         # Convert it into dataframe and mention the specific column
         df = pd.DataFrame(data_json, columns=COLUMNS_TO_READ)
@@ -65,13 +66,13 @@ class Model:
         df = df[df.tags.apply(lambda x: STRING_TO_CHECK in x)]
         # Find the data with that particular name
         required_data = df[df.modelId.apply(lambda x: x == self.model_name)]
-        # Get the task 
+        # Get the task
         required_data = required_data["pipeline_tag"].to_string()
         pattern = r'[0-9\s+]'
         final_data = re.sub(pattern, '', required_data)
         return final_data
 
-    def get_sample_input_data(self, task:str):
+    def get_sample_input_data(self, task: str):
         """This method will load the sample input data based on the task name
 
         Args:
@@ -92,7 +93,7 @@ class Model:
 
         return scoring_input
 
-    def download_model_and_tokenizer(self, task:str) -> dict:
+    def download_model_and_tokenizer(self, task: str) -> dict:
         """" This method will download the model and tokenizer and return it in a 
         dictionary
 
@@ -114,7 +115,7 @@ class Model:
         # Get the library name from this method from which we will load the model
         model_library_name = self.get_library_to_load_model(task=task)
         print("Library name is this one : ", model_library_name)
-        # Load the library from the transformer 
+        # Load the library from the transformer
         model_library = getattr(transformers, model_library_name)
         # From the library load the model
         model = model_library.from_pretrained(self.model_name)
@@ -122,7 +123,7 @@ class Model:
         model_and_tokenizer = {"model": model, "tokenizer": tokenizer}
         return model_and_tokenizer
 
-    def register_model_in_workspace(self, model_and_tokenizer:dict, sample_data:ConfigBox, task:str):
+    def register_model_in_workspace(self, model_and_tokenizer: dict, sample_data: ConfigBox, task: str):
         """ I will load the pipeline with the model name if its a fill mask task then it will get the 
         masked token and convert the input to that model type . It will generate the model signature . 
         It will log and register the model with mlflow
@@ -183,10 +184,31 @@ class Model:
         )
         return model_and_tokenizer
 
+    def load_registered_model(self) -> None:
+        client = MlflowClient()
+        registered_model_list = client.get_latest_versions(
+            self.model_name, stages=["None"])
+        registered_model = registered_model_list[0]
+        model_sourceuri = registered_model.properties["mlflow.modelSourceUri"]
+        loaded_model_pipeline = mlflow.transformers.load_model(
+            model_uri=model_sourceuri)
+        task = loaded_model_pipeline.flavors["transformers"]["task"]
+        # Get the sample input data
+        scoring_input = self.get_sample_input_data(task=task)
+        if task == "fill-mask":
+            pipeline_tokenizer = loaded_model_pipeline.tokenizer
+            for index in range(len(scoring_input.inputs)):
+                scoring_input.inputs[index] = scoring_input.inputs[index].replace(
+                    "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
+
+        output = loaded_model_pipeline(scoring_input.inputs)
+        print("My outupt is this : ", output)
+
 
 if __name__ == "__main__":
     model = Model(model_name=test_model_name)
     model.download_and_register_model()
+    model.load_registered_model()
     # workspace = Workspace.from_config()
     # print(workspace)
     # client = mlflow.tracking.MlflowClient()
