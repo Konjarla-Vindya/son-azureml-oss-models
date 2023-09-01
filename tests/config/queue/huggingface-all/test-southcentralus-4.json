@@ -1,8 +1,7 @@
 {
     "queue_name": "test-southcentralus-3",
     "models": [
-        "bert-base-uncased",
-        "t5-small",
+        
         "NYTK-summarization-hi-bart-base-1024-hungarian"
     ],
     "workspace": "test-southcentralus",
