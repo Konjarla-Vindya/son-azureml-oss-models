@@ -59,10 +59,12 @@ jobs:
           git config user.email "${{ secrets.USER_EMAIL }}"
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
-          git add testing2.md          
+          git add testing2.md    
+          git add workflow_runs.xlsx
           # Attempt to commit changes and handle errors
           set +e
           git commit -m "Add testing2.md"
+          git commit -m "Add workflow_runs.xlsx"
           commit_status=$?
           set -e
           if [ $commit_status -eq 0 ]; then
