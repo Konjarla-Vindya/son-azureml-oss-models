@@ -32,24 +32,6 @@ class Model:
     def __init__(self, model_name) -> None:
         self.model_name = model_name
 
-    def get_library_to_load_model(self, task: str) -> str:
-        """ Takes the task name and load the  json file findout the library 
-        which is applicable for that task and retyrun it 
-
-        Args:
-            task (str): required the task name 
-        Returns:
-            str: return the library name
-        """
-        try:
-            with open(FILE_NAME) as f:
-                model_with_library = ConfigBox(json.load(f))
-                print(f"scoring_input file:\n\n {model_with_library}\n\n")
-        except Exception as e:
-            print(
-                f"::warning:: Could not find scoring_file: {model_with_library}. Finishing without sample scoring: \n{e}")
-        return model_with_library.get(task)
-
     def get_task(self) -> str:
         """ This method will read the huggin face api url data in a dataframe. Then it will findout 
         the model which is of transformer type . Then it will find that particular model and its task
@@ -92,6 +74,24 @@ class Model:
                 f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
 
         return scoring_input
+    
+    def get_library_to_load_model(self, task: str) -> str:
+        """ Takes the task name and load the  json file findout the library 
+        which is applicable for that task and retyrun it 
+
+        Args:
+            task (str): required the task name 
+        Returns:
+            str: return the library name
+        """
+        try:
+            with open(FILE_NAME) as f:
+                model_with_library = ConfigBox(json.load(f))
+                print(f"scoring_input file:\n\n {model_with_library}\n\n")
+        except Exception as e:
+            print(
+                f"::warning:: Could not find scoring_file: {model_with_library}. Finishing without sample scoring: \n{e}")
+        return model_with_library.get(task)
 
     def download_model_and_tokenizer(self, task: str) -> dict:
         """" This method will download the model and tokenizer and return it in a 
@@ -123,14 +123,14 @@ class Model:
         model_and_tokenizer = {"model": model, "tokenizer": tokenizer}
         return model_and_tokenizer
 
-    def register_model_in_workspace(self, model_and_tokenizer: dict, sample_data: ConfigBox, task: str):
+    def register_model_in_workspace(self, model_and_tokenizer: dict, scoring_input: ConfigBox, task: str, registered_model_name: str):
         """ I will load the pipeline with the model name if its a fill mask task then it will get the 
         masked token and convert the input to that model type . It will generate the model signature . 
         It will log and register the model with mlflow
 
         Args:
             model_and_tokenizer (dict): contains model and tokenizer
-            sample_data (ConfigBox): contains the data
+            scoring_input (ConfigBox): contains the data
             task (str): task name
         """
         # Load the transformer pipeline with the help of model and task
@@ -139,20 +139,17 @@ class Model:
         # If the task is fill-mask then get the mask_token and replace the input data with that mask token
         if task == "fill-mask":
             pipeline_tokenizer = model_pipeline.tokenizer
-            for index in range(len(sample_data.inputs)):
-                sample_data.inputs[index] = sample_data.inputs[index].replace(
+            for index in range(len(scoring_input.inputs)):
+                scoring_input.inputs[index] = scoring_input.inputs[index].replace(
                     "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
 
         # Generate the transformer model output for that particular model
-        output = generate_signature_output(model_pipeline, sample_data.inputs)
+        output = generate_signature_output(
+            model_pipeline, scoring_input.inputs)
         # It will infer the signature directly from input and output
-        signature = infer_signature(sample_data.inputs, output)
-        # If threr will be model namr with / then replace it
-        model_name = self.model_name.replace("/", "-")
-        artifact_path = model_name + "-artifact"
-        registered_model_name = model_name
-        # mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+        signature = infer_signature(scoring_input.inputs, output)
 
+        artifact_path = registered_model_name + "-artifact"
         # With the help of mlflow log and register the model in the workspace
         mlflow.transformers.log_model(
             transformers_model=model_pipeline,
@@ -160,42 +157,42 @@ class Model:
             artifact_path=artifact_path,
             registered_model_name=registered_model_name,
             signature=signature,
-            input_example=sample_data.inputs
+            input_example=scoring_input.inputs
         )
 
-    def download_and_register_model(self) -> dict:
+    def download_and_register_model(self, task, scoring_input, registered_model_name) -> dict:
         """ This method will be controlling all execution of methods 
 
         Returns:
             dict: _description_
         """
-        # Get the task name
-        task = self.get_task()
-        print("This is the task associated to the model : ", task)
         # Get the model and tokenizer
         model_and_tokenizer = self.download_model_and_tokenizer(task=task)
-        # Get the sample input data
-        sample_data = self.get_sample_input_data(task=task)
         # Register the model in the workspace
         self.register_model_in_workspace(
             model_and_tokenizer=model_and_tokenizer,
-            sample_data=sample_data,
-            task=task
+            scoring_input=scoring_input,
+            task=task,
+            registered_model_name=registered_model_name
         )
         return model_and_tokenizer
 
-    def load_registered_model(self) -> None:
+    def registered_model_inference(self, task, scoring_input, registered_model_name) -> None:
+        """_summary_
+
+        Args:
+            task (_type_): _description_
+            scoring_input (_type_): _description_
+            registered_model_name (_type_): _description_
+        """
+
         client = MlflowClient()
-        registered_model_name = self.model_name.replace("/", "-")
-        registered_model_list = client.get_latest_versions(
+        registered_model_detail = client.get_latest_versions(
             name=registered_model_name, stages=["None"])
-        registered_model = registered_model_list[0]
-        model_sourceuri = registered_model.properties["mlflow.modelSourceUri"]
+        model_detail = registered_model_detail[0]
+        print("Latest registered model version is : ", model_detail.version)
         loaded_model_pipeline = mlflow.transformers.load_model(
-            model_uri=model_sourceuri)
-        task = loaded_model_pipeline.flavors["transformers"]["task"]
-        # Get the sample input data
-        scoring_input = self.get_sample_input_data(task=task)
+            model_uri=model_detail.source)
         if task == "fill-mask":
             pipeline_tokenizer = loaded_model_pipeline.tokenizer
             for index in range(len(scoring_input.inputs)):
@@ -208,8 +205,17 @@ class Model:
 
 if __name__ == "__main__":
     model = Model(model_name=test_model_name)
-    model.download_and_register_model()
-    model.load_registered_model()
+    # Get the sample input data
+    task = model.get_task()
+    # Get the sample input data
+    scoring_input = model.get_sample_input_data(task=task)
+    print("This is the task associated to the model : ", task)
+    # If threr will be model namr with / then replace it
+    registered_model_name = test_model_name.replace("/", "-")
+    model.download_and_register_model(
+        task=task, scoring_input=scoring_input, registered_model_name=registered_model_name)
+    model.registered_model_inference(
+        task=task, scoring_input=scoring_input, registered_model_name=registered_model_name)
     # workspace = Workspace.from_config()
     # print(workspace)
     # client = mlflow.tracking.MlflowClient()
