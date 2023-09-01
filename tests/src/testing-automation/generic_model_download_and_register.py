@@ -25,9 +25,6 @@ STRING_TO_CHECK = 'transformers'
 FILE_NAME = "task_and_library.json"
 
 test_model_name = os.environ.get('test_model_name')
-subscription = os.environ.get('subscription')
-resource_group = os.environ.get('resource_group')
-workspace_name = os.environ.get('workspace')
 
 
 class Model:
