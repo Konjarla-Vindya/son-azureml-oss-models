@@ -182,10 +182,7 @@ if __name__ == "__main__":
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(
         workspace_ml_client, queue.compute)
-    environment_variables = {"test_model_name": test_model_name,
-                             "subscription": queue.subscription,
-                             "resource_group": queue.resource_group,
-                             "workspace": queue.workspace
+    environment_variables = {"test_model_name": test_model_name
                              }
     env_list = workspace_ml_client.environments.list(name=queue.environment)
     latest_version = 0
@@ -228,6 +225,21 @@ if __name__ == "__main__":
         workspace_ml_client=workspace_ml_client,
         registry=queue.registry
     )
+    foundation_model = InferenceAndDeployment.get_latest_model_version(
+        workspace_ml_client=workspace_ml_client,
+        model_name=test_model_name
+    )
+    downloaded_model = workspace_ml_client.models.download(
+        name=foundation_model.name, version=foundation_model.version, download_path=f"./model_download")
+    foundation_model_uri = f"./model_download/{foundation_model.name}/{foundation_model.name}-artifact"
+    task = foundation_model.flavors["transformers"]["task"]
+    environment_variables_deployment = {
+        "foundation_model_uri": foundation_model_uri,
+        "task": task
+    }
+    command_job = run_azure_ml_job(code="./", command_to_run="python load_and_inference.py",
+                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables_deployment)
+    create_and_get_job_studio_url(command_job, workspace_ml_client)
     InferenceAndDeployment.model_infernce_and_deployment(
         instance_type=queue.instance_type
     )
