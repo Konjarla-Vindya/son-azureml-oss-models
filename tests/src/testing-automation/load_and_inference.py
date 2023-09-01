@@ -49,7 +49,8 @@ class ModelLodAndInference:
         output = loaded_model_pipeline(scoring_input.inputs)
         print("My outupt is this : ", output)
 
-if __name__ == "main":
+if __name__ == "__main__":
+    print("Reaching in the main function")
     model_load_and_inference = ModelLodAndInference(
         foundation_model_uri=foundation_model_uri
     )
