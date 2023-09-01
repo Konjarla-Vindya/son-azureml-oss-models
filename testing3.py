@@ -1,6 +1,6 @@
 import os,sys
 import requests
-import pandas as pd
+import pandas 
 from datetime import datetime
 from github import Github, Auth
 
@@ -131,7 +131,7 @@ class Dashboard():
 
         summary_text = "\n".join(summary)
 
-        df = pd.DataFrame(last_runs_dict)
+        df = pandas.DataFrame(last_runs_dict)
         df['Run URL'] = df.apply(lambda row: f"[Link]({row['jobs_url']})", axis=1)
 
         # Save the DataFrame to an Excel file
