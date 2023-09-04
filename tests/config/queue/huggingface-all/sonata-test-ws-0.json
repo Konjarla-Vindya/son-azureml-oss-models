@@ -37,9 +37,7 @@
         "Xuhui/ToxDect-roberta-large",
         "t5-3b",
         "KoboldAI/fairseq-dense-13B",
-        "bert-base-uncased",
-        "Davlan/bert-base-multilingual-cased-ner-hrl",
-        "distilbert-base-cased-distilled-squad"
+        "bert-base-uncased"
     ],
     "workspace": "sonata-test-ws",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
