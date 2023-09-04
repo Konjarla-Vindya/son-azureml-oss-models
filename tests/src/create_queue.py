@@ -222,7 +222,7 @@ def main():
     os.makedirs(logpath)
     # queue = assign_models_to_queues(models, workspace_list)
     # print("queue",queue)
-    model_list_file=["Suchi","Vamshi"]
+    
     with open('../logs/model_list_file.txt', 'w+') as f:
     # write elements of list
         for items in model_list_file:
