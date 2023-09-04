@@ -1,5 +1,5 @@
 {
-    "inputs": {
+    "input_data": {
       "source_sentence": "That is a happy person",
       "sentences": [
         "That is a happy dog",
