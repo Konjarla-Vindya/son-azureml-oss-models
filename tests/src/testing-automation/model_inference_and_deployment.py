@@ -24,30 +24,30 @@ class ModelInferenceAndDeployemnt:
         self.workspace_ml_client = workspace_ml_client
         self.registry = registry
 
-    # def get_error_messages(self):
-    #     # load ../config/errors.json into a dictionary
-    #     with open('errors.json', 'w+') as f:
-    #         return json.load(f)
+    def get_error_messages(self):
+        # load ../../config/errors.json into a dictionary
+         with open('../../config/errors.json') as f:
+            return json.load(f)
+    
+    def prase_logs(self, logs):
+        error_messages = self.get_error_messages()
+        # split logs by \n
+        logs_list = logs.split("\n")
+        # loop through each line in logs_list
+        for line in logs_list:
+            # loop through each error in errors
+            for error in error_messages:
+                # if error is found in line, print error message
+                if error['parse_string'] in line:
+                    print(
+                        f"::error:: {error_messages['error_category']}: {line}")
 
     def get_online_endpoint_logs(self, deployment_name, online_endpoint_name):
         print("Deployment logs: \n\n")
         logs = self.workspace_ml_client.online_deployments.get_logs(
             name=deployment_name, endpoint_name=online_endpoint_name, lines=100000)
         print(logs)
-        # self.prase_logs(logs)
-
-    # def prase_logs(self, logs):
-    #     error_messages = self.get_error_messages()
-    #     # split logs by \n
-    #     logs_list = logs.split("\n")
-    #     # loop through each line in logs_list
-    #     for line in logs_list:
-    #         # loop through each error in errors
-    #         for error in error_messages:
-    #             # if error is found in line, print error message
-    #             if error['parse_string'] in line:
-    #                 print(
-    #                     f"::error:: {error_messages['error_category']}: {line}")
+        self.prase_logs(logs)
 
     def get_latest_model_version(self, workspace_ml_client, model_name):
         print("In get_latest_model_version...")
@@ -121,7 +121,7 @@ class ModelInferenceAndDeployemnt:
         except Exception as e:
             print(f"::error:: Could not create endpoint: \n")
             print(f"{e}\n\n check logs:\n\n")
-            # self.prase_logs(str(e))
+            self.prase_logs(str(e))
             exit(1)
 
         print(self.workspace_ml_client.online_endpoints.get(name=endpoint.name))
@@ -194,7 +194,7 @@ class ModelInferenceAndDeployemnt:
             print(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
                   " the exception is this one :", e)
             print(f"{e}\n\n check logs:\n\n")
-            # self.prase_logs(str(e))
+            self.prase_logs(str(e))
             self.get_online_endpoint_logs(
                 deployment_name, online_endpoint_name)
             self.workspace_ml_client.online_endpoints.begin_delete(
@@ -224,6 +224,9 @@ class ModelInferenceAndDeployemnt:
             self.workspace_ml_client.online_endpoints.begin_delete(
                 name=online_endpoint_name).wait()
         except Exception as e:
+            _, _, exc_tb = sys.exc_info()
+            print(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
+                " the exception is this one :", e)
             print(f"::warning:: Could not delete endpoint: : \n{e}")
             exit(0)
 
