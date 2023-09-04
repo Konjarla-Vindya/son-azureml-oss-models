@@ -1,4 +1,4 @@
-name: <test_model_name
+name: CLTL/MedRoBERTa.nl
 
 on: 
   workflow_dispatch:
