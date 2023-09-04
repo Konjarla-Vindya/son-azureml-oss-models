@@ -1,0 +1,86 @@
+{
+    "test-eastus": {
+        "0": [
+            "xlnet-base-cased",
+            "Helsinki-NLP/opus-mt-da-fi",
+            "Helsinki-NLP/opus-mt-bat-en",
+            "Geotrend/bert-base-15lang-cased",
+            "Helsinki-NLP/opus-mt-toi-en",
+            "Huffon/klue-roberta-base-nli",
+            "SEBIS/code_trans_t5_base_code_documentation_generation_python_transfer_learning_finetune"
+        ],
+        "1": [
+            "xlm-mlm-enfr-1024",
+            "Jorgeutd/bert-base-uncased-finetuned-surveyclassification",
+            "HooshvareLab/bert-fa-base-uncased-sentiment-deepsentipers-binary",
+            "Helsinki-NLP/opus-mt-aav-en",
+            "distilbert-base-german-cased",
+            "abhishek/autonlp-bbc-news-classification-37229289",
+            "Suchandra/bengali_language_NER"
+        ],
+        "2": [
+            "Helsinki-NLP/opus-mt-mul-en",
+            "Helsinki-NLP/opus-mt-en-ha",
+            "Helsinki-NLP/opus-mt-ine-en",
+            "Helsinki-NLP/opus-mt-ha-en",
+            "xlm-mlm-xnli15-1024",
+            "Alireza1044/albert-base-v2-qnli",
+            "Helsinki-NLP/opus-mt-en-ber"
+        ]
+    },
+    "test-northcentralus": {
+        "0": [
+            "HooshvareLab/distilbert-fa-zwnj-base-ner",
+            "RecordedFuture/Swedish-NER",
+            "HooshvareLab/bert-fa-base-uncased-sentiment-snappfood",
+            "Helsinki-NLP/opus-mt-ka-en",
+            "Helsinki-NLP/opus-mt-it-en",
+            "CAMeL-Lab/bert-base-arabic-camelbert-msa-sentiment",
+            "RabotaRu/HRBert-mini"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-tatoeba-en-tr",
+            "Helsinki-NLP/opus-mt-es-bg",
+            "CLTL/MedRoBERTa.nl",
+            "Helsinki-NLP/opus-mt-zle-en",
+            "GroNLP/bert-base-dutch-cased",
+            "Geotrend/bert-base-de-cased",
+            "Hate-speech-CNERG/bert-base-uncased-hatexplain-rationale-two"
+        ],
+        "2": [
+            "Luyu/co-condenser-wiki",
+            "SEBIS/code_trans_t5_small_program_synthese_transfer_learning_finetune",
+            "Li/bert-base-uncased-qnli",
+            "Helsinki-NLP/opus-mt-en-bzs",
+            "Helsinki-NLP/opus-mt-en-fi",
+            "Helsinki-NLP/opus-mt-en-zlw",
+            "Helsinki-NLP/opus-mt-en-az"
+        ]
+    },
+    "test-southcentralus": {
+        "0": [
+            "abhilash1910/french-roberta",
+            "Helsinki-NLP/opus-mt-en-bat",
+            "Helsinki-NLP/opus-mt-es-de",
+            "Naveen-k/KanBERTo",
+            "Helsinki-NLP/opus-mt-sq-en",
+            "Helsinki-NLP/opus-mt-ka-ru"
+        ],
+        "1": [
+            "ForutanRad/bert-fa-QA-v1",
+            "bert-base-german-dbmdz-uncased",
+            "CAMeL-Lab/bert-base-arabic-camelbert-mix-sentiment",
+            "SEBIS/code_trans_t5_base_code_documentation_generation_python",
+            "NbAiLab/nb-bert-base",
+            "Helsinki-NLP/opus-mt-en-map"
+        ],
+        "2": [
+            "Hate-speech-CNERG/dehatebert-mono-spanish",
+            "Helsinki-NLP/opus-mt-nl-en",
+            "Alireza1044/albert-base-v2-mrpc",
+            "StevenLimcorn/indo-roberta-indonli",
+            "Helsinki-NLP/opus-mt-de-es",
+            "Norod78/distilgpt2-base-pretrained-he"
+        ]
+    }
+}

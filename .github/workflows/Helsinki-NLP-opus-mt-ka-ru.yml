@@ -7,7 +7,7 @@ env:
   test_model_name: Helsinki-NLP/opus-mt-ka-ru
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-koreacentral-2
+  test_queue: test-southcentralus-0
   test_set: huggingface-all
   test_keep_looping: false
 
