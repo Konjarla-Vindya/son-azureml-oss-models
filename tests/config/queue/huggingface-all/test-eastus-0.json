@@ -1,13 +1,7 @@
 {
     "queue_name": "test-eastus-0",
     "models": [
-        "xlnet-base-cased",
-        "Helsinki-NLP/opus-mt-da-fi",
-        "Helsinki-NLP/opus-mt-bat-en",
-        "Geotrend/bert-base-15lang-cased",
-        "Helsinki-NLP/opus-mt-toi-en",
-        "Huffon/klue-roberta-base-nli",
-        "SEBIS/code_trans_t5_base_code_documentation_generation_python_transfer_learning_finetune"
+        "abc/def"
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
