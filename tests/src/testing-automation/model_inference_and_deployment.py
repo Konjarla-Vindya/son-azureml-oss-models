@@ -231,7 +231,8 @@ class ModelInferenceAndDeployemnt:
             exit(0)
 
     def get_task_specified_input(self, task):
-        scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
+        #scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
+        scoring_file = f"sample_inputs/{task}.json"
         # check of scoring_file exists
         try:
             with open(scoring_file) as f:
@@ -255,13 +256,13 @@ class ModelInferenceAndDeployemnt:
             f"Latest model name : {latest_model.name} and latest model version : {latest_model.version}", )
         if task == "fill-mask":
             pipeline_tokenizer = loaded_model_pipeline.tokenizer
-            for index in range(len(scoring_input.inputs)):
-                scoring_input.inputs[index] = scoring_input.inputs[index].replace(
+            for index in range(len(scoring_input.input_data)):
+                scoring_input.input_data[index] = scoring_input.input_data[index].replace(
                     "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
 
-        output = loaded_model_pipeline(scoring_input.inputs)
+        output = loaded_model_pipeline(scoring_input.input_data)
         print("My outupt is this : ", output)
-        # registered_output = latest_model(scoring_input.inputs)
+        # registered_output = latest_model(scoring_input.input_data)
         # print("This is my registered output", registered_output)
 
     def model_infernce_and_deployment(self, instance_type):

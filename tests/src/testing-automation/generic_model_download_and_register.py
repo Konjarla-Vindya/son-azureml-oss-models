@@ -140,15 +140,15 @@ class Model:
         # If the task is fill-mask then get the mask_token and replace the input data with that mask token
         if task == "fill-mask":
             pipeline_tokenizer = model_pipeline.tokenizer
-            for index in range(len(scoring_input.inputs)):
-                scoring_input.inputs[index] = scoring_input.inputs[index].replace(
+            for index in range(len(scoring_input.input_data)):
+                scoring_input.input_data[index] = scoring_input.input_data[index].replace(
                     "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
 
         # Generate the transformer model output for that particular model
         output = generate_signature_output(
-            model_pipeline, scoring_input.inputs)
+            model_pipeline, scoring_input.input_data)
         # It will infer the signature directly from input and output
-        signature = infer_signature(scoring_input.inputs, output)
+        signature = infer_signature(scoring_input.input_data, output)
 
         artifact_path = registered_model_name + "-artifact"
         # With the help of mlflow log and register the model in the workspace
@@ -158,7 +158,7 @@ class Model:
             artifact_path=artifact_path,
             registered_model_name=registered_model_name,
             signature=signature,
-            input_example=scoring_input.inputs
+            input_example=scoring_input.input_data
         )
 
     def download_and_register_model(self, task, scoring_input, registered_model_name) -> dict:
@@ -202,11 +202,11 @@ class Model:
 
         if task == "fill-mask":
             pipeline_tokenizer = loaded_model_pipeline.tokenizer
-            for index in range(len(scoring_input.inputs)):
-                scoring_input.inputs[index] = scoring_input.inputs[index].replace(
+            for index in range(len(scoring_input.input_data)):
+                scoring_input.input_data[index] = scoring_input.input_data[index].replace(
                     "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
 
-        output = loaded_model_pipeline(scoring_input.inputs)
+        output = loaded_model_pipeline(scoring_input.input_data)
         print("My outupt is this : ", output)
 
 
