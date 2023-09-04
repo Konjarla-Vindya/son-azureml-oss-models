@@ -172,6 +172,7 @@ def write_single_workflow_file(model, q, secret_name):
     workflow_file=f"{args.workflow_dir}/{model}.yml"
     #print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
+    os.system(f"sed -i s/name: .*/name: {model}/g' {workflow_file}")
     # replace <test_queue> with q
     os.system(f"sed -i 's/<test_queue>/{q}/g' {workflow_file}")
     # replace <test_sku_type> with test_sku_type in workflow_file
