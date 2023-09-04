@@ -1,4 +1,4 @@
-name: test_model_name
+name: distl
 
 on: 
   workflow_dispatch:
