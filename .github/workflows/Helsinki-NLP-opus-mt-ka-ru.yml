@@ -1,4 +1,4 @@
-name: dites
+name: tes
 
 on: 
   workflow_dispatch:
