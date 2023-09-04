@@ -176,7 +176,12 @@ class ModelInferenceAndDeployemnt:
             model=latest_model.id,
             endpoint_name=online_endpoint_name,
             instance_type=instance_type,
-            instance_count=1
+            instance_count=1,
+            request_settings=OnlineRequestSettings(
+                max_concurrent_requests_per_instance=1,
+                request_timeout_ms=50000,
+                max_queue_wait_ms=500,
+            )
         )
         # deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(
         #     deployment_config).result()
@@ -298,4 +303,4 @@ class ModelInferenceAndDeployemnt:
             online_endpoint_name=online_endpoint_name,
             deployment_name=deployment_name
         )
-        self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
+        # self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
