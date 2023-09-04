@@ -1,4 +1,4 @@
-name: test
+name: testm
 
 on: 
   workflow_dispatch:
