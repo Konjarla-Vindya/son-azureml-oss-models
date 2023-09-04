@@ -91,6 +91,7 @@ class ModelInferenceAndDeployemnt:
         try:
             print("endpoint_name : ", online_endpoint_name)
             print("deployment_name : ", deployment_name)
+            print("Input data is this one :", scoring_input)
             response = self.workspace_ml_client.online_endpoints.invoke(
                 endpoint_name=online_endpoint_name,
                 deployment_name=deployment_name,
