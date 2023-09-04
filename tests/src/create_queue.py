@@ -218,7 +218,7 @@ def main():
     # print (f"  Total queues: {len(workspace_list)*parallel_tests}")
     # print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
     # print("args.log_dir:", args.log_dir)
-    logpath=Path(f"{args.log_dir}/assign_models_to_queuessuchi/test.json")
+    logpath=Path(f"{args.log_dir}/assign_models_to_queues")
     os.makedirs(logpath)
     # queue = assign_models_to_queues(models, workspace_list)
     # print("queue",queue)
