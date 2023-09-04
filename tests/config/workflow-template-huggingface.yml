@@ -1,4 +1,4 @@
-name: dismod
+name: distl
 
 on: 
   workflow_dispatch:
