@@ -148,7 +148,7 @@ class ModelInferenceAndDeployemnt:
     def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type, endpoint):
         print("In create_online_deployment...")
         print("latest_model.name is this : ", latest_model.name)
-        latest_model_name = latest_model.name.replace("_", "-")
+        latest_model_name = latest_model.name.replace("_", "-").replace(".", "-")
         if latest_model_name[0].isdigit():
             num_pattern = "[0-9]"
             latest_model_name = re.sub(num_pattern, '', latest_model_name)
