@@ -1,4 +1,4 @@
-name: di
+name: dites
 
 on: 
   workflow_dispatch:
