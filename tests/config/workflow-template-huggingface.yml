@@ -1,4 +1,4 @@
-name: test
+name: dismod
 
 on: 
   workflow_dispatch:
