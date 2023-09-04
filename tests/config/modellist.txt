@@ -58,6 +58,3 @@ Helsinki-NLP/opus-mt-en-ber
 RabotaRu/HRBert-mini
 Hate-speech-CNERG/bert-base-uncased-hatexplain-rationale-two
 Helsinki-NLP/opus-mt-en-az
-Helsinki-NLP/opus-mt-it-bg
-MutazYoune/Ara_DialectBERT
-XSY/albert-base-v2-fakenews-discriminator
