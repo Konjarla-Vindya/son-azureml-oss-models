@@ -1,4 +1,4 @@
-name: CLTL/MedRoBERTa.nl
+name: dis
 
 on: 
   workflow_dispatch:

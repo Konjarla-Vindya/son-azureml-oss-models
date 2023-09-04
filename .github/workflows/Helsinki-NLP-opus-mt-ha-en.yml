@@ -1,4 +1,4 @@
-name: Helsinki-NLP/opus-mt-ha-en
+name: dis
 
 on: 
   workflow_dispatch:
