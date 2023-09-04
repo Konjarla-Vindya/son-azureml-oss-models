@@ -1,4 +1,4 @@
-name: dismod
+name: abc/def
 
 on: 
   workflow_dispatch:
