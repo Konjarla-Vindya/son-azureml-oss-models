@@ -1,4 +1,4 @@
-name: testmodelname
+name: abc/def
 
 on: 
   workflow_dispatch:
