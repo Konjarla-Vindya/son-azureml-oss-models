@@ -1,13 +1,8 @@
 {
     "queue_name": "test-eastus-1",
     "models": [
-        "xlm-mlm-enfr-1024",
-        "Jorgeutd/bert-base-uncased-finetuned-surveyclassification",
-        "HooshvareLab/bert-fa-base-uncased-sentiment-deepsentipers-binary",
-        "Helsinki-NLP/opus-mt-aav-en",
-        "distilbert-base-german-cased",
-        "abhishek/autonlp-bbc-news-classification-37229289",
-        "Suchandra/bengali_language_NER"
+        "Helsinki-NLP/opus-mt-ine-en",
+        "Helsinki-NLP/opus-mt-en-fi"
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

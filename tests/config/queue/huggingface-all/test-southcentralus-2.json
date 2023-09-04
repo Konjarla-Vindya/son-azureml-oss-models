@@ -1,12 +1,8 @@
 {
     "queue_name": "test-southcentralus-2",
     "models": [
-        "Hate-speech-CNERG/dehatebert-mono-spanish",
-        "Helsinki-NLP/opus-mt-nl-en",
-        "Alireza1044/albert-base-v2-mrpc",
-        "StevenLimcorn/indo-roberta-indonli",
-        "Helsinki-NLP/opus-mt-de-es",
-        "Norod78/distilgpt2-base-pretrained-he"
+        "Helsinki-NLP/opus-mt-toi-en",
+        "Helsinki-NLP/opus-mt-en-az"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

@@ -1,13 +1,8 @@
 {
     "queue_name": "test-northcentralus-0",
     "models": [
-        "HooshvareLab/distilbert-fa-zwnj-base-ner",
-        "RecordedFuture/Swedish-NER",
-        "HooshvareLab/bert-fa-base-uncased-sentiment-snappfood",
-        "Helsinki-NLP/opus-mt-ka-en",
-        "Helsinki-NLP/opus-mt-it-en",
-        "CAMeL-Lab/bert-base-arabic-camelbert-msa-sentiment",
-        "RabotaRu/HRBert-mini"
+        "Helsinki-NLP/opus-mt-aav-en",
+        "Helsinki-NLP/opus-mt-de-es"
     ],
     "workspace": "test-northcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

@@ -1,12 +1,8 @@
 {
     "queue_name": "test-southcentralus-1",
     "models": [
-        "ForutanRad/bert-fa-QA-v1",
-        "bert-base-german-dbmdz-uncased",
-        "CAMeL-Lab/bert-base-arabic-camelbert-mix-sentiment",
-        "SEBIS/code_trans_t5_base_code_documentation_generation_python",
-        "NbAiLab/nb-bert-base",
-        "Helsinki-NLP/opus-mt-en-map"
+        "Helsinki-NLP/opus-mt-en-bzs",
+        "Helsinki-NLP/opus-mt-en-ber"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

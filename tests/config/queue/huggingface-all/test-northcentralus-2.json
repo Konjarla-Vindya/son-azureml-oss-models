@@ -1,13 +1,8 @@
 {
     "queue_name": "test-northcentralus-2",
     "models": [
-        "Luyu/co-condenser-wiki",
-        "SEBIS/code_trans_t5_small_program_synthese_transfer_learning_finetune",
-        "Li/bert-base-uncased-qnli",
-        "Helsinki-NLP/opus-mt-en-bzs",
-        "Helsinki-NLP/opus-mt-en-fi",
-        "Helsinki-NLP/opus-mt-en-zlw",
-        "Helsinki-NLP/opus-mt-en-az"
+        "Helsinki-NLP/opus-mt-ka-en",
+        "Helsinki-NLP/opus-mt-ka-ru"
     ],
     "workspace": "test-northcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

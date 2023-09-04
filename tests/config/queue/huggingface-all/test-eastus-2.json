@@ -1,13 +1,8 @@
 {
     "queue_name": "test-eastus-2",
     "models": [
-        "Helsinki-NLP/opus-mt-mul-en",
-        "Helsinki-NLP/opus-mt-en-ha",
-        "Helsinki-NLP/opus-mt-ine-en",
-        "Helsinki-NLP/opus-mt-ha-en",
-        "xlm-mlm-xnli15-1024",
-        "Alireza1044/albert-base-v2-qnli",
-        "Helsinki-NLP/opus-mt-en-ber"
+        "CLTL/MedRoBERTa.nl",
+        "Helsinki-NLP/opus-mt-sq-en"
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
