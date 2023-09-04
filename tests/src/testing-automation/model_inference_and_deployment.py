@@ -89,6 +89,8 @@ class ModelInferenceAndDeployemnt:
 
         # invoke the endpoint
         try:
+            print("endpoint_name : ", online_endpoint_name)
+            print("deployment_name : ", deployment_name)
             response = self.workspace_ml_client.online_endpoints.invoke(
                 endpoint_name=online_endpoint_name,
                 deployment_name=deployment_name,
@@ -148,7 +150,7 @@ class ModelInferenceAndDeployemnt:
     def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type, endpoint):
         print("In create_online_deployment...")
         print("latest_model.name is this : ", latest_model.name)
-        latest_model_name = latest_model.name.replace("_", "-")
+        latest_model_name = latest_model.name.replace("_", "-").replace(".", "-")
         if latest_model_name[0].isdigit():
             num_pattern = "[0-9]"
             latest_model_name = re.sub(num_pattern, '', latest_model_name)
@@ -295,4 +297,4 @@ class ModelInferenceAndDeployemnt:
             online_endpoint_name=online_endpoint_name,
             deployment_name=deployment_name
         )
-        # self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
+        self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
