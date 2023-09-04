@@ -306,4 +306,4 @@ class ModelInferenceAndDeployemnt:
             online_endpoint_name=online_endpoint_name,
             deployment_name=deployment_name
         )
-        # self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
+        self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
