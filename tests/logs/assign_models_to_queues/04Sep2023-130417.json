@@ -1,0 +1,45 @@
+{
+    "test-eastus": {
+        "0": [
+            "Helsinki-NLP/opus-mt-bat-en",
+            "Helsinki-NLP/opus-mt-it-en",
+            "Helsinki-NLP/opus-mt-it-bg"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-ine-en",
+            "Helsinki-NLP/opus-mt-en-fi"
+        ],
+        "2": [
+            "CLTL/MedRoBERTa.nl",
+            "Helsinki-NLP/opus-mt-sq-en"
+        ]
+    },
+    "test-northcentralus": {
+        "0": [
+            "Helsinki-NLP/opus-mt-aav-en",
+            "Helsinki-NLP/opus-mt-de-es"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-ha-en",
+            "Helsinki-NLP/opus-mt-en-zlw"
+        ],
+        "2": [
+            "Helsinki-NLP/opus-mt-ka-en",
+            "Helsinki-NLP/opus-mt-ka-ru"
+        ]
+    },
+    "test-southcentralus": {
+        "0": [
+            "Helsinki-NLP/opus-mt-zle-en",
+            "Helsinki-NLP/opus-mt-en-map"
+        ],
+        "1": [
+            "Helsinki-NLP/opus-mt-en-bzs",
+            "Helsinki-NLP/opus-mt-en-ber"
+        ],
+        "2": [
+            "Helsinki-NLP/opus-mt-toi-en",
+            "Helsinki-NLP/opus-mt-en-az"
+        ]
+    }
+}
