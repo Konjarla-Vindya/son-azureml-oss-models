@@ -18,7 +18,7 @@ def create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name):
 channels = ["conda-forge", "defaults"]
 conda_dependencies = ["python=3.10", "numpy", "pandas", "pip"]
 pip_dependencies = [
-   "azureml-mlflow","azureml-core","ipython","datasets","accelerate==0.21.0",
+   "azureml-mlflow==1.53.0","azureml-core","ipython","datasets","accelerate==0.21.0",
    "ipykernel","evaluate","azure-ai-ml","numpy","tensorflow==2.9","mlflow==2.4",
    "cffi==1.15.1","dill==0.3.6","google-api-core==2.11.0","ipython==8.8.0",
    "numpy==1.23.5","packaging==21.3","protobuf==3.20.3","pyyaml==6.0",
