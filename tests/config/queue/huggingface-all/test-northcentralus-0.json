@@ -1,8 +1,8 @@
 {
     "queue_name": "test-northcentralus-0",
     "models": [
-        "Helsinki-NLP/opus-mt-aav-en",
-        "Helsinki-NLP/opus-mt-de-es"
+        "roberta-base",
+        "PascalNotin/Tranception_Small"
     ],
     "workspace": "test-northcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
