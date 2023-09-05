@@ -2,7 +2,7 @@
     "queue_name": "test-northcentralus-1",
     "models": [
         "distilbert-base-uncased-distilled-squad",
-        "facebook/bart-large-cnn"
+        "SEBIS/code_trans_t5_large_source_code_summarization_csharp_multitask_finetune"
     ],
     "workspace": "test-northcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
