@@ -235,9 +235,9 @@ if __name__ == "__main__":
         workspace_ml_client=workspace_ml_client,
         registry=queue.registry
     )
-    InferenceAndDeployment.model_infernce_and_deployment(
-        instance_type=queue.instance_type
-    )
+    # InferenceAndDeployment.model_infernce_and_deployment(
+    #     instance_type=queue.instance_type
+    # )
     # model_name = test_model_name.replace("/", "-")
     # foundation_model = InferenceAndDeployment.get_latest_model_version(
     #     workspace_ml_client=workspace_ml_client,
