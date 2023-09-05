@@ -2,7 +2,7 @@
     "queue_name": "test-northeurope-2",
     "models": [
         "ProsusAI/finbert",
-        "Jean/Baptiste-camembert-ner",
+        "Jean-Baptiste/camembert-ner",
         "t5-small"
        
         
