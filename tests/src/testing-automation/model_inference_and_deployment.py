@@ -151,12 +151,24 @@ class ModelInferenceAndDeployemnt:
     def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type, endpoint):
         print("In create_online_deployment...")
         print("latest_model.name is this : ", latest_model.name)
-        latest_model_name = latest_model.name.replace("_", "-").replace(".", "-")
+        #Expression need to be replaced with hyphen
+        expression_to_ignore = ["/","\\", "|", "@", "#", ".", "$", "%", "^", "&", "*", "<", ">", "?", "!", "~", "_"]
+        #Create the regular expression to ignore
+        regx = re.compile('|'.join(map(re.escape, expression_to_ignore)))
+        # Check the model_name contains any of there character
+        expression_check = re.findall(regx, latest_model.name)
+        if expression_check:
+            #Replace the expression with hyphen
+            latest_model_name = regx.sub("-", latest_model.name)
+        else:
+            latest_model_name = latest_model.name
+
+        #Check if the model name starts with a digit
         if latest_model_name[0].isdigit():
             num_pattern = "[0-9]"
             latest_model_name = re.sub(num_pattern, '', latest_model_name)
             latest_model_name = latest_model_name.strip("-")
-
+        #Check the model name is more then 32 character
         if len(latest_model.name) > 32:
             model_name = latest_model_name[:31]
             deployment_name = model_name.rstrip("-")
