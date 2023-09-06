@@ -7,7 +7,7 @@ env:
   test_model_name: arampacha/roberta-tiny
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-norwayeast-0
+  test_queue: test-norwayeast-3
   test_set: huggingface-all
   test_keep_looping: false
 

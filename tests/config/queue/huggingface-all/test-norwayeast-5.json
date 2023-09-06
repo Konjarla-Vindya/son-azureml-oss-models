@@ -1,0 +1,28 @@
+{
+    "queue_name": "test-norwayeast-5",
+    "models": [
+        "iarfmoose/bert-base-cased-qa-evaluator",
+        "yiyanghkust/finbert-fls",
+        "bergum/xtremedistil-l6-h384-go-emotion",
+        "mosaicml/mpt-7b-8k-instruct",
+        "google/bigbird-base-trivia-itc",
+        "MichaelOrme/Paraphrased_Sentence",
+        "microsoft/MiniLM-L12-H384-uncased",
+        "stabilityai/stablecode-completion-alpha-3b-4k",
+        "abeja/gpt-neox-japanese-2.7b",
+        "TigerResearch/tigerbot-13b-base",
+        "gooohjy/suicidal-electra",
+        "OpenAssistant/oasst-sft-1-pythia-12b",
+        "fnlp/moss-base-7b",
+        "daryl149/llama-2-13b-chat-hf",
+        "KoboldAI/fairseq-dense-2.7B-Nerys",
+        "uw-madison/yoso-4096"
+    ],
+    "workspace": "test-norwayeast",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}

@@ -1,0 +1,28 @@
+{
+    "queue_name": "test-norwayeast-4",
+    "models": [
+        "yiyanghkust/finbert-pretrain",
+        "TheBloke/chronos-hermes-13B-GPTQ",
+        "TheBloke/Llama-2-7B-fp16",
+        "arbazk/maestroqa-distilbert-negative-sentiment",
+        "rinna/bilingual-gpt-neox-4b",
+        "saibo/legal-roberta-base",
+        "cerebras/Cerebras-GPT-1.3B",
+        "hf-internal-testing/tiny-random-bloom",
+        "WeOpenML/PandaLM-7B-v1",
+        "noamwies/llama-test-gqa-with-better-transformer",
+        "facebook/mbart-large-en-ro",
+        "upstage/llama-30b-instruct-2048",
+        "OpenAssistant/falcon-40b-sft-top1-560",
+        "ziqingyang/chinese-alpaca-2-7b",
+        "nlpaueb/bert-base-uncased-contracts",
+        "OpenAssistant/falcon-7b-sft-top1-696"
+    ],
+    "workspace": "test-norwayeast",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}
