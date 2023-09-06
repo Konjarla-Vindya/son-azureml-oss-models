@@ -1,0 +1,28 @@
+{
+    "queue_name": "test-northcentralus-5",
+    "models": [
+        "cross-encoder/stsb-distilroberta-base",
+        "stabilityai/japanese-stablelm-instruct-alpha-7b",
+        "jplu/tf-camembert-base",
+        "Sigma/financial-sentiment-analysis",
+        "alvaroalon2/biobert_diseases_ner",
+        "mrsinghania/asr-question-detection",
+        "rinna/japanese-gpt-neox-3.6b-instruction-ppo",
+        "h2oai/h2ogpt-4096-llama2-7b-chat",
+        "EleutherAI/pythia-410m-deduped",
+        "tuner007/pegasus_summarizer",
+        "sbcBI/sentiment_analysis",
+        "cardiffnlp/twitter-xlm-roberta-base-sentiment-multilingual",
+        "rinna/japanese-gpt2-medium",
+        "pierreguillou/bert-base-cased-squad-v1.1-portuguese",
+        "TheBloke/falcon-7b-instruct-GPTQ",
+        "Phind/Phind-CodeLlama-34B-v1"
+    ],
+    "workspace": "test-northcentralus",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}

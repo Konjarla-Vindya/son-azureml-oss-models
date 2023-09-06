@@ -1,0 +1,28 @@
+{
+    "queue_name": "test-northcentralus-4",
+    "models": [
+        "facebook/galactica-125m",
+        "cross-encoder/stsb-TinyBERT-L-4",
+        "TheBloke/Llama-2-13B-GPTQ",
+        "h2oai/h2ogpt-4096-llama2-13b-chat",
+        "stabilityai/stablecode-instruct-alpha-3b",
+        "ehsanaghaei/SecureBERT",
+        "cis-lmu/glot500-base",
+        "TheBloke/Llama-2-7B-32K-Instruct-GPTQ",
+        "bvanaken/clinical-assertion-negation-bert",
+        "microsoft/infoxlm-base",
+        "TheBloke/Llama-2-70B-fp16",
+        "ai-forever/rugpt3large_based_on_gpt2",
+        "it5/it5-base-news-summarization",
+        "KB/bert-base-swedish-cased-ner",
+        "castorini/afriberta_large",
+        "AUTOMATIC/promptgen-lexart"
+    ],
+    "workspace": "test-northcentralus",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}
