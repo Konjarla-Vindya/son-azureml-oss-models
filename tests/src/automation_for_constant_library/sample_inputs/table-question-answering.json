@@ -1,5 +1,5 @@
 {
-    "inputs": {
+    "input_data": {
       "query": "How many stars does the transformers repository have?",
       "table": {
         "Repository": [
