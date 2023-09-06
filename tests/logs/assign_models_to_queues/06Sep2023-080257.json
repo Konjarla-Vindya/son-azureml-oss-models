@@ -1,0 +1,60 @@
+{
+    "test-norwayeast": {
+        "0": [
+            "codellama/CodeLlama-13b-Python-hf",
+            "blanchefort/rubert-base-cased-sentiment-rusentiment",
+            "LiYuan/amazon-review-sentiment-analysis",
+            "chavinlo/alpaca-native",
+            "NousResearch/Nous-Hermes-llama-2-7b",
+            "arampacha/roberta-tiny",
+            "h2oai/h2ogpt-4096-llama2-70b-chat",
+            "beomi/KoAlpaca-Polyglot-5.8B",
+            "codellama/CodeLlama-7b-Python-hf",
+            "wonrax/phobert-base-vietnamese-sentiment",
+            "HuggingFaceM4/idefics-9b-instruct",
+            "mrm8488/bert-medium-finetuned-squadv2",
+            "MichaelOrme/Paraphrased_Word",
+            "dbmdz/bert-base-italian-uncased",
+            "dandelin/vilt-b32-mlm",
+            "VMware/open-llama-7b-open-instruct",
+            "bdotloh/distilbert-base-uncased-empathetic-dialogues-context"
+        ],
+        "1": [
+            "jplu/tf-xlm-roberta-base",
+            "yiyanghkust/finbert-pretrain",
+            "Salesforce/codegen-2B-mono",
+            "TheBloke/chronos-hermes-13B-GPTQ",
+            "rinna/japanese-gpt-neox-3.6b",
+            "TheBloke/Llama-2-7B-fp16",
+            "stabilityai/stablelm-tuned-alpha-7b",
+            "arbazk/maestroqa-distilbert-negative-sentiment",
+            "TheBloke/WizardLM-1.0-Uncensored-Llama2-13B-GPTQ",
+            "rinna/bilingual-gpt-neox-4b",
+            "eachadea/vicuna-7b-1.1",
+            "saibo/legal-roberta-base",
+            "MichaelOrme/Profane",
+            "cerebras/Cerebras-GPT-1.3B",
+            "georgesung/llama2_7b_chat_uncensored",
+            "hf-internal-testing/tiny-random-bloom",
+            "plguillou/t5-base-fr-sum-cnndm"
+        ],
+        "2": [
+            "jphme/Llama-2-13b-chat-german",
+            "iarfmoose/bert-base-cased-qa-evaluator",
+            "cyberagent/open-calm-1b",
+            "yiyanghkust/finbert-fls",
+            "michellejieli/NSFW_text_classifier",
+            "bergum/xtremedistil-l6-h384-go-emotion",
+            "naver/splade_v2_distil",
+            "mosaicml/mpt-7b-8k-instruct",
+            "mrm8488/distill-bert-base-spanish-wwm-cased-finetuned-spa-squad2-es",
+            "google/bigbird-base-trivia-itc",
+            "moussaKam/barthez-sentiment-classification",
+            "MichaelOrme/Paraphrased_Sentence",
+            "MichaelOrme/Profane_Removed",
+            "microsoft/MiniLM-L12-H384-uncased",
+            "google/bigbird-pegasus-large-bigpatent",
+            "stabilityai/stablecode-completion-alpha-3b-4k"
+        ]
+    }
+}
