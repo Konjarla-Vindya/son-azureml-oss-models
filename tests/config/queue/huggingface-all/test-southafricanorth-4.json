@@ -1,0 +1,28 @@
+{
+    "queue_name": "test-southafricanorth-4",
+    "models": [
+        "cnut1648/biolinkbert-large-mnli-snli",
+        "uw-madison/mra-base-512-4",
+        "Salesforce/codegen2-1B",
+        "dennlinger/bert-wiki-paragraphs",
+        "OpenAssistant/llama2-13b-orca-8k-3319",
+        "bigscience/bigscience-small-testing",
+        "nreimers/mMiniLMv2-L12-H384-distilled-from-XLMR-Large",
+        "explosion-testing/llama2-kv-sharing",
+        "TheBloke/WizardLM-70B-V1.0-GPTQ",
+        "h2oai/h2ogpt-gm-oasst1-en-2048-falcon-40b-v2",
+        "kssteven/ibert-roberta-base",
+        "mdraw/german-news-sentiment-bert",
+        "rinna/japanese-gpt-1b",
+        "VMware/open-llama-7b-v2-open-instruct",
+        "cross-encoder/quora-distilroberta-base",
+        "amberoad/bert-multilingual-passage-reranking-msmarco"
+    ],
+    "workspace": "test-southafricanorth",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}

@@ -7,7 +7,7 @@ env:
   test_model_name: hfl/chinese-bert-wwm
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-southafricanorth-2
+  test_queue: test-southafricanorth-5
   test_set: huggingface-all
   test_keep_looping: false
 
