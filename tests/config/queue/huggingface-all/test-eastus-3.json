@@ -1,0 +1,29 @@
+{
+    "queue_name": "test-eastus-3",
+    "models": [
+        "trl-internal-testing/tiny-random-CodeGenForCausalLM-sharded",
+        "mosaicml/mpt-30b",
+        "facebook/esm1v_t33_650M_UR90S_2",
+        "NousResearch/Llama-2-7b-chat-hf",
+        "soleimanian/financial-roberta-large-sentiment",
+        "facebook/wmt19-en-de",
+        "facebook/opt-30b",
+        "TinyPixel/Llama-2-7B-bf16-sharded",
+        "textattack/bert-base-uncased-STS-B",
+        "cyberagent/open-calm-7b",
+        "elinas/chronos-13b-v2",
+        "flaubert/flaubert_base_uncased",
+        "textattack/albert-base-v2-rotten_tomatoes",
+        "hfl/chinese-macbert-base",
+        "deepset/deberta-v3-large-squad2",
+        "bigscience/bloom-1b1",
+        "TheBloke/vicuna-7B-v1.3-GPTQ"
+    ],
+    "workspace": "test-eastus",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}

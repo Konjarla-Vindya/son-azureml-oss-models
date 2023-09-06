@@ -7,7 +7,7 @@ env:
   test_model_name: TheBloke/vicuna-7B-v1.3-GPTQ
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-eastus-0
+  test_queue: test-eastus-3
   test_set: huggingface-all
   test_keep_looping: false
 
