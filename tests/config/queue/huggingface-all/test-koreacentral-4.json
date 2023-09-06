@@ -1,0 +1,28 @@
+{
+    "queue_name": "test-koreacentral-4",
+    "models": [
+        "monologg/koelectra-small-v2-distilled-korquad-384",
+        "ckiplab/bert-base-chinese-ws",
+        "HuggingFaceM4/tiny-random-LlamaForCausalLM",
+        "sasha/regardv3",
+        "cointegrated/rubert-tiny-toxicity",
+        "gilf/french-camembert-postag-model",
+        "dbmdz/electra-large-discriminator-finetuned-conll03-english",
+        "TheBloke/Llama-2-7b-Chat-GPTQ",
+        "uer/albert-base-chinese-cluecorpussmall",
+        "ml6team/keyphrase-extraction-distilbert-inspec",
+        "Hello-SimpleAI/chatgpt-detector-roberta",
+        "Salesforce/xgen-7b-8k-inst",
+        "baichuan-inc/Baichuan-7B",
+        "optimum/t5-small",
+        "mdhugol/indonesia-bert-sentiment-classification",
+        "bhadresh-savani/bert-base-go-emotion"
+    ],
+    "workspace": "test-koreacentral",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}

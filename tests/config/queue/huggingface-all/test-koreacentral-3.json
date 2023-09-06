@@ -1,0 +1,29 @@
+{
+    "queue_name": "test-koreacentral-3",
+    "models": [
+        "ckiplab/bert-base-chinese",
+        "huggingface/CodeBERTa-small-v1",
+        "finiteautomata/beto-sentiment-analysis",
+        "lmsys/vicuna-7b-v1.3",
+        "ynie/roberta-large-snli_mnli_fever_anli_R1_R2_R3-nli",
+        "Helsinki-NLP/opus-mt-tc-big-en-pt",
+        "tsmatz/xlm-roberta-ner-japanese",
+        "hfl/chinese-roberta-wwm-ext",
+        "vinai/phobert-base",
+        "microsoft/deberta-xlarge-mnli",
+        "Hello-SimpleAI/chatgpt-detector-roberta-chinese",
+        "mrm8488/bert-spanish-cased-finetuned-ner",
+        "bigscience/bloomz-7b1",
+        "openlm-research/open_llama_13b",
+        "StanfordAIMI/stanford-deidentifier-base",
+        "trl-internal-testing/tiny-random-GPTNeoXForCausalLM",
+        "NousResearch/Yarn-Llama-2-7b-64k"
+    ],
+    "workspace": "test-koreacentral",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}
