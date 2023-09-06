@@ -1,16 +1,46 @@
 {
     "queue_name": "test-northeurope-0",
     "models": [
-        "bert-base-uncased",
-        "gpt2"
-        
-        
+        "rinna/japanese-roberta-base",
+        "LinkSoul/Chinese-LLaVA-Baichuan",
+        "codellama/CodeLlama-34b-Instruct-hf",
+        "sshleifer/tiny-distilroberta-base",
+        "deepset/deberta-v3-base-squad2",
+        "beomi/kcbert-base",
+        "sshleifer/distilbart-xsum-12-6",
+        "ckiplab/bert-base-chinese-pos",
+        "Austism/chronos-hermes-13b",
+        "TheBloke/MythoMax-L2-13B-GPTQ",
+        "textattack/roberta-base-CoLA",
+        "philschmid/distilbert-onnx",
+        "nbroad/ESG-BERT",
+        "cardiffnlp/twitter-roberta-base-hate-latest",
+        "sbcBI/sentiment_analysis_model",
+        "cardiffnlp/twitter-roberta-base-hate",
+        "textattack/albert-base-v2-ag-news",
+        "KoboldAI/fairseq-dense-13B-Janeway",
+        "microsoft/deberta-large",
+        "nlpai-lab/kullm-polyglot-12.8b-v2",
+        "sdadas/polish-roberta-large-v2",
+        "kontur-ai/sbert_punc_case_ru",
+        "pdelobelle/robbert-v2-dutch-base",
+        "facebook/opt-13b",
+        "shibing624/macbert4csc-base-chinese",
+        "neulab/codebert-python",
+        "joeddav/distilbert-base-uncased-go-emotions-student",
+        "xverse/XVERSE-13B-Chat",
+        "jackaduma/SecRoBERTa",
+        "Hello-SimpleAI/chatgpt-qa-detector-roberta",
+        "IDEA-CCNL/Wenzhong-GPT2-110M",
+        "Hello-SimpleAI/chatgpt-qa-detector-roberta-chinese",
+        "OpenAssistant/oasst-sft-4-pythia-12b-epoch-3.5",
+        "trl-internal-testing/tiny-random-GPTJForCausalLM"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-E32s-v3",
-    "instance_type": "Standard_E32s_v3"
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
 }
