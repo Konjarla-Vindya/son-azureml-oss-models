@@ -1,9 +1,23 @@
 {
     "queue_name": "test-japaneast-3",
     "models": [
-        "bert-base-uncased",
-        "t5-small",
-        "NYTK/summarization-hi-bart-base-1024-hungarian"
+        "cerebras/Cerebras-GPT-13B",
+        "TheBloke/Llama-2-7b-chat-fp16",
+        "cardiffnlp/twitter-xlm-roberta-base",
+        "bigcode/gpt_bigcode-santacoder",
+        "csdc-atl/baichuan-7B-chat",
+        "sagorsarker/codeswitch-hineng-lid-lince",
+        "TheBloke/Llama-2-13B-Chat-fp16",
+        "openlm-research/open_llama_7b",
+        "sshleifer/tiny-dbmdz-bert-large-cased-finetuned-conll03-english",
+        "rvrtdta/roberta-base-bne-finetuned-MeIA-AnalisisDeSentimientos",
+        "knkarthick/bart-large-xsum-samsum",
+        "Helsinki-NLP/opus-mt-tc-big-tr-en",
+        "neulab/codebert-javascript",
+        "ku-nlp/deberta-v2-tiny-japanese-char-wwm",
+        "databricks/dolly-v2-12b",
+        "EleutherAI/pythia-2.8b-deduped",
+        "nghuyong/ernie-3.0-base-zh"
     ],
     "workspace": "test-japaneast",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",

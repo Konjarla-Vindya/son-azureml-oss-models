@@ -7,7 +7,7 @@ env:
   test_model_name: sshleifer/tiny-dbmdz-bert-large-cased-finetuned-conll03-english
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-japaneast-0
+  test_queue: test-japaneast-3
   test_set: huggingface-all
   test_keep_looping: false
 

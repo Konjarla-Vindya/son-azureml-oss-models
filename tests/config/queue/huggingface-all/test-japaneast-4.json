@@ -1,0 +1,28 @@
+{
+    "queue_name": "test-japaneast-4",
+    "models": [
+        "facebook/mbart-large-cc25",
+        "lvwerra/gpt2-imdb",
+        "databricks/dolly-v2-7b",
+        "sdadas/mt5-base-translator-pl-en",
+        "TheBloke/airoboros-l2-70B-GPT4-2.0-GPTQ",
+        "slauw87/bart_summarisation",
+        "neulab/codebert-java",
+        "thatdramebaazguy/roberta-base-squad",
+        "NousResearch/Nous-Hermes-Llama2-13b",
+        "EleutherAI/pythia-1.4b-deduped",
+        "ai-forever/ruBert-base",
+        "internlm/internlm-7b",
+        "shahrukhx01/question-vs-statement-classifier",
+        "EleutherAI/polyglot-ko-12.8b",
+        "WizardLM/WizardLM-70B-V1.0",
+        "WizardLM/WizardLM-13B-V1.2"
+    ],
+    "workspace": "test-japaneast",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}
