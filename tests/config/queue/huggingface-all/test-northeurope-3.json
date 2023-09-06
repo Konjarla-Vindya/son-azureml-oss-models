@@ -1,0 +1,29 @@
+{
+    "queue_name": "test-northeurope-3",
+    "models": [
+        "LinkSoul/Chinese-LLaVA-Baichuan",
+        "sshleifer/tiny-distilroberta-base",
+        "beomi/kcbert-base",
+        "ckiplab/bert-base-chinese-pos",
+        "TheBloke/MythoMax-L2-13B-GPTQ",
+        "philschmid/distilbert-onnx",
+        "cardiffnlp/twitter-roberta-base-hate-latest",
+        "cardiffnlp/twitter-roberta-base-hate",
+        "KoboldAI/fairseq-dense-13B-Janeway",
+        "nlpai-lab/kullm-polyglot-12.8b-v2",
+        "kontur-ai/sbert_punc_case_ru",
+        "facebook/opt-13b",
+        "neulab/codebert-python",
+        "xverse/XVERSE-13B-Chat",
+        "Hello-SimpleAI/chatgpt-qa-detector-roberta",
+        "Hello-SimpleAI/chatgpt-qa-detector-roberta-chinese",
+        "trl-internal-testing/tiny-random-GPTJForCausalLM"
+    ],
+    "workspace": "test-northeurope",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}

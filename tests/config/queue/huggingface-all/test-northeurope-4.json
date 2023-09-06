@@ -1,0 +1,28 @@
+{
+    "queue_name": "test-northeurope-4",
+    "models": [
+        "nateraw/bert-base-uncased-emotion",
+        "Salesforce/codegen-350M-mono",
+        "facebook/roberta-hate-speech-dynabench-r4-target",
+        "Lurunchik/nf-cats",
+        "uer/roberta-base-chinese-extractive-qa",
+        "huggyllama/llama-65b",
+        "facebook/wmt19-de-en",
+        "Phind/Phind-CodeLlama-34B-Python-v1",
+        "EleutherAI/pythia-160m",
+        "citizenlab/twitter-xlm-roberta-base-sentiment-finetunned",
+        "trl-internal-testing/dummy-GPT2-correct-vocab",
+        "KoboldAI/OPT-13B-Nerys-v2",
+        "jackaduma/SecBERT",
+        "cl-tohoku/bert-base-japanese-char-v2",
+        "lmsys/vicuna-13b-v1.5",
+        "openlm-research/open_llama_3b_v2"
+    ],
+    "workspace": "test-northeurope",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}
