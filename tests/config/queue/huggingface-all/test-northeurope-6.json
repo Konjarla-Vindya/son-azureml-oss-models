@@ -1,7 +1,7 @@
 {
     "queue_name": "test-northeurope-6",
     "models": [
-        "alexanderfalk/danbert-small-cased",
+        "alexanderfalk/danbert-small-cased"
         
         
     ],
