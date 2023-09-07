@@ -21,7 +21,7 @@ import json
 import json
 # store the URL in url as
 # parameter for urlopen
-URL = "https://huggingface.co/api/models?sort=downloads&direction=-1&limit=10000"
+URL = "https://huggingface.co/api/models"
 COLUMNS_TO_READ = ["modelId", "pipeline_tag", "tags"]
 STRING_TO_CHECK = 'transformers'
 FILE_NAME = "task_and_library.json"
