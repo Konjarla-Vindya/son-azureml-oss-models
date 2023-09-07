@@ -7,7 +7,7 @@ env:
   test_model_name: Geotrend/bert-base-ru-cased
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-northcentralus-2
+  test_queue: test-japaneast-6
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -46,7 +46,7 @@ jobs:
     - name: deploy-model-step
       id: deploy-model-step
       run: python generic_initial_automation.py
-      working-directory: tests/src/automation_for_constant_library
+      working-directory: tests/src/test_with_model_package
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.API_TOKEN }}
