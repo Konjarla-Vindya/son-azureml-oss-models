@@ -13,6 +13,6 @@
     "resource_group": "sonata-test-rg",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-E64s-v3",
-    "instance_type": "Standard_E64s_v3"
+    "compute": "Standard-DS15-v2",
+    "instance_type": "Standard_DS15_v2"
 }
