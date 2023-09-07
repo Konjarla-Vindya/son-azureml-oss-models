@@ -1,0 +1,17 @@
+{
+    "queue_name": "test-japaneast-6",
+    "models": [
+        "PlanTL-GOB-ES/roberta-base-bne-capitel-ner",
+        "Helsinki-NLP/opus-mt-fr-ru",
+        "alger-ia/dziribert",
+        "Geotrend/bert-base-ru-cased",
+        "Helsinki-NLP/opus-mt-af-es"
+    ],
+    "workspace": "test-japaneast",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}
