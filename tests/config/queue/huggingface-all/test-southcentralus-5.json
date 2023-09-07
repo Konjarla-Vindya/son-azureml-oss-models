@@ -1,0 +1,28 @@
+{
+    "queue_name": "test-southcentralus-5",
+    "models": [
+        "vinai/xphonebert-base",
+        "mosaicml/mpt-7b-instruct",
+        "baichuan-inc/Baichuan-13B-Base",
+        "facebook/bart-large-cnn",
+        "martin-ha/toxic-comment-model",
+        "cardiffnlp/twitter-roberta-base-sentiment",
+        "cerebras/btlm-3b-8k-base",
+        "stabilityai/StableBeluga2",
+        "cross-encoder/ms-marco-TinyBERT-L-2-v2",
+        "ai4bharat/IndicNER",
+        "databricks/dolly-v2-3b",
+        "philschmid/bart-large-cnn-samsum",
+        "madhurjindal/autonlp-Gibberish-Detector-492513457",
+        "TheBloke/Llama-2-70B-GPTQ",
+        "pythainlp/thainer-corpus-v2-base-model",
+        "skt/kogpt2-base-v2"
+    ],
+    "workspace": "test-southcentralus",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
+}

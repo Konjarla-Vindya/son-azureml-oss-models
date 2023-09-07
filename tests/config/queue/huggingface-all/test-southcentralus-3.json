@@ -1,15 +1,29 @@
 {
     "queue_name": "test-southcentralus-3",
     "models": [
-        "bert-base-uncased",
-        "t5-small",
-        "NYTK/summarization-hi-bart-base-1024-hungarian"
+        "alimazhar-110/website_classification",
+        "NousResearch/Llama-2-13b-hf",
+        "ckiplab/bert-base-chinese-ner",
+        "yiyanghkust/finbert-tone",
+        "bhadresh-savani/distilbert-base-uncased-emotion",
+        "dbmdz/bert-large-cased-finetuned-conll03-english",
+        "distilbert-base-cased",
+        "facebook/opt-1.3b",
+        "meta-llama/Llama-2-7b-chat-hf",
+        "EleutherAI/pythia-6.9b",
+        "cl-tohoku/bert-base-japanese-whole-word-masking",
+        "klue/roberta-base",
+        "fxmarty/tiny-llama-fast-tokenizer",
+        "tiiuae/falcon-7b-instruct",
+        "decapoda-research/llama-7b-hf",
+        "seyonec/ChemBERTa-zinc-base-v1",
+        "kk08/CryptoBERT"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-D64a-v4",
-    "instance_type": "Standard_D64a_v4"
+    "compute": "Standard-E64s-v3",
+    "instance_type": "Standard_E64s_v3"
 }
