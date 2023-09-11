@@ -313,10 +313,10 @@ class ModelInferenceAndDeployemnt:
             instance_type=instance_type,
             endpoint=endpoint
         )
-        self.sample_inference(
-            scoring_file=scoring_file,
-            scoring_input=scoring_input,
-            online_endpoint_name=online_endpoint_name,
-            deployment_name=deployment_name
-        )
-        #self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
+        # self.sample_inference(
+        #     scoring_file=scoring_file,
+        #     scoring_input=scoring_input,
+        #     online_endpoint_name=online_endpoint_name,
+        #     deployment_name=deployment_name
+        # )
+        self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
