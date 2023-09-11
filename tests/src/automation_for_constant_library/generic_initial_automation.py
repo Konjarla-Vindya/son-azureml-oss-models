@@ -1,12 +1,9 @@
 from azureml.core import Workspace, Environment
-#from generic_model_download_and_register import Model
 from model_inference_and_deployment import ModelInferenceAndDeployemnt
-from create_pipeline import Pipeline
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
-from azure.ai.ml import MLClient, UserIdentityConfiguration
-from azure.ai.ml.dsl import pipeline
+from azure.ai.ml import MLClient
 import mlflow
 import json
 import os
@@ -124,19 +121,6 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
     # wait for the job to complete
     workspace_ml_client.jobs.stream(returned_job.name)
     return returned_job.studio_url
-# studio_url = create_and_get_job_studio_url(command_job)
-# print("Studio URL for the job:", studio_url)
-# @pipeline
-# def get_pipeline(import_model, model_id, compute):
-#     import_model_job = import_model(model_id=model_id, compute=compute)
-#     # Set job to not continue on failure
-#     import_model_job.settings.continue_on_step_failure = False
-
-#     return {
-#     "model_registration_details": import_model_job.outputs.model_registration_details
-#     }
-    # return import_model_job.outputs.model_registration_details
-
 
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -179,10 +163,6 @@ if __name__ == "__main__":
             resource_group_name=queue.resource_group,
             workspace_name=queue.workspace
         )
-    # registry_ml_client = MLClient(
-    #     credential=credential,
-    #     registry_name=queue.registry
-    # )
     ws = Workspace(
         subscription_id=queue.subscription,
         resource_group=queue.resource_group,
@@ -205,29 +185,6 @@ if __name__ == "__main__":
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
 
-    # ml_client_registry = MLClient(credential, registry_name=queue.registry)
-    # import_model = ml_client_registry.components.get(name="import_model", label="latest")
-    # #pipeline = Pipeline(import_model=import_model)
-    # try:
-    #     pipeline_object = get_pipeline(
-    #                             import_model=import_model,
-    #                             model_id=test_model_name,
-    #                             compute="STANDARD-D13"
-    #                         )
-    #     pipeline_object.identity = UserIdentityConfiguration()
-    #     pipeline_object.settings.force_rerun = True
-    # except Exception as ex:
-    #     exc_type, exc_obj, exc_tb = sys.exc_info()
-    #     print(f"The exception occured at this line no : {exc_tb.tb_lineno} "+
-    #           "the exception is this one :", ex)
-
-    # # submit the pipeline job
-    # pipeline_job = workspace_ml_client.jobs.create_or_update(
-    #     pipeline_object, experiment_name=f"Import Model Pipeline"
-    # )
-    # # wait for the pipeline job to complete
-    # workspace_ml_client.jobs.stream(pipeline_job.name)
-
     InferenceAndDeployment = ModelInferenceAndDeployemnt(
         test_model_name=test_model_name,
         workspace_ml_client=workspace_ml_client,
@@ -236,19 +193,3 @@ if __name__ == "__main__":
     InferenceAndDeployment.model_infernce_and_deployment(
         instance_type=queue.instance_type
     )
-    # model_name = test_model_name.replace("/", "-")
-    # foundation_model = InferenceAndDeployment.get_latest_model_version(
-    #     workspace_ml_client=workspace_ml_client,
-    #     model_name=model_name
-    # )
-    # downloaded_model = workspace_ml_client.models.download(
-    #     name=foundation_model.name, version=foundation_model.version, download_path=f"./model_download")
-    # foundation_model_uri = f"./model_download/{foundation_model.name}/{foundation_model.name}-artifact"
-    # task = foundation_model.flavors["transformers"]["task"]
-    # environment_variables_deployment = {
-    #     "foundation_model_uri": foundation_model_uri,
-    #     "task": task
-    # }
-    # command_job = run_azure_ml_job(code="./", command_to_run="python load_and_inference.py",
-    #                                environment=latest_env, compute=queue.compute, environment_variables=environment_variables_deployment)
-    # create_and_get_job_studio_url(command_job, workspace_ml_client)
