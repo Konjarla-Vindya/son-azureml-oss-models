@@ -1,7 +1,7 @@
 {
     "queue_name": "test-japaneast-0",
     "models": [
-        "Helsinki-NLP/opus-mt-ar-de",
+        
         "t5-small"
       
     ],
