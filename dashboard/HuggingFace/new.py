@@ -23,9 +23,9 @@ class Dashboard():
     def get_all_workflow_names(self):
         API = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/workflows"
         print (f"Getting github workflows from {API}")
-        total_pages = None
-        current_page = 1
-        per_page = 100
+        # total_pages = None
+        # current_page = 1
+        # per_page = 100
         workflow_name = []
         while total_pages is None or current_page <= total_pages:
 
@@ -43,11 +43,11 @@ class Dashboard():
                 if not workflows["workflows"]:
                     break
                 # workflow_name.extend(json_response['workflows["name"]'])
-                if current_page == 1:
-                # divide total_count by per_page and round up to get total_pages
-                    total_pages = int(workflows['total_count'] / per_page) + 1
-                current_page += 1
-                # print a single dot to show progress
+                # if current_page == 1:
+                # # divide total_count by per_page and round up to get total_pages
+                #     total_pages = int(workflows['total_count'] / per_page) + 1
+                # current_page += 1
+                # # print a single dot to show progress
                 print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
             else:
                 print (f"Error: {response.status_code} {response.text}")
