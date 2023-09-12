@@ -11,3 +11,4 @@
     "environment": "automate-venv",
     "compute": "Standard-E64s-v3-node2",
     "instance_type": "Standard_E64s_v3"
+}
