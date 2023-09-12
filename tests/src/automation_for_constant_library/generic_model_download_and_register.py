@@ -237,7 +237,7 @@ class Model:
             scoring_input (_type_): _description_
             registered_model_name (_type_): _description_
         """
-        
+        print("Registered Model : ", client.get_registered_model(registered_model_name))
         registered_model_detail = client.get_latest_versions(
             name=registered_model_name, stages=["None"])
         model_detail = registered_model_detail[0]
