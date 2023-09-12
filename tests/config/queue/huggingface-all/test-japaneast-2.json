@@ -1,5 +1,5 @@
 {
-    "queue_name": "test-japaneast-0",
+    "queue_name": "test-japaneast-2",
     "models": [
         "t5-large"
       
