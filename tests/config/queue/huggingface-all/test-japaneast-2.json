@@ -1,7 +1,7 @@
 {
     "queue_name": "test-japaneast-0",
     "models": [
-        "t5-small"
+        "t5-large"
       
     ],
     "workspace": "test-southcentralus",
@@ -9,5 +9,5 @@
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-E64s-v3-node1",
+    "compute": "Standard-E64s-v3-node2",
     "instance_type": "Standard_E64s_v3"
