@@ -1,0 +1,50 @@
+name: Update README with Timestamp
+
+on:
+  workflow_dispatch
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r runs_requirements.txt
+
+      - name: Generate README file
+        run: |
+          cd dashboard/HuggingFace
+
+          # Get the current date and time
+          current_datetime=$(date +"%Y%m%d-%H%M%S")
+
+          # Create a README file with the current datetime in the filename
+          readme_filename="README_${current_datetime}.md"
+
+          # Run your script to generate content for the README file
+          python update-readme.py > "$readme_filename"
+
+      - name: Add Generated File
+        run: |
+          git config user.email "${{ secrets.USER_EMAIL }}"
+          git config user.name "${{ secrets.USER_NAME }}"
+          git pull origin main
+          cd dashboard/HuggingFace
+
+          # Add the generated README file
+          git add "$readme_filename"
+
+          # Commit and push the changes
+          git commit -m "Add $readme_filename"
+          git push
+      
