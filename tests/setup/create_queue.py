@@ -191,7 +191,7 @@ def write_single_workflow_file(model, q, secret_name):
     # # print(workflow_file['env']['test_queue'])
     print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
-    os.system(f"sed -i s/name: .*/name: {model}/g' {workflow_file}")
+    os.system(f"sed -i s/name: .*/name: "MLFlow-"+{model}/g' {workflow_file}")
     # replace <test_queue> with q
     os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
     # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
@@ -214,8 +214,8 @@ def write_single_workflow_file(model, q, secret_name):
     repository_name="son-azureml-oss-models"
     workflow_filename=f".github/workflows/{workflowname}.yml"
     # workflow_sha="main"  # You need to provide the correct SHA
-    new_workflow_name={model}
-    new_job_name={model}
+    new_workflow_name="MLFlow-"+{model}
+    new_job_name="MLFlow-"+{model}
 
     # Construct the API URL
     api_url = f"https://api.github.com/repositories/655633575/contents/{workflow_filename}"
