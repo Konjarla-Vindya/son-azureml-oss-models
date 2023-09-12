@@ -1,0 +1,10 @@
+{
+    "test-southcentralus": {
+        "0": [
+            "bert-base-cased"
+        ],
+        "1": [
+            "ALINEAR/albert-japanese-v2"
+        ]
+    }
+}
