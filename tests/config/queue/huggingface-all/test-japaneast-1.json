@@ -1,8 +1,8 @@
 {
     "queue_name": "test-japaneast-1",
     "models": [
-        "Helsinki-NLP/opus-mt-ar-de",
-        "t5-small"
+        "Helsinki-NLP/opus-mt-ar-de"
+        
       
     ],
     "workspace": "test-southcentralus",
