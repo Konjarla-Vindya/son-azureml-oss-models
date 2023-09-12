@@ -1,4 +1,4 @@
-name: GitHub-Cli-Demo
+name: gitHub-cli-demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: 
   workflow_dispatch:
