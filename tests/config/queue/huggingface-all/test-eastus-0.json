@@ -29,8 +29,7 @@
         "mosaicml/mpt-7b-8k-instruct",
         "Geotrend/distilbert-base-es-cased",
         "aubmindlab/bert-base-arabertv02-twitter",
-        "hidude562/Wiki-Complexity",
-        "EleutherAI/gpt-neo-125m"
+        "hidude562/Wiki-Complexity"
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
