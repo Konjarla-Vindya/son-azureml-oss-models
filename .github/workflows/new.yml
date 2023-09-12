@@ -51,6 +51,11 @@ jobs:
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
           cd dashboard/HuggingFace
+          # Get the current date and time (again)
+          current_datetime=$(date +"%Y%m%d-%H%M%S")
+
+          # Create a README file with the current datetime in the filename
+          readme_filename="README_${current_datetime}.md"
 
           # Add the generated README file
           git add "$readme_filename"
