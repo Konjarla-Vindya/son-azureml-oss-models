@@ -1,4 +1,5 @@
 name: cli-demo
+run-name: test-cli
 
 on: 
   workflow_dispatch:
