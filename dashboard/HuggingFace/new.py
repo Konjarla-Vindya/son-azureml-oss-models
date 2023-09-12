@@ -1,4 +1,3 @@
-#this code creates multiple readme files with datetime stamp of when the respective yml is triggered, for some list of yml files
 import os,sys
 import requests
 import pandas
@@ -22,42 +21,49 @@ class Dashboard():
         }
 
     def get_all_workflow_names(self):
-        workflow_name = ["abc/def","abeja/gpt-neox-japanese-2.7b","abhishek/llama-2-7b-hf-small-shards","abnersampaio/sentiment","adamc-7/distilbert-imdb-micro"]
-        # API = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/workflows"
-        # print (f"Getting github workflows from {API}")
-        # total_pages = None
-        # current_page = 1
-        # per_page = 5
-        # workflow_name = []
-        # while total_pages is None or current_page <= total_pages:
+        API = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/workflows"
+        print (f"Getting github workflows from {API}")
+        total_pages = None
+        current_page = 1
+        per_page = 100
+        workflow_name = []
+        while total_pages is None or current_page <= total_pages:
 
-        #     headers = {
-        #         "Authorization": f"Bearer {self.github_token}",
-        #         "Accept": "application/vnd.github.v3+json"
-        #     }
-        #     params = { "per_page": per_page, "page": current_page }
-        #     response = requests.get(API, headers=headers, params=params)
-        #     if response.status_code == 200:
-        #         workflows = response.json()
-        #         # append workflow_runs to runs list
-        #         for workflow in workflows["workflows"]:
-        #             workflow_name.append(workflow["name"])
-        #         if not workflows["workflows"]:
-        #             break
-        #         # workflow_name.extend(json_response['workflows["name"]'])
-        #         if current_page == 1:
-        #         # divide total_count by per_page and round up to get total_pages
-        #             total_pages = int(workflows['total_count'] / per_page) + 1
-        #         current_page += 1
-        #         # print a single dot to show progress
-        #         print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
-        #     else:
-        #         print (f"Error: {response.status_code} {response.text}")
-        #         exit(1)
-        # print (f"\n")
-        
+            headers = {
+                "Authorization": f"Bearer {self.github_token}",
+                "Accept": "application/vnd.github.v3+json"
+            }
+            params = { "per_page": per_page, "page": current_page }
+            response = requests.get(API, headers=headers, params=params)
+            if response.status_code == 200:
+                workflows = response.json()
+                # append workflow_runs to runs list
+                for workflow in workflows["workflows"]:
+                    workflow_name.append(workflow["name"])
+                if not workflows["workflows"]:
+                    break
+                # workflow_name.extend(json_response['workflows["name"]'])
+                if current_page == 1:
+                # divide total_count by per_page and round up to get total_pages
+                    total_pages = int(workflows['total_count'] / per_page) + 1
+                current_page += 1
+                # print a single dot to show progress
+                print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
+            else:
+                print (f"Error: {response.status_code} {response.text}")
+                exit(1)
+        print (f"\n")
+        #create ../logs/get_github_workflows/ if it does not exist
+        # if not os.path.exists("../logs/get_all_workflow_names"):
+        #     os.makedirs("../logs/get_all_workflow_names")
+        # # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
+        # with open(f"../logs/get_all_workflow_names/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
+        #     json.dump(workflow_name, f, indent=4)
         return workflow_name
 
+ 
+
+ 
 
     def workflow_last_run(self): 
         workflows_to_include = self.get_all_workflow_names()
@@ -157,12 +163,17 @@ class Dashboard():
  
 
         summary_text = "\n".join(summary)
+        )
 
-         # Get the current date and time
         current_date = datetime.now().strftime('%Y%m%d')
 
+ 
+
         # Create a README file with the current datetime in the filename
+
         readme_filename = f"README_{current_date}.md"
+
+ 
 
         with open(readme_filename, "w", encoding="utf-8") as f:
             f.write(summary_text)
@@ -181,4 +192,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
