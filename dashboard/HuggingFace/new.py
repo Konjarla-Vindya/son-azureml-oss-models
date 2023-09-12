@@ -163,7 +163,7 @@ class Dashboard():
  
 
         summary_text = "\n".join(summary)
-        )
+        
 
         current_date = datetime.now().strftime('%Y%m%d')
 
