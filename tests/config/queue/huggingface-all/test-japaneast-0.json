@@ -1,7 +1,6 @@
 {
     "queue_name": "test-japaneast-0",
     "models": [
-        
         "t5-small"
       
     ],
