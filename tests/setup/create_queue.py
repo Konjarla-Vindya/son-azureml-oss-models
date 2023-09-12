@@ -44,7 +44,7 @@ parser.add_argument("--test_trigger_next_model", type=str, default="true")
 parser.add_argument("--test_sku_type", type=str, default="cpu")
 # parallel_tests, to specify number of parallel tests to run per workspace. 
 # this will be used to create multiple queues
-parser.add_argument("--parallel_tests", type=int, default=5)
+parser.add_argument("--parallel_tests", type=int, default=1)
 # workflow-template.yml file to use as template for generating workflow files
 parser.add_argument("--workflow_template", type=str, default="../config/workflow-template-huggingface.yml")
 # workspace_list file get workspace metadata
@@ -86,12 +86,12 @@ def create_queue_files(queue, workspace_list):
     if not os.path.exists(f"{args.queue_dir}/{args.test_set}"):
         os.makedirs(f"{args.queue_dir}/{args.test_set}")
     # delete any files in test_set folder
-    os.system(f"rm -rf {args.queue_dir}/{args.test_set}/*")
+    # os.system(f"rm -rf {args.queue_dir}/{args.test_set}/*")
     # generate queue files
     for workspace in queue:
         for thread in queue[workspace]:
             print (f"Generating queue file {args.queue_dir}/{args.test_set}/{workspace}-{thread}.json")
-            q_dict = {"queue_name": f"{workspace}-{thread}", "models": queue[workspace][thread]}
+            q_dict = {"queue_name": f"{workspace}-{thread}", "models": "MLFlow-"+queue[workspace][thread]}
             # get the workspace from workspace_list
             q_dict["workspace"] = workspace
             q_dict["subscription"] = workspace_list[workspace]["subscription"]
