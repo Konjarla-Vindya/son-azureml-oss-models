@@ -184,7 +184,7 @@ def write_single_workflow_file(model, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
     workflowname="MLFlow-"+model.replace('/','-')
-    # os.system(f"sed -i 's/name: .*/name: {model}/g' {args.workflow_template}")
+    # os.system(f"sed -i 's/name: .*/name: "MLFlow-"+{model}/g' {args.workflow_template}")
     workflow_file=f"{args.workflow_dir}/{workflowname}.yml"
     os.system(f"rm -rf {args.workflow_dir}/demo_{workflowname}.yml") 
     # print("yml file----------------------------------------",workflow_file)
