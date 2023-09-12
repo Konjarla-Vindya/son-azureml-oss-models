@@ -159,10 +159,10 @@ class Dashboard():
         summary_text = "\n".join(summary)
 
          # Get the current date and time
-        current_datetime = datetime.now().strftime('%Y%m%d-%H%M%S')
+        current_date = datetime.now().strftime('%Y%m%d')
 
         # Create a README file with the current datetime in the filename
-        readme_filename = f"README_{current_datetime}.md"
+        readme_filename = f"README_{current_date}.md"
 
         with open(readme_filename, "w", encoding="utf-8") as f:
             f.write(summary_text)
