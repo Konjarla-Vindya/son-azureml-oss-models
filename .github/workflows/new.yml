@@ -37,10 +37,10 @@ jobs:
           cd dashboard/HuggingFace
 
           # Get the current date and time
-          current_datetime=$(date +"%Y%m%d-%H%M%S")
+          current_date=$(date +"%Y%m%d")
 
           # Create a README file with the current datetime in the filename
-          readme_filename="README_${current_datetime}.md"
+          readme_filename="README_${current_date}.md"
 
           # Run your script to generate content for the README file
           python update-readme.py > "$readme_filename"
@@ -52,10 +52,10 @@ jobs:
           git pull origin main
           cd dashboard/HuggingFace
           # Get the current date and time (again)
-          current_datetime=$(date +"%Y%m%d-%H%M%S")
+          current_date=$(date +"%Y%m%d")
 
           # Create a README file with the current datetime in the filename
-          readme_filename="README_${current_datetime}.md"
+          readme_filename="README_${current_date}.md"
 
           # Add the generated README file
           git add "$readme_filename"
