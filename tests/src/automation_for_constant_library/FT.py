@@ -48,14 +48,7 @@ workspace_ml_client = MLClient(
 # download the dataset using the helper script. This needs datasets library: https://pypi.org/project/datasets/
 import os
 
-# exit_status = os.system("python ./download-dataset.py --download_dir emotion-dataset")
-# if exit_status != 0:
-#     raise Exception("Error downloading dataset")
-
-# test_df = pd.read_json("./emotion-dataset/test.jsonl", lines=True)
-# train_df = pd.read_json("./emotion-dataset/train.jsonl", lines=True)
-# validation_df = pd.read_json("./emotion-dataset/validation.jsonl", lines=True)
-test_model_name="bert-base-uncased"
+test_model_name = os.environ.get('test_model_name')
 # bert-base-uncased
 
 version_list = list(workspace_ml_client.models.list(test_model_name))
