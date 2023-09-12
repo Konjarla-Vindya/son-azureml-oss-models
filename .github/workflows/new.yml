@@ -43,7 +43,7 @@ jobs:
           readme_filename="README_${current_date}.md"
 
           # Run your script to generate content for the README file
-          python update-readme.py > "$readme_filename"
+          python new.py > "$readme_filename"
 
       - name: Add Generated File
         run: |
