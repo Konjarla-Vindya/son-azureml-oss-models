@@ -18,6 +18,7 @@ class Dashboard():
             "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
             "updated_at": [], "status": [], "conclusion": [], "jobs_url": []
         }
+        self.models_data = []  # Initialize models_data as an empty list
 
     def get_all_workflow_names(self):
         workflow_name = ["abc/def","abeja/gpt-neox-japanese-2.7b","abhishek/llama-2-7b-hf-small-shards","abnersampaio/sentiment","adamc-7/distilbert-imdb-micro"]
