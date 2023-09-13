@@ -42,7 +42,7 @@ parser.add_argument("--test_trigger_next_model", type=str, default="true")
 parser.add_argument("--test_sku_type", type=str, default="cpu")
 # parallel_tests, to specify number of parallel tests to run per workspace. 
 # this will be used to create multiple queues
-parser.add_argument("--parallel_tests", type=int, default=5)
+parser.add_argument("--parallel_tests", type=int, default=2)
 # workflow-template.yml file to use as template for generating workflow files
 parser.add_argument("--workflow_template", type=str, default="../config/workflow-template-huggingface.yml")
 # workspace_list file get workspace metadata
@@ -176,7 +176,7 @@ def write_single_workflow_file(model, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
     workflowname=model.replace('/','-')
-    workflowname="MLFlow-"+model.replace('/','-')
+    # workflowname=model.replace('/','-')
     # os.system(f"sed -i 's/name: .*/name: {model}/g' {args.workflow_template}")
     workflow_file=f"{args.workflow_dir}/{workflowname}.yml"
     os.system(f"rm -rf {args.workflow_dir}/demo_{workflowname}.yml") 
