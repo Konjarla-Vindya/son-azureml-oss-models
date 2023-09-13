@@ -206,7 +206,7 @@ class Model:
         mlflow.transformers.log_model(
             transformers_model=model_pipeline,
             task=task,
-            # artifact_path=artifact_path,
+            artifact_path=artifact_path,
             # registered_model_name=registered_model_name,
             signature=signature,
             input_example=scoring_input.input_data
