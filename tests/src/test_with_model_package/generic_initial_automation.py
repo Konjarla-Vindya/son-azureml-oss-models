@@ -162,8 +162,8 @@ if __name__ == "__main__":
             credential=credential,
             subscription_id=queue.subscription,
             resource_group_name=queue.resource_group,
-            #workspace_name=queue.workspace,
-            registry_name="sonata-registry"
+            workspace_name=queue.workspace
+            #registry_name="sonata-registry"
         )
     ws = Workspace(
         subscription_id=queue.subscription,
