@@ -170,6 +170,12 @@ if __name__ == "__main__":
         resource_group=queue.resource_group,
         workspace_name=queue.workspace
     )
+    registry_mlclient = MLClient(
+        credential=credential,
+        registry_name="sonata-registry",
+        subscription_id=queue.subscription,
+        resource_group_name=queue.resource_group
+    )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(
         workspace_ml_client, queue.compute)
