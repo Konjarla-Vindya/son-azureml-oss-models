@@ -116,7 +116,7 @@ def assign_models_to_queues(models, workspace_list):
                         print("queue[workspace]",queue[workspace])
                     if thread not in queue[workspace]:
                         queue[workspace][thread] = []
-                    queue[workspace][thread].append(models[i])
+                    queue[workspace][thread].append("MLFlow-"+models[i])
                     print("queue[workspace][thread]",queue[workspace][thread])
                     i=i+1
                     #print (f"Adding model {models[i]} at index {i} to queue {workspace}-{thread}")
@@ -184,7 +184,8 @@ def write_single_workflow_file(model, q, secret_name):
     # # print(workflow_file['env']['test_queue'])
     print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
-    os.system(f"sed -i s/name: .*/name: MLFlow-{model}/g' {workflow_file}")
+    MLFlow_Model=f"MLFlow-{Model}"
+    os.system(f"sed -i s/name: .*/name: {MLFlow_Model}/g' {workflow_file}")
     # replace <test_queue> with q
     os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
     # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
@@ -232,55 +233,7 @@ def write_single_workflow_file(model, q, secret_name):
         print(f"SHA of '{workflow_filename}': {file_sha}")
     else:
         print(f"Failed to fetch file info. Status code: {response.status_code}")
-    # Prepare the request headers
-    # headers = {
-    #     "Authorization": f"Bearer {github_token}",
-    #     "Accept": "application/vnd.github.v3+json"
-    # }
     
-    # # Fetch the existing workflow data
-    # response = requests.get(api_url, headers=headers)
-    # workflow_data = response.json()
-    
-    # # Update the friendly name in the workflow data
-    # workflow_data["name"] = new_job_name
-    # print("workflow_data----------------",workflow_data)
-    # workflow_data["on"]["push"]["branches"] = list(workflow_data["on"]["push"]["branches"])
-    
-    # # Update the workflow using a PUT request
-    # update_response = requests.put(api_url, headers=headers, json=workflow_data)
-    
-    # if update_response.status_code == 200:
-    #     print("Friendly name updated successfully!")
-    # else:
-    #     print(f"Failed to update friendly name. Status code: {update_response.status_code}")
-    # workflow_sha=file_sha
-    # # Get the latest commit information for the workflow file
-    # commit_info=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
-    #                "https://api.github.com/repos/$repository_owner/$repository_name/commits?path=$workflow_file")
-    
-    
-    # # Read the current workflow content from GitHub
-    # current_content=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
-    #                   "https://api.github.com/repos/$repository_owner/$repository_name/contents/$workflow_file?ref=$workflow_sha")
-    # # Extract the current content, URL, and other attributes
-    # current_content=$(echo "$current_content" | jq -r .content)
-    # current_url=$(echo "$current_content" | jq -r .url)
-    # current_encoding=$(echo "$current_content" | jq -r .encoding)
-    
-    # # Prepare the updated content with new names
-    # updated_content=$(echo -n "$current_content" | base64 -d | \
-    #                   sed "s/Old Workflow Name/$new_workflow_name/g; s/Old Job Name/$new_job_name/g")
-    
-    # # Encode the updated content in base64
-    # encoded_updated_content=$(echo -n "$updated_content" | base64 -w 0)
-    
-    # # Prepare the JSON payload for updating the content
-    # json_payload="{\"message\":\"Update workflow names\",\"content\":\"$encoded_updated_content\",\"sha\":\"$workflow_sha\"}"
-    
-    # # Make the PATCH request to update the workflow file
-    # curl -X PUT -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
-    #      -d "$json_payload" "$current_url"
     with open(workflow_file, 'rt') as f:
         yaml_content = f.read()
         # yaml_content=yaml.safe_load(f)
@@ -291,33 +244,7 @@ def write_single_workflow_file(model, q, secret_name):
     modified_yaml_content = yml_content.replace('"""', '')
     with open(workflow_file, 'w') as yaml_file:
         yaml_file.write(updated_yaml_content)
-    #     # yaml.dump(updated_yaml_content,yaml_file)
-    # with open(api_url, 'rt') as f:
-    #     doc = yaml.safe_load(f)
-    #     # ,Loader=yaml.FullLoader
     
-    # doc['name'] = model
-    # # doc['onion']['workflow_dispatch']=
-    # # for model in models:
-    # doc['env']['test_model_name'] = model
-    # doc['env']['test_sku_type'] = args.test_sku_type
-    # doc['env']['test_trigger_next_model'] = args.test_trigger_next_model
-    # doc['env']['test_queue'] = q
-    # doc['env']['test_set'] = args.test_set
-    # doc['env']['test_queue'] = q
-    # print("post change of dict------------",doc)
-    # # doc.replace('true:','on:')
-    # # os.system(f"sed -i 's/true: .*/on: .*/g' {workflow_file}")
-    # with open(workflow_file, 'w') as f:
-    #    yml= yaml.dump(doc, f, default_flow_style=False, sort_keys=False,width=float("inf"))
-    #     # yml=yaml.dump(doc, f, default_flow_style=True, sort_keys=False,width=float("inf"))
-    #     # yaml.dump(doc, f, default_flow_style=True,width=float("inf"))
-    # workflow_filecopy=f"{args.workflow_dir}/suchitest{workflowname}.yml"
-    # os.system(f"cp {workflow_file} {workflow_filecopy}")
-    # # os.system(f"rm -rf {workflow_file}")
-    # # g=Github()
-    # # print("g.workflow(workflow_file)====================",g.workflow(workflow_file))
-    # # print("github.workflow()============================",github.workflow(workflow_file))
 def workflow_names(models):
     workflownames=[]
     j=1
