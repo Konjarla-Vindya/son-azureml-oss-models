@@ -16,10 +16,8 @@ import yaml
 import requests
 import textwrap
 # from github import Github
-
 # constants
 LOG = True
-
 # parse command line argument to specify the directory to write the workflow files to
 parser = argparse.ArgumentParser()
 # mode - options are file or registry
@@ -44,17 +42,15 @@ parser.add_argument("--test_trigger_next_model", type=str, default="true")
 parser.add_argument("--test_sku_type", type=str, default="cpu")
 # parallel_tests, to specify number of parallel tests to run per workspace. 
 # this will be used to create multiple queues
-parser.add_argument("--parallel_tests", type=int, default=1)
+parser.add_argument("--parallel_tests", type=int, default=5)
 # workflow-template.yml file to use as template for generating workflow files
 parser.add_argument("--workflow_template", type=str, default="../config/workflow-template-huggingface.yml")
 # workspace_list file get workspace metadata
 parser.add_argument("--workspace_list", type=str, default="../config/workspaces.json")
 # directory to write logs
 parser.add_argument("--log_dir", type=str, default="../logs")
-
 args = parser.parse_args()
 parallel_tests = int(args.parallel_tests)
-
 try:
     credential = DefaultAzureCredential()
     credential.get_token("https://management.azure.com/.default")
@@ -63,13 +59,9 @@ except Exception as ex:
     exit (1)
 # Connect to the HuggingFaceHub registry
 registry_ml_client = MLClient(credential, registry_name="HuggingFace")
-
 queue = []
-
 # move this to config file later
 templates=['transformers-cpu-small', 'transformers-cpu-medium', 'transformers-cpu-large','transformers-cpu-extra-large', 'transformers-gpu-medium']
-
-
 def load_workspace_config():
     with open(args.workspace_list) as f:
         return json.load(f)
@@ -86,7 +78,7 @@ def create_queue_files(queue, workspace_list):
     if not os.path.exists(f"{args.queue_dir}/{args.test_set}"):
         os.makedirs(f"{args.queue_dir}/{args.test_set}")
     # delete any files in test_set folder
-    # os.system(f"rm -rf {args.queue_dir}/{args.test_set}/*")
+    os.system(f"rm -rf {args.queue_dir}/{args.test_set}/*")
     # generate queue files
     for workspace in queue:
         for thread in queue[workspace]:
@@ -97,8 +89,9 @@ def create_queue_files(queue, workspace_list):
             q_dict["subscription"] = workspace_list[workspace]["subscription"]
             q_dict["resource_group"] = workspace_list[workspace]["resource_group"]
             q_dict["registry"] = args.registry_name
-            q_dict["environment"] = args.environment
-            q_dict["compute"] = args.compute
+            q_dict["environment"] = workspace_list[workspace]["environment"]
+            q_dict["compute"] = workspace_list[workspace]["compute"]
+            q_dict["instance_type"] = workspace_list[workspace]["instance_type"]
             print("q_dict",q_dict)
             print("workspace",q_dict["workspace"])
             print("subscription",q_dict["subscription"])   
@@ -107,28 +100,6 @@ def create_queue_files(queue, workspace_list):
             with open(f"{args.queue_dir}/{args.test_set}/{workspace}-{thread}.json", 'w') as f:
                 print("enterred write file")
                 json.dump(q_dict,f,indent=4)
-    # for workspace in queue:
-    #     for thread in queue[workspace]:
-    #         print (f"Generating queue file {args.queue_dir}/{args.test_set}/{workspace}-{thread}.json")
-    #         q_dict = {"queue_name": f"{workspace}-{thread}", "models": queue[workspace][thread]}
-    #         print(queue[workspace][thread])
-    #         # print("queue[workspace][thread]--------------------------------------","MLFlow="+queue[workspace][thread])
-    #         # get the workspace from workspace_list
-    #         q_dict["workspace"] = workspace
-    #         q_dict["subscription"] = workspace_list[workspace]["subscription"]
-    #         q_dict["resource_group"] = workspace_list[workspace]["resource_group"]
-    #         q_dict["registry"] = args.registry_name
-    #         q_dict["environment"] = workspace_list[workspace]["environment"]
-    #         q_dict["compute"] = workspace_list[workspace]["compute"]
-    #         q_dict["instance_type"] = workspace_list[workspace]["instance_type"]
-    #         print("q_dict",q_dict)
-    #         print("workspace",q_dict["workspace"])
-    #         print("subscription",q_dict["subscription"])   
-    #         print("resource_group",q_dict["resource_group"])
-    #         print("registry",q_dict["registry"])
-    #         with open(f"{args.queue_dir}/{args.test_set}/{workspace}-{thread}.json", 'w') as f:
-    #             print("enterred write file")
-    #             json.dump(q_dict,f,indent=4)
                 
                     
 def assign_models_to_queues(models, workspace_list):
@@ -147,10 +118,10 @@ def assign_models_to_queues(models, workspace_list):
                         queue[workspace][thread] = []
                     queue[workspace][thread].append(models[i])
                     print("queue[workspace][thread]",queue[workspace][thread])
-                    print (f"Adding model {models[i]} at index {i} to queue {workspace}-{thread}")
                     i=i+1
+                    #print (f"Adding model {models[i]} at index {i} to queue {workspace}-{thread}")
                 else:
-                    print (f"Reached end of models list, breaking out of loop")
+                    #print (f"Reached end of models list, breaking out of loop")
                     if LOG:
                         print("current working directory is:", os.getcwd())
                         # if assign_models_to_queues under log_dir does not exist, create it
@@ -204,15 +175,16 @@ def create_workflow_files(q,workspace_list):
 def write_single_workflow_file(model, q, secret_name):
     # print a single dot without a newline to show progress
     print (".", end="", flush=True)
+    workflowname=model.replace('/','-')
     workflowname="MLFlow-"+model.replace('/','-')
-    # os.system(f"sed -i 's/name: .*/name: "MLFlow-"+{model}/g' {args.workflow_template}")
+    # os.system(f"sed -i 's/name: .*/name: {model}/g' {args.workflow_template}")
     workflow_file=f"{args.workflow_dir}/{workflowname}.yml"
     os.system(f"rm -rf {args.workflow_dir}/demo_{workflowname}.yml") 
     # print("yml file----------------------------------------",workflow_file)
     # # print(workflow_file['env']['test_queue'])
     print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
-    os.system(f"sed -i s/name: .*/name: MLFlow-{model}/g' {workflow_file}")
+    os.system(f"sed -i s/name: .*/name: {model}/g' {workflow_file}")
     # replace <test_queue> with q
     os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
     # os.system(f"sed -i 's/test-norwayeast-02/{q}/g' {workflow_file}")
@@ -229,21 +201,18 @@ def write_single_workflow_file(model, q, secret_name):
     # replace <test_secret_name> 
     os.system(f"sed -i 's/test_secret_name: .*/test_secret_name: {secret_name}/g' {workflow_file}")
     # # Read in the file
-
     # github_token="GITHUB_TOKEN"
     repository_owner="Konjarla-Vindya"
     repository_name="son-azureml-oss-models"
     workflow_filename=f".github/workflows/{workflowname}.yml"
     # workflow_sha="main"  # You need to provide the correct SHA
-    new_workflow_name="MLFlow-"+{model}
-    new_job_name="MLFlow-"+{model}
-
+    new_workflow_name={model}
+    new_job_name={model}
     # Construct the API URL
     api_url = f"https://api.github.com/repositories/655633575/contents/{workflow_filename}"
     print("api url is genrating:--------------------",api_url)
     print("type of api_url=============",type(api_url))
     print("type of workflow_file=============",type(workflow_file))
-
     github_token = os.environ.get("GITHUB_TOKEN")
     # print("github_token: is ------------------------------------",github_token)
    
@@ -263,7 +232,6 @@ def write_single_workflow_file(model, q, secret_name):
         print(f"SHA of '{workflow_filename}': {file_sha}")
     else:
         print(f"Failed to fetch file info. Status code: {response.status_code}")
-
     # Prepare the request headers
     # headers = {
     #     "Authorization": f"Bearer {github_token}",
@@ -286,8 +254,6 @@ def write_single_workflow_file(model, q, secret_name):
     #     print("Friendly name updated successfully!")
     # else:
     #     print(f"Failed to update friendly name. Status code: {update_response.status_code}")
-
-
     # workflow_sha=file_sha
     # # Get the latest commit information for the workflow file
     # commit_info=$(curl -s -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
@@ -315,7 +281,6 @@ def write_single_workflow_file(model, q, secret_name):
     # # Make the PATCH request to update the workflow file
     # curl -X PUT -H "Authorization: Bearer $github_token" -H "Accept: application/vnd.github.v3+json" \
     #      -d "$json_payload" "$current_url"
-
     with open(workflow_file, 'rt') as f:
         yaml_content = f.read()
         # yaml_content=yaml.safe_load(f)
@@ -403,7 +368,6 @@ def main():
     print (f"  Parallel tests: {parallel_tests}")
     print (f"  Total queues: {len(workspace_list)*parallel_tests}")
     print (f"  Average models per queue: {int(len(models)/(len(workspace_list)*parallel_tests))}")
-
         
 if __name__ == "__main__":
     main()
