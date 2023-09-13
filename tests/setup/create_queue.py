@@ -147,8 +147,8 @@ def assign_models_to_queues(models, workspace_list):
                         queue[workspace][thread] = []
                     queue[workspace][thread].append(models[i])
                     print("queue[workspace][thread]",queue[workspace][thread])
-                    i=i+1
                     print (f"Adding model {models[i]} at index {i} to queue {workspace}-{thread}")
+                    i=i+1
                 else:
                     print (f"Reached end of models list, breaking out of loop")
                     if LOG:
