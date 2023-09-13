@@ -1,5 +1,5 @@
 {
-    "queue_name": "test-japaneast-5,
+    "queue_name": "test-japaneast-5",
     "models": [
         "CAMeL-Lab/bert-base-arabic-camelbert-da-poetry"
     ],
