@@ -134,34 +134,41 @@ class Dashboard():
     def results(self, last_runs_dict):
         results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0, "not_tested": 0, "total_duration": 0}
         summary = []
-    
+
+ 
+
         df = pandas.DataFrame.from_dict(last_runs_dict)
         results_dict["total"] = df["workflow_id"].count()
         results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
         results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
         results_dict["cancelled"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled')]['workflow_id'].count()
-    
-        success_rate = results_dict["success"] / results_dict["total"] * 100.00
-        failure_rate = results_dict["failure"] / results_dict["total"] * 100.00
-        cancel_rate = results_dict["cancelled"] / results_dict["total"] * 100.00
-    
-        # Create a properly formatted Markdown table
-        summary.append("| Total | Success | Failure | Cancelled |")
-        summary.append("|-------|---------|---------|-----------|")
-        summary.append(f"| {results_dict['total']} | {results_dict['success']} | {results_dict['failure']} | {results_dict['cancelled']} |")
-        summary.append(f"| 100.0% | {success_rate:.2f}% | {failure_rate:.2f}% | {cancel_rate:.2f}% |")
-    
-        # Create a Markdown table for models
+
+        success_rate = results_dict["success"]/results_dict["total"]*100.00
+        failure_rate = results_dict["failure"]/results_dict["total"]*100.00
+        cancel_rate = results_dict["cancelled"]/results_dict["total"]*100.00
+
+ 
+
+        summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|")
+        summary.append("-----|-------|-------|-------|")
+        summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|")
+        summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|")
+
+ 
+
         models = {"Model": last_runs_dict["workflow_name"], "Status": last_runs_dict["badge"]}
         models_md = pandas.DataFrame.from_dict(models).to_markdown()
-    
+
+ 
+
         summary_text = "\n".join(summary)
-    
         current_date = datetime.now().strftime('%Y%m%d')
     
         # Create a README file with the current datetime in the filename
         readme_filename = f"README_{current_date}.md"
-    
+
+ 
+
         with open(readme_filename, "w", encoding="utf-8") as f:
             f.write(summary_text)
             f.write(os.linesep)
