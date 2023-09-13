@@ -10,14 +10,13 @@ class Dashboard():
     def __init__(self): 
         self.github_token = os.environ['token']
         #self.github_token = "API_TOKEN"
-        print("token: ", self.github_token)
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
         self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
         self.repo_full_name = self.repo.full_name
         self.data = {
             "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
-            "updated_at": [], "status": [], "conclusion": [], "badge": [], "jobs_url": []
+            "updated_at": [], "status": [], "conclusion": [], "jobs_url": []
         }
 
     def get_all_workflow_names(self):
@@ -100,7 +99,7 @@ class Dashboard():
 
  
 
-                badge_url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
+               # badge_url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
                 html_url = jobs_data["jobs"][0]["html_url"] if jobs_data.get("jobs") else ""
 
  
@@ -116,11 +115,20 @@ class Dashboard():
 
  
 
-                if html_url:
-                    self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({html_url})")
-                else:
-                    url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml"
-                    self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({url})")
+                #if html_url:
+                    #self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({html_url})")
+                #else:
+                    #url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml"
+                    #self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({url})")
+                run_link = f"https://github.com/{self.repo_full_name}/actions/runs/{last_run['id']}"
+                models_entry = {
+                    "Model": workflow_name.replace(".yml", ""),
+                    "Status": "pass" if last_run["conclusion"] == "success" else "fail",
+                    "Link": run_link,
+                    "Timestamp": last_run["created_at"]
+                }
+
+                self.models_data.append(models_entry)
 
  
 
@@ -156,8 +164,8 @@ class Dashboard():
 
  
 
-        models = {"Model": last_runs_dict["workflow_name"], "Status": last_runs_dict["badge"]}
-        models_md = pandas.DataFrame.from_dict(models).to_markdown()
+        models_df = pandas.DataFrame.from_dict(self.models_data)
+        models_md = models_df.to_markdown()
 
  
 
