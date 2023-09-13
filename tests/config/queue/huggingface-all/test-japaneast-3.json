@@ -1,5 +1,5 @@
 {
-    "queue_name": "test-japaneast-3,
+    "queue_name": "test-japaneast-3",
     "models": [
         "Hate-speech-CNERG/dehatebert-mono-arabic"
     ],
