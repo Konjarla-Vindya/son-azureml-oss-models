@@ -47,26 +47,20 @@ jobs:
         run: |
           cd dashboard/HuggingFace
           python new.py
-      - name: Generate README file
-        run: |
-          cd dashboard/HuggingFace
+      # - name: Generate README file
+      #   run: |
+      #     cd dashboard/HuggingFace
 
  
 
-          # Get the current date and time
-          current_date=$(date +"%Y%m%d")
+      #     # Get the current date and time
+      #     current_date=$(date +"%Y%m%d")
 
  
 
-          # Create a README file with the current datetime in the filename
-          readme_filename="README_${current_date}.md"
+      #     # Create a README file with the current datetime in the filename
+      #     readme_filename="README_${current_date}.md"
 
- 
-
-          # Run your script to generate content for the README file
-          python new.py > "$readme_filename"
-
- 
 
       - name: Add Generated File
         run: |
