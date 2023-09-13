@@ -1,7 +1,8 @@
 {
     "queue_name": "test-southcentralus-0",
     "models": [
-        "bert-base-cased"
+        "bert-base-cased",
+        "EleutherAI/gpt-neo-125m"
     ],
     "workspace": "test-southcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
