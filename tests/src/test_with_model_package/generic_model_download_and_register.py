@@ -212,7 +212,7 @@ class Model:
             input_example=scoring_input.input_data
         )
         mlflow.transformers.save_model(
-            transformers_model=pipeline,
+            transformers_model=model_pipeline,
             path=registered_model_name,
             task=task,
             signature=signature,
