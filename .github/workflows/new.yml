@@ -26,7 +26,7 @@ jobs:
             repository: Konjarla-Vindya/son-azureml-oss-models
             branch: main
         # #     git config global init.defaultBranch main
-            token: ${{ secrets.API_TOKEN }}
+            token: ${{ secrets.WORKFLOW_TOKEN }}
 
  
 
