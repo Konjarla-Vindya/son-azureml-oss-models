@@ -1,11 +1,9 @@
 from azureml.core import Workspace, Environment
-#from generic_model_download_and_register import Model
 from model_inference_and_deployment import ModelInferenceAndDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
-from azure.ai.ml import MLClient, UserIdentityConfiguration
-from azure.ai.ml.dsl import pipeline
+from azure.ai.ml import MLClient
 import mlflow
 import json
 import os
@@ -73,6 +71,7 @@ def set_next_trigger_model(queue):
 # file the index of test_model_name in models list queue dictionary
     model_list = list(queue.models)
     #model_name_without_slash = test_model_name.replace('/', '-')
+    #check_mlflow_model = "MLFlow-"+test_model_name
     index = model_list.index(test_model_name)
     #index = model_list.index(test_model_name)
     print(f"index of {test_model_name} in queue: {index}")
@@ -117,6 +116,7 @@ def run_azure_ml_job(code, command_to_run, environment, compute, environment_var
 
 
 def create_and_get_job_studio_url(command_job, workspace_ml_client):
+
     #ml_client = mlflow.tracking.MlflowClient()
     returned_job = workspace_ml_client.jobs.create_or_update(command_job)
     # wait for the job to complete
@@ -162,7 +162,8 @@ if __name__ == "__main__":
             credential=credential,
             subscription_id=queue.subscription,
             resource_group_name=queue.resource_group,
-            workspace_name=queue.workspace
+            workspace_name=queue.workspace,
+            registry_name="sonata-registry"
         )
     ws = Workspace(
         subscription_id=queue.subscription,
