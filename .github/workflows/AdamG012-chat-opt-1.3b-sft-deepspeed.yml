@@ -2,6 +2,7 @@ name: AdamG012/chat-opt-1.3b-sft-deepspeed
 
 on: 
   workflow_dispatch:
+  
 
 env:
   test_model_name: AdamG012/chat-opt-1.3b-sft-deepspeed
