@@ -11,6 +11,9 @@ from mlflow.tracking.client import MlflowClient
 from mlflow.store.artifact.models_artifact_repo import ModelsArtifactRepository
 from transformers import pipeline
 from huggingface_hub import HfApi
+from azure.ai.ml.entities import Model
+from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
+from azure.ai.ml import MLClient
 import pandas as pd
 import os
 import mlflow
@@ -32,6 +35,7 @@ STRING_TO_CHECK = 'transformers'
 FILE_NAME = "task_and_library.json"
 
 test_model_name = os.environ.get('test_model_name')
+registry = os.environ.get("registry")
 
 
 class Model:
@@ -202,17 +206,44 @@ class Model:
         mlflow.transformers.log_model(
             transformers_model=model_pipeline,
             task=task,
-            artifact_path=artifact_path,
-            registered_model_name=registered_model_name,
+            # artifact_path=artifact_path,
+            # registered_model_name=registered_model_name,
             signature=signature,
             input_example=scoring_input.input_data
         )
-        registered_model_list = client.get_latest_versions(
-            name=registered_model_name, stages=["None"])
-        model_detail = registered_model_list[0]
-        # set tag for the registered model
-        client.set_model_version_tag(
-            name=registered_model_name, version=model_detail.version, key="model_name", value=self.model_name)
+        mlflow.transformers.save_model(
+            transformers_model=pipeline,
+            path=registered_model_name,
+            task=task,
+            signature=signature,
+            input_example=scoring_input.input_data
+        )
+        # registered_model_list = client.get_latest_versions(
+        #     name=registered_model_name, stages=["None"])
+        # model_detail = registered_model_list[0]
+        # # set tag for the registered model
+        # client.set_model_version_tag(
+        #     name=registered_model_name, version=model_detail.version, key="model_name", value=self.model_name)
+        model_to_register = Model(name=registered_model_name,
+                                  # version=model_detail.version,
+                                  type="mlflow_model",
+                                  path=registered_model_name,
+                                  tags={"model_name": self.model_name}
+                                  # properties=model_detail._properties
+                                  # flavors=flavors,
+                                  # description=model_description
+                                  )
+        try:
+            credential = DefaultAzureCredential()
+            credential.get_token("https://management.azure.com/.default")
+        except Exception as ex:
+            # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
+            credential = InteractiveBrowserCredential()
+        registry_mlclient = MLClient(
+            credential=credential,
+            registry_name="sonata-registry"
+        )
+        registry_mlclient.models.create_or_update(model_to_register)
 
     def download_and_register_model(self, task, scoring_input, registered_model_name, client) -> dict:
         """ This method will be controlling all execution of methods 
@@ -240,7 +271,8 @@ class Model:
             scoring_input (_type_): _description_
             registered_model_name (_type_): _description_
         """
-        print("Registered Model : ", client.get_registered_model(registered_model_name))
+        print("Registered Model : ",
+              client.get_registered_model(registered_model_name))
         registered_model_detail = client.get_latest_versions(
             name=registered_model_name, stages=["None"])
         model_detail = registered_model_detail[0]
