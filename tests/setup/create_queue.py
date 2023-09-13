@@ -185,6 +185,9 @@ def write_single_workflow_file(model, q, secret_name):
     print (f"Generating workflow file: {workflow_file}")
     os.system(f"cp {args.workflow_template} {workflow_file}")
     MLFlow_Model=f"MLFlow-{model}"
+    print(MLFlow_Model)
+    MLmodel="MLFlow-"+model
+    print("MLmodel:",MLmodel)
     os.system(f"sed -i s/name: .*/name: {MLFlow_Model}/g' {workflow_file}")
     # replace <test_queue> with q
     os.system(f"sed -i 's/test_queue: .*/test_queue: {q}/g' {workflow_file}")
