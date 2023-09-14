@@ -205,7 +205,7 @@ class ModelRegistry:
             except Exception as ex:
                 _, _, exc_tb = sys.exc_info()
                 logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
-                  " the exception is this one :", ex)
+                  " the exception is this one :{ex}")
                 #raise AzureMLException._with_error(AzureMLError.create(UserIdentityMissingError, exception=ex))
                 raise AzureMLException(exception_message = ex)
 
