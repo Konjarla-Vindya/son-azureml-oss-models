@@ -38,7 +38,7 @@ test_model_name = os.environ.get('test_model_name')
 registry = os.environ.get("registry")
 
 
-class Model:
+class ModelRegistry:
     def __init__(self, model_name) -> None:
         self.model_name = model_name
 
@@ -224,15 +224,16 @@ class Model:
         # # set tag for the registered model
         # client.set_model_version_tag(
         #     name=registered_model_name, version=model_detail.version, key="model_name", value=self.model_name)
-        model_to_register = Model(name=registered_model_name,
-                                  # version=model_detail.version,
-                                  type="mlflow_model",
-                                  path=registered_model_name,
-                                  tags={"model_name": self.model_name}
-                                  # properties=model_detail._properties
-                                  # flavors=flavors,
-                                  # description=model_description
-                                  )
+        model_to_register = Model(
+            name=registered_model_name,
+            # version=model_detail.version,
+            type="mlflow_model",
+            path=registered_model_name,
+            tags={"model_name": self.model_name}
+            # properties=model_detail._properties
+            # flavors=flavors,
+            # description=model_description
+        )
         try:
             credential = DefaultAzureCredential()
             credential.get_token("https://management.azure.com/.default")
@@ -243,6 +244,7 @@ class Model:
             credential=credential,
             registry_name="sonata-registry"
         )
+        #Register the model in the registry
         registry_mlclient.models.create_or_update(model_to_register)
 
     def download_and_register_model(self, task, scoring_input, registered_model_name, client) -> dict:
@@ -296,16 +298,16 @@ class Model:
 
 
 if __name__ == "__main__":
-    model = Model(model_name=test_model_name)
+    model_registry = ModelRegistry(model_name=test_model_name)
     # Get the sample input data
-    task = model.get_task()
+    task = model_registry.get_task()
     # Get the sample input data
-    scoring_input = model.get_sample_input_data(task=task)
+    scoring_input = model_registry.get_sample_input_data(task=task)
     print("This is the task associated to the model : ", task)
     # If threr will be model namr with / then replace it
     registered_model_name = test_model_name.replace("/", "-")
     client = MlflowClient()
-    model.download_and_register_model(
+    model_registry.download_and_register_model(
         task=task, scoring_input=scoring_input, registered_model_name=registered_model_name, client=client)
-    model.registered_model_inference(
+    model_registry.registered_model_inference(
         task=task, scoring_input=scoring_input, registered_model_name=registered_model_name, client=client)
