@@ -13,6 +13,13 @@ from transformers import pipeline
 from huggingface_hub import HfApi
 from azure.ai.ml.entities import Model
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
+from azure.ai.ml.identity import AzureMLOnBehalfOfCredential
+from azure.identity import ManagedIdentityCredential
+from azureml._common._error_definition import AzureMLError
+from azureml._common.exceptions import AzureMLException
+from azureml.core.run import Run
+from utils.exceptions import UserIdentityMissingError
+from utils.logging import get_logger
 from azure.ai.ml import MLClient
 import pandas as pd
 import os
@@ -35,8 +42,9 @@ STRING_TO_CHECK = 'transformers'
 FILE_NAME = "task_and_library.json"
 
 test_model_name = os.environ.get('test_model_name')
-registry = os.environ.get("registry")
+registry_name = os.environ.get("registry")
 
+logger = get_logger(__name__)
 
 class ModelRegistry:
     def __init__(self, model_name) -> None:
@@ -174,6 +182,39 @@ class ModelRegistry:
         tokenizer = AutoTokenizer.from_pretrained(self.model_name)
         model_and_tokenizer = {"model": model, "tokenizer": tokenizer}
         return model_and_tokenizer
+    
+    def get_mlclient(self, registry_name: str = None):
+        has_msi_succeeded = False
+        try:
+            msi_client_id = os.environ.get("DEFAULT_IDENTITY_CLIENT_ID")
+            credential = ManagedIdentityCredential(client_id=msi_client_id)
+            credential.get_token("https://management.azure.com/.default")
+            has_msi_succeeded = True
+        except Exception:
+            # Fall back to AzureMLOnBehalfOfCredential in case ManagedIdentityCredential does not work
+            has_msi_succeeded = False
+            logger.warning("ManagedIdentityCredential was not found in the compute. "
+                        "Falling back to AzureMLOnBehalfOfCredential")
+
+        if not has_msi_succeeded:
+            try:
+                credential = AzureMLOnBehalfOfCredential()
+                # Check if given credential can get token successfully.
+                credential.get_token("https://management.azure.com/.default")
+            except Exception as ex:
+                raise AzureMLException._with_error(AzureMLError.create(UserIdentityMissingError, exception=ex))
+
+        if registry_name is None:
+            run = Run.get_context(allow_offline=False)
+            ws = run.experiment.workspace
+            return MLClient(
+                credential=credential,
+                subscription_id=ws._subscription_id,
+                resource_group_name=ws._resource_group,
+                workspace_name=ws._workspace_name,
+            )
+        logger.info(f"Creating MLClient with registry name {registry_name}")
+        return MLClient(credential=credential, registry_name=registry_name)
 
     def register_model_in_workspace(self, model_and_tokenizer: dict, scoring_input: ConfigBox, task: str, registered_model_name: str, client):
         """ I will load the pipeline with the model name if its a fill mask task then it will get the 
@@ -234,17 +275,18 @@ class ModelRegistry:
             # flavors=flavors,
             # description=model_description
         )
-        try:
-            credential = DefaultAzureCredential()
-            credential.get_token("https://management.azure.com/.default")
-        except Exception as ex:
-            # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
-            credential = InteractiveBrowserCredential()
-        registry_mlclient = MLClient(
-            credential=credential,
-            registry_name="sonata-registry"
-        )
-        #Register the model in the registry
+        # try:
+        #     credential = DefaultAzureCredential()
+        #     credential.get_token("https://management.azure.com/.default")
+        # except Exception as ex:
+        #     # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
+        #     credential = InteractiveBrowserCredential()
+        # registry_mlclient = MLClient(
+        #     credential=credential,
+        #     registry_name="sonata-registry"
+        # )
+        registry_mlclient = self.get_mlclient(registry_name)
+        # #Register the model in the registry
         registry_mlclient.models.create_or_update(model_to_register)
 
     def download_and_register_model(self, task, scoring_input, registered_model_name, client) -> dict:
