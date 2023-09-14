@@ -59,6 +59,10 @@ jobs:
         run: |
           cd dashboard/HuggingFace/Dashboard_Archive
           python new.py
+      - name: Run Python Script from other folder to create README in main folder
+        run: |
+          cd dashboard/HuggingFace
+          python new.py
      
       - name: Add Generated File
         run: |
