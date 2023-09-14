@@ -122,7 +122,7 @@ class Dashboard():
                 models_entry = {
                     "Model": workflow_name.replace(".yml", ""),
                     "Status": "PASS" if last_run["conclusion"] == "success" else "<font color='red'>FAIL</font>",
-                    "Link": run_link,
+                    "Link": f"[Run Link]({run_link})",
                     "LastRun_Timestamp": last_run["created_at"]
                 }
 
