@@ -83,7 +83,7 @@ jobs:
           git config user.email "${{ secrets.USER_EMAIL }}"
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
-          cd dashboard/HuggingFace/RunStatus_Archive
+          cd dashboard/HuggingFace/RunStatusDashboard_Archive
           # Get the current date and time (again)
           current_date=$(date +"%Y%m%d")
           
