@@ -121,7 +121,7 @@ class Dashboard():
                 run_link = f"https://github.com/{self.repo_full_name}/actions/runs/{last_run['id']}"
                 models_entry = {
                     "Model": workflow_name.replace(".yml", ""),
-                    "Status": "pass" if last_run["conclusion"] == "success" else "fail",
+                    "Status": "PASS" if last_run["conclusion"] == "success" else "<font color='red'>FAIL</font>",
                     "Link": run_link,
                     "Timestamp": last_run["created_at"]
                 }
