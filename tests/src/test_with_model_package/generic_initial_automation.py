@@ -3,7 +3,7 @@ from model_inference_and_deployment import ModelInferenceAndDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
-from azure.ai.ml import MLClient
+from azure.ai.ml import MLClient, UserIdentityConfiguration
 import mlflow
 import json
 import os
@@ -110,7 +110,8 @@ def run_azure_ml_job(code, command_to_run, environment, compute, environment_var
         command=command_to_run,
         environment=environment,
         compute=compute,
-        environment_variables=environment_variables
+        environment_variables=environment_variables,
+        identity= UserIdentityConfiguration()
     )
     return command_job
 
