@@ -59,48 +59,17 @@ jobs:
         run: |
           cd dashboard/HuggingFace
           python new.py
-      # - name: Generate README file
-      #   run: |
-      #     cd dashboard/HuggingFace
-
- 
-
- 
-
-      #     # Get the current date and time
-      #     current_date=$(date +"%Y%m%d")
-
- 
-
- 
-
-      #     # Create a README file with the current datetime in the filename
-      #     readme_filename="README_${current_date}.md"
-
- 
-
- 
-
+     
       - name: Add Generated File
         run: |
           git config user.email "${{ secrets.USER_EMAIL }}"
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
-          cd dashboard/HuggingFace
+          cd dashboard/HuggingFace/RunStatusDashboard_Archive
           # Get the current date and time (again)
           current_date=$(date +"%Y%m%d")
-
- 
-
- 
-
           # Create a README file with the current datetime in the filename
           readme_filename="README_${current_date}.md"
-
- 
-
- 
-
           # Add the generated README file
           git add "$readme_filename"
           set +e
