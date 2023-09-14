@@ -57,7 +57,7 @@ jobs:
           pip install -r runs_requirements.txt
       - name: Run Python Script
         run: |
-          cd dashboard/HuggingFace
+          cd dashboard/HuggingFace/Dashboard_Archive
           python new.py
      
       - name: Add Generated File
@@ -65,7 +65,7 @@ jobs:
           git config user.email "${{ secrets.USER_EMAIL }}"
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
-          cd dashboard/HuggingFace/RunStatusDashboard_Archive
+          cd dashboard/HuggingFace/Dashboard_Archive
           # Get the current date and time (again)
           current_date=$(date +"%Y%m%d")
           # Create a README file with the current datetime in the filename
