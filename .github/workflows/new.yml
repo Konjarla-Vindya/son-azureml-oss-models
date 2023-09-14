@@ -60,48 +60,48 @@ jobs:
 
           # Create a README file with the current datetime in the filename
           readme_filename="README_${current_date}.md"
-      - name: Add Generated README File
-        run: |
-          git config user.email "${{ secrets.USER_EMAIL }}"
-          git config user.name "${{ secrets.USER_NAME }}"
-          git pull origin main
-          cd dashboard/HuggingFace
-          git add README.md          
-          # Attempt to commit changes and handle errors
-          set +e
-          git commit -m "Add README.md"
-          commit_status=$?
-          set -e
-          if [ $commit_status -eq 0 ]; then
-            git push
-          else
-            echo "No changes to commit or there was an error. Skipping commit and push."
-          fi
-
-      # - name: Add Generated README File with TimeStamp
+      # - name: Add Generated README File
       #   run: |
       #     git config user.email "${{ secrets.USER_EMAIL }}"
       #     git config user.name "${{ secrets.USER_NAME }}"
       #     git pull origin main
-      #     cd dashboard/HuggingFace/RunStatusDashboard_Archive
-      #     # Get the current date and time (again)
-      #     current_date=$(date +"%Y%m%d")
-          
-      #     # Create a README file with the current datetime in the filename
-      #     readme_filename="README_${current_date}.md"
-
- 
-
-      #     # Add the generated README file
-      #     git add "$readme_filename"
+      #     cd dashboard/HuggingFace
+      #     git add README.md          
+      #     # Attempt to commit changes and handle errors
       #     set +e
-      #     # Commit and push the changes
-      #     git commit -m "Add $readme_filename"
+      #     git commit -m "Add README.md"
       #     commit_status=$?
       #     set -e
       #     if [ $commit_status -eq 0 ]; then
-      #         git push
+      #       git push
       #     else
       #       echo "No changes to commit or there was an error. Skipping commit and push."
       #     fi
+
+      - name: Add Generated README File with TimeStamp
+        run: |
+          git config user.email "${{ secrets.USER_EMAIL }}"
+          git config user.name "${{ secrets.USER_NAME }}"
+          git pull origin main
+          cd dashboard/HuggingFace/RunStatusDashboard_Archive
+          # Get the current date and time (again)
+          current_date=$(date +"%Y%m%d")
+          
+          # Create a README file with the current datetime in the filename
+          readme_filename="README_${current_date}.md"
+
+ 
+
+          # Add the generated README file
+          git add "$readme_filename"
+          set +e
+          # Commit and push the changes
+          git commit -m "Add $readme_filename"
+          commit_status=$?
+          set -e
+          if [ $commit_status -eq 0 ]; then
+              git push
+          else
+            echo "No changes to commit or there was an error. Skipping commit and push."
+          fi
          
