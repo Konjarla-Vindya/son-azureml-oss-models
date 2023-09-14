@@ -26,6 +26,7 @@ import os
 import mlflow
 import re
 import json
+import sys
 
 
 # import json
@@ -202,7 +203,11 @@ class ModelRegistry:
                 # Check if given credential can get token successfully.
                 credential.get_token("https://management.azure.com/.default")
             except Exception as ex:
-                raise AzureMLException._with_error(AzureMLError.create(UserIdentityMissingError, exception=ex))
+                _, _, exc_tb = sys.exc_info()
+                logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
+                  " the exception is this one :", ex)
+                #raise AzureMLException._with_error(AzureMLError.create(UserIdentityMissingError, exception=ex))
+                raise AzureMLException(exception_message = ex)
 
         if registry_name is None:
             run = Run.get_context(allow_offline=False)
