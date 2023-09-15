@@ -28,7 +28,7 @@ jobs:
       - name: Fetch Latest Model Version
         id: fetch_model
         run: |
-          python fetch_latest_model_version.py  # Create a Python script for fetching the latest model version
+          python fetch_latest_model_version.py --config_file credentials.json  # Create a Python script for fetching the latest model version
 
       - name: Modify JSON Configuration
         run: |
