@@ -35,7 +35,7 @@ jobs:
           model_name=$(jq -r .model_name credentials.json)
           latest_model_version=$(cat latest_model_version.txt)  
           jq --argjson latest_model_version "$latest_model_version" '.model_version = $latest_model_version' credentials.json > modified_config.json
-          mv modified_credentials.json credentials.json
+          mv modified_config.json credentials.json  # Correct the file name here
 
       - name: Run Python Script to Deploy and Infer
         run: python deploy_and_infer.py
