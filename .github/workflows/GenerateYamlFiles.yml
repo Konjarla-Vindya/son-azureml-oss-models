@@ -65,8 +65,8 @@ jobs:
     - name: Commit files
       id: commit
       run: | 
-        # git config user.email "${{ secrets.USER_EMAIL }}"           
-        # git config user.name "${{ secrets.USER_NAME }}"
+        git config user.email "${{ secrets.USER_EMAIL }}"           
+        git config user.name "${{ secrets.USER_NAME }}"
         git add --all
         git commit -m --all          
         git push
