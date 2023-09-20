@@ -1,6 +1,7 @@
 from azure.identity import DefaultAzureCredential
 from azureml.core import Workspace, Model
 import json
+import argparse
 
 def fetch_latest_model_version(config):
     # Extract parameters from the configuration JSON
@@ -11,7 +12,6 @@ def fetch_latest_model_version(config):
 
     # Load Azure ML workspace using the default credential
     credential = DefaultAzureCredential()
-
     ws = Workspace(subscription_id, resource_group, workspace_name, auth=credential)
 
     # Fetch the latest registered model version
@@ -33,11 +33,8 @@ def fetch_latest_model_version(config):
     print(f"Latest model version: {latest_model_version}")
 
 if __name__ == "__main__":
-    import argparse
-
     parser = argparse.ArgumentParser(description="Fetch the latest model version from Azure ML workspace.")
     parser.add_argument("--config_file", required=True, help="Path to the JSON configuration file")
-
     args = parser.parse_args()
 
     # Load the configuration from the JSON file
