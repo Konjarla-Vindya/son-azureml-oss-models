@@ -218,6 +218,9 @@ if __name__ == "__main__":
     print("loaded_model-----------------------------",loaded_model)
     # environment_variables = {"test_model_name": test_model_name
     #                         ,"model_source_uri": model_source_uri}
+    print("workspace_ml_client-------------",workspace_ml_client)
+    print("queue.compute---",queue.compute)
+    print("queue.workspace====",queue.workspace)
     command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     
