@@ -121,7 +121,9 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
     # wait for the job to complete
     workspace_ml_client.jobs.stream(returned_job.name)
     return returned_job.studio_url
-
+def load_model(model_source_uri)
+    loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
+    return loaded_model
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
     if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
@@ -196,8 +198,8 @@ if __name__ == "__main__":
     print (f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
     
     model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
-    loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
-    print("loaded_model-----------------------------",loaded_model)
+    LM=load_model(model_source_uri)
+    print("loaded_model-----------------------------",LM)
     command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     
