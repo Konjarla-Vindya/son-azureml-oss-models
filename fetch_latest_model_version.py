@@ -39,6 +39,6 @@ if __name__ == "__main__":
 
     # Load the configuration from the JSON file
     with open(args.config, "r") as config_file:
-        config = json.load(config)
+        config = json.load(config_file)
 
     fetch_latest_model_version(config)
