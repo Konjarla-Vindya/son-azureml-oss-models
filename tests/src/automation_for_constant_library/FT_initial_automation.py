@@ -123,8 +123,8 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
     workspace_ml_client.jobs.stream(returned_job.name)
     return returned_job.studio_url
     
-def load_model(model_source_uri):
-    loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
+def load_model(model_detail):
+    loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
     print("Inside load model")
     return loaded_model
 if __name__ == "__main__":
@@ -207,14 +207,14 @@ if __name__ == "__main__":
     
     print("Latest registered model version is : ", model_detail.version)
     
-    loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
+    # loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
     # model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
     # print("model_source_uri---------------------",model_source_uri)
     # loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
-    # LM=load_model(model_source_uri)
+    LM=load_model(model_detail)
     print("loaded_model-----------------------------",loaded_model)
-    # environment_variables = {"test_model_name": test_model_name
-    #                         ,"model_source_uri": model_source_uri}
+    environment_variables = {"test_model_name": test_model_name
+                            ,"model_detail": model_detail}
     print("workspace_ml_client-------------",workspace_ml_client)
     print("queue.compute---",queue.compute)
     print("queue.workspace====",queue.workspace)
