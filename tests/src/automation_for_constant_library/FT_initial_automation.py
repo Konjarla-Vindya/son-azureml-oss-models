@@ -216,7 +216,7 @@ if __name__ == "__main__":
     print("LM-----------------------------",LM)
     environment_variables = {"test_model_name": test_model_name
                             ,"model_detail": model_detail}
-    print("workspace_ml_client-------------",workspace_ml_client)
+    print("environment_variables-------------",environment_variables)
     print("queue.compute---",queue.compute)
     print("queue.workspace====",queue.workspace)
     command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
