@@ -1,4 +1,4 @@
-%pip install --upgrade azureml-sdk
+pip install --upgrade azureml-sdk
 from azure.identity import DefaultAzureCredential
 from azureml.core import Workspace, Model
 import json
