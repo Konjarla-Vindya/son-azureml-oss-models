@@ -202,7 +202,7 @@ if __name__ == "__main__":
     LM=load_model(model_source_uri)
     print("loaded_model-----------------------------",LM)
     environment_variables = {"test_model_name": test_model_name
-                            "model_source_uri": model_source_uri}
+                            ,"model_source_uri": model_source_uri}
     command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     
