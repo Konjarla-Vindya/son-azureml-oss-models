@@ -121,7 +121,8 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
     # wait for the job to complete
     workspace_ml_client.jobs.stream(returned_job.name)
     return returned_job.studio_url
-def load_model(model_source_uri)
+    
+def load_model(model_source_uri):
     loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
     return loaded_model
 if __name__ == "__main__":
