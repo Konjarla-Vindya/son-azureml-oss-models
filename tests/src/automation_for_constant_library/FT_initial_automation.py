@@ -212,7 +212,7 @@ if __name__ == "__main__":
     # print("model_source_uri---------------------",model_source_uri)
     # loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
     LM=load_model(model_detail)
-    print("loaded_model-----------------------------",loaded_model)
+    print("loaded_model-----------------------------",LM)
     environment_variables = {"test_model_name": test_model_name
                             ,"model_detail": model_detail}
     print("workspace_ml_client-------------",workspace_ml_client)
