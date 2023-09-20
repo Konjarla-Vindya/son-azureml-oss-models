@@ -38,7 +38,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Load the configuration from the JSON file
-    with open(args.config_file, "r") as config_file:
-        config = json.load(config_file)
+    with open(args.config, "r") as config_file:
+        config = json.load(config)
 
     fetch_latest_model_version(config)
