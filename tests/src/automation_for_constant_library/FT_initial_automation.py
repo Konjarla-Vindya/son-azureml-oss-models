@@ -212,10 +212,10 @@ if __name__ == "__main__":
     # model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
     # print("model_source_uri---------------------",model_source_uri)
     # loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
-    LM=load_model(model_detail)
-    print("LM-----------------------------",LM)
+    # LM=load_model(model_detail)
+    # print("LM-----------------------------",LM)
     environment_variables = {"test_model_name": test_model_name
-                            ,"model_detail": model_detail}
+                            ,"model_source_uri": model_detail.source}
     print("environment_variables-------------",environment_variables)
     print("queue.compute---",queue.compute)
     print("queue.workspace====",queue.workspace)
