@@ -1,4 +1,4 @@
-name: Azure-ML-Model-Deployment
+name: Azure-ML-Model-FT-Deployment
 
 on:
   workflow_dispatch:
@@ -28,14 +28,14 @@ jobs:
       - name: Fetch Latest Model Version
         id: fetch_model
         run: |
-          python fetch_latest_model_version.py --config_file credentials.json  # Create a Python script for fetching the latest model version
+          python fetch_latest_model_version.py  # Create a Python script for fetching the latest model version
 
       - name: Modify JSON Configuration
         run: |
-          model_name=$(jq -r .model_name credentials.json)
+          model_name=$(jq -r .model_name config.json)
           latest_model_version=$(cat latest_model_version.txt)  
-          jq --argjson latest_model_version "$latest_model_version" '.model_version = $latest_model_version' credentials.json > modified_config.json
-          mv modified_config.json credentials.json  # Correct the file name here
+          jq --argjson latest_model_version "$latest_model_version" '.model_version = $latest_model_version' config.json > modified_config.json
+          mv modified_config.json config.json
 
       - name: Run Python Script to Deploy and Infer
         run: python deploy_and_infer.py
