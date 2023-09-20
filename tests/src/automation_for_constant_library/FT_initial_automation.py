@@ -174,7 +174,7 @@ if __name__ == "__main__":
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(
         workspace_ml_client, queue.compute)
-    environment_variables = {"test_model_name": test_model_name}
+    # environment_variables = {"test_model_name": test_model_name}
     env_list = workspace_ml_client.environments.list(name=queue.environment)
     latest_version = 0
     for env in env_list:
