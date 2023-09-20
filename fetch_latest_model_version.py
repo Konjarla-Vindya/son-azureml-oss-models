@@ -4,7 +4,7 @@ from azureml.core import Workspace, Model
 import json
 
 # Specify the path to your configuration JSON file
-config_file_path = "son-azureml-oss-models/config.json"
+config_file_path = "Konjarla-Vindya/son-azureml-oss-models/blob/main/config.json"
 
 def fetch_latest_model_version():
     # Load Azure ML workspace using the default credential
