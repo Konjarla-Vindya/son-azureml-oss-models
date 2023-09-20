@@ -181,15 +181,33 @@ if __name__ == "__main__":
     latest_env = workspace_ml_client.environments.get(
         name=queue.environment, version=str(latest_version))
     print("Latest Environment :", latest_env)
+    version_list = list(workspace_ml_client.models.list(test_model_name))
+    foundation_model = ''
+    if len(version_list) == 0:
+        print("Model not found in registry")
+    else:
+        model_version = version_list[0].version
+        foundation_model = workspace_ml_client.models.get(test_model_name, model_version)
+        print(
+            "\n\nUsing model name: {0}, version: {1}, id: {2} for F.T".format(
+                foundation_model.name, foundation_model.version, foundation_model.id
+            )
+        )
+    print (f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
+    
+    model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
+    loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
+    print("loaded_model-----------------------------",loaded_model)
     command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
-    create_and_get_job_studio_url(command_job, workspace_ml_client)
+    
+    # create_and_get_job_studio_url(command_job, workspace_ml_client)
 
-    InferenceAndDeployment = ModelInferenceAndDeployemnt(
-        test_model_name=test_model_name,
-        workspace_ml_client=workspace_ml_client,
-        registry=queue.registry
-    )
-    InferenceAndDeployment.model_infernce_and_deployment(
-        instance_type=queue.instance_type
-    )
+    # InferenceAndDeployment = ModelInferenceAndDeployemnt(
+    #     test_model_name=test_model_name,
+    #     workspace_ml_client=workspace_ml_client,
+    #     registry=queue.registry
+    # )
+    # InferenceAndDeployment.model_infernce_and_deployment(
+    #     instance_type=queue.instance_type
+    # )
