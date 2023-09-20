@@ -1,7 +1,7 @@
 import os
 from FT_initial_automation import load_model  
 import mlflow
-import tranformers
+import transformers
 model_source_uri=os.environ.get('model_source_uri')
 test_model_name = os.environ.get('test_model_name')
 print("-----------------Im inside the python code")
