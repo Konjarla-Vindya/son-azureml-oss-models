@@ -9,6 +9,7 @@ import json
 import os
 import sys
 from box import ConfigBox
+from mlflow.tracking.client import MlflowClient
 
 # constants
 check_override = True
@@ -186,24 +187,35 @@ if __name__ == "__main__":
         name=queue.environment, version=str(latest_version))
     print("Latest Environment :", latest_env)
     version_list = list(workspace_ml_client.models.list(test_model_name))
-    foundation_model = ''
-    if len(version_list) == 0:
-        print("Model not found in registry")
-    else:
-        model_version = version_list[0].version
-        foundation_model = workspace_ml_client.models.get(test_model_name, model_version)
-        print(
-            "\n\nUsing model name: {0}, version: {1}, id: {2} for F.T".format(
-                foundation_model.name, foundation_model.version, foundation_model.id
-            )
-        )
-    print (f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
+    # foundation_model = ''
+    # if len(version_list) == 0:
+    #     print("Model not found in registry")
+    # else:
+    #     model_version = version_list[0].version
+    #     foundation_model = workspace_ml_client.models.get(test_model_name, model_version)
+    #     print(
+    #         "\n\nUsing model name: {0}, version: {1}, id: {2} for F.T".format(
+    #             foundation_model.name, foundation_model.version, foundation_model.id
+    #         )
+    #     )
+    # print (f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
+
+    client = MlflowClient()
     
-    model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
-    print("model_source_uri---------------------",model_source_uri)
-    loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
+    registered_model_detail = client.get_latest_versions(
+    
+        name=test_model_name, stages=["None"])
+    
+    model_detail = registered_model_detail[0]
+    
+    print("Latest registered model version is : ", model_detail.version)
+    
+    loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
+    # model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
+    # print("model_source_uri---------------------",model_source_uri)
+    # loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
     # LM=load_model(model_source_uri)
-    print("loaded_model-----------------------------",LM)
+    print("loaded_model-----------------------------",loaded_model)
     # environment_variables = {"test_model_name": test_model_name
     #                         ,"model_source_uri": model_source_uri}
     command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
