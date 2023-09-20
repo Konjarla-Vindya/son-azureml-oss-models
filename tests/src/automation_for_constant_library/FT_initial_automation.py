@@ -124,6 +124,7 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
     
 def load_model(model_source_uri):
     loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
+    print("Inside load model")
     return loaded_model
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -199,6 +200,7 @@ if __name__ == "__main__":
     print (f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
     
     model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
+    print("model_source_uri---------------------",model_source_uri)
     LM=load_model(model_source_uri)
     print("loaded_model-----------------------------",LM)
     # environment_variables = {"test_model_name": test_model_name
