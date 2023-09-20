@@ -27,7 +27,7 @@ def data_set():
         label_df["label"] = label_df.index.astype("int64")
         label_df = label_df[["label", "label_string"]]
         label_df.head()
-      print("downloaded data set-------------")
+    print("downloaded data set-------------")
 if __name__ == "__main__":
   model_source_uri=os.environ.get('model_source_uri')
   test_model_name = os.environ.get('test_model_name')
