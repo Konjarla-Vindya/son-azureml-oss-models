@@ -126,6 +126,7 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
 def load_model(model_detail):
     loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
     print("Inside load model")
+    print("loaded_model---------------",loaded_model)
     return loaded_model
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -212,7 +213,7 @@ if __name__ == "__main__":
     # print("model_source_uri---------------------",model_source_uri)
     # loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
     LM=load_model(model_detail)
-    print("loaded_model-----------------------------",LM)
+    print("LM-----------------------------",LM)
     environment_variables = {"test_model_name": test_model_name
                             ,"model_detail": model_detail}
     print("workspace_ml_client-------------",workspace_ml_client)
@@ -221,7 +222,7 @@ if __name__ == "__main__":
     command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     
-    create_and_get_job_studio_url(command_job, workspace_ml_client)
+    # create_and_get_job_studio_url(command_job, workspace_ml_client)
 
     # InferenceAndDeployment = ModelInferenceAndDeployemnt(
     #     test_model_name=test_model_name,
