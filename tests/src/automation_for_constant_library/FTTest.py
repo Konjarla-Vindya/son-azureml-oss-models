@@ -45,37 +45,14 @@ def data_set():
 
 def tokenize_function(examples):
     return tokenizer(examples["text"], padding="max_length", truncation=True)
-# def get_library_to_load_model(self, task: str) -> str:
-#         """ Takes the task name and load the  json file findout the library 
-#         which is applicable for that task and retyrun it 
 
-#         Args:
-#             task (str): required the task name 
-#         Returns:
-#             str: return the library name
-#         """
-#         try:
-#             with open(FILE_NAME) as f:
-#                 model_with_library = ConfigBox(json.load(f))
-#                 print(f"scoring_input file:\n\n {model_with_library}\n\n")
-#         except Exception as e:
-#             print(
-#                 f"::warning:: Could not find scoring_file: {model_with_library}. Finishing without sample scoring: \n{e}")
-#         return model_with_library.get(task)
+def model():
+    small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(1000))
+    small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(1000))
+    model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=5)
+    print("model--------------------",model)
+    return model
 
-# def download_model_and_tokenizer(self, task: str) -> dict:
-#         model_library_name = self.get_library_to_load_model(task=task)
-#         print("Library name is this one : ", model_library_name)
-#         # Load the library from the transformer
-#         model_library = getattr(transformers, model_library_name)
-#         # From the library load the model
-#         model_name = loaded_model.model 
-#         model_name.config.num_labels = 6 
-#         model_name.classifier = torch.nn.Linear(model_name.config.hidden_size, model_name.config.num_labels) 
-#         Text_classification_model = model_library.from_pretrained(
-#             config=model_name.config) 
-#         Text_classification_model.load_state_dict(model_name.state_dict(), strict=False)
-     
 if __name__ == "__main__":
   model_source_uri=os.environ.get('model_source_uri')
   test_model_name = os.environ.get('test_model_name')
@@ -87,3 +64,5 @@ if __name__ == "__main__":
   print("tokenizer----------------------",tokenizer)
   tokenized_datasets = dataset.map(tokenize_function, batched=True)
   print("tokenized_datasets----------",tokenized_datasets)
+  ML=model()
+  print("ML----------------------",ML)
