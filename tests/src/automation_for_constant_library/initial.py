@@ -96,6 +96,12 @@ def set_next_trigger_model(queue):
 
 
 def create_or_update_compute(workspace_ml_client, compute_name, description, vm_size, min_instances, max_instances, idle_time_before_scale_down):
+    compute_name = "cpu-cluster"
+    description = "An AML compute cluster"
+    vm_size = "Standard_DS3_V2"
+    min_instances = 0
+    max_instances = 3
+    idle_time_before_scale_down = 120
     try:
         # Check if the compute target already exists
         compute_target = AmlCompute(workspace_ml_client, name=compute_name)
@@ -188,13 +194,8 @@ if __name__ == "__main__":
         workspace_name=queue.workspace
     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
-    compute_name = "cpu-cluster"
-    description = "An AML compute cluster"
-    vm_size = "Standard_DS3_V2"
-    min_instances = 0
-    max_instances = 3
-    idle_time_before_scale_down = 120
-    compute_target = create_or_update_compute(workspace_ml_client, queue.compute)
+    
+    #compute_target = create_or_update_compute(workspace_ml_client, queue.compute)
     # environment_variables = {"test_model_name": test_model_name}
     env_list = workspace_ml_client.environments.list(name=queue.environment)
     latest_version = 0
@@ -225,7 +226,7 @@ if __name__ == "__main__":
     print("queue.compute---",queue.compute)
     print("queue.workspace====",queue.workspace)
 
-
+    
 
     compute_cluster = create_or_update_compute(workspace_ml_client, compute_name, description, vm_size, min_instances, max_instances, idle_time_before_scale_down)
 
