@@ -36,33 +36,41 @@ from datasets import load_dataset
 import numpy as np
 import evaluate
 
-def data_set():
-    exit_status = os.system("python ./download-dataset.py --download_dir emotion-dataset")
-    print("exit_status----------",exit_status)
-    # if exit_status != 0:
-    #     raise Exception("Error downloading dataset")
-    # load the ./emotion-dataset/train.jsonl file into a pandas dataframe and show the first 5 rows
-    
+import os
+import json
+import pandas as pd
+import subprocess
 
-    pd.set_option(
-        "display.max_colwidth", 0
-    )  # set the max column width to 0 to display the full text
-    df = pd.read_json("./emotion-dataset/train.jsonl", lines=True)
+# Define a function to download and prepare a dataset using a provided Python script
+def download_and_prepare_dataset(dataset_name, download_script, download_dir1, label_mapping=None):
+    # Create the download directory if it does not exist
+    if not os.path.exists(download_dir1):
+        os.makedirs(download_dir1)
+
+    # Run the provided download script to download the dataset
+    exit_status = subprocess.call(f"python {download_script} --download_dir1 {download_dir1}", shell=True)
+    if exit_status != 0:
+        raise Exception(f"Error downloading {dataset_name} dataset")
+
+    # Load the JSONL file into a pandas DataFrame and show the first 5 rows
+    pd.set_option("display.max_colwidth", 0)
+    df = pd.read_json(os.path.join(download_dir1, "train.jsonl"), lines=True)
     df.head()
 
-    # load the id2label json element of the ./emotion-dataset/label.json file into pandas table with keys as 'label' column of int64 type and values as 'label_string' column as string type
-    
-
-    with open("./emotion-dataset/label.json") as f:
-        id2label = json.load(f)
-        id2label = id2label["id2label"]
-        label_df = pd.DataFrame.from_dict(
-            id2label, orient="index", columns=["label_string"]
-        )
+    # Load the id2label JSON element of the label.json file into a pandas table
+    with open(os.path.join(download_dir1, "label.json")) as f:
+        id2label = json.load(f)["id2label"]
+        label_df = pd.DataFrame.from_dict(id2label, orient="index", columns=["label_string"])
         label_df["label"] = label_df.index.astype("int64")
         label_df = label_df[["label", "label_string"]]
         label_df.head()
-    print("downloaded data set-------------")
+
+    print(f"{dataset_name} dataset downloaded and prepared successfully in {download_dir1} -------------")
+
+if __name__ == "__main__":
+    # Download and prepare the SQuAD dataset using the provided script
+    download_and_prepare_dataset("SQuAD", "./download-dataset-squad.py", "squad-dataset", label_mapping=None)
+
 
 # def get_library_to_load_model(self, task: str) -> str:
 #         """ Takes the task name and load the  json file findout the library 
