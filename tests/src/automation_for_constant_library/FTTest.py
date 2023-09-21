@@ -84,4 +84,18 @@ if __name__ == "__main__":
    )
   trainer.train()
   print("training is done")
-    
+  save_directory = "./test_trainer"
+  trainer.save_model(save_directory)
+  fine_tuned_model = AutoModelForSequenceClassification.from_pretrained(save_directory)
+  tokenizer.save_pretrained(save_directory)
+  fine_tuned_tokenizer = AutoTokenizer.from_pretrained(save_directory)
+  model_pipeline = transformers.pipeline(task="text-classification", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer )
+timestamp_uuid = datetime.datetime.now().strftime("%m%d%H%M%f")
+model_name = f"FT-TC-{test_model_name}"
+with mlflow.start_run():
+    model_info = mlflow.transformers.log_model(
+        transformers_model=model_pipeline,
+        artifact_path=model_name
+    )
+registered_model = mlflow.register_model(model_info.model_uri, model_name)
+print("registered_model--------------------------",registered_model)
