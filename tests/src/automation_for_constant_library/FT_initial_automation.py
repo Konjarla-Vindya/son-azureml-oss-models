@@ -1,6 +1,7 @@
 from azureml.core import Workspace, Environment
 from model_inference_and_deployment import ModelInferenceAndDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq, TrainingArguments
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
 from azure.ai.ml import MLClient
