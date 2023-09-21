@@ -12,6 +12,7 @@ from box import ConfigBox
 # from utils.logging import get_logger
 from azureml.core.compute import AmlCompute
 from azureml.core.compute_target import ComputeTargetException
+from mlflow.tracking.client import MlflowClient
 
 # constants
 check_override = True
