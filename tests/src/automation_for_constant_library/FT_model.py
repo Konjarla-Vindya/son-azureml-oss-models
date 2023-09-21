@@ -176,36 +176,37 @@ if __name__ == "__main__":
   print("test_model_name-----------------",test_model_name)
   loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
   print("loaded_model---------------------",loaded_model)
-  tokenizer=loaded_model.tokenizer
-  dataset_name = "squad"
-  task = "question-answering"
-  batch_size = 16
-  datasets, label_list, batch_size = load_custom_dataset(dataset_name, task, batch_size)
-  #task = "question-answering"
-  label_all_tokens = True
-  tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, task, label_all_tokens)
-  model_name = test_model_name
+  print("loaded_dataset------------------",datasets)
+  # tokenizer=loaded_model.tokenizer
+  # dataset_name = "squad"
+  # task = "question-answering"
+  # batch_size = 16
+  # datasets, label_list, batch_size = load_custom_dataset(dataset_name, task, batch_size)
+  # #task = "question-answering"
+  # label_all_tokens = True
+  # tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, task, label_all_tokens)
+  # model_name = test_model_name
 
-  num_train_epochs = 3
+  # num_train_epochs = 3
 
-  training_args = create_training_args(model_name, task, batch_size, num_train_epochs)
-  data_collator = create_data_collator(tokenizer)
-  label_list = label_list  # You should define label_list based on your dataset
-  compute_metrics_fn = create_compute_metrics(label_list)
+  # training_args = create_training_args(model_name, task, batch_size, num_train_epochs)
+  # data_collator = create_data_collator(tokenizer)
+  # label_list = label_list  # You should define label_list based on your dataset
+  # compute_metrics_fn = create_compute_metrics(label_list)
 
-  trainer = Trainer(
-    model=model,
-    args=training_args,
-    train_dataset=subset_train_dataset,  
-    eval_dataset=subset_validation_dataset,  
-    data_collator=data_collator,
-    tokenizer=tokenizer,
-    compute_metrics=compute_metrics_fn
-   )
+  # trainer = Trainer(
+  #   model=model,
+  #   args=training_args,
+  #   train_dataset=subset_train_dataset,  
+  #   eval_dataset=subset_validation_dataset,  
+  #   data_collator=data_collator,
+  #   tokenizer=tokenizer,
+  #   compute_metrics=compute_metrics_fn
+  #  )
 
-  fine_tune_results = trainer.train()
-  print(fine_tune_results)
-  evaluation_results = trainer.evaluate()
-  print(evaluation_results)
-  #data_set()
+  # fine_tune_results = trainer.train()
+  # print(fine_tune_results)
+  # evaluation_results = trainer.evaluate()
+  # print(evaluation_results)
+  # #data_set()
     
