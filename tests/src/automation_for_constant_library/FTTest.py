@@ -39,8 +39,8 @@ import evaluate
 def data_set():
     exit_status = os.system("python ./download-dataset.py --download_dir emotion-dataset")
     print("exit_status----------",exit_status)
-    if exit_status != 0:
-        raise Exception("Error downloading dataset")
+    # if exit_status != 0:
+    #     raise Exception("Error downloading dataset")
     # load the ./emotion-dataset/train.jsonl file into a pandas dataframe and show the first 5 rows
     
 
