@@ -41,6 +41,7 @@ def data_set():
     dataset = load_dataset("yelp_review_full")
     dataset["train"][5]
     print("downloaded data set-------------")
+    return dataset
     
 
 def tokenize_function(examples):
@@ -59,7 +60,7 @@ if __name__ == "__main__":
   print("test_model_name-----------------",test_model_name)
   loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
   print("loaded_model---------------------",loaded_model)
-  data_set()
+  dataset=data_set()
   tokenizer = AutoTokenizer.from_pretrained(test_model_name)
   print("tokenizer----------------------",tokenizer)
   tokenized_datasets = dataset.map(tokenize_function, batched=True)
