@@ -222,7 +222,7 @@ if __name__ == "__main__":
     command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     
-    create_and_get_job_studio_url(command_job, workspace_ml_client)
+    # create_and_get_job_studio_url(command_job, workspace_ml_client)
     FT_model_name=f"FT-TC-{test_model_name}"
     client = MlflowClient()
     
@@ -234,7 +234,7 @@ if __name__ == "__main__":
     
     print("FT Latest registered model version is : ", FT_model_detail.version)
     FT_loaded_model = mlflow.transformers.load_model(model_uri=FT_model_detail.source, return_type="pipeline")
-    priint("FT_loaded_model--------------",FT_loaded_model)
+    print("FT_loaded_model--------------",FT_loaded_model)
     from box import ConfigBox
 
     text_classification = ConfigBox(
