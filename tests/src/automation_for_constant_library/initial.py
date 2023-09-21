@@ -90,7 +90,7 @@ def set_next_trigger_model(queue):
 
     
     with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-        # logger.info(f'NEXT_MODEL={next_model}')
+        print(f'NEXT_MODEL={next_model}')
         print(f'NEXT_MODEL={next_model}', file=fh)
 
 
