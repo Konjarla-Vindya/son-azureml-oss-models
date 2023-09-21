@@ -46,6 +46,13 @@ def load_custom_dataset(dataset_name, task, batch_size):
     else:
         label_list = None
 
+   
+    print(f"Loaded dataset: {dataset_name}")
+    print(f"Task: {task}")
+    print(f"Label List: {label_list}")
+    print(f"Batch Size: {batch_size}")
+
+
     return datasets, label_list, batch_size
 
 
