@@ -93,6 +93,6 @@ if __name__ == "__main__":
   print("loaded_model---------------------",loaded_model)
   dataset_name = "xsum"
   batch_size = 16
-  datasets, batch_size = load_dataset(dataset_name, batch_size)
+  datasets,label_list, batch_size = load_dataset(dataset_name, batch_size)
   #data_set()
     
