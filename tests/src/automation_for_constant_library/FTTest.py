@@ -41,7 +41,10 @@ def data_set():
     dataset = load_dataset("yelp_review_full")
     dataset["train"][5]
     print("downloaded data set-------------")
+    
 
+def tokenize_function(examples):
+    return tokenizer(examples["text"], padding="max_length", truncation=True)
 # def get_library_to_load_model(self, task: str) -> str:
 #         """ Takes the task name and load the  json file findout the library 
 #         which is applicable for that task and retyrun it 
@@ -80,3 +83,7 @@ if __name__ == "__main__":
   loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
   print("loaded_model---------------------",loaded_model)
   data_set()
+  tokenizer = AutoTokenizer.from_pretrained(test_model_name)
+  print("tokenizer----------------------",tokenizer)
+  tokenized_datasets = dataset.map(tokenize_function, batched=True)
+  print("tokenized_datasets----------",tokenized_datasets)
