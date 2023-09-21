@@ -77,7 +77,7 @@ from azureml.core import Workspace
         workspace_ml_client,
         deployment_name,
         endpoint_name,
-        foundation_model,
+        model_detail,
         compute,
         error_threshold=0,
         instance_count=1,
@@ -91,7 +91,7 @@ from azureml.core import Workspace
         deployment = BatchDeployment(
             name=deployment_name,
             endpoint_name=endpoint_name,
-            model=foundation_model.id,
+            model=model_detail.id,
             compute=compute,
             error_threshold=error_threshold,
             instance_count=instance_count,
@@ -126,26 +126,26 @@ from azureml.core import Workspace
 
 
 
-    def invoke_batch_job(
-        workspace: Workspace,
-        endpoint_name: str,
-        batch_inputs_dir: str,
-    ):
-        # Get the Batch Endpoint
-        endpoint = workspace.batch_endpoints[endpoint_name]
+    # def invoke_batch_job(
+    #     workspace: Workspace,
+    #     endpoint_name: str,
+    #     batch_inputs_dir: str,
+    # ):
+    #     # Get the Batch Endpoint
+    #     endpoint = workspace.batch_endpoints[endpoint_name]
 
-        # Define the input data
-        input_data = Datastore(workspace=workspace, name=batch_inputs_dir)
-        input = Input(input_data, input_type=InputDataType.MOUNT)
+    #     # Define the input data
+    #     input_data = Datastore(workspace=workspace, name=batch_inputs_dir)
+    #     input = Input(input_data, input_type=InputDataType.MOUNT)
 
-        # Invoke the batch job
-        job = endpoint.invoke(input)
+    #     # Invoke the batch job
+    #     job = endpoint.invoke(input)
 
-        # Stream job logs (optional)
-        job.wait_for_completion()
-        job_logs = workspace.jobs.stream(job.name)
-        for log_line in job_logs:
-            print(log_line)
+    #     # Stream job logs (optional)
+    #     job.wait_for_completion()
+    #     job_logs = workspace.jobs.stream(job.name)
+    #     for log_line in job_logs:
+    #         print(log_line)
 
 
 if __name__ == "__main__":
@@ -175,13 +175,13 @@ if __name__ == "__main__":
     created_endpoint = create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description)
     # Example usage:
     # Replace the parameters with your desired values
-    endpoint_name = "your_endpoint_name"  # Provide the actual endpoint name
-    deployment_name = "your_new_deployment_name"  # Provide the new default deployment name
+    #endpoint_name = "your_endpoint_name"  # Provide the actual endpoint name
+    deployment_name = "demo-Auto"  # Provide the new default deployment name
 
     # Example usage:
     # Replace the parameters with your desired values
-    workspace = your_workspace  # Provide your Azure ML workspace object
-    endpoint_name = "your_endpoint_name"  # Provide the actual endpoint name
-    batch_inputs_dir = "your_datastore_path"  # Provide the path to the input data in the datastore
+    workspace = queue.workspace  # Provide your Azure ML workspace object
+    #endpoint_name = "your_endpoint_name"  # Provide the actual endpoint name
+    #batch_inputs_dir = "your_datastore_path"  # Provide the path to the input data in the datastore
 
-    invoke_batch_job(workspace, endpoint_name, batch_inputs_dir)
+    #invoke_batch_job(workspace, endpoint_name, batch_inputs_dir)
