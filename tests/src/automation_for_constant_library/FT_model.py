@@ -1,12 +1,11 @@
 import os
-from FT_initial_automation import load_model  
+from FT_QA_model_automation import load_model  
 import mlflow
 import transformers
 import os
 import torch
 import json
 import pandas as pd
-import transformers
 import mlflow
 import datetime
 from azure.ai.ml import MLClient
@@ -31,13 +30,11 @@ import argparse
 import os
 from azureml.core import Workspace
 from transformers import DataCollatorForTokenClassification
-from transformers import TrainingArguments, Trainer, DataCollatorForTokenClassification
+from transformers import AutoModelForQuestionAnswering, TrainingArguments, Trainer
 import numpy as np
 from datasets import load_metric
-from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
+#from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
 from transformers import AutoModelForMaskedLM
-from datasets import load_dataset
-import numpy as np
 import evaluate
 
 # def create_training_args(model_name, task, batch_size=16, num_train_epochs=3):
@@ -177,15 +174,15 @@ if __name__ == "__main__":
   loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
   print("loaded_model---------------------",loaded_model)
   print("loaded_dataset------------------",datasets)
-  # tokenizer=loaded_model.tokenizer
-  # dataset_name = "squad"
-  # task = "question-answering"
-  # batch_size = 16
-  # datasets, label_list, batch_size = load_custom_dataset(dataset_name, task, batch_size)
-  # #task = "question-answering"
-  # label_all_tokens = True
-  # tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, task, label_all_tokens)
-  # model_name = test_model_name
+  tokenizer=loaded_model.tokenizer
+  dataset_name = "squad"
+  task = "question-answering"
+  batch_size = 16
+  datasets, label_list, batch_size = load_custom_dataset(dataset_name, task, batch_size)
+  task = "question-answering"
+  label_all_tokens = True
+  tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, task, label_all_tokens)
+  model_name = test_model_name
 
   # num_train_epochs = 3
 
