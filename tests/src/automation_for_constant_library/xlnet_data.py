@@ -42,7 +42,7 @@ def load_dataset1(dataset_name, batch_size):
 
     # Define label_list based on the task
   
-    label_list = datasets.features["document"].feature    
+    label_list = datasets["document"]    
     #datasets["train"].features["document"].feature
 
 
