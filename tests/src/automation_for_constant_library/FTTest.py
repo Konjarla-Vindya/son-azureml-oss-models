@@ -6,7 +6,6 @@ import os
 import torch
 import json
 import pandas as pd
-from FT_initial_automation import load_model  
 import transformers
 import mlflow
 import datetime
@@ -35,8 +34,7 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, Trai
 from transformers import AutoModelForMaskedLM
 from datasets import load_dataset
 import numpy as np
-# import evaluate
-import pandas as pd
+import evaluate
 
 def data_set():
     exit_status = os.system("python ./download-dataset.py --download_dir emotion-dataset")
