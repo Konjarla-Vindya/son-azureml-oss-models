@@ -223,6 +223,33 @@ if __name__ == "__main__":
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     
     create_and_get_job_studio_url(command_job, workspace_ml_client)
+    FT_model_name=f"FT-TC-{test_model_name}"
+    client = MlflowClient()
+    
+    FT_registered_model_detail = client.get_latest_versions(
+    
+        name=FT_model_name, stages=["None"])
+    
+    FT_model_detail = FT_registered_model_detail[0]
+    
+    print("FT Latest registered model version is : ", FT_model_detail.version)
+    FT_loaded_model = mlflow.transformers.load_model(model_uri=FT_model_detail.source, return_type="pipeline")
+    priint("FT_loaded_model--------------",FT_loaded_model)
+    from box import ConfigBox
+
+    text_classification = ConfigBox(
+        {
+    
+        "inputs": [
+    
+          "Im good",
+    
+          "I am bad"
+    
+        ]
+    }
+    )
+    FT_loaded_model(text_classification.inputs)
 
     # InferenceAndDeployment = ModelInferenceAndDeployemnt(
     #     test_model_name=test_model_name,
