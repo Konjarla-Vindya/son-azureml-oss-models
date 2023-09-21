@@ -82,4 +82,5 @@ if __name__ == "__main__":
     compute_metrics=compute_metrics,
    )
   trainer.train()
+  print("training is done")
     
