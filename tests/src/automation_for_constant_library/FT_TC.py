@@ -217,4 +217,22 @@ if __name__ == "__main__":
   evaluation_results = trainer.evaluate()
   print(evaluation_results)
   #data_set()
+  save_directory = "./fine_tuned_model_tokenclassification2"
+  trainer.save_model(save_directory)
+  fine_tuned_model = AutoModelForTokenClassification.from_pretrained(save_directory)
+  tokenizer.save_pretrained(save_directory)
+  fine_tuned_tokenizer = AutoTokenizer.from_pretrained(save_directory)
+  print(fine_tuned_model)
+  print(tokenizer)
+  mlflow.end_run()
+  model_pipeline = transformers.pipeline(task="token-classification", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer )
+  model_name = f"ft-tkc-bert-base-cased"
+  with mlflow.start_run():
+    model_info = mlflow.transformers.log_model(
+        transformers_model=model_pipeline,
+        artifact_path=model_name
+    )
+  registered_model = mlflow.register_model(model_info.model_uri, model_name)
+  print(registered_model)
     
+        
