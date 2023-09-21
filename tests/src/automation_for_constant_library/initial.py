@@ -94,26 +94,36 @@ def set_next_trigger_model(queue):
         print(f'NEXT_MODEL={next_model}')
         print(f'NEXT_MODEL={next_model}', file=fh)
 
-
-
-def create_or_update_compute(workspace_ml_client, compute_name, vm_size, min_instances, max_instances, idle_time_before_scale_down):
-
+def create_or_get_compute_target(ml_client,  compute):
+    cpu_compute_target = cpu-cluster
     try:
-        # Check if the compute target already exists
-        compute_target = AmlCompute(workspace_ml_client, name=compute_name)
-        print(f'Using existing compute target: {compute_target.name}')
-    except ComputeTargetException:
-        # If the compute target doesn't exist, create a new one
-        config = AmlCompute.provisioning_configuration(
-            vm_size=vm_size,
-            min_nodes=min_instances,
-            max_nodes=max_instances,
-            idle_seconds_before_scaledown=idle_time_before_scale_down,
+        compute = ml_client.compute.get(cpu_compute_target)
+    except Exception:
+        print("Creating a new cpu compute target...")
+        compute = AmlCompute(
+            name=cpu_compute_target, size=compute, min_instances=0, max_instances=3, idle_time_before_scale_down = 120
         )
-        compute_target = AmlCompute.create(workspace_ml_client, name=compute_name, provisioning_configuration=config)
-        compute_target.wait_for_completion(show_output=True)
+        ml_client.compute.begin_create_or_update(compute).result()
+    return compute
 
-    return compute_target
+# def create_or_update_compute(workspace_ml_client, compute_name, vm_size, min_instances, max_instances, idle_time_before_scale_down):
+
+#     try:
+#         # Check if the compute target already exists
+#         compute_target = AmlCompute(workspace_ml_client, name=compute_name)
+#         print(f'Using existing compute target: {compute_target.name}')
+#     except ComputeTargetException:
+#         # If the compute target doesn't exist, create a new one
+#         config = AmlCompute.provisioning_configuration(
+#             vm_size=vm_size,
+#             min_nodes=min_instances,
+#             max_nodes=max_instances,
+#             idle_seconds_before_scaledown=idle_time_before_scale_down,
+#         )
+#         compute_target = AmlCompute.create(workspace_ml_client, name=compute_name, provisioning_configuration=config)
+#         compute_target.wait_for_completion(show_output=True)
+
+#     return compute_target
 
 
 def run_azure_ml_job(code, command_to_run, environment, compute, environment_variables):
@@ -122,7 +132,7 @@ def run_azure_ml_job(code, command_to_run, environment, compute, environment_var
         code=code,
         command=command_to_run,
         environment=environment,
-        compute=compute_name,
+        compute=compute,
         environment_variables=environment_variables
     )
     return command_job
@@ -211,7 +221,7 @@ if __name__ == "__main__":
     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     
-    #compute_target = create_or_update_compute(workspace_ml_client, queue.compute)
+    compute_target = create_or_get_compute_target(workspace_ml_client, queue.compute)
     # environment_variables = {"test_model_name": test_model_name}
     env_list = workspace_ml_client.environments.list(name=queue.environment)
     latest_version = 0
@@ -249,7 +259,7 @@ if __name__ == "__main__":
     # max_instances = 3
     # idle_time_before_scale_down = 120
 
-    compute_cluster = create_or_update_compute(workspace_ml_client, compute_name ="cpu-cluster", vm_size="Standard_DS3_V2", min_instances=0, max_instances=3, idle_time_before_scale_down=120)
+    # compute_cluster = create_or_update_compute(workspace_ml_client, compute_name ="cpu-cluster", vm_size="Standard_DS3_V2", min_instances=0, max_instances=3, idle_time_before_scale_down=120)
 
     command_job = run_azure_ml_job(code="./", command_to_run="python batch_infernce_and_deployment.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
