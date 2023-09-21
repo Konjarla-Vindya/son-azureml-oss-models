@@ -23,7 +23,7 @@ from azure.ai.ml.entities import (
     AzureMLOnlineInferencingServer
 )
 from azureml.core import Workspace
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq, TrainingArguments
 from datasets import load_dataset
 import numpy as np
 # import evaluate
@@ -50,10 +50,14 @@ def tokenize_function(examples):
 def model():
     small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(1000))
     small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(1000))
-    model = AutoModelForSequenceClassification.from_pretrained("bert-base-cased", num_labels=5)
+    model = AutoModelForSequenceClassification.from_pretrained(test_model_name, num_labels=5)
     print("model--------------------",model)
     return model
-
+   
+def compute_metrics(eval_pred):
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=-1)
+    return metric.compute(predictions=predictions, references=labels)
 if __name__ == "__main__":
   model_source_uri=os.environ.get('model_source_uri')
   test_model_name = os.environ.get('test_model_name')
@@ -67,3 +71,7 @@ if __name__ == "__main__":
   print("tokenized_datasets----------",tokenized_datasets)
   ML=model()
   print("ML----------------------",ML)
+  training_args = TrainingArguments(output_dir="test_trainer")
+  metric = evaluate.load("accuracy")
+  compute_metrics(eval_pred)
+    
