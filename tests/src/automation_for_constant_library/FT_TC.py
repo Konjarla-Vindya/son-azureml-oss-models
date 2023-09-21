@@ -197,6 +197,10 @@ if __name__ == "__main__":
   label_list = label_list  # You should define label_list based on your dataset
   compute_metrics_fn = create_compute_metrics(label_list)
   model = AutoModelForTokenClassification.from_pretrained(model_name, num_labels=9)
+ 
+  print("tokenized_datasets----------",tokenized_datasets)
+  subset_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(100))
+  subset_validation_dataset = tokenized_datasets["validation"].shuffle(seed=42).select(range(100))
 
   trainer = Trainer(
     model=model,
