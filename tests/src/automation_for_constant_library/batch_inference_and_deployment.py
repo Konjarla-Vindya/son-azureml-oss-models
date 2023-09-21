@@ -30,45 +30,32 @@ from azureml.core import Workspace
 
 
 # logger = get_logger(__name__)
-class BatchInferenceAndDeployemnt:
-    def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
-        self.test_model_name = test_model_name
-        self.workspace_ml_client = workspace_ml_client
-        self.registry = registry
+# class BatchInferenceAndDeployemnt:
+#     def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
+#         self.test_model_name = test_model_name
+#         self.workspace_ml_client = workspace_ml_client
+#         self.registry = registry
 
-    def get_error_messages(self):
-        # load ../../config/errors.json into a dictionary
-        with open('../../config/errors.json') as f:
-            return json.load(f)
-
-
-    def prase_logs(self, logs):
-        error_messages = self.get_error_messages()
-        # split logs by \n
-        logs_list = logs.split("\n")
-        # loop through each line in logs_list
-        for line in logs_list:
-            # loop through each error in errors
-            for error in error_messages:
-                # if error is found in line, print error message
-                if error['parse_string'] in line:
-                    # logger.error(
-                    #     f"::error:: {error_messages['error_category']}: {line}")
-                    
+#     def get_error_messages(self):
+#         # load ../../config/errors.json into a dictionary
+#         with open('../../config/errors.json') as f:
+#             return json.load(f)
 
 
+    # def prase_logs(self, logs):
+    #     error_messages = self.get_error_messages()
+    #     # split logs by \n
+    #     logs_list = logs.split("\n")
+    #     # loop through each line in logs_list
+    #     for line in logs_list:
+    #         # loop through each error in errors
+    #         for error in error_messages:
+    #             # if error is found in line, print error message
+    #             if error['parse_string'] in line:
+    #                 # logger.error(
+    #                 #     f"::error:: {error_messages['error_category']}: {line}")
 
-
-
-
-
-
-
-     
-                    
-
-
-    def create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description=""):
+    def create_or_update_batch_endpoint(workspace_ml_client, model_detail, description=""):
         # Generate a unique endpoint name based on the current timestamp
         timestamp = int(time.time())
         endpoint_name = f"fill-maskws-{timestamp}"
@@ -76,28 +63,22 @@ class BatchInferenceAndDeployemnt:
         # Create or update the Batch Endpoint
         endpoint = BatchEndpoint(
             name=endpoint_name,
-            description=f"Batch endpoint for {foundation_model.name}, for fill-mask task{description}",
+            description=f"Batch endpoint for {model_detail.name}, for fill-mask task{description}",
         )
         workspace_ml_client.begin_create_or_update(endpoint).result()
-
         return endpoint
 
     # Example usage:
     # Replace the parameters with your desired values
-    foundation_model = your_foundation_model  # Provide your foundation model object
-    description = "Custom description (optional)"
-
-    created_endpoint = create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description)
-
-
-
+    model_detail = model_detail.id  # Provide your foundation model object
+    description = "By Automation"
 
     def create_or_update_batch_deployment(
         workspace_ml_client,
         deployment_name,
         endpoint_name,
         foundation_model,
-        compute_name,
+        compute,
         error_threshold=0,
         instance_count=1,
         logging_level="info",
@@ -111,7 +92,7 @@ class BatchInferenceAndDeployemnt:
             name=deployment_name,
             endpoint_name=endpoint_name,
             model=foundation_model.id,
-            compute=compute_name,
+            compute=compute,
             error_threshold=error_threshold,
             instance_count=instance_count,
             logging_level=logging_level,
@@ -167,26 +148,20 @@ class BatchInferenceAndDeployemnt:
             print(log_line)
 
 
-
-    
-
-    
-            
-
 if __name__ == "__main__":
     # Example usage:
     # Replace the parameters with your desired values
     deployment_name = "demo"
-    endpoint_name = "your_endpoint_name"  # Provide the actual endpoint name
-    foundation_model = your_foundation_model  # Provide your foundation model object
-    compute_name = "your_compute_name"  # Provide the compute name
-
+    endpoint_name = "fill-mask-Auto"  # Provide the actual endpoint name
+    model_detail = model_detail.id  # Provide your foundation model object
+    compute = "queue.compute"  # Provide the compute name
+    #test_model_name
     created_deployment = create_or_update_batch_deployment(
         workspace_ml_client,
         deployment_name,
         endpoint_name,
-        foundation_model,
-        compute_name,
+        model_detail,
+        compute,
         error_threshold=0,
         instance_count=1,
         logging_level="info",
@@ -197,7 +172,7 @@ if __name__ == "__main__":
         timeout=300,
     )
     set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_name)
-
+    created_endpoint = create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description)
     # Example usage:
     # Replace the parameters with your desired values
     endpoint_name = "your_endpoint_name"  # Provide the actual endpoint name
