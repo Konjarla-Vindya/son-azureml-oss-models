@@ -35,10 +35,13 @@ from transformers import TrainingArguments, Trainer, DataCollatorForTokenClassif
 import numpy as np
 from datasets import load_metric
 from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
+from transformers import AutoTokenizer, AutoModelForTokenClassification
+
 from transformers import AutoModelForMaskedLM
 from datasets import load_dataset
 import numpy as np
 import evaluate
+
 
 def create_training_args(model_name, task, batch_size=16, num_train_epochs=3):
     return TrainingArguments(
@@ -193,6 +196,7 @@ if __name__ == "__main__":
   data_collator = create_data_collator(tokenizer)
   label_list = label_list  # You should define label_list based on your dataset
   compute_metrics_fn = create_compute_metrics(label_list)
+  model = AutoModelForTokenClassification.from_pretrained(model_name, num_labels=9)
 
   trainer = Trainer(
     model=model,
