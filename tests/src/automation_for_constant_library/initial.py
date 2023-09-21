@@ -223,9 +223,6 @@ if __name__ == "__main__":
     print("queue.compute---",queue.compute)
     print("queue.workspace====",queue.workspace)
 
-    command_job = run_azure_ml_job(code="./", command_to_run="python batch_infernce_and_deployment.py",
-                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
-    
     # Example usage:
     # Replace the parameters with your desired values
     compute_name = "cpu-cluster"
@@ -236,6 +233,11 @@ if __name__ == "__main__":
     idle_time_before_scale_down = 120
 
     compute_cluster = create_or_update_compute(workspace_ml_client, compute_name, description, vm_size, min_instances, max_instances, idle_time_before_scale_down)
+
+    command_job = run_azure_ml_job(code="./", command_to_run="python batch_infernce_and_deployment.py",
+                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
+    
+
 
     
 
