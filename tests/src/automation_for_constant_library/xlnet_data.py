@@ -52,7 +52,7 @@ def load_dataset1(dataset_name, batch_size):
     print(f"Batch Size: {batch_size}")
 
 
-    return datasets, label_list, batch_size
+    return datasets, batch_size
 
 
 # def get_library_to_load_model(self, task: str) -> str:
