@@ -36,13 +36,13 @@ from datasets import load_dataset
 import numpy as np
 import evaluate
 
-def load_dataset(dataset_name, batch_size):
+def load_dataset1(dataset_name, batch_size):
     # Load the dataset
     datasets = load_dataset(dataset_name)
 
     # Define label_list based on the task
   
-    label_list = datasets["train"].features["document"].feature
+    label_list = datasets.features["document"].feature#datasets["train"].features["document"].feature
 
 
    
@@ -93,6 +93,6 @@ if __name__ == "__main__":
   print("loaded_model---------------------",loaded_model)
   dataset_name = "xsum"
   batch_size = 16
-  datasets,label_list, batch_size = load_dataset(dataset_name, batch_size)
+  datasets,label_list, batch_size = load_dataset1(dataset_name, batch_size)
   #data_set()
     
