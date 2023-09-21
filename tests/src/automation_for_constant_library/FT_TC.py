@@ -36,33 +36,18 @@ from datasets import load_dataset
 import numpy as np
 import evaluate
 
-# def data_set():
-#     exit_status = os.system("python ./download-dataset.py --download_dir emotion-dataset")
-#     print("exit_status----------",exit_status)
-#     if exit_status != 0:
-#         raise Exception("Error downloading dataset")
-#     # load the ./emotion-dataset/train.jsonl file into a pandas dataframe and show the first 5 rows
-    
+def load_custom_dataset(dataset_name, task, batch_size):
+    # Load the dataset
+    datasets = load_dataset(dataset_name)
 
-#     pd.set_option(
-#         "display.max_colwidth", 0
-#     )  # set the max column width to 0 to display the full text
-#     df = pd.read_json("./emotion-dataset/train.jsonl", lines=True)
-#     df.head()
+    # Define label_list based on the task
+    if task == "ner":
+        label_list = datasets["train"].features[f"{task}_tags"].feature.names
+    else:
+        label_list = None
 
-    # load the id2label json element of the ./emotion-dataset/label.json file into pandas table with keys as 'label' column of int64 type and values as 'label_string' column as string type
-    
+    return datasets, label_list, batch_size
 
-    # with open("./emotion-dataset/label.json") as f:
-    #     id2label = json.load(f)
-    #     id2label = id2label["id2label"]
-    #     label_df = pd.DataFrame.from_dict(
-    #         id2label, orient="index", columns=["label_string"]
-    #     )
-    #     label_df["label"] = label_df.index.astype("int64")
-    #     label_df = label_df[["label", "label_string"]]
-    #     label_df.head()
-    # print("downloaded data set-------------")
 
 # def get_library_to_load_model(self, task: str) -> str:
 #         """ Takes the task name and load the  json file findout the library 
@@ -101,4 +86,9 @@ if __name__ == "__main__":
   print("test_model_name-----------------",test_model_name)
   loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
   print("loaded_model---------------------",loaded_model)
+  dataset_name = "conll2003"
+  task = "ner"
+  batch_size = 16
+  datasets, label_list, batch_size = load_custom_dataset(dataset_name, task, batch_size)
   #data_set()
+    
