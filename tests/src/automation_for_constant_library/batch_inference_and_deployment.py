@@ -12,7 +12,7 @@ from azure.ai.ml.entities import (
     ModelPackage,
     AzureMLOnlineInferencingServer
 )
-from utils.logging import get_logger
+# from utils.logging import get_logger
 from fetch_task import HfTask
 import mlflow
 from box import ConfigBox
@@ -29,7 +29,7 @@ from azureml.core import Workspace
 
 
 
-logger = get_logger(__name__)
+# logger = get_logger(__name__)
 class BatchInferenceAndDeployemnt:
     def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
         self.test_model_name = test_model_name
@@ -52,8 +52,8 @@ class BatchInferenceAndDeployemnt:
             for error in error_messages:
                 # if error is found in line, print error message
                 if error['parse_string'] in line:
-                    logger.error(
-                        f"::error:: {error_messages['error_category']}: {line}")
+                    # logger.error(
+                    #     f"::error:: {error_messages['error_category']}: {line}")
                     
 
 
