@@ -240,35 +240,13 @@ if __name__ == "__main__":
     
 
 
-    InferenceAndDeployment = BatchInferenceAndDeployemnt(
-            test_model_name=test_model_name,
-            workspace_ml_client=workspace_ml_client,
-            registry=queue.registry
-        )
-    InferenceAndDeployment.batch_infernce_and_deployment(
-            instance_type=queue.instance_type
-        )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    # InferenceAndDeployment = BatchInferenceAndDeployemnt(
+    #         test_model_name=test_model_name,
+    #         workspace_ml_client=workspace_ml_client,
+    #         registry=queue.registry
+    #     )
+    # InferenceAndDeployment.batch_infernce_and_deployment(
+    #         instance_type=queue.instance_type
+    #     )
 
 
