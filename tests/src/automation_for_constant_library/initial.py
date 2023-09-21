@@ -95,7 +95,7 @@ def set_next_trigger_model(queue):
         print(f'NEXT_MODEL={next_model}', file=fh)
 
 def create_or_get_compute_target(ml_client,  compute):
-    cpu_compute_target = cpu-cluster
+    cpu_compute_target = compute
     try:
         compute = ml_client.compute.get(cpu_compute_target)
     except Exception:
