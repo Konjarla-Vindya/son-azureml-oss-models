@@ -176,6 +176,7 @@ if __name__ == "__main__":
   print("test_model_name-----------------",test_model_name)
   loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
   print("loaded_model---------------------",loaded_model)
+  tokenizer=loaded_model.tokenizer
   dataset_name = "conll2003"
   task = "ner"
   batch_size = 16
