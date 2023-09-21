@@ -184,6 +184,7 @@ if __name__ == "__main__":
   #task = "ner"
   label_all_tokens = True
   tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, task, label_all_tokens)
+  metric = load_metric("seqeval")
   model_name = test_model_name
 
   num_train_epochs = 3
