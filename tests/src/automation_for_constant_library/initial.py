@@ -171,6 +171,7 @@ if __name__ == "__main__":
         # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
         print("workspace_name : ", queue.workspace)
         credential = InteractiveBrowserCredential()
+        print("workspace_name : ", queue.workspace)
     # logger.info(f"workspace_name : {queue.workspace}")
     try:
         workspace_ml_client = MLClient.from_config(credential=credential)
@@ -202,13 +203,9 @@ if __name__ == "__main__":
     version_list = list(workspace_ml_client.models.list(test_model_name))
 
     client = MlflowClient()
-    
     registered_model_detail = client.get_latest_versions(
-    
         name=test_model_name, stages=["None"])
-    
     model_detail = registered_model_detail[0]
-    
     print("Latest registered model version is : ", model_detail.version)
     
     # loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
@@ -236,6 +233,8 @@ if __name__ == "__main__":
 
     command_job = run_azure_ml_job(code="./", command_to_run="python batch_infernce_and_deployment.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
+
+    create_and_get_job_studio_url(command_job, workspace_ml_client)
     
 
 
