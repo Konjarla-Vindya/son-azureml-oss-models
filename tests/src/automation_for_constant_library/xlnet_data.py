@@ -42,13 +42,13 @@ def load_dataset1(dataset_name, batch_size):
 
     # Define label_list based on the task
   
-    label_list = datasets["document"]    
+    #label_list = datasets["document"]    
     #datasets["train"].features["document"].feature
 
 
    
     print(f"Loaded dataset: {dataset_name}")
-    print(f"Label List: {label_list}")
+    #print(f"Label List: {label_list}")
     print(f"Batch Size: {batch_size}")
 
 
@@ -94,6 +94,6 @@ if __name__ == "__main__":
   print("loaded_model---------------------",loaded_model)
   dataset_name = "xsum"
   batch_size = 16
-  datasets,label_list, batch_size = load_dataset1(dataset_name, batch_size)
+  datasets,batch_size = load_dataset1(dataset_name, batch_size)
   #data_set()
     
