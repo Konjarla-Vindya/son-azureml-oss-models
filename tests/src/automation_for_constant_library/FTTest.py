@@ -73,5 +73,13 @@ if __name__ == "__main__":
   print("ML----------------------",ML)
   training_args = TrainingArguments(output_dir="test_trainer")
   metric = evaluate.load("accuracy")
-  compute_metrics(eval_pred)
+  training_args = TrainingArguments(output_dir="test_trainer", evaluation_strategy="epoch")
+  trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=small_train_dataset,
+    eval_dataset=small_eval_dataset,
+    compute_metrics=compute_metrics,
+   )
+  trainer.train()
     
