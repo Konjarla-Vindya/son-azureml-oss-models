@@ -170,19 +170,39 @@ if __name__ == "__main__":
     print (f"test_queue: {test_queue}")
     print (f"test_set: {test_set}")
     print("Here is my test model name : ", test_model_name)
+    # try:
+    #     credential = DefaultAzureCredential()
+    #     credential.get_token("https://management.azure.com/.default")
+    # except Exception as ex:
+    #     # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
+    #     print("workspace_name : ", queue.workspace)
+    #     credential = InteractiveBrowserCredential()
+    #     print("workspace_name : ", queue.workspace)
+    # # logger.info(f"workspace_name : {queue.workspace}")
+    # try:
+    #     workspace_ml_client = MLClient.from_config(credential=credential)
+    # except:
+    #     workspace_ml_client = MLClient(
+    #         credential=credential,
+    #         subscription_id=queue.subscription,
+    #         resource_group_name=queue.resource_group,
+    #         workspace_name=queue.workspace
+    #     )
+    # ws = Workspace(
+    #     subscription_id=queue.subscription,
+    #     resource_group=queue.resource_group,
+    #     workspace_name=queue.workspace
+    # )
+    # mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+
     try:
         credential = DefaultAzureCredential()
         credential.get_token("https://management.azure.com/.default")
     except Exception as ex:
         # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
-        print("workspace_name : ", queue.workspace)
         credential = InteractiveBrowserCredential()
-        print("workspace_name : ", queue.workspace)
-    # logger.info(f"workspace_name : {queue.workspace}")
-    try:
-        workspace_ml_client = MLClient.from_config(credential=credential)
-    except:
-        workspace_ml_client = MLClient(
+    print("workspace_name : ", queue.workspace)
+    workspace_ml_client = MLClient(
             credential=credential,
             subscription_id=queue.subscription,
             resource_group_name=queue.resource_group,
