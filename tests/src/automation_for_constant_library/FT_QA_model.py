@@ -35,6 +35,7 @@ from transformers import AutoTokenizer, AutoModelForQuestionAnswering, Trainer
 
 import numpy as np
 from datasets import load_metric
+from transformers import TrainingArguments
 #from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
 from transformers import AutoModelForMaskedLM
 import evaluate
@@ -129,6 +130,18 @@ if __name__ == "__main__":
 
     loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
     tokenizer = loaded_model.tokenizer
+
+     # Define TrainingArguments
+    training_args = TrainingArguments(
+        output_dir="./output",
+        evaluation_strategy="epoch",
+        learning_rate=2e-5,
+        per_device_train_batch_size=batch_size,
+        per_device_eval_batch_size=batch_size,
+        num_train_epochs=num_train_epochs,
+        weight_decay=0.01,
+        push_to_hub=False,
+    )
 
     dataset_name = "squad"
     batch_size = 16
