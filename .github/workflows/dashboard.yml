@@ -39,7 +39,7 @@ jobs:
       - name: Run Python Script from other folder to create README in main folder
         run: |
           cd dashboard/HuggingFace
-          python new.py
+          python dashboard.py
       - name: Add Generated File
         run: |
           git config user.email "${{ secrets.USER_EMAIL }}"
