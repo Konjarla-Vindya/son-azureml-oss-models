@@ -81,11 +81,6 @@ def fine_tune_and_register_model(model_name, task):
     
     return registered_model
 
-if __name__ == "__main__":
-    print("Model Name:", model_name)
-    print("Task:", task)
-    registered_model = fine_tune_and_register_model(model_name, task)
-    print("Registered Model:", registered_model)
 
 if __name__ == "__main__":
   model_name = os.environ.get('test_model_name')
