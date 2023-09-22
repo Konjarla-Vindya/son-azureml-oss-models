@@ -13,9 +13,9 @@ from azure.ai.ml.entities import (
     AzureMLOnlineInferencingServer
 )
 # from utils.logging import get_logger
-from fetch_task import HfTask
+# from fetch_task import HfTask
 import mlflow
-from box import ConfigBox
+# from box import ConfigBox
 import re
 import sys
 import time
