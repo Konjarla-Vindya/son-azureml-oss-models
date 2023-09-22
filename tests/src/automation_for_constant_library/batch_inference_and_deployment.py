@@ -13,7 +13,7 @@ from azure.ai.ml.entities import (
     AzureMLOnlineInferencingServer
 )
 import mlflow
-# from box import ConfigBox
+from box import ConfigBox
 import re
 import sys
 import time
