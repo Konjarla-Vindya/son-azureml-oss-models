@@ -20,7 +20,7 @@ class Dashboard():
         }
         self.models_data = []  # Initialize models_data as an empty list
 
-    def get_all_workflow_names(self):
+    def get_all_workflow_names(self,limit=5):
         # workflow_name = ["abc/def","abeja/gpt-neox-japanese-2.7b","abhishek/llama-2-7b-hf-small-shards","abnersampaio/sentiment","adamc-7/distilbert-imdb-micro"]
         API = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/workflows"
         print (f"Getting github workflows from {API}")
@@ -28,12 +28,13 @@ class Dashboard():
         # current_page = 1
         # per_page = 100
         workflow_name = []
-        # while total_pages is None or current_page <= total_pages:
+        while total_pages is None or current_page <= total_pages:
 
         headers = {
             "Authorization": f"Bearer {self.github_token}",
             "Accept": "application/vnd.github.v3+json"
         }
+        params = { "per_page": limit}
         #params = { "per_page": per_page, "page": current_page }
         response = requests.get(API, headers=headers)
         if response.status_code == 200:
@@ -42,15 +43,15 @@ class Dashboard():
             for workflow in workflows["workflows"]:
                     if workflow["name"].lower().startswith("mlflow"):
                         workflow_name.append(workflow["name"])
-            # if not workflows["workflows"]:
-            #     break
-            # workflow_name.extend(json_response['workflows["name"]'])
-            # if current_page == 1:
-            # # divide total_count by per_page and round up to get total_pages
-            #     total_pages = int(workflows['total_count'] / per_page) + 1
-            # current_page += 1
-            # # print a single dot to show progress
-            # print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
+            if not workflows["workflows"]:
+                break
+            workflow_name.extend(json_response['workflows["name"]'])
+            if current_page == 1:
+            # divide total_count by per_page and round up to get total_pages
+                total_pages = int(workflows['total_count'] / per_page) + 1
+            current_page += 1
+            print a single dot to show progress
+            print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
         else:
             print (f"Error: {response.status_code} {response.text}")
             exit(1)
@@ -124,7 +125,7 @@ class Dashboard():
                     "Model": workflow_name.replace(".yml", ""),
                     # "Status": "<span style='background-color: #00FF00; padding: 2px 6px; border-radius: 3px;'>PASS</span>" if last_run["conclusion"] == "success" else "<span style='background-color: #FF0000; padding: 2px 6px; border-radius: 3px;'>FAIL</span>",
                     "Status": " ✅ PASS" if last_run["conclusion"] == "success" else "❌ FAIL",
-                    "Link": f"[Run Link]({run_link})",
+                    "Link": f"[Link]({run_link})",
                     "LastRun_Timestamp": last_run["created_at"]
                 }
 
