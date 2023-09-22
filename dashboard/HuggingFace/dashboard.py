@@ -122,12 +122,12 @@ class Dashboard():
                 run_link = f"https://github.com/{self.repo_full_name}/actions/runs/{last_run['id']}"
                 models_entry = {
                     "Model": workflow_name.replace(".yml", "").replace("MLFlow-",""),
-                    "HuggingFace_Link": f"[🤗](https://huggingface.co/{workflow_name})",
+                    "HFLink": f"[Link](https://huggingface.co/{workflow_name.replace(".yml", "").replace("MLFlow-","")})",
                     # "Status": "<span style='background-color: #00FF00; padding: 2px 6px; border-radius: 3px;'>PASS</span>" if last_run["conclusion"] == "success" else "<span style='background-color: #FF0000; padding: 2px 6px; border-radius: 3px;'>FAIL</span>",
                     # "Status": " ✅ PASS" if last_run["conclusion"] == "success" elif last_run["conclusion"] == "failure" "❌ FAIL",
                     "Status": f"{'✅ PASS' if last_run['conclusion'] == 'success' else '❌ FAIL' if last_run['conclusion'] == 'failure' else '🚫 CANCELLED' if last_run['conclusion'] == 'cancelled' else '⏳ RUNNING'}",
-                    "LastRun_Link": f"[Link]({run_link})",
-                    "LastRun_Timestamp": last_run["created_at"]
+                    "LastRunLink": f"[Link]({run_link})",
+                    "LastRunTimestamp": last_run["created_at"]
                 }
 
                 self.models_data.append(models_entry)
