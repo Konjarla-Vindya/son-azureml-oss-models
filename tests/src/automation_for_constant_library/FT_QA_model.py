@@ -130,6 +130,7 @@ if __name__ == "__main__":
 
     loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
     tokenizer = loaded_model.tokenizer
+    batch_size = 16 
 
      # Define TrainingArguments
     training_args = TrainingArguments(
