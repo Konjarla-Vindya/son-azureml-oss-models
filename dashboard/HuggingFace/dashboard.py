@@ -42,13 +42,13 @@ class Dashboard():
             for workflow in workflows["workflows"]:
                 if workflow["name"].lower().startswith("mlflow"):
                     workflow_name.append(workflow["name"])
-            if not workflows["workflows"]:
-                break
+            # if not workflows["workflows"]:
+            #     break
             # workflow_name.extend(json_response['workflows["name"]'])
-            if current_page == 1:
-            # divide total_count by per_page and round up to get total_pages
-                total_pages = int(workflows['total_count'] / per_page) + 1
-            current_page += 1
+            # if current_page == 1:
+            # # divide total_count by per_page and round up to get total_pages
+            #     total_pages = int(workflows['total_count'] / per_page) + 1
+            # current_page += 1
             # print a single dot to show progress
             print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
         else:
