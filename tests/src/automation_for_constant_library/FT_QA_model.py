@@ -30,7 +30,8 @@ import argparse
 import os
 from azureml.core import Workspace
 #from transformers import DataCollatorForTokenClassification
-from transformers import AutoTokenizer, AutoModelForQuestionAnswering, DataCollatorForQuestionAnswering, Trainer
+from transformers import default_data_collator
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering, Trainer
 import numpy as np
 from datasets import load_metric
 #from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
@@ -109,7 +110,7 @@ if __name__ == "__main__":
     num_train_epochs = 3
 
     training_args = create_training_args(model_name, batch_size, num_train_epochs)
-    data_collator = DataCollatorForQuestionAnswering(tokenizer)
+    data_collator = default_data_collator
 
     subset_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(100))
     subset_validation_dataset = tokenized_datasets["validation"].shuffle(seed=42).select(range(100))
