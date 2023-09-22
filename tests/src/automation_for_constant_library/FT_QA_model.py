@@ -37,6 +37,7 @@ from datasets import load_metric
 from transformers import AutoModelForMaskedLM
 import evaluate
 
+
 def create_training_args(model_name, batch_size=16, num_train_epochs=3):
     return TrainingArguments(
         f"{model_name}-finetuned-qa",
@@ -49,37 +50,66 @@ def create_training_args(model_name, batch_size=16, num_train_epochs=3):
         push_to_hub=False,
     )
 
-def tokenize_and_align_labels(dataset, tokenizer, label_all_tokens=True):
-    def tokenize_and_align(examples):
-        tokenized_inputs = tokenizer(
-            examples["question"],
-            examples["context"],
-            truncation="only_second",  # Truncate the context, not the question
-            padding="max_length",
-            max_length=512,  # Adjust as needed
+def tokenize_and_prepare_features(dataset, tokenizer, max_length=384, doc_stride=128):
+    def prepare_train_features(examples):
+        tokenized_examples = tokenizer(
+            examples["question" if tokenizer.padding_side == "right" else "context"],
+            examples["context" if tokenizer.padding_side == "right" else "question"],
+            truncation="only_second" if tokenizer.padding_side == "right" else "only_first",
+            max_length=max_length,
+            stride=doc_stride,
+            return_overflowing_tokens=True,
             return_offsets_mapping=True,
-            return_tensors="pt",  # Use "pt" for PyTorch tensors
+            padding="max_length",
         )
 
-        # Process the start and end positions for question answering
-        labels = []
-        for start_pos, end_pos in zip(examples["start_positions"], examples["end_positions"]):
-            # Create start and end position labels
-            label_ids = torch.zeros(tokenized_inputs["input_ids"].shape, dtype=torch.long)
-            label_ids[0, start_pos] = 1  # Set 1 for start position
-            label_ids[0, end_pos] = 2    # Set 2 for end position
+        sample_mapping = tokenized_examples.pop("overflow_to_sample_mapping")
+        offset_mapping = tokenized_examples.pop("offset_mapping")
 
-            labels.append(label_ids)
+        tokenized_examples["start_positions"] = []
+        tokenized_examples["end_positions"] = []
 
-        tokenized_inputs["labels"] = labels
-        return tokenized_inputs
+        for i, offsets in enumerate(offset_mapping):
+            input_ids = tokenized_examples["input_ids"][i]
+            cls_index = input_ids.index(tokenizer.cls_token_id)
+            sequence_ids = tokenized_examples.sequence_ids(i)
 
-    tokenized_datasets = dataset.map(
-        lambda examples: tokenize_and_align(examples),
+            sample_index = sample_mapping[i]
+            answers = examples["answers"][sample_index]
+
+            if len(answers["answer_start"]) == 0:
+                tokenized_examples["start_positions"].append(cls_index)
+                tokenized_examples["end_positions"].append(cls_index)
+            else:
+                start_char = answers["answer_start"][0]
+                end_char = start_char + len(answers["text"][0])
+
+                token_start_index = 0
+                while sequence_ids[token_start_index] != (1 if tokenizer.padding_side == "right" else 0):
+                    token_start_index += 1
+
+                token_end_index = len(input_ids) - 1
+                while sequence_ids[token_end_index] != (1 if tokenizer.padding_side == "right" else 0):
+                    token_end_index -= 1
+
+                if not (offsets[token_start_index][0] <= start_char and offsets[token_end_index][1] >= end_char):
+                    tokenized_examples["start_positions"].append(cls_index)
+                    tokenized_examples["end_positions"].append(cls_index)
+                else:
+                    while token_start_index < len(offsets) and offsets[token_start_index][0] <= start_char:
+                        token_start_index += 1
+                    tokenized_examples["start_positions"].append(token_start_index - 1)
+                    while offsets[token_end_index][1] >= end_char:
+                        token_end_index -= 1
+                    tokenized_examples["end_positions"].append(token_end_index + 1)
+
+        return tokenized_examples
+
+    return dataset.map(
+        prepare_train_features,
         batched=True,
+        remove_columns=dataset["train"].column_names
     )
-
-    return tokenized_datasets
 
 def load_custom_dataset(dataset_name, batch_size):
     # Load the SQuAD dataset
@@ -102,8 +132,7 @@ if __name__ == "__main__":
     batch_size = 16
     datasets, label_list, batch_size = load_custom_dataset(dataset_name, batch_size)
 
-    label_all_tokens = True
-    tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, label_all_tokens)
+    tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer)
 
     model_name = test_model_name
     num_train_epochs = 3
