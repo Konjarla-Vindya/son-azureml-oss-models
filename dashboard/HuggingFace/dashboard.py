@@ -24,36 +24,36 @@ class Dashboard():
         # workflow_name = ["abc/def","abeja/gpt-neox-japanese-2.7b","abhishek/llama-2-7b-hf-small-shards","abnersampaio/sentiment","adamc-7/distilbert-imdb-micro"]
         API = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/workflows"
         print (f"Getting github workflows from {API}")
-        total_pages = None
-        current_page = 1
-        per_page = 100
+        # total_pages = None
+        # current_page = 1
+        # per_page = 100
         workflow_name = []
-        while total_pages is None or current_page <= total_pages:
+        # while total_pages is None or current_page <= total_pages:
 
-            headers = {
-                "Authorization": f"Bearer {self.github_token}",
-                "Accept": "application/vnd.github.v3+json"
-            }
-            params = { "per_page": per_page, "page": current_page }
-            response = requests.get(API, headers=headers, params=params)
-            if response.status_code == 200:
-                workflows = response.json()
-                # append workflow_runs to runs list
-                for workflow in workflows["workflows"]:
-                    if workflow["name"].lower().startswith("mlflow"):
-                        workflow_name.append(workflow["name"])
-                if not workflows["workflows"]:
-                    break
-                # workflow_name.extend(json_response['workflows["name"]'])
-                if current_page == 1:
-                # divide total_count by per_page and round up to get total_pages
-                    total_pages = int(workflows['total_count'] / per_page) + 1
-                current_page += 1
-                # print a single dot to show progress
-                print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
-            else:
-                print (f"Error: {response.status_code} {response.text}")
-                exit(1)
+        headers = {
+            "Authorization": f"Bearer {self.github_token}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+        params = { "per_page": per_page, "page": current_page }
+        response = requests.get(API, headers=headers, params=params)
+        if response.status_code == 200:
+            workflows = response.json()
+            # append workflow_runs to runs list
+            for workflow in workflows[workflows["name"]]:
+                if workflow.lower().startswith("mlflow"):
+                    workflow_name.append(workflow)
+            if not workflows["workflows"]:
+                break
+            # workflow_name.extend(json_response['workflows["name"]'])
+            # if current_page == 1:
+            # # divide total_count by per_page and round up to get total_pages
+            #     total_pages = int(workflows['total_count'] / per_page) + 1
+            # current_page += 1
+            # # print a single dot to show progress
+            # print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
+        else:
+            print (f"Error: {response.status_code} {response.text}")
+            exit(1)
         print (f"\n")
         #create ../logs/get_github_workflows/ if it does not exist
         # if not os.path.exists("../logs/get_all_workflow_names"):
