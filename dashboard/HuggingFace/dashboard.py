@@ -34,7 +34,7 @@ class Dashboard():
             "Authorization": f"Bearer {self.github_token}",
             "Accept": "application/vnd.github.v3+json"
         }
-        params = { "per_page": per_page, "page": current_page }
+        #params = { "per_page": per_page, "page": current_page }
         response = requests.get(API, headers=headers, params=params)
         if response.status_code == 200:
             workflows = response.json()
