@@ -239,8 +239,8 @@ if __name__ == "__main__":
         name=test_model_name, stages=["None"])
     model_detail = registered_model_detail[0]
     print("Latest registered model version is : ", model_detail.version)
-    print("Latest registered model id is : ", model_detail.id)
-    print("Latest registered model name is : ", model_detail.name)
+    # print("Latest registered model id is : ", model_detail.id)
+    # print("Latest registered model name is : ", model_detail.name)
     
     # loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
     # model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
@@ -263,7 +263,7 @@ if __name__ == "__main__":
 
     # compute_cluster = create_or_update_compute(workspace_ml_client, compute_name ="cpu-cluster", vm_size="Standard_DS3_V2", min_instances=0, max_instances=3, idle_time_before_scale_down=120)
 
-    command_job = run_azure_ml_job(code="./", command_to_run="python batch_infernce_and_deployment.py",
+    command_job = run_azure_ml_job(code="./", command_to_run="python batch_inference_and_deployment.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
 
     create_and_get_job_studio_url(command_job, workspace_ml_client)
