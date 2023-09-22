@@ -31,6 +31,8 @@ jobs:
       run: pip install transformers
     - name: pip-install-rouge_score 
       run: pip install rouge_score 
+    - name: pip-install-nltk 
+      run: pip install nltk 
     - name: pip-install-transformers[torch]
       run: pip install transformers[torch]
     - name: pip-install-torchvision
