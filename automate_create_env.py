@@ -25,7 +25,7 @@ pip_dependencies = [
    "requests==2.28.2","safetensors==0.3.1","scikit-learn==1.2.2","scipy==1.10.1",
    "torch==2.0.1","torchvision==0.15.2","transformers==4.29.0",
    "xformers==0.0.20","azureml-mlflow==1.53.0","azure-core==1.27.1","torchvision",
-   "sacremoses","python-box","sentencepiece","fugashi[unidic-lite]"
+   "sacremoses","python-box","sentencepiece","fugashi[unidic-lite]", "einops"
    ]
    
 env_name_str = "automate-venv"

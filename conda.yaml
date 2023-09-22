@@ -41,4 +41,5 @@ dependencies:
   - python-box
   - sentencepiece
   - fugashi[unidic-lite]
+  - einops
 name: auto_testenv
