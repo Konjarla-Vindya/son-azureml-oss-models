@@ -20,7 +20,7 @@ class Dashboard():
         }
         self.models_data = []  # Initialize models_data as an empty list
 
-    def get_all_workflow_names(self,limit=5):
+    def get_all_workflow_names(self,limit=30):
         #workflow_name = ["MLFlow-codellama/CodeLlama-13b-Instruct-hf","MLFlow-mosaicml/mpt-7b-storywriter","MLFlow-microsoft/MiniLM-L12-H384-uncased"]
         API = "https://api.github.com/repos/Azure/azure-ai-model-catalog/actions/workflows"
         print (f"Getting github workflows from {API}")
