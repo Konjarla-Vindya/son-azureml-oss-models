@@ -107,6 +107,7 @@ with mlflow.start_run():
     )
 registered_model = mlflow.register_model(model_info.model_uri, model_name)
 print("registered_model--------------------------",registered_model)
+FT_loaded_model=registered_model
 
 texts = ["This is a positive review!", "I didn't enjoy the product."]
 predictions = classify_text(texts, FT_loaded_model, fine_tuned_tokenizer)
