@@ -6,7 +6,6 @@ import os
 import torch
 import json
 import pandas as pd
-import nltk
 import transformers
 import mlflow
 import datetime
