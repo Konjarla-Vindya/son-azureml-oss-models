@@ -1,7 +1,7 @@
 from azureml.core import Workspace, Environment
 from model_inference_and_deployment import ModelInferenceAndDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq, TrainingArguments
+from transformers import AutoModelForCausalLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq, TrainingArguments
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
 from azure.ai.ml import MLClient
@@ -230,7 +230,7 @@ if __name__ == "__main__":
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     
     # create_and_get_job_studio_url(command_job, workspace_ml_client)
-    FT_model_name=f"FT-TC-{test_model_name}"
+    FT_model_name=f"{test_model_name}"
     fine_tuned_tokenizer = AutoTokenizer.from_pretrained(FT_model_name)
     client = MlflowClient()
     
