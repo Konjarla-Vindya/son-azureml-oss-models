@@ -30,7 +30,9 @@ import argparse
 import os
 from azureml.core import Workspace
 #from transformers import DataCollatorForTokenClassification
-from transformers import AutoTokenizer, AutoModelForQuestionAnswering, DataCollatorForQuestionAnswering, Trainer
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering, Trainer
+from transformers.data.data_collator import DataCollatorForQuestionAnswering  # Corrected import
+
 import numpy as np
 from datasets import load_metric
 #from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
