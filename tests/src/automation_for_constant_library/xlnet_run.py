@@ -1,6 +1,7 @@
 from azureml.core import Workspace, Environment
 from model_inference_and_deployment import ModelInferenceAndDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq, TrainingArguments
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
 from azure.ai.ml import MLClient
@@ -128,6 +129,12 @@ def load_model(model_detail):
     print("Inside load model")
     print("loaded_model---------------",loaded_model)
     return loaded_model
+def classify_text(texts, FT_loaded_model, fine_tuned_tokenizer):    
+    inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True, max_length=256)
+    with torch.no_grad():
+        logits = model(**inputs).logits  
+    predicted_labels = torch.argmax(logits, dim=1).tolist()
+    return predicted_labels
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
     if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
@@ -219,10 +226,29 @@ if __name__ == "__main__":
     print("environment_variables-------------",environment_variables)
     print("queue.compute---",queue.compute)
     print("queue.workspace====",queue.workspace)
-    command_job = run_azure_ml_job(code="./", command_to_run="python xlnet_data.py",
+    command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     
-    create_and_get_job_studio_url(command_job, workspace_ml_client)
+    # create_and_get_job_studio_url(command_job, workspace_ml_client)
+    FT_model_name=f"FT-TC-{test_model_name}"
+    fine_tuned_tokenizer = AutoTokenizer.from_pretrained(FT_model_name)
+    client = MlflowClient()
+    
+    FT_registered_model_detail = client.get_latest_versions(
+    
+        name=FT_model_name, stages=["None"])
+    
+    FT_model_detail = FT_registered_model_detail[0]
+    
+    print("FT Latest registered model version is : ", FT_model_detail.version)
+    FT_loaded_model = mlflow.transformers.load_model(model_uri=FT_model_detail.source, return_type="pipeline")
+    print("FT_loaded_model--------------",FT_loaded_model)
+    
+
+
+    texts = ["This is a positive review!", "I didn't enjoy the product."]
+    predictions = classify_text(texts, FT_loaded_model, fine_tuned_tokenizer)
+    print("predictions----------------------------",predictions)
 
     # InferenceAndDeployment = ModelInferenceAndDeployemnt(
     #     test_model_name=test_model_name,
