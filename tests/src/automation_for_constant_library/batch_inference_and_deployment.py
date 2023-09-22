@@ -32,6 +32,11 @@ from azureml.core.datastore import Datastore
 # from azureml.data import InputDataType
 from azureml.core import Workspace
 
+def get_test_queue() -> ConfigBox:
+    queue_file = f"../../config/queue/{test_set}/{test_queue}.json"
+    with open(queue_file) as f:
+        return ConfigBox(json.load(f))
+        
 class BatchDeployemnt:
     def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
         self.test_model_name = test_model_name
@@ -158,6 +163,31 @@ if __name__ == "__main__":
     #foundation_model = foundation_model.id  # Provide your foundation model object
     # compute = "queue.compute"  # Provide the compute name
     #test_model_name
+    test_model_name = os.environ.get('test_model_name')
+    queue = get_test_queue()
+    try:
+        credential = DefaultAzureCredential()
+        credential.get_token("https://management.azure.com/.default")
+    except Exception as ex:
+        # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
+        credential = InteractiveBrowserCredential()
+    print("workspace_name : ", queue.workspace)
+    try:
+        workspace_ml_client = MLClient.from_config(credential=credential)
+    except:
+        workspace_ml_client = MLClient(
+            credential=credential,
+            subscription_id=queue.subscription,
+            resource_group_name=queue.resource_group,
+            workspace_name=queue.workspace
+        )
+    ws = Workspace(
+        subscription_id=queue.subscription,
+        resource_group=queue.resource_group,
+        workspace_name=queue.workspace
+    )
+    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+    
     BEDeployment = BatchDeployemnt(
             test_model_name=test_model_name,
             workspace_ml_client=workspace_ml_client,
