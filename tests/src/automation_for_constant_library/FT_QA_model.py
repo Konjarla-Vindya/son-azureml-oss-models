@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
     # Log the fine-tuned model
     model_pipeline = transformers.pipeline(task="question-answering", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer)
-    model_name = f"ft-qa-bert-base-cased}"
+    model_name = f"ft-qa-bert-base-cased"
     with mlflow.start_run():
         model_info = mlflow.transformers.log_model(
             transformers_model=model_pipeline,
