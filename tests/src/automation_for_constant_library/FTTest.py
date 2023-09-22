@@ -58,6 +58,14 @@ def compute_metrics(eval_pred):
     logits, labels = eval_pred
     predictions = np.argmax(logits, axis=-1)
     return metric.compute(predictions=predictions, references=labels)
+
+def classify_text(texts, FT_loaded_model, fine_tuned_tokenizer):    
+    inputs = tokenizer(texts, return_tensors="pt", padding=True, truncation=True, max_length=256)
+    with torch.no_grad():
+        logits = model(**inputs).logits  
+    predicted_labels = torch.argmax(logits, dim=1).tolist()
+    return predicted_labels
+    
 if __name__ == "__main__":
   model_source_uri=os.environ.get('model_source_uri')
   test_model_name = os.environ.get('test_model_name')
@@ -99,3 +107,7 @@ with mlflow.start_run():
     )
 registered_model = mlflow.register_model(model_info.model_uri, model_name)
 print("registered_model--------------------------",registered_model)
+
+texts = ["This is a positive review!", "I didn't enjoy the product."]
+predictions = classify_text(texts, FT_loaded_model, fine_tuned_tokenizer)
+print("predictions----------------------------",predictions)
