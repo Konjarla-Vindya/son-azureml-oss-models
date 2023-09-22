@@ -65,7 +65,7 @@ def create_compute_metrics(label_list):
         predictions, labels = p
         predictions = np.argmax(predictions, axis=2)
 
-        # Remove ignored index (special tokens)
+        
         true_predictions = [
             [label_list[p] for (p, l) in zip(prediction, label) if l != -100]
             for prediction, label in zip(predictions, labels)
@@ -93,15 +93,13 @@ def tokenize_and_align_labels(dataset, tokenizer, task, label_all_tokens=True):
             previous_word_idx = None
             label_ids = []
             for word_idx in word_ids:
-                # Special tokens have a word id that is None. We set the label to -100 so they are automatically
-                # ignored in the loss function.
+              
                 if word_idx is None:
                     label_ids.append(-100)
-                # We set the label for the first token of each word.
+                
                 elif word_idx != previous_word_idx:
                     label_ids.append(label[word_idx])
-                # For the other tokens in a word, we set the label to either the current label or -100, depending on
-                # the label_all_tokens flag.
+              
                 else:
                     label_ids.append(label[word_idx] if label_all_tokens else -100)
                 previous_word_idx = word_idx
@@ -122,10 +120,10 @@ def tokenize_and_align_labels(dataset, tokenizer, task, label_all_tokens=True):
 
 
 def load_custom_dataset(dataset_name, task, batch_size):
-    # Load the dataset
+    
     datasets = load_dataset(dataset_name)
 
-    # Define label_list based on the task
+   
     if task == "ner":
         label_list = datasets["train"].features[f"{task}_tags"].feature.names
     else:
@@ -142,36 +140,8 @@ def load_custom_dataset(dataset_name, task, batch_size):
 
 
 
-# def get_library_to_load_model(self, task: str) -> str:
-#         """ Takes the task name and load the  json file findout the library 
-#         which is applicable for that task and retyrun it 
 
-#         Args:
-#             task (str): required the task name 
-#         Returns:
-#             str: return the library name
-#         """
-#         try:
-#             with open(FILE_NAME) as f:
-#                 model_with_library = ConfigBox(json.load(f))
-#                 print(f"scoring_input file:\n\n {model_with_library}\n\n")
-#         except Exception as e:
-#             print(
-#                 f"::warning:: Could not find scoring_file: {model_with_library}. Finishing without sample scoring: \n{e}")
-#         return model_with_library.get(task)
 
-# def download_model_and_tokenizer(self, task: str) -> dict:
-#         model_library_name = self.get_library_to_load_model(task=task)
-#         print("Library name is this one : ", model_library_name)
-#         # Load the library from the transformer
-#         model_library = getattr(transformers, model_library_name)
-#         # From the library load the model
-#         model_name = loaded_model.model 
-#         model_name.config.num_labels = 6 
-#         model_name.classifier = torch.nn.Linear(model_name.config.hidden_size, model_name.config.num_labels) 
-#         Text_classification_model = model_library.from_pretrained(
-#             config=model_name.config) 
-#         Text_classification_model.load_state_dict(model_name.state_dict(), strict=False)
      
 if __name__ == "__main__":
   model_source_uri=os.environ.get('model_source_uri')
