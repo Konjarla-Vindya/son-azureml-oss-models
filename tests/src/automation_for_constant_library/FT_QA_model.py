@@ -22,35 +22,35 @@ from azure.ai.ml.entities import (
     AzureMLOnlineInferencingServer
 )
 from azureml.core import Workspace
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq
+#from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq
 from datasets import load_dataset
 import numpy as np
 # import evaluate
 import argparse
 import os
 from azureml.core import Workspace
-from transformers import DataCollatorForTokenClassification
-from transformers import AutoModelForQuestionAnswering, TrainingArguments, Trainer
+#from transformers import DataCollatorForTokenClassification
+from transformers import AutoTokenizer, AutoModelForQuestionAnswering, DataCollatorForQuestionAnswering, Trainer
 import numpy as np
 from datasets import load_metric
 #from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
 from transformers import AutoModelForMaskedLM
 import evaluate
 
-# def create_training_args(model_name, task, batch_size=16, num_train_epochs=3):
-#     return TrainingArguments(
-#         f"{model_name}-finetuned-{task}",
-#         evaluation_strategy="epoch",
-#         learning_rate=2e-5,
-#         per_device_train_batch_size=batch_size,
-#         per_device_eval_batch_size=batch_size,
-#         num_train_epochs=num_train_epochs,
-#         weight_decay=0.01,
-#         push_to_hub=False,
-#     )
+ def create_training_args(model_name, task, batch_size=16, num_train_epochs=3):
+     return TrainingArguments(
+         f"{model_name}-finetuned-{task}",
+         evaluation_strategy="epoch",
+         learning_rate=2e-5,
+         per_device_train_batch_size=batch_size,
+         per_device_eval_batch_size=batch_size,
+         num_train_epochs=num_train_epochs,
+         weight_decay=0.01,
+         push_to_hub=False,
+     )
 
-# def create_data_collator(tokenizer):
-#     return DataCollatorForTokenClassification(tokenizer)
+ def create_data_collator(tokenizer):
+     return DataCollatorForQuestionAnswering(tokenizer)
 
 # def create_compute_metrics(label_list):
 #     metric = load_metric("seqeval")
@@ -78,39 +78,36 @@ import evaluate
 #         }
 
 # def tokenize_and_align_labels(dataset, tokenizer, task, label_all_tokens=True):
-#     def tokenize_and_align(examples):
-#         tokenized_inputs = tokenizer(examples["tokens"], truncation=True, is_split_into_words=True)
+    def tokenize_and_align(examples):
+        tokenized_inputs = tokenizer(
+            examples["question"],
+            examples["context"],
+            truncation="only_second",  # Truncate the context, not the question
+            padding="max_length",
+            max_length=512,  # Adjust as needed
+            return_offsets_mapping=True,
+            return_tensors="pt",  # Use "pt" for PyTorch tensors
+        )
 
-#         labels = []
-#         for i, label in enumerate(examples[f"{task}_tags"]):
-#             word_ids = tokenized_inputs.word_ids(batch_index=i)
-#             previous_word_idx = None
-#             label_ids = []
-#             for word_idx in word_ids:
-#                 # Special tokens have a word id that is None. We set the label to -100 so they are automatically
-#                 # ignored in the loss function.
-#                 if word_idx is None:
-#                     label_ids.append(-100)
-#                 # We set the label for the first token of each word.
-#                 elif word_idx != previous_word_idx:
-#                     label_ids.append(label[word_idx])
-#                 # For the other tokens in a word, we set the label to either the current label or -100, depending on
-#                 # the label_all_tokens flag.
-#                 else:
-#                     label_ids.append(label[word_idx] if label_all_tokens else -100)
-#                 previous_word_idx = word_idx
+        # Process the start and end positions for question answering
+        labels = []
+        for i, (start_pos, end_pos) in enumerate(zip(examples["start_positions"], examples["end_positions"])):
+            # Create start and end position labels
+            label_ids = [0] * tokenized_inputs["input_ids"].size(1)
+            label_ids[start_pos] = 1  # Set 1 for start position
+            label_ids[end_pos] = 2    # Set 2 for end position
 
-#             labels.append(label_ids)
+            labels.append(label_ids)
 
-#         tokenized_inputs["labels"] = labels
-#         return tokenized_inputs
+        tokenized_inputs["labels"] = labels
+        return tokenized_inputs
 
-#     tokenized_datasets = dataset.map(
-#         lambda examples: tokenize_and_align(examples),
-#         batched=True,
-#     )
+    tokenized_datasets = dataset.map(
+        lambda examples: tokenize_and_align(examples),
+        batched=True,
+    )
 
-#     return tokenized_datasets
+    return tokenized_datasets
 
 
 
@@ -119,11 +116,12 @@ def load_custom_dataset(dataset_name, task, batch_size):
     # Load the dataset
     datasets = load_dataset(dataset_name)
 
-    # Define label_list based on the task
-    if task == "question-answering":
-        label_list = datasets["train"].features[f"{task}_tags"].feature.names
-    else:
-        label_list = None
+# Remove the label_list code for question answering task
+if task == "ner":
+    label_list = datasets["train"].features[f"{task}_tags"].feature.names
+else:
+    label_list = None
+
 
    
     print(f"Loaded dataset: {dataset_name}")
@@ -176,34 +174,55 @@ if __name__ == "__main__":
   #print("loaded_dataset------------------",datasets)
   tokenizer=loaded_model.tokenizer
   dataset_name = "squad"
-  task = "question-answering"
+  task = "ner"
   batch_size = 16
   datasets, label_list, batch_size = load_custom_dataset(dataset_name, task, batch_size)
-  task = "question-answering"
+  #task = "ner"
   label_all_tokens = True
   tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, task, label_all_tokens)
   model_name = test_model_name
 
-  # num_train_epochs = 3
+   num_train_epochs = 3
 
-  # training_args = create_training_args(model_name, task, batch_size, num_train_epochs)
-  # data_collator = create_data_collator(tokenizer)
-  # label_list = label_list  # You should define label_list based on your dataset
+   training_args = create_training_args(model_name, task, batch_size, num_train_epochs)
+   data_collator = create_data_collator(tokenizer)
+   label_list = label_list  # You should define label_list based on your dataset
   # compute_metrics_fn = create_compute_metrics(label_list)
 
-  # trainer = Trainer(
-  #   model=model,
-  #   args=training_args,
-  #   train_dataset=subset_train_dataset,  
-  #   eval_dataset=subset_validation_dataset,  
-  #   data_collator=data_collator,
-  #   tokenizer=tokenizer,
-  #   compute_metrics=compute_metrics_fn
-  #  )
+   print("tokenized_datasets----------",tokenized_datasets)
+   subset_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(100))
+   subset_validation_dataset = tokenized_datasets["validation"].shuffle(seed=42).select(range(100))
 
-  # fine_tune_results = trainer.train()
-  # print(fine_tune_results)
-  # evaluation_results = trainer.evaluate()
-  # print(evaluation_results)
-  # #data_set()
+   trainer = Trainer(
+     model=model,
+     args=training_args,
+     train_dataset=subset_train_dataset,  
+     eval_dataset=subset_validation_dataset,  
+     data_collator=data_collator,
+     tokenizer=tokenizer,
+  #   compute_metrics=compute_metrics_fn
+    )
+
+   fine_tune_results = trainer.train()
+   print(fine_tune_results)
+   evaluation_results = trainer.evaluate()
+   print(evaluation_results)
+   #data_set()
+   save_directory = "./FT_model_for_Question_answering"
+   trainer.save_model(save_directory)
+   fine_tuned_model = AutoModelForQuestionAnswering.from_pretrained(save_directory)
+   tokenizer.save_pretrained(save_directory)
+   fine_tuned_tokenizer = AutoTokenizer.from_pretrained(save_directory)
+   print(fine_tuned_model)
+   print(tokenizer)
+   mlflow.end_run()
+   model_pipeline = transformers.pipeline(task="question-answering", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer )
+   model_name = f"ft-qa-bert-base-cased"
+   with mlflow.start_run():
+     model_info = mlflow.transformers.log_model(
+         transformers_model=model_pipeline,
+         artifact_path=model_name
+     )
+   registered_model = mlflow.register_model(model_info.model_uri, model_name)
+   print(registered_model)
     
