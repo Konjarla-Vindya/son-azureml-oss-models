@@ -31,7 +31,7 @@ import os
 from azureml.core import Workspace
 #from transformers import DataCollatorForTokenClassification
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering, Trainer
-from transformers.data.data_collator import DataCollatorForQuestionAnswering  # Corrected import
+#from transformers.data.data_collator import DataCollatorForQuestionAnswering  # Corrected import
 
 import numpy as np
 from datasets import load_metric
@@ -153,7 +153,7 @@ if __name__ == "__main__":
         args=training_args,
         train_dataset=subset_train_dataset,
         eval_dataset=subset_validation_dataset,
-        data_collator=data_collator,
+        #data_collator=data_collator,
         tokenizer=tokenizer,
     )
 
