@@ -74,7 +74,7 @@ if __name__ == "__main__":
   small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(100))
   model = AutoModelForCausalLM.from_pretrained(test_model_name, num_labels=5)
   training_args = TrainingArguments(output_dir="test_trainer1")
-  metric = load("rouge")
+  metric = evaluate.load("rouge")
   training_args = TrainingArguments(output_dir="test_trainer1", evaluation_strategy="epoch")
   trainer = Trainer(
     model=model,
