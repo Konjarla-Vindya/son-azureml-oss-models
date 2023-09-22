@@ -12,8 +12,6 @@ from azure.ai.ml.entities import (
     ModelPackage,
     AzureMLOnlineInferencingServer
 )
-# from utils.logging import get_logger
-# from fetch_task import HfTask
 import mlflow
 # from box import ConfigBox
 import re
@@ -34,57 +32,60 @@ from azureml.core.datastore import Datastore
 # from azureml.data import InputDataType
 from azureml.core import Workspace
 
+class BatchDeployemnt:
+    def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
+        self.test_model_name = test_model_name
+        self.workspace_ml_client = workspace_ml_client
+        self.registry = registry
+        model_name = self.test_model_name
+        latest_model = self.get_latest_model_version(self.workspace_ml_client, model_name)
+        deployment_name = "Autodemo"
+        compute = "queue.compute" 
+        workspace = queue.workspace 
+
+    def get_latest_model_version(self, workspace_ml_client, model_name):
+        print("In get_latest_model_version...")
+        version_list = list(workspace_ml_client.models.list(model_name))
+        if len(version_list) == 0:
+            print("Model not found in registry")
+        else:
+            model_version = version_list[0].version
+            foundation_model = workspace_ml_client.models.get(
+                model_name, model_version)
+            print(
+                "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
+                    foundation_model.name, foundation_model.version, foundation_model.id
+                )
+            )
+        print(
+            f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
+        print(f"Model Config : {latest_model.config}")
+        return foundation_model
 
 
-# logger = get_logger(__name__)
-# class BatchInferenceAndDeployemnt:
-#     def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
-#         self.test_model_name = test_model_name
-#         self.workspace_ml_client = workspace_ml_client
-#         self.registry = registry
-
-#     def get_error_messages(self):
-#         # load ../../config/errors.json into a dictionary
-#         with open('../../config/errors.json') as f:
-#             return json.load(f)
-
-
-    # def prase_logs(self, logs):
-    #     error_messages = self.get_error_messages()
-    #     # split logs by \n
-    #     logs_list = logs.split("\n")
-    #     # loop through each line in logs_list
-    #     for line in logs_list:
-    #         # loop through each error in errors
-    #         for error in error_messages:
-    #             # if error is found in line, print error message
-    #             if error['parse_string'] in line:
-    #                 # logger.error(
-    #                 #     f"::error:: {error_messages['error_category']}: {line}")
-
-def create_or_update_batch_endpoint(workspace_ml_client, model_detail, description=""):
+def create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description=""):
     # Generate a unique endpoint name based on the current timestamp
     timestamp = int(time.time())
-    endpoint_name = f"fill-maskws-{timestamp}"
+    endpoint_name = f"fill-maskwsauto-{timestamp}"
 
     # Create or update the Batch Endpoint
     endpoint = BatchEndpoint(
         name=endpoint_name,
-        description=f"Batch endpoint for {model_detail.name}, for fill-mask task{description}",
+        description=f"Batch endpoint for {foundation_model.name}, for fill-mask task{description}",
     )
     workspace_ml_client.begin_create_or_update(endpoint).result()
     return endpoint
 
-    # Example usage:
-    # Replace the parameters with your desired values
-    model_detail = model_detail.id  # Provide your foundation model object
-    description = "By Automation"
+    # # Example usage:
+    # # Replace the parameters with your desired values
+    # foundation_model = model_detail.id  # Provide your foundation model object
+    # description = "By Automation"
 
 def create_or_update_batch_deployment(
     workspace_ml_client,
     deployment_name,
     endpoint_name,
-    model_detail,
+    foundation_model,
     compute,
     error_threshold=0,
     instance_count=1,
@@ -98,7 +99,7 @@ def create_or_update_batch_deployment(
     deployment = BatchDeployment(
         name=deployment_name,
         endpoint_name=endpoint_name,
-        model=model_detail.id,
+        model=foundation_model.id,
         compute=compute,
         error_threshold=error_threshold,
         instance_count=instance_count,
@@ -108,14 +109,8 @@ def create_or_update_batch_deployment(
         output_file_name=output_file_name,
         retry_settings=BatchRetrySettings(max_retries=max_retries, timeout=timeout),
     )
-
     workspace_ml_client.begin_create_or_update(deployment).result()
-
     return deployment
-
-
-
-    
 
 def set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_name):
     # Get the existing Batch Endpoint
@@ -158,16 +153,22 @@ def set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_
 if __name__ == "__main__":
     # Example usage:
     # Replace the parameters with your desired values
-    deployment_name = "demo"
-    endpoint_name = "fill-mask-Auto"  # Provide the actual endpoint name
-    model_detail = model_detail.id  # Provide your foundation model object
-    compute = "queue.compute"  # Provide the compute name
+    # deployment_name = "demo"
+    # endpoint_name = "fill-mask-Auto"  # Provide the actual endpoint name
+    #foundation_model = foundation_model.id  # Provide your foundation model object
+    # compute = "queue.compute"  # Provide the compute name
     #test_model_name
+    BEDeployment = BatchDeployemnt(
+            test_model_name=test_model_name,
+            workspace_ml_client=workspace_ml_client,
+            registry=queue.registry
+        )
+    created_endpoint = create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description)
     created_deployment = create_or_update_batch_deployment(
         workspace_ml_client,
         deployment_name,
         endpoint_name,
-        model_detail,
+        foundation_model,
         compute,
         error_threshold=0,
         instance_count=1,
@@ -179,15 +180,15 @@ if __name__ == "__main__":
         timeout=300,
     )
     set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_name)
-    created_endpoint = create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description)
+    
     # Example usage:
     # Replace the parameters with your desired values
     #endpoint_name = "your_endpoint_name"  # Provide the actual endpoint name
-    deployment_name = "demo-Auto"  # Provide the new default deployment name
+    #deployment_name = "demo-Auto"  # Provide the new default deployment name
 
     # Example usage:
     # Replace the parameters with your desired values
-    workspace = queue.workspace  # Provide your Azure ML workspace object
+    #workspace = queue.workspace  # Provide your Azure ML workspace object
     #endpoint_name = "your_endpoint_name"  # Provide the actual endpoint name
     #batch_inputs_dir = "your_datastore_path"  # Provide the path to the input data in the datastore
 
