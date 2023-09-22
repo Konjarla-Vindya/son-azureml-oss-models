@@ -137,7 +137,7 @@ class Dashboard():
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
  
-
+        self.models_data.sort(key=lambda x: x["Status"])
         return self.data
 
     def results(self, last_runs_dict):
@@ -147,7 +147,7 @@ class Dashboard():
  
 
         df = pandas.DataFrame.from_dict(last_runs_dict)
-        df = df.sort_values(by=['status'], ascending=['failure' in df['status'].values])
+        # df = df.sort_values(by=['status'], ascending=['failure' in df['status'].values])
         results_dict["total"] = df["workflow_id"].count()
         results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
         results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
