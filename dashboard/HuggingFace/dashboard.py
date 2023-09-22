@@ -71,7 +71,7 @@ class Dashboard():
         normalized_workflows = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
         
         hf_name = [hf_name for hf_name in workflows_to_include]
-        print(workflow_name)
+        #print(workflow_name)
         print(hf_name)
         for workflow_name in normalized_workflows:
             try:
