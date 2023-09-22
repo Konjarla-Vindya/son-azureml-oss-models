@@ -23,77 +23,79 @@ from azure.ai.ml.entities import (
     AzureMLOnlineInferencingServer
 )
 from azureml.core import Workspace
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq, TrainingArguments
 from datasets import load_dataset
 import numpy as np
 # import evaluate
 import argparse
 import os
 from azureml.core import Workspace
-from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer
 from transformers import AutoModelForMaskedLM
 from datasets import load_dataset
 import numpy as np
 import evaluate
+from datasets import load_dataset
 
-def load_dataset1(dataset_name, batch_size):
-    # Load the dataset
-    datasets = load_dataset(dataset_name)
+def data_set(): 
+    dataset = load_dataset("xsum")
+    dataset["train"][5]
+    print("downloaded data set-------------")
+    return dataset
+    
 
-    # Define label_list based on the task
-  
-    #label_list = datasets["document"]    
-    #datasets["train"].features["document"].feature
+def tokenize_function(examples):
+    return tokenizer(examples["text"], padding="max_length", truncation=True)
 
-
+def model():
+    small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(100))
+    small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(100))
+    model = AutoModelForCausalLM.from_pretrained(test_model_name, num_labels=5)
+    print("model--------------------",model)
+    return model
    
-    print(f"Loaded dataset: {dataset_name}")
-    #print(f"Label List: {label_list}")
-    print(f"Batch Size: {batch_size}")
-
-
-    return datasets, batch_size
-
-
-# def get_library_to_load_model(self, task: str) -> str:
-#         """ Takes the task name and load the  json file findout the library 
-#         which is applicable for that task and retyrun it 
-
-#         Args:
-#             task (str): required the task name 
-#         Returns:
-#             str: return the library name
-#         """
-#         try:
-#             with open(FILE_NAME) as f:
-#                 model_with_library = ConfigBox(json.load(f))
-#                 print(f"scoring_input file:\n\n {model_with_library}\n\n")
-#         except Exception as e:
-#             print(
-#                 f"::warning:: Could not find scoring_file: {model_with_library}. Finishing without sample scoring: \n{e}")
-#         return model_with_library.get(task)
-
-# def download_model_and_tokenizer(self, task: str) -> dict:
-#         model_library_name = self.get_library_to_load_model(task=task)
-#         print("Library name is this one : ", model_library_name)
-#         # Load the library from the transformer
-#         model_library = getattr(transformers, model_library_name)
-#         # From the library load the model
-#         model_name = loaded_model.model 
-#         model_name.config.num_labels = 6 
-#         model_name.classifier = torch.nn.Linear(model_name.config.hidden_size, model_name.config.num_labels) 
-#         Text_classification_model = model_library.from_pretrained(
-#             config=model_name.config) 
-#         Text_classification_model.load_state_dict(model_name.state_dict(), strict=False)
-     
+def compute_metrics(eval_pred):
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=-1)
+    return metric.compute(predictions=predictions, references=labels)
 if __name__ == "__main__":
   model_source_uri=os.environ.get('model_source_uri')
   test_model_name = os.environ.get('test_model_name')
   print("test_model_name-----------------",test_model_name)
   loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
   print("loaded_model---------------------",loaded_model)
-  dataset_name = "xsum"
-  batch_size = 16
-  datasets,batch_size = load_dataset1(dataset_name, batch_size)
-  #data_set()
-    
+  dataset=data_set()
+  tokenizer = AutoTokenizer.from_pretrained(test_model_name)
+  print("tokenizer----------------------",tokenizer)
+  tokenized_datasets = dataset.map(tokenize_function, batched=True)
+  print("tokenized_datasets----------",tokenized_datasets)
+  small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(100))
+  small_eval_dataset = tokenized_datasets["test"].shuffle(seed=42).select(range(100))
+  model = AutoModelForCausalLM.from_pretrained(test_model_name, num_labels=5)
+  training_args = TrainingArguments(output_dir="test_trainer1")
+  metric = evaluate.load("rouge")
+  training_args = TrainingArguments(output_dir="test_trainer1", evaluation_strategy="epoch")
+  trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=small_train_dataset,
+    eval_dataset=small_eval_dataset,
+    compute_metrics=compute_metrics,
+   )
+  trainer.train()
+  print("training is done")
+  save_directory = "./test_trainer1"
+  trainer.save_model(save_directory)
+  fine_tuned_model = AutoModelForCausalLM.from_pretrained(save_directory)
+  tokenizer.save_pretrained(save_directory)
+  fine_tuned_tokenizer = AutoTokenizer.from_pretrained(save_directory)
+  model_pipeline = transformers.pipeline(task="text-generation", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer )
+timestamp_uuid = datetime.datetime.now().strftime("%m%d%H%M%f")
+model_name = f"FT-TC-{test_model_name}"
+with mlflow.start_run():
+    model_info = mlflow.transformers.log_model(
+        transformers_model=model_pipeline,
+        artifact_path=model_name
+    )
+registered_model = mlflow.register_model(model_info.model_uri, model_name)
+print("registered_model--------------------------",registered_model)
