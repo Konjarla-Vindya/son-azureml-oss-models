@@ -55,74 +55,74 @@ from azureml.core import Workspace
     #                 # logger.error(
     #                 #     f"::error:: {error_messages['error_category']}: {line}")
 
-    def create_or_update_batch_endpoint(workspace_ml_client, model_detail, description=""):
-        # Generate a unique endpoint name based on the current timestamp
-        timestamp = int(time.time())
-        endpoint_name = f"fill-maskws-{timestamp}"
+def create_or_update_batch_endpoint(workspace_ml_client, model_detail, description=""):
+    # Generate a unique endpoint name based on the current timestamp
+    timestamp = int(time.time())
+    endpoint_name = f"fill-maskws-{timestamp}"
 
-        # Create or update the Batch Endpoint
-        endpoint = BatchEndpoint(
-            name=endpoint_name,
-            description=f"Batch endpoint for {model_detail.name}, for fill-mask task{description}",
-        )
-        workspace_ml_client.begin_create_or_update(endpoint).result()
-        return endpoint
+    # Create or update the Batch Endpoint
+    endpoint = BatchEndpoint(
+        name=endpoint_name,
+        description=f"Batch endpoint for {model_detail.name}, for fill-mask task{description}",
+    )
+    workspace_ml_client.begin_create_or_update(endpoint).result()
+    return endpoint
 
     # Example usage:
     # Replace the parameters with your desired values
     model_detail = model_detail.id  # Provide your foundation model object
     description = "By Automation"
 
-    def create_or_update_batch_deployment(
-        workspace_ml_client,
-        deployment_name,
-        endpoint_name,
-        model_detail,
-        compute,
-        error_threshold=0,
-        instance_count=1,
-        logging_level="info",
-        max_concurrency_per_instance=2,
-        mini_batch_size=10,
-        output_file_name="predictions.csv",
-        max_retries=3,
-        timeout=300,
-    ):
-        deployment = BatchDeployment(
-            name=deployment_name,
-            endpoint_name=endpoint_name,
-            model=model_detail.id,
-            compute=compute,
-            error_threshold=error_threshold,
-            instance_count=instance_count,
-            logging_level=logging_level,
-            max_concurrency_per_instance=max_concurrency_per_instance,
-            mini_batch_size=mini_batch_size,
-            output_file_name=output_file_name,
-            retry_settings=BatchRetrySettings(max_retries=max_retries, timeout=timeout),
-        )
+def create_or_update_batch_deployment(
+    workspace_ml_client,
+    deployment_name,
+    endpoint_name,
+    model_detail,
+    compute,
+    error_threshold=0,
+    instance_count=1,
+    logging_level="info",
+    max_concurrency_per_instance=2,
+    mini_batch_size=10,
+    output_file_name="predictions.csv",
+    max_retries=3,
+    timeout=300,
+):
+    deployment = BatchDeployment(
+        name=deployment_name,
+        endpoint_name=endpoint_name,
+        model=model_detail.id,
+        compute=compute,
+        error_threshold=error_threshold,
+        instance_count=instance_count,
+        logging_level=logging_level,
+        max_concurrency_per_instance=max_concurrency_per_instance,
+        mini_batch_size=mini_batch_size,
+        output_file_name=output_file_name,
+        retry_settings=BatchRetrySettings(max_retries=max_retries, timeout=timeout),
+    )
 
-        workspace_ml_client.begin_create_or_update(deployment).result()
+    workspace_ml_client.begin_create_or_update(deployment).result()
 
-        return deployment
+    return deployment
 
 
 
     
 
-    def set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_name):
-        # Get the existing Batch Endpoint
-        endpoint = workspace_ml_client.batch_endpoints.get(endpoint_name)
+def set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_name):
+    # Get the existing Batch Endpoint
+    endpoint = workspace_ml_client.batch_endpoints.get(endpoint_name)
 
-        # Update the default deployment name
-        endpoint.defaults.deployment_name = deployment_name
+    # Update the default deployment name
+    endpoint.defaults.deployment_name = deployment_name
 
-        # Save the updated endpoint
-        workspace_ml_client.begin_create_or_update(endpoint).wait()
+    # Save the updated endpoint
+    workspace_ml_client.begin_create_or_update(endpoint).wait()
 
-        # Retrieve and print the default deployment name
-        updated_endpoint = workspace_ml_client.batch_endpoints.get(endpoint_name)
-        print(f"The default deployment is {updated_endpoint.defaults.deployment_name}")
+    # Retrieve and print the default deployment name
+    updated_endpoint = workspace_ml_client.batch_endpoints.get(endpoint_name)
+    print(f"The default deployment is {updated_endpoint.defaults.deployment_name}")
 
 
 
