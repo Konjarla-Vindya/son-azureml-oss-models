@@ -39,9 +39,9 @@ class Dashboard():
         if response.status_code == 200:
             workflows = response.json()
             # append workflow_runs to runs list
-            for workflow in workflows[workflows["name"]]:
-                if workflow.lower().startswith("mlflow"):
-                    workflow_name.append(workflow)
+            for workflow in workflows["workflows"]:
+                    if workflow["name"].lower().startswith("mlflow"):
+                        workflow_name.append(workflow["name"])
             # if not workflows["workflows"]:
             #     break
             # workflow_name.extend(json_response['workflows["name"]'])
@@ -61,6 +61,7 @@ class Dashboard():
         # # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
         # with open(f"../logs/get_all_workflow_names/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
         #     json.dump(workflow_name, f, indent=4)
+        print(workflow_name)
         return workflow_name
 
 
