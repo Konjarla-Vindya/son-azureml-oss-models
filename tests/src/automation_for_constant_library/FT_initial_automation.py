@@ -229,26 +229,26 @@ if __name__ == "__main__":
     command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     
-    # create_and_get_job_studio_url(command_job, workspace_ml_client)
-    FT_model_name=f"FT-TC-{test_model_name}"
-    fine_tuned_tokenizer = AutoTokenizer.from_pretrained(FT_model_name)
-    client = MlflowClient()
+    create_and_get_job_studio_url(command_job, workspace_ml_client)
+    # FT_model_name=f"FT-TC-{test_model_name}"
+    # fine_tuned_tokenizer = AutoTokenizer.from_pretrained(FT_model_name)
+    # client = MlflowClient()
     
-    FT_registered_model_detail = client.get_latest_versions(
+    # FT_registered_model_detail = client.get_latest_versions(
     
-        name=FT_model_name, stages=["None"])
+    #     name=FT_model_name, stages=["None"])
     
-    FT_model_detail = FT_registered_model_detail[0]
+    # FT_model_detail = FT_registered_model_detail[0]
     
-    print("FT Latest registered model version is : ", FT_model_detail.version)
-    FT_loaded_model = mlflow.transformers.load_model(model_uri=FT_model_detail.source, return_type="pipeline")
-    print("FT_loaded_model--------------",FT_loaded_model)
+    # print("FT Latest registered model version is : ", FT_model_detail.version)
+    # FT_loaded_model = mlflow.transformers.load_model(model_uri=FT_model_detail.source, return_type="pipeline")
+    # print("FT_loaded_model--------------",FT_loaded_model)
     
 
 
-    texts = ["This is a positive review!", "I didn't enjoy the product."]
-    predictions = classify_text(texts, FT_loaded_model, fine_tuned_tokenizer)
-    print("predictions----------------------------",predictions)
+    # texts = ["This is a positive review!", "I didn't enjoy the product."]
+    # predictions = classify_text(texts, FT_loaded_model, fine_tuned_tokenizer)
+    # print("predictions----------------------------",predictions)
 
     # InferenceAndDeployment = ModelInferenceAndDeployemnt(
     #     test_model_name=test_model_name,
