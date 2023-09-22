@@ -19,10 +19,17 @@ import mlflow
 import re
 import sys
 import time
-from azureml.core.webservice import BatchEndpoint
-from azureml.core.webservice import BatchDeployment
-from azureml.core.webservice import BatchEndpoint
-from azureml.core.webservice import BatchRetrySettings
+# from azureml.core.webservice import BatchEndpoint
+# from azureml.core.webservice import BatchDeployment
+# from azureml.core.webservice import BatchEndpoint
+# from azureml.core.webservice import BatchRetrySettings
+from azure.ai.ml.entities import (
+    AmlCompute,
+    BatchDeployment,
+    BatchEndpoint,
+    BatchRetrySettings,
+    Model,
+)
 from azureml.core.datastore import Datastore
 from azureml.data import InputDataType
 from azureml.core import Workspace
