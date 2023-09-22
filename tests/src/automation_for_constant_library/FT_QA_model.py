@@ -2,7 +2,7 @@ import os
 from FT_QA_model_automation import load_model  
 import mlflow
 import transformers
-import os
+#import os
 import torch
 import json
 import pandas as pd
@@ -37,47 +37,19 @@ from datasets import load_metric
 from transformers import AutoModelForMaskedLM
 import evaluate
 
- def create_training_args(model_name, task, batch_size=16, num_train_epochs=3):
-     return TrainingArguments(
-         f"{model_name}-finetuned-{task}",
-         evaluation_strategy="epoch",
-         learning_rate=2e-5,
-         per_device_train_batch_size=batch_size,
-         per_device_eval_batch_size=batch_size,
-         num_train_epochs=num_train_epochs,
-         weight_decay=0.01,
-         push_to_hub=False,
-     )
+def create_training_args(model_name, batch_size=16, num_train_epochs=3):
+    return TrainingArguments(
+        f"{model_name}-finetuned-qa",
+        evaluation_strategy="epoch",
+        learning_rate=2e-5,
+        per_device_train_batch_size=batch_size,
+        per_device_eval_batch_size=batch_size,
+        num_train_epochs=num_train_epochs,
+        weight_decay=0.01,
+        push_to_hub=False,
+    )
 
- def create_data_collator(tokenizer):
-     return DataCollatorForQuestionAnswering(tokenizer)
-
-# def create_compute_metrics(label_list):
-#     metric = load_metric("seqeval")
-
-#     def compute_metrics(p):
-#         predictions, labels = p
-#         predictions = np.argmax(predictions, axis=2)
-
-#         # Remove ignored index (special tokens)
-#         true_predictions = [
-#             [label_list[p] for (p, l) in zip(prediction, label) if l != -100]
-#             for prediction, label in zip(predictions, labels)
-#         ]
-#         true_labels = [
-#             [label_list[l] for (p, l) in zip(prediction, label) if l != -100]
-#             for prediction, label in zip(predictions, labels)
-#         ]
-
-#         results = metric.compute(predictions=true_predictions, references=true_labels)
-#         return {
-#             "precision": results["overall_precision"],
-#             "recall": results["overall_recall"],
-#             "f1": results["overall_f1"],
-#             "accuracy": results["overall_accuracy"],
-#         }
-
-# def tokenize_and_align_labels(dataset, tokenizer, task, label_all_tokens=True):
+def tokenize_and_align_labels(dataset, tokenizer, label_all_tokens=True):
     def tokenize_and_align(examples):
         tokenized_inputs = tokenizer(
             examples["question"],
@@ -91,11 +63,11 @@ import evaluate
 
         # Process the start and end positions for question answering
         labels = []
-        for i, (start_pos, end_pos) in enumerate(zip(examples["start_positions"], examples["end_positions"])):
+        for start_pos, end_pos in zip(examples["start_positions"], examples["end_positions"]):
             # Create start and end position labels
-            label_ids = [0] * tokenized_inputs["input_ids"].size(1)
-            label_ids[start_pos] = 1  # Set 1 for start position
-            label_ids[end_pos] = 2    # Set 2 for end position
+            label_ids = torch.zeros(tokenized_inputs["input_ids"].shape, dtype=torch.long)
+            label_ids[0, start_pos] = 1  # Set 1 for start position
+            label_ids[0, end_pos] = 2    # Set 2 for end position
 
             labels.append(label_ids)
 
@@ -109,120 +81,73 @@ import evaluate
 
     return tokenized_datasets
 
-
-
-
-def load_custom_dataset(dataset_name, task, batch_size):
-    # Load the dataset
+def load_custom_dataset(dataset_name, batch_size):
+    # Load the SQuAD dataset
     datasets = load_dataset(dataset_name)
+    label_list = None  # No need for a label list in QA
 
-# Remove the label_list code for question answering task
-if task == "ner":
-    label_list = datasets["train"].features[f"{task}_tags"].feature.names
-else:
-    label_list = None
-
-
-   
     print(f"Loaded dataset: {dataset_name}")
-    print(f"Task: {task}")
-    print(f"Label List: {label_list}")
     print(f"Batch Size: {batch_size}")
-
 
     return datasets, label_list, batch_size
 
-
-
-# def get_library_to_load_model(self, task: str) -> str:
-#         """ Takes the task name and load the  json file findout the library 
-#         which is applicable for that task and retyrun it 
-
-#         Args:
-#             task (str): required the task name 
-#         Returns:
-#             str: return the library name
-#         """
-#         try:
-#             with open(FILE_NAME) as f:
-#                 model_with_library = ConfigBox(json.load(f))
-#                 print(f"scoring_input file:\n\n {model_with_library}\n\n")
-#         except Exception as e:
-#             print(
-#                 f"::warning:: Could not find scoring_file: {model_with_library}. Finishing without sample scoring: \n{e}")
-#         return model_with_library.get(task)
-
-# def download_model_and_tokenizer(self, task: str) -> dict:
-#         model_library_name = self.get_library_to_load_model(task=task)
-#         print("Library name is this one : ", model_library_name)
-#         # Load the library from the transformer
-#         model_library = getattr(transformers, model_library_name)
-#         # From the library load the model
-#         model_name = loaded_model.model 
-#         model_name.config.num_labels = 6 
-#         model_name.classifier = torch.nn.Linear(model_name.config.hidden_size, model_name.config.num_labels) 
-#         Text_classification_model = model_library.from_pretrained(
-#             config=model_name.config) 
-#         Text_classification_model.load_state_dict(model_name.state_dict(), strict=False)
-     
 if __name__ == "__main__":
-  model_source_uri=os.environ.get('model_source_uri')
-  test_model_name = os.environ.get('test_model_name')
-  print("test_model_name-----------------",test_model_name)
-  loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
-  print("loaded_model---------------------",loaded_model)
-  #print("loaded_dataset------------------",datasets)
-  tokenizer=loaded_model.tokenizer
-  dataset_name = "squad"
-  task = "ner"
-  batch_size = 16
-  datasets, label_list, batch_size = load_custom_dataset(dataset_name, task, batch_size)
-  #task = "ner"
-  label_all_tokens = True
-  tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, task, label_all_tokens)
-  model_name = test_model_name
+    model_source_uri = os.environ.get('model_source_uri')
+    test_model_name = os.environ.get('test_model_name')
 
-   num_train_epochs = 3
+    loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
+    tokenizer = loaded_model.tokenizer
 
-   training_args = create_training_args(model_name, task, batch_size, num_train_epochs)
-   data_collator = create_data_collator(tokenizer)
-   label_list = label_list  # You should define label_list based on your dataset
-  # compute_metrics_fn = create_compute_metrics(label_list)
+    dataset_name = "squad"
+    batch_size = 16
+    datasets, label_list, batch_size = load_custom_dataset(dataset_name, batch_size)
 
-   print("tokenized_datasets----------",tokenized_datasets)
-   subset_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(100))
-   subset_validation_dataset = tokenized_datasets["validation"].shuffle(seed=42).select(range(100))
+    label_all_tokens = True
+    tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, label_all_tokens)
 
-   trainer = Trainer(
-     model=model,
-     args=training_args,
-     train_dataset=subset_train_dataset,  
-     eval_dataset=subset_validation_dataset,  
-     data_collator=data_collator,
-     tokenizer=tokenizer,
-  #   compute_metrics=compute_metrics_fn
+    model_name = test_model_name
+    num_train_epochs = 3
+
+    training_args = create_training_args(model_name, batch_size, num_train_epochs)
+    data_collator = DataCollatorForQuestionAnswering(tokenizer)
+
+    subset_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(100))
+    subset_validation_dataset = tokenized_datasets["validation"].shuffle(seed=42).select(range(100))
+
+    trainer = Trainer(
+        model=model,
+        args=training_args,
+        train_dataset=subset_train_dataset,
+        eval_dataset=subset_validation_dataset,
+        data_collator=data_collator,
+        tokenizer=tokenizer,
     )
 
-   fine_tune_results = trainer.train()
-   print(fine_tune_results)
-   evaluation_results = trainer.evaluate()
-   print(evaluation_results)
-   #data_set()
-   save_directory = "./FT_model_for_Question_answering"
-   trainer.save_model(save_directory)
-   fine_tuned_model = AutoModelForQuestionAnswering.from_pretrained(save_directory)
-   tokenizer.save_pretrained(save_directory)
-   fine_tuned_tokenizer = AutoTokenizer.from_pretrained(save_directory)
-   print(fine_tuned_model)
-   print(tokenizer)
-   mlflow.end_run()
-   model_pipeline = transformers.pipeline(task="question-answering", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer )
-   model_name = f"ft-qa-bert-base-cased"
-   with mlflow.start_run():
-     model_info = mlflow.transformers.log_model(
-         transformers_model=model_pipeline,
-         artifact_path=model_name
-     )
-   registered_model = mlflow.register_model(model_info.model_uri, model_name)
-   print(registered_model)
-    
+    fine_tune_results = trainer.train()
+    print(fine_tune_results)
+
+    evaluation_results = trainer.evaluate()
+    print(evaluation_results)
+
+    # Save the fine-tuned model
+    save_directory = "./FT_model_for_Question_answering"
+    trainer.save_model(save_directory)
+    fine_tuned_model = AutoModelForQuestionAnswering.from_pretrained(save_directory)
+    tokenizer.save_pretrained(save_directory)
+    fine_tuned_tokenizer = AutoTokenizer.from_pretrained(save_directory)
+    print(fine_tuned_model)
+    print(tokenizer)
+
+    mlflow.end_run()
+
+    # Log the fine-tuned model
+    model_pipeline = transformers.pipeline(task="question-answering", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer)
+    model_name = f"ft-qa-bert-base-cased}"
+    with mlflow.start_run():
+        model_info = mlflow.transformers.log_model(
+            transformers_model=model_pipeline,
+            artifact_path=model_name
+        )
+
+    registered_model = mlflow.register_model(model_info.model_uri, model_name)
+    print(registered_model)
