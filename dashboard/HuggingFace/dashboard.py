@@ -137,7 +137,8 @@ class Dashboard():
                 print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
  
-        self.models_data.sort(key=lambda x: x["Status"])
+        # self.models_data.sort(key=lambda x: x["Status"])
+        self.models_data.sort(key=lambda x: (x["Status"] != "❌ FAIL", x["Status"]))
         return self.data
 
     def results(self, last_runs_dict):
