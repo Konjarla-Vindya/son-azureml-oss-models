@@ -45,7 +45,7 @@ def data_set():
     
 
 def tokenize_function(examples):
-    return tokenizer(examples["text"], padding="max_length", truncation=True)
+    return tokenizer(examples["document"], padding="max_length", truncation=True)
 
 def model():
     small_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(100))
