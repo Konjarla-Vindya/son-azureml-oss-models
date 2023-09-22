@@ -70,7 +70,7 @@ class Dashboard():
         workflows_to_include = self.get_all_workflow_names()
         #normalized_workflows = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
         hf_name = workflows_to_include
-        print("workflow_name:" workflow_name)
+        print(workflow_name)
         print(hf_name)
         for workflow_name in normalized_workflows:
             try:
