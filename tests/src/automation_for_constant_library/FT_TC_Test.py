@@ -1,15 +1,47 @@
 import os
+from FT_TC_automation import load_model  
 import mlflow
 import transformers
+import os
+import torch
+import json
+import pandas as pd
+import transformers
+import mlflow
+import datetime
+from azure.ai.ml import MLClient
+from azure.identity import DefaultAzureCredential
+from azure.ai.ml.constants import AssetTypes
+from azure.ai.ml.entities import (
+    ManagedOnlineEndpoint,
+    ManagedOnlineDeployment,
+    Model,
+    ModelConfiguration,
+    ModelPackage,
+    Environment,
+    CodeConfiguration,
+    AzureMLOnlineInferencingServer
+)
+from azureml.core import Workspace
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq
+from datasets import load_dataset
+import numpy as np
+# import evaluate
+import argparse
+import os
+from azureml.core import Workspace
+from transformers import DataCollatorForTokenClassification
+from transformers import TrainingArguments, Trainer, DataCollatorForTokenClassification
 import numpy as np
 from datasets import load_metric
-from transformers import (
-    AutoModelForTokenClassification,
-    AutoTokenizer,
-    TrainingArguments,
-    Trainer,
-    DataCollatorForTokenClassification,
-)
+from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
+from transformers import AutoTokenizer, AutoModelForTokenClassification
+
+from transformers import AutoModelForMaskedLM
+from datasets import load_dataset
+import numpy as np
+import evaluate
+
 
 def fine_tune_model(model_name, task):
     # Define functions
