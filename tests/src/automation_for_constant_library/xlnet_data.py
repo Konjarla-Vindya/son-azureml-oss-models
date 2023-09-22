@@ -9,6 +9,7 @@ import pandas as pd
 import transformers
 import mlflow
 import datetime
+from evaluate import load
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.constants import AssetTypes
