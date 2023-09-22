@@ -130,7 +130,8 @@ if __name__ == "__main__":
 
     loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
     tokenizer = loaded_model.tokenizer
-    batch_size = 16 
+    batch_size = 16
+    num_train_epochs = 3
 
      # Define TrainingArguments
     training_args = TrainingArguments(
@@ -157,7 +158,7 @@ if __name__ == "__main__":
     model = AutoModelForQuestionAnswering.from_pretrained(model_name)
 
     training_args = create_training_args(model_name, batch_size, num_train_epochs)
-    data_collator = DataCollatorForQuestionAnswering(tokenizer)
+    #data_collator = DataCollatorForQuestionAnswering(tokenizer)
 
     subset_train_dataset = tokenized_datasets["train"].shuffle(seed=42).select(range(100))
     subset_validation_dataset = tokenized_datasets["validation"].shuffle(seed=42).select(range(100))
