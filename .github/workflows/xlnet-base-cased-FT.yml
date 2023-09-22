@@ -29,8 +29,8 @@ jobs:
       run: pip install azureml-mlflow==1.53.0
     - name: pip-install-transformers
       run: pip install transformers
-    - name: pip-install-rouge-score 
-      run: pip install rouge-score
+    - name: pip-install-rouge_score 
+      run: pip install rouge_score
     - name: pip-install-rouge-metric 
       run: pip install rouge-metric
     - name: pip-install-evaluate 
