@@ -1,5 +1,5 @@
 import os
-from FT_initial_automation import load_model  
+from FT_TC_automation import load_model  
 import mlflow
 import transformers
 import os
