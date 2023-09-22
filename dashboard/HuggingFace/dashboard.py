@@ -68,12 +68,12 @@ class Dashboard():
 
     def workflow_last_run(self): 
         workflows_to_include = self.get_all_workflow_names()
-        #normalized_workflows = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
-        normalized_workflows = [hf_name for hf_name in workflows_to_include]
+        normalized_workflows = [workflow_name.replace("/", "-") for workflow_name in workflows_to_include]
+        # normalized_workflows = [hf_name for hf_name in workflows_to_include]
         # hf_name = [hf_name for hf_name in workflows_to_include]
         #print(workflow_name)
-        print(hf_name)
-        for workflow_name in normalized_workflows:
+        # print(hf_name)
+        for workflow_name in workflows_to_include:
             try:
                 workflow_runs_url = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
                 response = requests.get(workflow_runs_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
@@ -124,7 +124,7 @@ class Dashboard():
                     #self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({url})")
                 run_link = f"https://github.com/{self.repo_full_name}/actions/runs/{last_run['id']}"
                 models_entry = {
-                    "Model": hf_name.replace(".yml", "").replace("MLFlow-",""),
+                    "Model": workflow_name.replace("MLFlow-",""),
                     # "HFLink": f"[Link](https://huggingface.co/{workflow_name.replace(".yml", "").replace("MLFlow-","")})",
                     # "Status": "<span style='background-color: #00FF00; padding: 2px 6px; border-radius: 3px;'>PASS</span>" if last_run["conclusion"] == "success" else "<span style='background-color: #FF0000; padding: 2px 6px; border-radius: 3px;'>FAIL</span>",
                     # "Status": " ✅ PASS" if last_run["conclusion"] == "success" elif last_run["conclusion"] == "failure" "❌ FAIL",
