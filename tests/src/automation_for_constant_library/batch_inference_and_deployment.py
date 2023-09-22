@@ -164,6 +164,8 @@ if __name__ == "__main__":
     # compute = "queue.compute"  # Provide the compute name
     #test_model_name
     test_model_name = os.environ.get('test_model_name')
+    test_queue = os.environ.get('test_queue')
+    test_set = os.environ.get('test_set')
     queue = get_test_queue()
     try:
         credential = DefaultAzureCredential()
