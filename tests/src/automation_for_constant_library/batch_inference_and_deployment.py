@@ -31,7 +31,7 @@ from azure.ai.ml.entities import (
     Model,
 )
 from azureml.core.datastore import Datastore
-from azureml.data import InputDataType
+# from azureml.data import InputDataType
 from azureml.core import Workspace
 
 
