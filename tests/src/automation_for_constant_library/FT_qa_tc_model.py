@@ -55,9 +55,13 @@ def create_training_args(model_name, task, batch_size=batch_size, num_train_epoc
 
 def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_length, doc_stride=doc_stride):
     def prepare_train_features(examples):
+        # Handle missing 'question' key gracefully by providing an empty string
+        question_text = examples.get("question", "")
+        context_text = examples.get("context", "")
+
         tokenized_examples = tokenizer(
-            examples["question" if tokenizer.padding_side == "right" else "context"],
-            examples["context" if tokenizer.padding_side == "right" else "question"],
+            question_text if tokenizer.padding_side == "right" else context_text,
+            context_text if tokenizer.padding_side == "right" else question_text,
             truncation="only_second" if tokenizer.padding_side == "right" else "only_first",
             max_length=max_length,
             stride=doc_stride,
@@ -192,7 +196,6 @@ def fine_tune_model(model_name, task):
     print(fine_tuned_model)
     print(tokenizer)
     mlflow.end_run()
-
 
     model_pipeline = (
         transformers.pipeline(task="question-answering", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer)
