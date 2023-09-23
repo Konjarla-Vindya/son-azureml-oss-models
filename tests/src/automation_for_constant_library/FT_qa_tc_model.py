@@ -151,7 +151,7 @@ def fine_tune_model(model_name, task):
     datasets, _, _ = load_custom_dataset(dataset_name, task, batch_size)
 
     if task == "qa":
-        tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer)
+        tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
     else:
         tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, task, label_all_tokens=True)
         metric = load_metric("seqeval")
