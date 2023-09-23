@@ -25,28 +25,17 @@ from transformers import (
 from datasets import load_dataset, load_metric
 
 # Read configuration from JSON file
-config_file = "./tc_qa.json"
+config_file = "./dataset_task.json"
 with open(config_file, "r") as json_file:
     config = json.load(json_file)
-    
-task="qa"
 
-
-if task == "ner":
-    task_config = config["ner_task"]
-elif task == "qa":
-    task_config = config["qa_task"]
-else:
-    raise ValueError("Unsupported task: " + task)
-
-# Extract task-specific parameters
-dataset_name = task_config["dataset_name"]
-batch_size = task_config["batch_size"]
-num_train_epochs = task_config["num_train_epochs"]
-max_length = task_config["max_length"]
-doc_stride = task_config["doc_stride"]
-task = task_config["task"]
-num_labels = task_config.get("num_labels", None) # Use default value of None if not specified
+dataset_name = config["dataset_name"]
+batch_size = config["batch_size"]
+num_train_epochs = config["num_train_epochs"]
+max_length = config["max_length"]
+doc_stride = config["doc_stride"]
+task = config["task"]
+num_labels = config.get("num_labels", None)  # Use default value of None if not specified
 
 def create_training_args(model_name, task, batch_size=batch_size, num_train_epochs=num_train_epochs):
     return TrainingArguments(
@@ -60,6 +49,70 @@ def create_training_args(model_name, task, batch_size=batch_size, num_train_epoc
         push_to_hub=False,
     )
 
+# def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_length, doc_stride=doc_stride):
+#     def prepare_train_features(examples):
+#         answers = examples.get("answers", {"answer_start": [], "text": []})
+
+#         tokenized_examples = tokenizer(
+#             examples["question" if tokenizer.padding_side == "right" else "context"],
+#             examples["context" if tokenizer.padding_side == "right" else "question"],
+#             truncation="only_second" if tokenizer.padding_side == "right" else "only_first",
+#             max_length=max_length,
+#             stride=doc_stride,
+#             return_overflowing_tokens=True,
+#             return_offsets_mapping=True,
+#             padding="max_length",
+#         )
+
+#         sample_mapping = tokenized_examples.pop("overflow_to_sample_mapping")
+#         offset_mapping = tokenized_examples.pop("offset_mapping")
+
+#         tokenized_examples["start_positions"] = []
+#         tokenized_examples["end_positions"] = []
+
+#         for i, offsets in enumerate(offset_mapping):
+#             input_ids = tokenized_examples["input_ids"][i]
+#             cls_index = input_ids.index(tokenizer.cls_token_id)
+#             sequence_ids = tokenized_examples.sequence_ids(i)
+
+#             sample_index = sample_mapping[i]
+
+#             answer_start = answers["answer_start"][sample_index]
+#             answer_text = answers["text"][sample_index]
+
+#             if len(answer_start) == 0:
+#                 tokenized_examples["start_positions"].append(cls_index)
+#                 tokenized_examples["end_positions"].append(cls_index)
+#             else:
+#                 start_char = answer_start[0]
+#                 end_char = start_char + len(answer_text[0])
+
+#                 token_start_index = 0
+#                 while sequence_ids[token_start_index] != (1 if tokenizer.padding_side == "right" else 0):
+#                     token_start_index += 1
+
+#                 token_end_index = len(input_ids) - 1
+#                 while sequence_ids[token_end_index] != (1 if tokenizer.padding_side == "right" else 0):
+#                     token_end_index -= 1
+
+#                 if not (offsets[token_start_index][0] <= start_char and offsets[token_end_index][1] >= end_char):
+#                     tokenized_examples["start_positions"].append(cls_index)
+#                     tokenized_examples["end_positions"].append(cls_index)
+#                 else:
+#                     while token_start_index < len(offsets) and offsets[token_start_index][0] <= start_char:
+#                         token_start_index += 1
+#                     tokenized_examples["start_positions"].append(token_start_index - 1)
+#                     while offsets[token_end_index][1] >= end_char:
+#                         token_end_index -= 1
+#                     tokenized_examples["end_positions"].append(token_end_index + 1)
+
+#         return tokenized_examples
+
+    # return dataset.map(
+    #     prepare_train_features,
+    #     batched=True,
+    #     remove_columns=dataset["train"].column_names
+    # )
 
 def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_length, doc_stride=doc_stride):
     def prepare_train_features(examples):
@@ -120,13 +173,6 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
 
         return tokenized_examples
 
-    return dataset.map(
-        prepare_train_features,
-        batched=True,
-        remove_columns=dataset["train"].column_names
-    )
-
-
     def prepare_token_classification_features(examples):
         tokenized_inputs = tokenizer(examples["tokens"], truncation=True, is_split_into_words=True)
 
@@ -142,7 +188,7 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
         tokenized_inputs["labels"] = labels
         return tokenized_inputs
 
-    if task == "qa":
+    if task == "question-answering":
         return dataset.map(
             prepare_train_features,
             batched=True,
@@ -283,6 +329,4 @@ def fine_tune_model(model_name, task):
 
 if __name__ == "__main__":
     model_name = os.environ.get('test_model_name')
-    task = "qa"
-
     fine_tune_model(model_name, task)
