@@ -339,6 +339,6 @@ def fine_tune_model(model_name, task):
 
 if __name__ == "__main__":
     model_name = os.environ.get('test_model_name')
-    task = "qa"
+    task = "question-answering"
 
     fine_tune_model(model_name, task)
