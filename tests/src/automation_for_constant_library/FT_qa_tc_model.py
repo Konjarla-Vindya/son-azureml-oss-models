@@ -3,15 +3,11 @@ import mlflow
 import transformers
 import json
 import pandas as pd
-import datetime
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.constants import AssetTypes
 from azure.ai.ml.entities import (
-    ManagedOnlineEndpoint,
-    ManagedOnlineDeployment,
     Model,
-    ModelConfiguration,
     ModelPackage,
     Environment,
     CodeConfiguration,
@@ -24,9 +20,9 @@ from transformers import (
     AutoModelForTokenClassification,
     DataCollatorForTokenClassification,
     TrainingArguments,
+    Trainer,
 )
 from datasets import load_dataset, load_metric
-import evaluate
 
 # Read configuration from JSON file
 config_file = "./dataset_task.json"
@@ -51,73 +47,6 @@ def create_training_args(model_name, task, batch_size=batch_size, num_train_epoc
         num_train_epochs=num_train_epochs,
         weight_decay=0.01,
         push_to_hub=False,
-    )
-
-def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_length, doc_stride=doc_stride):
-    def prepare_train_features(examples):
-    # Handle missing 'answers' key by providing an empty dictionary
-    answers = examples.get("answers", {"answer_start": [], "text": []})
-
-    tokenized_examples = tokenizer(
-        examples["question" if tokenizer.padding_side == "right" else "context"],
-        examples["context" if tokenizer.padding_side == "right" else "question"],
-        truncation="only_second" if tokenizer.padding_side == "right" else "only_first",
-        max_length=max_length,
-        stride=doc_stride,
-        return_overflowing_tokens=True,
-        return_offsets_mapping=True,
-        padding="max_length",
-    )
-
-    sample_mapping = tokenized_examples.pop("overflow_to_sample_mapping")
-    offset_mapping = tokenized_examples.pop("offset_mapping")
-
-    tokenized_examples["start_positions"] = []
-    tokenized_examples["end_positions"] = []
-
-    for i, offsets in enumerate(offset_mapping):
-        input_ids = tokenized_examples["input_ids"][i]
-        cls_index = input_ids.index(tokenizer.cls_token_id)
-        sequence_ids = tokenized_examples.sequence_ids(i)
-
-        sample_index = sample_mapping[i]
-
-        # Get the answer information from the 'answers' dictionary
-        answer_start = answers["answer_start"][sample_index]
-        answer_text = answers["text"][sample_index]
-
-        if len(answer_start) == 0:
-            tokenized_examples["start_positions"].append(cls_index)
-            tokenized_examples["end_positions"].append(cls_index)
-        else:
-            start_char = answer_start[0]
-            end_char = start_char + len(answer_text[0])
-
-            token_start_index = 0
-            while sequence_ids[token_start_index] != (1 if tokenizer.padding_side == "right" else 0):
-                token_start_index += 1
-
-            token_end_index = len(input_ids) - 1
-            while sequence_ids[token_end_index] != (1 if tokenizer.padding_side == "right" else 0):
-                token_end_index -= 1
-
-            if not (offsets[token_start_index][0] <= start_char and offsets[token_end_index][1] >= end_char):
-                tokenized_examples["start_positions"].append(cls_index)
-                tokenized_examples["end_positions"].append(cls_index)
-            else:
-                while token_start_index < len(offsets) and offsets[token_start_index][0] <= start_char:
-                    token_start_index += 1
-                tokenized_examples["start_positions"].append(token_start_index - 1)
-                while offsets[token_end_index][1] >= end_char:
-                    token_end_index -= 1
-                tokenized_examples["end_positions"].append(token_end_index + 1)
-
-    return tokenized_examples
-
-    return dataset.map(
-        prepare_train_features,
-        batched=True,
-        remove_columns=dataset["train"].column_names
     )
 
 def load_custom_dataset(dataset_name, task, batch_size):
