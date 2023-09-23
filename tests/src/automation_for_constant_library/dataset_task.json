@@ -1,9 +1,9 @@
 {
-  "dataset_name": "squad",          // or "conll2003" for TC
+  "dataset_name": "squad",
   "batch_size": 16,
   "num_train_epochs": 3,
   "max_length": 384,
   "doc_stride": 128,
-  "task": "qa",                      // or "ner" for TC
+  "task": "qa",
   "num_labels": 9
 }
