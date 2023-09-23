@@ -9,7 +9,7 @@
     "num_labels": 9
   },
   "qa_task": {
-    "dataset_name": "squad",  # Change this dataset for QA
+    "dataset_name": "squad",  
     "batch_size": 16,
     "num_train_epochs": 3,
     "max_length": 384,
