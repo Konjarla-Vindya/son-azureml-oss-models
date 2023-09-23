@@ -219,7 +219,7 @@ if __name__ == "__main__":
     print("environment_variables-------------",environment_variables)
     print("queue.compute---",queue.compute)
     print("queue.workspace====",queue.workspace)
-    command_job = run_azure_ml_job(code="./", command_to_run="python FT_TC_Test.py",
+    command_job = run_azure_ml_job(code="./", command_to_run="python tc_qa_testing.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     
     create_and_get_job_studio_url(command_job, workspace_ml_client)
