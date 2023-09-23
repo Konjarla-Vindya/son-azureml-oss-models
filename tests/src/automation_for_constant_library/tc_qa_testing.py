@@ -183,6 +183,12 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
                     tokenized_examples["end_positions"].append(token_end_index + 1)
 
         return tokenized_examples
+    return dataset.map(
+         prepare_train_features,
+         batched=True,
+         remove_columns=dataset["train"].column_names
+     )
+
 
     def prepare_token_classification_features(examples):
         tokenized_inputs = tokenizer(examples["tokens"], truncation=True, is_split_into_words=True)
