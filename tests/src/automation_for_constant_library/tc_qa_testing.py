@@ -28,7 +28,8 @@ from datasets import load_dataset, load_metric
 config_file = "./tc_qa.json"
 with open(config_file, "r") as json_file:
     config = json.load(json_file)
-
+    
+task="ner"
 
 if task == "ner":
     task_config = config["ner_task"]
