@@ -194,7 +194,7 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
             batched=True,
             remove_columns=dataset["train"].column_names,
         )
-    elif task == "token-classification":
+    elif task == "ner":
         return dataset.map(
             prepare_token_classification_features,
             batched=True,
