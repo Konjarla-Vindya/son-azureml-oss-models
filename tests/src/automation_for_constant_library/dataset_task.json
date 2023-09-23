@@ -1,14 +1,10 @@
-{
-  
+{ 
   "dataset_name": "squad",
   "batch_size": 16,
   "num_train_epochs": 3,
   "max_length": 384,
   "doc_stride": 128,
- 
   "task": "qa",
   "num_labels": 9
 }
 
-#"dataset_name": "conll2003",
-#"task": "ner",
