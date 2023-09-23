@@ -264,7 +264,7 @@ def fine_tune_model(model_name, task):
     else:
         tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
 
-    num_labels = None if task == "qa" else num_labels  # Adjust as needed
+    num_labels = None if task == "qa" else num_labels=9  # Adjust as needed
     model = (
         AutoModelForQuestionAnswering.from_pretrained(model_name)
         if task == "qa"
