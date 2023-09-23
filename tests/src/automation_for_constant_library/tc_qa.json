@@ -1,1 +1,20 @@
-
+{
+  "ner_task": {
+    "dataset_name": "conll2003",
+    "batch_size": 16,
+    "num_train_epochs": 3,
+    "max_length": 384,
+    "doc_stride": 128,
+    "task": "ner",
+    "num_labels": 9
+  },
+  "qa_task": {
+    "dataset_name": "squad",  # Change this dataset for QA
+    "batch_size": 16,
+    "num_train_epochs": 3,
+    "max_length": 384,
+    "doc_stride": 128,
+    "task": "qa",
+    "num_labels": null
+  }
+}
