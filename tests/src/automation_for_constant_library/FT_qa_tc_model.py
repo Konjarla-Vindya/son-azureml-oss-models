@@ -47,8 +47,9 @@ batch_size = config["batch_size"]
 num_train_epochs = config["num_train_epochs"]
 max_length = config["max_length"]
 doc_stride = config["doc_stride"]
-num_labels = config["num_labels"]
 task = config["task"]
+num_labels = config.get("num_labels", None)  # Use default value of None if not specified
+
 
 def create_training_args(model_name, task, batch_size=batch_size, num_train_epochs=num_train_epochs):
     return TrainingArguments(
