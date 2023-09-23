@@ -29,7 +29,7 @@ config_file = "./tc_qa.json"
 with open(config_file, "r") as json_file:
     config = json.load(json_file)
     
-#task="qa"
+task="qa"
 
 
 if task == "ner":
