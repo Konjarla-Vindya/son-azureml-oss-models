@@ -25,17 +25,26 @@ from transformers import (
 from datasets import load_dataset, load_metric
 
 # Read configuration from JSON file
-config_file = "./dataset_task.json"
+config_file = "./tc_qa.json"
 with open(config_file, "r") as json_file:
     config = json.load(json_file)
 
-dataset_name = config["dataset_name"]
-batch_size = config["batch_size"]
-num_train_epochs = config["num_train_epochs"]
-max_length = config["max_length"]
-doc_stride = config["doc_stride"]
-task = config["task"]
-num_labels = config.get("num_labels", None)  # Use default value of None if not specified
+
+if task == "ner":
+    task_config = config["ner_task"]
+elif task == "qa":
+    task_config = config["qa_task"]
+else:
+    raise ValueError("Unsupported task: " + task)
+
+# Extract task-specific parameters
+dataset_name = task_config["dataset_name"]
+batch_size = task_config["batch_size"]
+num_train_epochs = task_config["num_train_epochs"]
+max_length = task_config["max_length"]
+doc_stride = task_config["doc_stride"]
+task = task_config["task"]
+num_labels = task_config.get("num_labels", None) # Use default value of None if not specified
 
 def create_training_args(model_name, task, batch_size=batch_size, num_train_epochs=num_train_epochs):
     return TrainingArguments(
@@ -329,4 +338,5 @@ def fine_tune_model(model_name, task):
 
 if __name__ == "__main__":
     model_name = os.environ.get('test_model_name')
+    task="ner"
     fine_tune_model(model_name, task)
