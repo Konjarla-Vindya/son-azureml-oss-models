@@ -29,7 +29,8 @@ config_file = "./tc_qa.json"
 with open(config_file, "r") as json_file:
     config = json.load(json_file)
     
-task="qa"
+#task="qa"
+task = task_config["task"]
 
 if task == "ner":
     task_config = config["ner_task"]
@@ -339,6 +340,6 @@ def fine_tune_model(model_name, task):
 
 if __name__ == "__main__":
     model_name = os.environ.get('test_model_name')
-    task = "question-answering"
+    task = task_config["task"]
 
     fine_tune_model(model_name, task)
