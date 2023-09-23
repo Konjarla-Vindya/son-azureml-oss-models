@@ -30,7 +30,7 @@ with open(config_file, "r") as json_file:
     config = json.load(json_file)
     
 #task="qa"
-task = task_config["task"]
+
 
 if task == "ner":
     task_config = config["ner_task"]
@@ -199,7 +199,7 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
         tokenized_inputs["labels"] = labels
         return tokenized_inputs
 
-    if task == "question-answering":
+    if task == "qa":
         return dataset.map(
             prepare_train_features,
             batched=True,
@@ -340,6 +340,6 @@ def fine_tune_model(model_name, task):
 
 if __name__ == "__main__":
     model_name = os.environ.get('test_model_name')
-    task = task_config["task"]
+    task = "qa"
 
     fine_tune_model(model_name, task)
