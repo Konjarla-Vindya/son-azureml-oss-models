@@ -38,7 +38,9 @@ jobs:
     - name: pip-install-mlflow
       run: pip install mlflow
     - name: pip-install-python-box
-      run: pip install python-box 
+      run: pip install python-box
+    - name: pip-install-seqeval
+      run: pip install seqeval
     - name: pip-install-sacremoses
       run: pip install sacremoses
     - name: pip-install-sentencepiece
