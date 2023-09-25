@@ -6,15 +6,27 @@ on:
 jobs:
   run-python-script:
     runs-on: ubuntu-latest
+    env:
+       token: ${{ secrets.WORKFLOW_TOKEN }}
+      # GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+        # # ref: main
+            lfs: true
+            repository: Konjarla-Vindya/son-azureml-oss-models
+            branch: main
+        # #     git config global init.defaultBranch main
+            token: ${{ secrets.WORKFLOW_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.8 # Use the desired Python version
+          python-version: 3.9 # Use the desired Python version
+      - name: pip-install--pandas 
+        run: pip install pandas 
 
       - name: Run Python Script
         run: automate_list.py
