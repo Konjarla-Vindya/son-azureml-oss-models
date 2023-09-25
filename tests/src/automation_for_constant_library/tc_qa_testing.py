@@ -52,7 +52,7 @@ def create_training_args(model_name, task, batch_size=batch_size, num_train_epoc
 
 def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_length, doc_stride=doc_stride):
     def prepare_train_features(examples):
-        answers = examples.get("answers", {"answer_start": [], "text": []})
+        # answers = examples.get("answers", {"answer_start": [], "text": []})
 
         tokenized_examples = tokenizer(
             examples["question" if tokenizer.padding_side == "right" else "context"],
@@ -78,15 +78,24 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
 
             sample_index = sample_mapping[i]
 
-            answer_start = answers["answer_start"][sample_index]
-            answer_text = answers["text"][sample_index]
-
-            if len(answer_start) == 0:
+            # answer_start = answers["answer_start"][sample_index]
+            # answer_text = answers["text"][sample_index]
+            answers = examples["answers"][sample_index]
+            if len(answers["answer_start"]) == 0:
                 tokenized_examples["start_positions"].append(cls_index)
                 tokenized_examples["end_positions"].append(cls_index)
             else:
-                start_char = answer_start[0]
-                end_char = start_char + len(answer_text[0])
+                start_char = answers["answer_start"][0]
+                end_char = start_char + len(answers["text"][0])
+
+                
+
+            # if len(answer_start) == 0:
+            #     tokenized_examples["start_positions"].append(cls_index)
+            #     tokenized_examples["end_positions"].append(cls_index)
+            # else:
+            #     start_char = answer_start[0]
+            #     end_char = start_char + len(answer_text[0])
 
                 token_start_index = 0
                 while sequence_ids[token_start_index] != (1 if tokenizer.padding_side == "right" else 0):
