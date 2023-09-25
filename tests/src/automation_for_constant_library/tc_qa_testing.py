@@ -25,7 +25,7 @@ from transformers import (
 from datasets import load_dataset, load_metric
 
 # Read configuration from JSON file
-config_file = "./dataset_task.json"
+config_file = "./token_config.json"
 with open(config_file, "r") as json_file:
     config = json.load(json_file)
 
