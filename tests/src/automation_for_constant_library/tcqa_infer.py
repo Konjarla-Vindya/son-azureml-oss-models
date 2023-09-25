@@ -316,7 +316,7 @@ def fine_tune_model(model_name, task):
 
     registered_model = mlflow.register_model(model_info.model_uri, model_name)
     print(registered_model)
-     print("Registered Model : ",
+    print("Registered Model : ",
               client.get_registered_model(registered_model))
         registered_model_detail = client.get_latest_versions(
             name=registered_model, stages=["None"])
