@@ -4,6 +4,8 @@ import pandas as pd
 
 import re
 
+import csv
+
  
 
 LIST_OF_COLUMNS = ['modelId', 'downloads',
