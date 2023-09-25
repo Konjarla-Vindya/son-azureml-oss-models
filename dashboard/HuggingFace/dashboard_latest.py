@@ -1,6 +1,6 @@
 import os,sys
 import requests
-import pandas as pd
+import pandas 
 from datetime import datetime
 from github import Github, Auth
 
@@ -35,7 +35,7 @@ class Dashboard():
          # Read the CSV file containing workflow names
          csv_file_path = "tests/config/modellist.csv"  # Update this with the actual path
          try:
-             df = pd.read_csv(csv_file_path)
+             df = pandas.read_csv(csv_file_path)
              return df["Workflow Name"].tolist()
          except Exception as e:
              print(f"Error reading the CSV file: {e}")
