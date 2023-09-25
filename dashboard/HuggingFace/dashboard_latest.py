@@ -31,15 +31,18 @@ class Dashboard():
     #         return []
 
 
-    def get_workflow_names_from_csv(self):
-         # Read the CSV file containing workflow names
-         csv_file_path = "tests/config/modellist.csv"  # Update this with the actual path
-         try:
-             df = pandas.read_csv(csv_file_path)
-             return df["Workflow Name"].tolist()
-         except Exception as e:
-             print(f"Error reading the CSV file: {e}")
-             return []
+    def get_workflow_names_from_github(self):
+        # Fetch the content of modellist.csv from your GitHub repository
+        file_path = "tests/config/modellist.csv"  # Update this with the actual path
+        try:
+            url = f"https://raw.githubusercontent.com/{self.repo_full_name}/master/{file_path}"
+            response = requests.get(url)
+            response.raise_for_status()
+            lines = response.text.splitlines()
+            return [line.strip() for line in lines]
+        except Exception as e:
+            print(f"Error fetching content from GitHub: {e}")
+            return []
       
 
     # def get_all_workflow_names(self,limit=30):
