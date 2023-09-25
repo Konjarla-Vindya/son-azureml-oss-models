@@ -22,13 +22,25 @@ class Dashboard():
 
     def get_workflow_names_from_file(self):
         # Read the text file containing workflow names
-        file_path = "tests/config/modellist.txt"  # Update this with the actual path
+        file_path = "tests/config/modellist.txt" 
         try:
             with open(file_path, "r") as file:
                 return [line.strip() for line in file.readlines()]
         except Exception as e:
             print(f"Error reading the text file: {e}")
             return []
+
+
+    def get_workflow_names_from_csv(self):
+         # Read the CSV file containing workflow names
+         csv_file_path = "tests/config/modellist.csv"  # Update this with the actual path
+         try:
+             df = pd.read_csv(csv_file_path)
+             return df["Workflow Name"].tolist()
+         except Exception as e:
+             print(f"Error reading the CSV file: {e}")
+             return []
+      
 
     # def get_all_workflow_names(self,limit=30):
     #     #workflow_name = ["MLFlow-codellama/CodeLlama-13b-Instruct-hf","MLFlow-mosaicml/mpt-7b-storywriter","MLFlow-microsoft/MiniLM-L12-H384-uncased"]
