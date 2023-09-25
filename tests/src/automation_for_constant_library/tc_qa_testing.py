@@ -134,7 +134,7 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
         tokenized_inputs["labels"] = labels
         return tokenized_inputs
 
-    if task == "question-answering":
+    if task == "qa":
         return dataset.map(
             prepare_train_features,
             batched=True,
