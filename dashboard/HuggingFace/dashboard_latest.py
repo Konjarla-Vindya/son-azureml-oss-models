@@ -20,15 +20,15 @@ class Dashboard():
         }
         self.models_data = []  # Initialize models_data as an empty list
 
-    def get_workflow_names_from_file(self):
-        # Read the text file containing workflow names
-        file_path = "tests/config/modellist.txt" 
-        try:
-            with open(file_path, "r") as file:
-                return [line.strip() for line in file.readlines()]
-        except Exception as e:
-            print(f"Error reading the text file: {e}")
-            return []
+    # def get_workflow_names_from_file(self):
+    #     # Read the text file containing workflow names
+    #     file_path = "tests/config/modellist.txt" 
+    #     try:
+    #         with open(file_path, "r") as file:
+    #             return [line.strip() for line in file.readlines()]
+    #     except Exception as e:
+    #         print(f"Error reading the text file: {e}")
+    #         return []
 
 
     def get_workflow_names_from_csv(self):
@@ -89,7 +89,7 @@ class Dashboard():
 
 
     def workflow_last_run(self): 
-        workflows_to_include = self.get_workflow_names_from_file()
+        workflows_to_include = self.get_workflow_names_from_csv()
         normalized_workflows = [workflow_name.replace("/","-") for workflow_name in workflows_to_include]
         # normalized_workflows = [hf_name for hf_name in workflows_to_include]
         # hf_name = [hf_name for hf_name in workflows_to_include]
