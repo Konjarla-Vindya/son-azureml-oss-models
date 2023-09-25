@@ -10,6 +10,7 @@ import os
 import sys
 from box import ConfigBox
 from mlflow.tracking.client import MlflowClient
+from tcqa_infer import tcqa
 
 # constants
 check_override = True
