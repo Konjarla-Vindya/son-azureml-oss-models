@@ -97,7 +97,8 @@ lastweek_updated = df[(df['Day'] >= range_min) &
                (df['Day'] <= range_max)]
 #filtering models updated last 7 days
 lastweek_updated_downloads = lastweek_updated[(lastweek_updated["downloads"])>=10]
-lastweek_updated_downloads.to_csv("lastweek_updated_models_min10.csv")
+#lastweek_updated_downloads.to_csv("lastweek_updated_models_min10.csv")
 lastweek_updated_downloads_txt = lastweek_updated_downloads["modelId"]
+lastweek_updated_downloads_txt.to_csv("lastweek_updated_models_min10_downloads.csv")
 content = str(lastweek_updated_downloads_txt)
 print(content, file=open('models.txt', 'w'))
