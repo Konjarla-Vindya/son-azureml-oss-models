@@ -12,7 +12,7 @@ class Dashboard():
         #self.github_token = "API_TOKEN"
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
-        self.repo = self.auth.get_repo("Azure/azure-ai-model-catalog")
+        self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
         self.repo_full_name = self.repo.full_name
         self.data = {
             "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
@@ -35,7 +35,7 @@ class Dashboard():
         # Fetch the content of modellist.csv from your GitHub repository
         file_path = "tests/config/modellist.csv"  # Update this with the actual path
         try:
-            url = f"https://raw.githubusercontent.com/{self.repo_full_name}/master/{file_path}"
+            url = f"https://github.com/{self.repo_full_name}/blob/main/{file_path}"
             response = requests.get(url)
             response.raise_for_status()
             lines = response.text.splitlines()
