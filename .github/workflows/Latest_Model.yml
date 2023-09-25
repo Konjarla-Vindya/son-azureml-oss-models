@@ -40,7 +40,7 @@ jobs:
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
           cd tests/config
-          git add lastweek_updated_models_min10_downloads.csv        
+          git add lastweek_updated_downloads_txt     
           # Attempt to commit changes and handle errors
           set +e
           git commit -m "lastweek_updated_models_min10_downloads.csv"
