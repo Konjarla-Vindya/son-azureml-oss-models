@@ -207,9 +207,7 @@ class ModelInferenceAndDeployemnt:
             f"Latest model name : {latest_model.name} and latest model version : {latest_model.version}", )
         if task == "token-classification":
             pipeline_tokenizer = loaded_model_pipeline.tokenizer
-            for index in range(len(scoring_input.input_data)):
-                scoring_input.input_data[index] = scoring_input.input_data[index].replace(
-                    "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
+ 
 
         output = loaded_model_pipeline(scoring_input.input_data)
         print("My outupt is this : ", output)
