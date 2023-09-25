@@ -25,8 +25,8 @@ from transformers import (
 from datasets import load_dataset, load_metric
 
 # Read configuration from JSON file
-#config_file = "./token_config.json"#dataset_task.json
-config_file = "./dataset_task.json"
+config_file = "./token_config.json"#dataset_task.json
+#config_file = "./dataset_task.json"
 with open(config_file, "r") as json_file:
     config = json.load(json_file)
 
@@ -149,35 +149,35 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
     else:
         raise ValueError("Unsupported task: " + task)
 
-def tokenize_and_align_labels(dataset, tokenizer, task, label_all_tokens=True):
-    def tokenize_and_align(examples):
-        tokenized_inputs = tokenizer(examples["tokens"], truncation=True, is_split_into_words=True)
+# def tokenize_and_align_labels(dataset, tokenizer, task, label_all_tokens=True):
+#     def tokenize_and_align(examples):
+#         tokenized_inputs = tokenizer(examples["tokens"], truncation=True, is_split_into_words=True)
 
-        labels = []
-        for i, label in enumerate(examples[f"{task}_tags"]):
-            word_ids = tokenized_inputs.word_ids(batch_index=i)
-            previous_word_idx = None
-            label_ids = []
-            for word_idx in word_ids:
-                if word_idx is None:
-                    label_ids.append(-100)
-                elif word_idx != previous_word_idx:
-                    label_ids.append(label[word_idx])
-                else:
-                    label_ids.append(label[word_idx] if label_all_tokens else -100)
-                previous_word_idx = word_idx
+#         labels = []
+#         for i, label in enumerate(examples[f"{task}_tags"]):
+#             word_ids = tokenized_inputs.word_ids(batch_index=i)
+#             previous_word_idx = None
+#             label_ids = []
+#             for word_idx in word_ids:
+#                 if word_idx is None:
+#                     label_ids.append(-100)
+#                 elif word_idx != previous_word_idx:
+#                     label_ids.append(label[word_idx])
+#                 else:
+#                     label_ids.append(label[word_idx] if label_all_tokens else -100)
+#                 previous_word_idx = word_idx
 
-            labels.append(label_ids)
+#             labels.append(label_ids)
 
-        tokenized_inputs["labels"] = labels
-        return tokenized_inputs
+#         tokenized_inputs["labels"] = labels
+#         return tokenized_inputs
 
-    tokenized_datasets = dataset.map(
-        lambda examples: tokenize_and_align(examples),
-        batched=True,
-    )
+#     tokenized_datasets = dataset.map(
+#         lambda examples: tokenize_and_align(examples),
+#         batched=True,
+#     )
 
-    return tokenized_datasets
+#     return tokenized_datasets
 
 def load_custom_dataset(dataset_name, task, batch_size):
     datasets = load_dataset(dataset_name)
@@ -193,6 +193,30 @@ def load_custom_dataset(dataset_name, task, batch_size):
     print(f"Batch Size: {batch_size}")
 
     return datasets, label_list, batch_size
+def create_compute_metrics(label_list):
+        metric = load_metric("seqeval")
+
+        def compute_metrics(p):
+            predictions, labels = p
+            predictions = np.argmax(predictions, axis=2)
+
+            true_predictions = [
+                [label_list[p] for (p, l) in zip(prediction, label) if l != -100]
+                for prediction, label in zip(predictions, labels)
+            ]
+            true_labels = [
+                [label_list[l] for (p, l) in zip(prediction, label) if l != -100]
+                for prediction, label in zip(predictions, labels)
+            ]
+
+            results = metric.compute(predictions=true_predictions, references=true_labels)
+            return {
+                "precision": results["overall_precision"],
+                "recall": results["overall_recall"],
+                "f1": results["overall_f1"],
+                "accuracy": results["overall_accuracy"],
+            }
+        
 
 def fine_tune_model(model_name, task):
     # Load model and tokenizer
@@ -205,12 +229,23 @@ def fine_tune_model(model_name, task):
 
     datasets, _, _ = load_custom_dataset(dataset_name, task, batch_size)
 
-    if task == "qa":
+    # if task == "qa":
+    #     tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
+    # else:
+    #     tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
+
+    # num_labels = None if task == "qa" else 9  
+    # model = (
+    #     AutoModelForQuestionAnswering.from_pretrained(model_name)
+    #     if task == "qa"
+    #     else AutoModelForTokenClassification.from_pretrained(model_name, num_labels=num_labels)
+    # )
+       if task == "qa":
         tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
     else:
-        tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
-
-    num_labels = None if task == "qa" else 9  
+        tokenized_datasets =  tokenize_and_prepare_features(datasets, tokenizer, task, label_all_tokens=True)
+        metric = load_metric("seqeval")
+    num_labels = None if task == "qa" else num_labels  # Adjust as needed
     model = (
         AutoModelForQuestionAnswering.from_pretrained(model_name)
         if task == "qa"
@@ -230,6 +265,7 @@ def fine_tune_model(model_name, task):
         )
     else:
         data_collator = DataCollatorForTokenClassification(tokenizer)
+        compute_metrics_fn = create_compute_metrics(label_list)
         trainer = Trainer(
             model=model,
             args=training_args,
@@ -237,7 +273,18 @@ def fine_tune_model(model_name, task):
             eval_dataset=subset_validation_dataset,
             data_collator=data_collator,
             tokenizer=tokenizer,
+            compute_metrics=compute_metrics_fn,
         )
+
+        # data_collator = DataCollatorForTokenClassification(tokenizer)
+        # trainer = Trainer(
+        #     model=model,
+        #     args=training_args,
+        #     train_dataset=subset_train_dataset,
+        #     eval_dataset=subset_validation_dataset,
+        #     data_collator=data_collator,
+        #     tokenizer=tokenizer,
+        # )
 
     fine_tune_results = trainer.train()
     print(fine_tune_results)
