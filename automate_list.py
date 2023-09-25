@@ -102,5 +102,5 @@ lastweek_updated_downloads_txt = lastweek_updated_downloads["modelId"]
 lastweek_updated_downloads_txt.to_csv("lastweek_updated_models_min10_downloads.csv")
 with open("lastweek_updated_models_min10_downloads.csv", "w", encoding="utf-8") as f:
             f.write("modelId")
-content = str(lastweek_updated_downloads_txt)
-print(content, file=open('models.txt', 'w'))
+#content = str(lastweek_updated_downloads_txt)
+#print(content, file=open('models.txt', 'w'))
