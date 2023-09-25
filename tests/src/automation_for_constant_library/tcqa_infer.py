@@ -25,8 +25,8 @@ from transformers import (
 from datasets import load_dataset, load_metric
 
 # Read configuration from JSON file
-#config_file = "./token_config.json"#dataset_task.json
-config_file = "./dataset_task.json"
+config_file = "./token_config.json"#dataset_task.json
+#config_file = "./dataset_task.json"
 with open(config_file, "r") as json_file:
     config = json.load(json_file)
 
@@ -276,6 +276,24 @@ def fine_tune_model(model_name, task):
     print(fine_tuned_model)
     print(tokenizer)
     mlflow.end_run()
+
+    # Perform inference
+    if task == "qa":
+        print("qa inference")
+        # For Question Answering
+        qa_pipeline = transformers.pipeline(task="question-answering", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer)
+        result = qa_pipeline(question="Your question here?", context=input_text)
+        print("Answer:", result["answer"])
+    else:
+         print("tc inference")
+        # For Token Classification
+        token_classification_pipeline = transformers.pipeline(task="token-classification", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer)
+        result = token_classification_pipeline(inputs=["My name is Amarah","I am from Jamshedpur"])
+        print("Tokens:", result[0]["token"])
+        print("Labels:", result[0]["entity"])
+
+
+
 
     model_pipeline = (
         transformers.pipeline(task="question-answering", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer)
