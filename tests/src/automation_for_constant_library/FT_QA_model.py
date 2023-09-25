@@ -1,8 +1,6 @@
 import os
-from FT_QA_model_automation import load_model  
 import mlflow
 import transformers
-#import os
 import torch
 import json
 import pandas as pd
@@ -22,24 +20,14 @@ from azure.ai.ml.entities import (
     AzureMLOnlineInferencingServer
 )
 from azureml.core import Workspace
-#from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, Seq2SeqTrainingArguments, Trainer, DataCollatorForSeq2Seq
 from datasets import load_dataset
 import numpy as np
-# import evaluate
 import argparse
-import os
 from azureml.core import Workspace
-#from transformers import DataCollatorForTokenClassification
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering, Trainer
-#from transformers.data.data_collator import DataCollatorForQuestionAnswering  # Corrected import
-
-import numpy as np
-from datasets import load_metric
 from transformers import TrainingArguments
-#from transformers import AutoModelForSequenceClassification, AutoTokenizer, TrainingArguments, Trainer
-from transformers import AutoModelForMaskedLM
 import evaluate
-
+from box import ConfigBox
 
 def create_training_args(model_name, batch_size=16, num_train_epochs=3):
     return TrainingArguments(
@@ -115,15 +103,8 @@ def tokenize_and_prepare_features(dataset, tokenizer, max_length=384, doc_stride
     )
 
 def load_custom_dataset(dataset_name, batch_size):
-    # Load the SQuAD dataset
-    datasets = load_dataset(dataset_name)
-    label_list = None  # No need for a label list in QA
-
-    print(f"Loaded dataset: {dataset_name}")
-    print(f"Batch Size: {batch_size}")
-
-    return datasets, label_list, batch_size
-
+    # Load the SQuAD dataset...
+  
 if __name__ == "__main__":
     model_source_uri = os.environ.get('model_source_uri')
     test_model_name = os.environ.get('test_model_name')
@@ -133,18 +114,8 @@ if __name__ == "__main__":
     batch_size = 16
     num_train_epochs = 3
 
-     # Define TrainingArguments
-    training_args = TrainingArguments(
-        output_dir="./output",
-        evaluation_strategy="epoch",
-        learning_rate=2e-5,
-        per_device_train_batch_size=batch_size,
-        per_device_eval_batch_size=batch_size,
-        num_train_epochs=num_train_epochs,
-        weight_decay=0.01,
-        push_to_hub=False,
-    )
-
+    # Define TrainingArguments...
+    
     dataset_name = "squad"
     batch_size = 16
     datasets, label_list, batch_size = load_custom_dataset(dataset_name, batch_size)
@@ -154,9 +125,8 @@ if __name__ == "__main__":
     model_name = test_model_name
     num_train_epochs = 3
 
-    # Load the pre-trained question-answering model
-    model = AutoModelForQuestionAnswering.from_pretrained(model_name)
-
+    # Load the pre-trained question-answering model...
+    
     training_args = create_training_args(model_name, batch_size, num_train_epochs)
     #data_collator = DataCollatorForQuestionAnswering(tokenizer)
 
@@ -178,25 +148,56 @@ if __name__ == "__main__":
     evaluation_results = trainer.evaluate()
     print(evaluation_results)
 
-    # Save the fine-tuned model
-    save_directory = "./FT_model_for_Question_answering"
-    trainer.save_model(save_directory)
-    fine_tuned_model = AutoModelForQuestionAnswering.from_pretrained(save_directory)
-    tokenizer.save_pretrained(save_directory)
-    fine_tuned_tokenizer = AutoTokenizer.from_pretrained(save_directory)
-    print(fine_tuned_model)
-    print(tokenizer)
-
+    # Save the fine-tuned model...
+    
     mlflow.end_run()
 
-    # Log the fine-tuned model
-    model_pipeline = transformers.pipeline(task="question-answering", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer)
-    model_name = f"ft-qa-bert-base-cased"
-    with mlflow.start_run():
-        model_info = mlflow.transformers.log_model(
-            transformers_model=model_pipeline,
-            artifact_path=model_name
-        )
+    # Log the fine-tuned model...
+    
+    # Your additional code snippet
+    question_answering = ConfigBox(
+        {
+        "inputs": {
+          "question": "What is your Name?",
+          "context": "My name is Priyanka and I am a Data Scientist."
+        }
+    )
+    registered_model_pipeline(question_answering.inputs)
+    foundation_model.name
+    
+    import time, sys
+    from azure.ai.ml.entities import (
+        ManagedOnlineEndpoint,
+        ManagedOnlineDeployment,
+        OnlineRequestSettings,
+    )
 
-    registered_model = mlflow.register_model(model_info.model_uri, model_name)
-    print(registered_model)
+    timestamp = int(time.time())
+    online_endpoint_name = "qa-" + str(timestamp)
+    # create an online endpoint
+    endpoint = ManagedOnlineEndpoint(
+        name=online_endpoint_name,
+        description="Online endpoint for " + foundation_model.name + ", qa",
+        auth_mode="key",
+    )
+    workspace_ml_client.begin_create_or_update(endpoint).wait()
+    
+    import time, sys
+    from azure.ai.ml.entities import (
+        ManagedOnlineEndpoint,
+        ManagedOnlineDeployment,
+        ProbeSettings,
+    )
+    # create a deployment
+    demo_deployment = ManagedOnlineDeployment(
+        name="demo",
+        endpoint_name=online_endpoint_name,
+        model=foundation_model.id,
+        instance_type="Standard_DS3_v2",
+        instance_count=1,
+        liveness_probe=ProbeSettings(initial_delay=600),
+    )
+    workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+    endpoint.traffic = {"demo": 100}
+    workspace_ml_client.begin_create_or_update(endpoint).result()
+    ml_client.online_endpoints
