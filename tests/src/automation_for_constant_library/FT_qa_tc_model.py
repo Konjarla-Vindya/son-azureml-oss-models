@@ -1,13 +1,19 @@
 import os
+from FT_QA_model_automation import load_model
 import mlflow
 import transformers
+import torch
 import json
 import pandas as pd
+import datetime
 from azure.ai.ml import MLClient
 from azure.identity import DefaultAzureCredential
 from azure.ai.ml.constants import AssetTypes
 from azure.ai.ml.entities import (
+    ManagedOnlineEndpoint,
+    ManagedOnlineDeployment,
     Model,
+    ModelConfiguration,
     ModelPackage,
     Environment,
     CodeConfiguration,
@@ -15,14 +21,21 @@ from azure.ai.ml.entities import (
 )
 from azureml.core import Workspace
 from transformers import (
+    AutoModelForSeq2SeqLM,
     AutoTokenizer,
+    Seq2SeqTrainingArguments,
+    Trainer,
+    DataCollatorForSeq2Seq,
     AutoModelForQuestionAnswering,
+    #DataCollatorForQuestionAnswering,
     AutoModelForTokenClassification,
     DataCollatorForTokenClassification,
     TrainingArguments,
-    Trainer,
+    AutoModelForMaskedLM,
 )
 from datasets import load_dataset, load_metric
+import numpy as np
+import evaluate
 
 # Read configuration from JSON file
 config_file = "./dataset_task.json"
@@ -36,6 +49,7 @@ max_length = config["max_length"]
 doc_stride = config["doc_stride"]
 task = config["task"]
 num_labels = config.get("num_labels", None)  # Use default value of None if not specified
+
 
 def create_training_args(model_name, task, batch_size=batch_size, num_train_epochs=num_train_epochs):
     return TrainingArguments(
@@ -51,8 +65,6 @@ def create_training_args(model_name, task, batch_size=batch_size, num_train_epoc
 
 def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_length, doc_stride=doc_stride):
     def prepare_train_features(examples):
-        answers = examples.get("answers", {"answer_start": [], "text": []})
-
         tokenized_examples = tokenizer(
             examples["question" if tokenizer.padding_side == "right" else "context"],
             examples["context" if tokenizer.padding_side == "right" else "question"],
@@ -76,16 +88,14 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
             sequence_ids = tokenized_examples.sequence_ids(i)
 
             sample_index = sample_mapping[i]
+            answers = examples["answers"][sample_index]
 
-            answer_start = answers["answer_start"][sample_index]
-            answer_text = answers["text"][sample_index]
-
-            if len(answer_start) == 0:
+            if len(answers["answer_start"]) == 0:
                 tokenized_examples["start_positions"].append(cls_index)
                 tokenized_examples["end_positions"].append(cls_index)
             else:
-                start_char = answer_start[0]
-                end_char = start_char + len(answer_text[0])
+                start_char = answers["answer_start"][0]
+                end_char = start_char + len(answers["text"][0])
 
                 token_start_index = 0
                 while sequence_ids[token_start_index] != (1 if tokenizer.padding_side == "right" else 0):
@@ -143,7 +153,8 @@ def fine_tune_model(model_name, task):
     if task == "qa":
         tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
     else:
-        tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
+        tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, task, label_all_tokens=True)
+        metric = load_metric("seqeval")
 
     num_labels = None if task == "qa" else num_labels  # Adjust as needed
     model = (
@@ -165,6 +176,7 @@ def fine_tune_model(model_name, task):
         )
     else:
         data_collator = DataCollatorForTokenClassification(tokenizer)
+        compute_metrics_fn = compute_metrics_for_ner(tokenizer, label_list)
         trainer = Trainer(
             model=model,
             args=training_args,
@@ -172,6 +184,7 @@ def fine_tune_model(model_name, task):
             eval_dataset=subset_validation_dataset,
             data_collator=data_collator,
             tokenizer=tokenizer,
+            compute_metrics=compute_metrics_fn,
         )
 
     fine_tune_results = trainer.train()
