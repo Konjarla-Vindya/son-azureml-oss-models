@@ -204,7 +204,26 @@ def create_compute_metrics(label_list):
                 "f1": results["overall_f1"],
                 "accuracy": results["overall_accuracy"],
             }
-        
+def get_sample_input_data(self, task: str):
+        """This method will load the sample input data based on the task name
+
+        Args:
+            task (str): task name
+
+        Returns:
+            _type_: _description_
+        """
+        scoring_file = f"sample_inputs/{task}.json"
+        # check of scoring_file exists
+        try:
+            with open(scoring_file) as f:
+                scoring_input = ConfigBox(json.load(f))
+                print(f"scoring_input file:\n\n {scoring_input}\n\n")
+        except Exception as e:
+            print(
+                f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
+
+        return scoring_input
 
 def fine_tune_model(model_name, task):
     # Load model and tokenizer
@@ -275,22 +294,10 @@ def fine_tune_model(model_name, task):
     fine_tuned_tokenizer = AutoTokenizer.from_pretrained(save_directory)
     print(fine_tuned_model)
     print(tokenizer)
+    
     mlflow.end_run()
 
-    # Perform inference
-    if task == "qa":
-        print("qa inference")
-        # For Question Answering
-        qa_pipeline = transformers.pipeline(task="question-answering", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer)
-        result = qa_pipeline(question="Your question here?", context=input_text)
-        print("Answer:", result["answer"])
-    else:
-        print("tc inference")
-        # For Token Classification
-        token_classification_pipeline = transformers.pipeline(task="token-classification", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer)
-        result = token_classification_pipeline(inputs=["My name is Amarah","I am from Jamshedpur"])
-        print("Tokens:", result[0]["token"])
-        print("Labels:", result[0]["entity"])
+  
 
 
 
@@ -309,7 +316,29 @@ def fine_tune_model(model_name, task):
 
     registered_model = mlflow.register_model(model_info.model_uri, model_name)
     print(registered_model)
+     print("Registered Model : ",
+              client.get_registered_model(registered_model))
+        registered_model_detail = client.get_latest_versions(
+            name=registered_model, stages=["None"])
+        model_detail = registered_model_detail[0]
+        print("Latest registered model version is : ", model_detail.version)
+        loaded_model_pipeline = mlflow.transformers.load_model(
+            model_uri=model_detail.source, return_type="pipeline")
+        if task == "token-classification":
+            pipeline_tokenizer = loaded_model_pipeline.tokenizer
+
+
+        output = loaded_model_pipeline(scoring_input.input_data)
+        print("My outupt is this : ", output)
+
+
+
+
+
 
 if __name__ == "__main__":
     model_name = os.environ.get('test_model_name')
     fine_tune_model(model_name, task)
+    scoring_input = model_name.get_sample_input_data(task=task)
+    registered_model_inference(
+        task=task, scoring_input=scoring_input, registered_model_name=registered_model_name, client=client)
