@@ -214,7 +214,7 @@ def fine_tune_model(model_name, task):
     # Define TrainingArguments
     training_args = create_training_args(model_name, task, batch_size=batch_size, num_train_epochs=num_train_epochs)
 
-    datasets, _, _ = load_custom_dataset(dataset_name, task, batch_size)
+    datasets, label_list, batch_size = load_custom_dataset(dataset_name, task, batch_size)
 
 
     if task == "qa":
