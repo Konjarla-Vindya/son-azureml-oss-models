@@ -223,8 +223,8 @@ def fine_tune_model(model_name, task):
         tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, task, label_all_tokens=True)
         metric = load_metric("seqeval")
         
-        metric = load_metric("seqeval")
-    num_labels = None if task == "qa" else num_labels  # Adjust as needed
+        
+    num_labels = None if task == "qa" else 9  # Adjust as needed
     model = (
         AutoModelForQuestionAnswering.from_pretrained(model_name)
         if task == "qa"
