@@ -241,4 +241,11 @@ def fine_tune_model(model_name, task):
 
 if __name__ == "__main__":
     model_name = os.environ.get('test_model_name')
-    fine_tune_model(model_name, task)
+    
+    # Check the task type and call fine_tune_model accordingly
+    if task == "qa":
+        fine_tune_model(model_name, task)
+    elif task == "ner":
+        fine_tune_model(model_name, task)
+    else:
+        raise ValueError("Unsupported task: " + task)
