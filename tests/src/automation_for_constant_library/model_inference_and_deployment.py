@@ -222,7 +222,7 @@ class ModelInferenceAndDeployemnt:
         print("latest_model:", latest_model)
         print("Task is : ", task)
         scoring_file, scoring_input = self.get_task_specified_input(task=task)
-        # self.local_inference(task=task, latest_model=latest_model, scoring_input=scoring_input)
+        self.local_inference(task=task, latest_model=latest_model, scoring_input=scoring_input)
         # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
         timestamp = int(time.time())
         online_endpoint_name = task + str(timestamp)
