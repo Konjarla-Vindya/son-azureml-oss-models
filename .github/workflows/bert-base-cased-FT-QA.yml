@@ -1,4 +1,4 @@
-name: bert-base-cased-FT-model
+name: bert-base-cased-FT-QA
 
 on: 
   workflow_dispatch:
