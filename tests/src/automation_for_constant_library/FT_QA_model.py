@@ -200,21 +200,7 @@ if __name__ == "__main__":
 
     registered_model = mlflow.register_model(model_info.model_uri, model_name)
     print(registered_model)
-    # Azure Machine Learning Deployment
-   subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
-   resource_group = 'huggingface-registry-test1'
-   workspace_name = 'test-southcentralus'
-   credential = DefaultAzureCredential()
-   ws = Workspace(subscription_id, resource_group, workspace_name)
-
-   mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
-   ml_client = MLClient(credential, subscription_id, resource_group, ws)
-   workspace_ml_client = MLClient(
-    credential,
-    subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
-    resource_group_name="huggingface-registry-test1",
-    workspace_name="test-southcentralus",
-    )
+   
     # Find the latest version of the registered model
     version_list = list(workspace_ml_client.models.list(registered_model.name))
     foundation_model = ''
