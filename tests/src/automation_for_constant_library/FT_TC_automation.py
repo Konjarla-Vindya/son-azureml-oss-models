@@ -1,5 +1,5 @@
 from azureml.core import Workspace, Environment
-from model_inference_and_deployment import ModelInferenceAndDeployemnt
+from deployment import ModelInferenceAndDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
