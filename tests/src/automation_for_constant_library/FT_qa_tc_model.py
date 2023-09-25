@@ -25,6 +25,7 @@ from transformers import (
 from datasets import load_dataset, load_metric
 
 # Read configuration from JSON file
+#config_file = "./token_config.json"#dataset_task.json
 config_file = "./dataset_task.json"
 with open(config_file, "r") as json_file:
     config = json.load(json_file)
@@ -49,9 +50,10 @@ def create_training_args(model_name, task, batch_size=batch_size, num_train_epoc
         push_to_hub=False,
     )
 
+
 def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_length, doc_stride=doc_stride):
     def prepare_train_features(examples):
-        answers = examples.get("answers", {"answer_start": [], "text": []})
+        # answers = examples.get("answers", {"answer_start": [], "text": []})
 
         tokenized_examples = tokenizer(
             examples["question" if tokenizer.padding_side == "right" else "context"],
@@ -77,15 +79,14 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
 
             sample_index = sample_mapping[i]
 
-            answer_start = answers["answer_start"][sample_index]
-            answer_text = answers["text"][sample_index]
-
-            if len(answer_start) == 0:
+            answers = examples["answers"][sample_index]
+            if len(answers["answer_start"]) == 0:
                 tokenized_examples["start_positions"].append(cls_index)
                 tokenized_examples["end_positions"].append(cls_index)
             else:
-                start_char = answer_start[0]
-                end_char = start_char + len(answer_text[0])
+                start_char = answers["answer_start"][0]
+                end_char = start_char + len(answers["text"][0])
+
 
                 token_start_index = 0
                 while sequence_ids[token_start_index] != (1 if tokenizer.padding_side == "right" else 0):
@@ -107,8 +108,27 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
                     tokenized_examples["end_positions"].append(token_end_index + 1)
 
         return tokenized_examples
+        
 
-    def prepare_token_classification_features(examples):
+
+    if task == "qa":
+        return dataset.map(
+            prepare_train_features,
+            batched=True,
+            remove_columns=dataset["train"].column_names,
+        )
+    elif task == "ner":
+    
+        return dataset.map(
+            lambda examples: tokenize_and_align(examples),
+            batched=True,
+           
+        )
+    else:
+        raise ValueError("Unsupported task: " + task)
+
+def tokenize_and_align_labels(dataset, tokenizer, task, label_all_tokens=True):
+    def tokenize_and_align(examples):
         tokenized_inputs = tokenizer(examples["tokens"], truncation=True, is_split_into_words=True)
 
         labels = []
@@ -129,18 +149,19 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
 
         tokenized_inputs["labels"] = labels
         return tokenized_inputs
-
-    if task == "question-answering":
+    
+    if task == "qa":
         return dataset.map(
             prepare_train_features,
             batched=True,
             remove_columns=dataset["train"].column_names,
         )
     elif task == "ner":
+    
         return dataset.map(
-            prepare_token_classification_features,
+            lambda examples: tokenize_and_align(examples),
             batched=True,
-            remove_columns=dataset["train"].column_names,
+           
         )
     else:
         raise ValueError("Unsupported task: " + task)
@@ -150,6 +171,7 @@ def load_custom_dataset(dataset_name, task, batch_size):
 
     if task == "ner":
         label_list = datasets["train"].features[f"{task}_tags"].feature.names
+        batch_size = config["batch_size"]
     else:
         label_list = None
 
@@ -159,24 +181,52 @@ def load_custom_dataset(dataset_name, task, batch_size):
     print(f"Batch Size: {batch_size}")
 
     return datasets, label_list, batch_size
+def create_compute_metrics(label_list):
+        metric = load_metric("seqeval")
+
+        def compute_metrics(p):
+            predictions, labels = p
+            predictions = np.argmax(predictions, axis=2)
+
+            true_predictions = [
+                [label_list[p] for (p, l) in zip(prediction, label) if l != -100]
+                for prediction, label in zip(predictions, labels)
+            ]
+            true_labels = [
+                [label_list[l] for (p, l) in zip(prediction, label) if l != -100]
+                for prediction, label in zip(predictions, labels)
+            ]
+
+            results = metric.compute(predictions=true_predictions, references=true_labels)
+            return {
+                "precision": results["overall_precision"],
+                "recall": results["overall_recall"],
+                "f1": results["overall_f1"],
+                "accuracy": results["overall_accuracy"],
+            }
+        
 
 def fine_tune_model(model_name, task):
     # Load model and tokenizer
     model_source_uri = os.environ.get('model_source_uri')
     loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
     tokenizer = loaded_model.tokenizer
+    batch_size = config["batch_size"]
 
     # Define TrainingArguments
     training_args = create_training_args(model_name, task, batch_size=batch_size, num_train_epochs=num_train_epochs)
 
-    datasets, _, _ = load_custom_dataset(dataset_name, task, batch_size)
+    datasets, label_list, batch_size = load_custom_dataset(dataset_name, task, batch_size)
+
 
     if task == "qa":
         tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
     else:
-        tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
-
-    num_labels = None if task == "qa" else 9  
+        tokenized_datasets = tokenize_and_align_labels(datasets, tokenizer, task, label_all_tokens=True)
+        metric = load_metric("seqeval")
+        
+        
+    num_labels = None if task == "qa" else 9  # Adjust as needed
     model = (
         AutoModelForQuestionAnswering.from_pretrained(model_name)
         if task == "qa"
@@ -196,6 +246,7 @@ def fine_tune_model(model_name, task):
         )
     else:
         data_collator = DataCollatorForTokenClassification(tokenizer)
+        compute_metrics_fn = create_compute_metrics(label_list)
         trainer = Trainer(
             model=model,
             args=training_args,
@@ -203,7 +254,9 @@ def fine_tune_model(model_name, task):
             eval_dataset=subset_validation_dataset,
             data_collator=data_collator,
             tokenizer=tokenizer,
+            compute_metrics=compute_metrics_fn,
         )
+
 
     fine_tune_results = trainer.train()
     print(fine_tune_results)
@@ -241,11 +294,4 @@ def fine_tune_model(model_name, task):
 
 if __name__ == "__main__":
     model_name = os.environ.get('test_model_name')
-    
-    # Check the task type and call fine_tune_model accordingly
-    if task == "qa":
-        fine_tune_model(model_name, task)
-    elif task == "ner":
-        fine_tune_model(model_name, task)
-    else:
-        raise ValueError("Unsupported task: " + task)
+    fine_tune_model(model_name, task)
