@@ -285,7 +285,7 @@ def fine_tune_model(model_name, task):
         result = qa_pipeline(question="Your question here?", context=input_text)
         print("Answer:", result["answer"])
     else:
-         print("tc inference")
+        print("tc inference")
         # For Token Classification
         token_classification_pipeline = transformers.pipeline(task="token-classification", model=fine_tuned_model, tokenizer=fine_tuned_tokenizer)
         result = token_classification_pipeline(inputs=["My name is Amarah","I am from Jamshedpur"])
