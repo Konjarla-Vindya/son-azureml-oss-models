@@ -21,6 +21,9 @@ test_queue = os.environ.get('test_queue')
 # test set - the set of queues to test with. a test queue belongs to a test set
 test_set = os.environ.get('test_set')
 
+TASK_NAME = ['fill-mask', 'token-classification', 'question-answering',
+             'summarization', 'text-generation', 'text-classification', 'text-translation']
+
 
 def get_test_queue() -> ConfigBox:
     queue_file = f"../../config/queue/{test_set}/{test_queue}.json"
@@ -36,20 +39,23 @@ def get_model_list(registry_mlclient) -> List:
     return registered_model_list
 
 
-def get_latest_model_version(registry_mlclient, model_name):
-    model_versions = registry_mlclient.models.list(model_name)
-    model_version_count = 0
-    models = []
-    for model in model_versions:
-        model_version_count = model_version_count + 1
-        models.append(model)
-    # Sort models by creation time and find the latest model
-    sorted_models = sorted(
-        models, key=lambda x: x.creation_context.created_at, reverse=True)
-    latest_model = sorted_models[0]
-    logger.info(
-        f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}")
-    return latest_model
+def get_latest_model_version(registry_mlclient, model_list):
+    for model_name in model_list:
+        model_versions = registry_mlclient.models.list(model_name)
+        model_version_count = 0
+        models = []
+        for model in model_versions:
+            model_version_count = model_version_count + 1
+            models.append(model)
+        # Sort models by creation time and find the latest model
+        sorted_models = sorted(
+            models, key=lambda x: x.creation_context.created_at, reverse=True)
+        latest_model = sorted_models[0]
+        task = latest_model.tags["task"]
+        if task in TASK_NAME:
+            logger.info(
+                f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}")
+            return latest_model
 
 
 def main():
@@ -88,7 +94,7 @@ def main():
     )
     registered_model_list = get_model_list(registry_mlclient=registry_mlclient)
     latest_model = get_latest_model_version(
-        registry_mlclient=registry_mlclient, model_name=registered_model_list[0])
+        registry_mlclient=registry_mlclient, model_list=registered_model_list)
 
     onlineDeployment = OnlineDeployment(
         workspace_ml_client=workspace_ml_client, latest_model=latest_model)
