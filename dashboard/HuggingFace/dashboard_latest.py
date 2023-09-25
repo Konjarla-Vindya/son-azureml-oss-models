@@ -1,6 +1,6 @@
 import os,sys
 import requests
-import pandas
+import pandas as pd
 from datetime import datetime
 from github import Github, Auth
 
