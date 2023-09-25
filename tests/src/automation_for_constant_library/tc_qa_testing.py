@@ -240,7 +240,7 @@ def fine_tune_model(model_name, task):
     #     if task == "qa"
     #     else AutoModelForTokenClassification.from_pretrained(model_name, num_labels=num_labels)
     # )
-       if task == "qa":
+    if task == "qa":
         tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
     else:
         tokenized_datasets =  tokenize_and_prepare_features(datasets, tokenizer, task, label_all_tokens=True)
