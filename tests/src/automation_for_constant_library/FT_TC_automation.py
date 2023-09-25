@@ -219,11 +219,11 @@ if __name__ == "__main__":
     
     create_and_get_job_studio_url(command_job, workspace_ml_client)
 
-    InferenceAndDeployment = ModelInferenceAndDeployemnt(
-        test_model_name=test_model_name,
-        workspace_ml_client=workspace_ml_client,
-        registry=queue.registry
-    )
-    InferenceAndDeployment.model_infernce_and_deployment(
-        instance_type=queue.instance_type
-    )
+    # InferenceAndDeployment = ModelInferenceAndDeployemnt(
+    #     test_model_name=test_model_name,
+    #     workspace_ml_client=workspace_ml_client,
+    #     registry=queue.registry
+    # )
+    # InferenceAndDeployment.model_infernce_and_deployment(
+    #     instance_type=queue.instance_type
+    # )
