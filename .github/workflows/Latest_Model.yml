@@ -27,6 +27,9 @@ jobs:
           python-version: 3.9 # Use the desired Python version
       - name: pip-install--pandas 
         run: pip install pandas 
+      - name: pip-install--huggingface_hub 
+        run: pip install huggingface_hub 
+      
 
       - name: Run Python Script
         run: python automate_list.py
