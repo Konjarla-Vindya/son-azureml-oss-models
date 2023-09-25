@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  test_queue: test-eastus-0
+  test_queue: test-northeurope-0
   test_set: huggingface-all
 
 jobs:
