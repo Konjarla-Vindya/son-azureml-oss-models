@@ -299,14 +299,14 @@ def fine_tune_model(model_name, task):
     print(registered_model)
     print("Registered Model : ",
               client.get_registered_model(registered_model))
-        registered_model_detail = client.get_latest_versions(
+    registered_model_detail = client.get_latest_versions(
             name=registered_model, stages=["None"])
-        model_detail = registered_model_detail[0]
-        print("Latest registered model version is : ", model_detail.version)
-        loaded_model_pipeline = mlflow.transformers.load_model(
-            model_uri=model_detail.source, return_type="pipeline")
-        from box import ConfigBox
-        token_classification = ConfigBox(
+    model_detail = registered_model_detail[0]
+    print("Latest registered model version is : ", model_detail.version)
+    loaded_model_pipeline = mlflow.transformers.load_model(
+    model_uri=model_detail.source, return_type="pipeline")
+    from box import ConfigBox
+    token_classification = ConfigBox(
         {
         "inputs": [
         "My name is Amarah",
@@ -314,7 +314,7 @@ def fine_tune_model(model_name, task):
         ]
         }
         )
-        loaded_model_pipeline(token_classification.inputs)
+    loaded_model_pipeline(token_classification.inputs)
  
 
 
