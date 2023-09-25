@@ -79,8 +79,6 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
 
             sample_index = sample_mapping[i]
 
-            # answer_start = answers["answer_start"][sample_index]
-            # answer_text = answers["text"][sample_index]
             answers = examples["answers"][sample_index]
             if len(answers["answer_start"]) == 0:
                 tokenized_examples["start_positions"].append(cls_index)
@@ -89,14 +87,6 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
                 start_char = answers["answer_start"][0]
                 end_char = start_char + len(answers["text"][0])
 
-                
-
-            # if len(answer_start) == 0:
-            #     tokenized_examples["start_positions"].append(cls_index)
-            #     tokenized_examples["end_positions"].append(cls_index)
-            # else:
-            #     start_char = answer_start[0]
-            #     end_char = start_char + len(answer_text[0])
 
                 token_start_index = 0
                 while sequence_ids[token_start_index] != (1 if tokenizer.padding_side == "right" else 0):
@@ -119,42 +109,7 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
 
         return tokenized_examples
         
-    def tokenize_and_align_labels(dataset, tokenizer, task, label_all_tokens=True):
-        def tokenize_and_align(examples):
-            tokenized_inputs = tokenizer(examples["tokens"], truncation=True, is_split_into_words=True)
 
-            labels = []
-            for i, label in enumerate(examples[f"{task}_tags"]):
-                word_ids = tokenized_inputs.word_ids(batch_index=i)
-                previous_word_idx = None
-                label_ids = []
-                for word_idx in word_ids:
-                    if word_idx is None:
-                        label_ids.append(-100)
-                    elif word_idx != previous_word_idx:
-                        label_ids.append(label[word_idx])
-                    else:
-                        label_ids.append(label[word_idx] if label_all_tokens else -100)
-                    previous_word_idx = word_idx
-
-                labels.append(label_ids)
-
-            tokenized_inputs["labels"] = labels
-            return tokenized_inputs
-    # def prepare_token_classification_features(examples):
-    #     tokenized_inputs = tokenizer(examples["tokens"], truncation=True, is_split_into_words=True)
-
-    #     labels = []
-    #     for i, label in enumerate(examples[f"{task}_tags"]):
-    #         word_ids = tokenized_inputs.word_ids(batch_index=i)
-    #         label_ids = [-100]  # Initialize with padding tokens
-    #         for word_idx in word_ids:
-    #             if word_idx is not None:
-    #                 label_ids.append(label[word_idx])
-    #         labels.append(label_ids)
-
-    #     tokenized_inputs["labels"] = labels
-    #     return tokenized_inputs
 
     if task == "qa":
         return dataset.map(
@@ -172,35 +127,44 @@ def tokenize_and_prepare_features(dataset, tokenizer, task, max_length=max_lengt
     else:
         raise ValueError("Unsupported task: " + task)
 
-# def tokenize_and_align_labels(dataset, tokenizer, task, label_all_tokens=True):
-#     def tokenize_and_align(examples):
-#         tokenized_inputs = tokenizer(examples["tokens"], truncation=True, is_split_into_words=True)
+def tokenize_and_align_labels(dataset, tokenizer, task, label_all_tokens=True):
+    def tokenize_and_align(examples):
+        tokenized_inputs = tokenizer(examples["tokens"], truncation=True, is_split_into_words=True)
 
-#         labels = []
-#         for i, label in enumerate(examples[f"{task}_tags"]):
-#             word_ids = tokenized_inputs.word_ids(batch_index=i)
-#             previous_word_idx = None
-#             label_ids = []
-#             for word_idx in word_ids:
-#                 if word_idx is None:
-#                     label_ids.append(-100)
-#                 elif word_idx != previous_word_idx:
-#                     label_ids.append(label[word_idx])
-#                 else:
-#                     label_ids.append(label[word_idx] if label_all_tokens else -100)
-#                 previous_word_idx = word_idx
+        labels = []
+        for i, label in enumerate(examples[f"{task}_tags"]):
+            word_ids = tokenized_inputs.word_ids(batch_index=i)
+            previous_word_idx = None
+            label_ids = []
+            for word_idx in word_ids:
+                if word_idx is None:
+                    label_ids.append(-100)
+                elif word_idx != previous_word_idx:
+                    label_ids.append(label[word_idx])
+                else:
+                    label_ids.append(label[word_idx] if label_all_tokens else -100)
+                previous_word_idx = word_idx
 
-#             labels.append(label_ids)
+            labels.append(label_ids)
 
-#         tokenized_inputs["labels"] = labels
-#         return tokenized_inputs
-
-#     tokenized_datasets = dataset.map(
-#         lambda examples: tokenize_and_align(examples),
-#         batched=True,
-#     )
-
-#     return tokenized_datasets
+        tokenized_inputs["labels"] = labels
+        return tokenized_inputs
+    
+    if task == "qa":
+        return dataset.map(
+            prepare_train_features,
+            batched=True,
+            remove_columns=dataset["train"].column_names,
+        )
+    elif task == "ner":
+    
+        return dataset.map(
+            lambda examples: tokenize_and_align(examples),
+            batched=True,
+           
+        )
+    else:
+        raise ValueError("Unsupported task: " + task)
 
 def load_custom_dataset(dataset_name, task, batch_size):
     datasets = load_dataset(dataset_name)
@@ -252,17 +216,7 @@ def fine_tune_model(model_name, task):
 
     datasets, _, _ = load_custom_dataset(dataset_name, task, batch_size)
 
-    # if task == "qa":
-    #     tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
-    # else:
-    #     tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
 
-    # num_labels = None if task == "qa" else 9  
-    # model = (
-    #     AutoModelForQuestionAnswering.from_pretrained(model_name)
-    #     if task == "qa"
-    #     else AutoModelForTokenClassification.from_pretrained(model_name, num_labels=num_labels)
-    # )
     if task == "qa":
         tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
     else:
@@ -301,15 +255,6 @@ def fine_tune_model(model_name, task):
             compute_metrics=compute_metrics_fn,
         )
 
-        # data_collator = DataCollatorForTokenClassification(tokenizer)
-        # trainer = Trainer(
-        #     model=model,
-        #     args=training_args,
-        #     train_dataset=subset_train_dataset,
-        #     eval_dataset=subset_validation_dataset,
-        #     data_collator=data_collator,
-        #     tokenizer=tokenizer,
-        # )
 
     fine_tune_results = trainer.train()
     print(fine_tune_results)
