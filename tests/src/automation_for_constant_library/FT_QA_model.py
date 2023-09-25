@@ -200,3 +200,99 @@ if __name__ == "__main__":
 
     registered_model = mlflow.register_model(model_info.model_uri, model_name)
     print(registered_model)
+    # Azure Machine Learning Deployment
+   subscription_id = '80c77c76-74ba-4c8c-8229-4c3b2957990c'
+   resource_group = 'huggingface-registry-test1'
+   workspace_name = 'test-southcentralus'
+   credential = DefaultAzureCredential()
+   ws = Workspace(subscription_id, resource_group, workspace_name)
+
+   mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+   ml_client = MLClient(credential, subscription_id, resource_group, ws)
+   workspace_ml_client = MLClient(
+    credential,
+    subscription_id="80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    resource_group_name="huggingface-registry-test1",
+    workspace_name="test-southcentralus",
+    )
+    # Find the latest version of the registered model
+    version_list = list(workspace_ml_client.models.list(registered_model.name))
+    foundation_model = ''
+    if len(version_list) == 0:
+        print("Model not found in registry")
+    else:
+        model_version = version_list[0].version
+        foundation_model = workspace_ml_client.models.get(registered_model.name, model_version)
+        print(
+            "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
+                foundation_model.name, foundation_model.version, foundation_model.id
+            )
+        )
+
+    print(f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
+
+    model_sourceuri = foundation_model.properties["mlflow.modelSourceUri"]
+    registered_model_pipeline = mlflow.transformers.load_model(model_uri=model_sourceuri)
+
+    # Perform local inference
+    from box import ConfigBox
+
+    question_answering = ConfigBox(
+        {
+        "inputs": {
+          "question": "What is your Name?",
+          "context": "My name is Priyanka and i am a Datascientist."
+        }
+    )
+    result = registered_model_pipeline(question_answering.inputs)
+    print(result)
+
+    # Deploy the model to Azure Machine Learning
+    import time
+    from azure.ai.ml.entities import (
+        ManagedOnlineEndpoint,
+        ManagedOnlineDeployment,
+        OnlineRequestSettings,
+    )
+
+    timestamp = int(time.time())
+    online_endpoint_name = "qa-" + str(timestamp)
+
+    # Create an online endpoint
+    endpoint = ManagedOnlineEndpoint(
+        name=online_endpoint_name,
+        description="Online endpoint for " + foundation_model.name + ", qa",
+        auth_mode="key",
+    )
+
+    workspace_ml_client.begin_create_or_update(endpoint).wait()
+
+    import time
+    from azure.ai.ml.entities import (
+        ManagedOnlineEndpoint,
+        ManagedOnlineDeployment,
+        ProbeSettings,
+    )
+
+    # Create a deployment
+    demo_deployment = ManagedOnlineDeployment(
+        name="demo",
+        endpoint_name=online_endpoint_name,
+        model=foundation_model.id,
+        instance_type="Standard_DS3_v2",
+        instance_count=1,
+        liveness_probe=ProbeSettings(initial_delay=600),
+    )
+
+    workspace_ml_client.online_deployments.begin_create_or_update(demo_deployment).wait()
+
+    endpoint.traffic = {"demo": 100}
+    workspace_ml_client.begin_create_or_update(endpoint).result()
+
+    # Invoke the deployed model
+    ml_client.online_endpoints.invoke(
+        endpoint_name=online_endpoint_name,
+        deployment_name=f"{model_name}",
+        request_file="sample-request.json"
+    )
+
