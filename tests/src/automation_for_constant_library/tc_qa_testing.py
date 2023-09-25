@@ -243,7 +243,7 @@ def fine_tune_model(model_name, task):
     if task == "qa":
         tokenized_datasets = tokenize_and_prepare_features(datasets, tokenizer, task=task)
     else:
-        tokenized_datasets =  tokenize_and_prepare_features(datasets, tokenizer, task, label_all_tokens=True)
+        tokenized_datasets =  tokenize_and_prepare_features(datasets, tokenizer, task)
         metric = load_metric("seqeval")
     num_labels = None if task == "qa" else num_labels  # Adjust as needed
     model = (
