@@ -1,6 +1,7 @@
 import os,sys
 import requests
 import pandas 
+import csv
 from datetime import datetime
 from github import Github, Auth
 
@@ -21,21 +22,21 @@ class Dashboard():
         self.models_data = []  # Initialize models_data as an empty list
 
    
-    def get_workflow_names_from_github(self):
-        # Fetch the content of modellist.txt from your GitHub repository
-        file_path = "tests/config/modellist.txt"  # Update this with the actual path
-        try:
-            url = f"https://raw.githubusercontent.com/{self.repo_full_name}/master/{file_path}"
-            response = requests.get(url)
-            response.raise_for_status()
+    # def get_workflow_names_from_github(self):
+    #     # Fetch the content of modellist.txt from your GitHub repository
+    #     file_path = "tests/config/modellist.txt"  # Update this with the actual path
+    #     try:
+    #         url = f"https://raw.githubusercontent.com/{self.repo_full_name}/master/{file_path}"
+    #         response = requests.get(url)
+    #         response.raise_for_status()
             
-            # Split the content into lines and return it as a list
-            lines = response.text.splitlines()
-            return [line.strip() for line in lines]
+    #         # Split the content into lines and return it as a list
+    #         lines = response.text.splitlines()
+    #         return [line.strip() for line in lines]
             
-        except Exception as e:
-            print(f"Error fetching content from GitHub: {e}")
-            return []
+    #     except Exception as e:
+    #         print(f"Error fetching content from GitHub: {e}")
+    #         return []
          
     # def get_workflow_names_from_csv(self):
     #     # Fetch the content of modellist.csv from your GitHub repository
@@ -96,7 +97,25 @@ class Dashboard():
     #     return workflow_name
 
 
-
+    def get_workflow_names_from_github(self):
+        # Fetch the content of modellist.csv from your GitHub repository
+        file_path = "tests/config/modellist.csv"  # Update this with the actual path
+        try:
+            url = f"https://raw.githubusercontent.com/{self.repo_full_name}/master/{file_path}"
+            response = requests.get(url)
+            response.raise_for_status()
+            
+            # Parse the CSV content and return it as a list
+            csv_data = response.text.splitlines()
+            csv_reader = csv.reader(csv_data)
+            
+            # Assuming the first column contains the data you want to retrieve
+            return [row[0] for row in csv_reader]
+            
+        except Exception as e:
+            print(f"Error fetching or parsing content from GitHub: {e}")
+            return []
+         
     def workflow_last_run(self): 
         workflows_to_include = self.get_workflow_names_from_github()
         normalized_workflows = [workflow_name.replace("/","-") for workflow_name in workflows_to_include]
