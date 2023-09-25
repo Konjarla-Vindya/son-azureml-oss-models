@@ -31,7 +31,7 @@ class Dashboard():
     #         return []
 
 
-    def get_workflow_names_from_github(self):
+    def get_workflow_names_from_csv(self):
         # Fetch the content of modellist.csv from your GitHub repository
         file_path = "tests/config/modellist.csv"  # Update this with the actual path
         try:
