@@ -171,6 +171,7 @@ def load_custom_dataset(dataset_name, task, batch_size):
 
     if task == "ner":
         label_list = datasets["train"].features[f"{task}_tags"].feature.names
+        batch_size = config["batch_size"]
     else:
         label_list = None
 
@@ -210,6 +211,7 @@ def fine_tune_model(model_name, task):
     model_source_uri = os.environ.get('model_source_uri')
     loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri, return_type="pipeline")
     tokenizer = loaded_model.tokenizer
+    batch_size = config["batch_size"]
 
     # Define TrainingArguments
     training_args = create_training_args(model_name, task, batch_size=batch_size, num_train_epochs=num_train_epochs)
