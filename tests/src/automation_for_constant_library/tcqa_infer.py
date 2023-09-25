@@ -297,24 +297,24 @@ def fine_tune_model(model_name, task):
 
     registered_model = mlflow.register_model(model_info.model_uri, model_name)
     print(registered_model)
-    print("Registered Model : ",
-              client.get_registered_model(registered_model))
-    registered_model_detail = client.get_latest_versions(
-            name=registered_model, stages=["None"])
-    model_detail = registered_model_detail[0]
-    print("Latest registered model version is : ", model_detail.version)
-    loaded_model_pipeline = mlflow.transformers.load_model(
-    model_uri=model_detail.source, return_type="pipeline")
-    from box import ConfigBox
-    token_classification = ConfigBox(
-        {
-        "inputs": [
-        "My name is Amarah",
-        "I am from Jamshedpur"
-        ]
-        }
-        )
-    loaded_model_pipeline(token_classification.inputs)
+    # print("Registered Model : ",
+    #           client.get_registered_model(registered_model))
+    # registered_model_detail = client.get_latest_versions(
+    #         name=registered_model, stages=["None"])
+    # model_detail = registered_model_detail[0]
+    # print("Latest registered model version is : ", model_detail.version)
+    # loaded_model_pipeline = mlflow.transformers.load_model(
+    # model_uri=model_detail.source, return_type="pipeline")
+    # from box import ConfigBox
+    # token_classification = ConfigBox(
+    #     {
+    #     "inputs": [
+    #     "My name is Amarah",
+    #     "I am from Jamshedpur"
+    #     ]
+    #     }
+    #     )
+    # loaded_model_pipeline(token_classification.inputs)
  
 
 
