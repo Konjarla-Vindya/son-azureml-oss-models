@@ -50,11 +50,12 @@ def get_latest_model_version(registry_mlclient, model_list):
         sorted_models = sorted(
             models, key=lambda x: x.creation_context.created_at, reverse=True)
         latest_model = sorted_models[0]
-        task = latest_model.tags["task"]
-        if task in TASK_NAME:
-            logger.info(
-                f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}")
-            return latest_model
+        if latest_model.tags.get("task") != None:
+            task = latest_model.tags["task"]
+            if task in TASK_NAME:
+                logger.info(
+                    f"Latest model {latest_model.name} version {latest_model.version} created at {latest_model.creation_context.created_at}")
+                return latest_model
 
 
 def main():
