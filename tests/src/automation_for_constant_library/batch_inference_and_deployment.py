@@ -44,8 +44,10 @@ class BatchDeployemnt:
         self.test_model_name = test_model_name
         self.workspace_ml_client = workspace_ml_client
         self.registry = registry
-        model_name = self.test_model_name
-        latest_model = self.get_latest_model_version(self.workspace_ml_client, model_name)
+        self.foundation_model.id=foundation_model.id
+        foundation_model = self.test_model_name
+        foundation_model.id=self.foundation_model.id
+        #latest_model = self.get_latest_model_version(self.workspace_ml_client, model_name)
         deployment_name = "Autodemo"
         compute = "queue.compute" 
         workspace = queue.workspace 
@@ -71,6 +73,7 @@ class BatchDeployemnt:
 
 
 def create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description=""):
+    #foundation_model = self.test_model_name
     # Generate a unique endpoint name based on the current timestamp
     timestamp = int(time.time())
     endpoint_name = f"fill-maskwsauto-{timestamp}"
@@ -194,11 +197,11 @@ if __name__ == "__main__":
     # )
     # mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     
-    BEDeployment = BatchDeployemnt(
-            test_model_name=test_model_name,
-            workspace_ml_client=workspace_ml_client,
-            registry=queue.registry
-        )
+    # BEDeployment = BatchDeployemnt(
+    #         test_model_name=test_model_name,
+    #         workspace_ml_client=workspace_ml_client,
+    #         registry=queue.registry
+    #     )
     created_endpoint = create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description)
     created_deployment = create_or_update_batch_deployment(
         workspace_ml_client,
