@@ -43,7 +43,7 @@ class BatchDeployemnt:
         self.test_model_name = test_model_name
         self.workspace_ml_client = workspace_ml_client
         self.registry = registry
-        self.foundation_model.id=foundation_model.id
+        self.foundation_model.id=foundation_model_ID
         self.compute = queue 
         self.workspace = workspace 
         foundation_model = self.test_model_name
