@@ -31,7 +31,7 @@ from mlflow.tracking.client import MlflowClient
 
 # Import the BatchDeployemnt class you defined
 # from batch_inference_and_deployment import BatchDeployemnt
-class BatchDeployemnt:
+class BatchDeployment:
     def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
         self.test_model_name = test_model_name
         self.workspace_ml_client = workspace_ml_client
@@ -94,7 +94,7 @@ def main():
     # workspace = "your_workspace"
 
     # Create a BatchDeployment instance
-    batch_deployment = BatchDeployemnt(
+    batch_deployment = BatchDeployment(
         test_model_name=test_model_name,
         workspace_ml_client=mlflow_client,  # Use the MLflow client
         registry=registry,
