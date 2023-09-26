@@ -282,7 +282,8 @@ if __name__ == "__main__":
     "name": foundation_model.name,
     "version": foundation_model.version,
     "id":foundation_model.id
-    # Add other attributes you want to include}
+    # Add other attributes you want to include
+    }
     foundation_model_json = json.dumps(foundation_model_data)
     if foundation_model:
         environment_variables = {
