@@ -120,9 +120,8 @@ def get_latest_model_version(workspace_ml_client, test_model_name):
                 foundation_model.name, foundation_model.version, foundation_model.id
             )
         )
-    print(
-        f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
-        print("foundation_model.name:", {foundation_model.name})
+    print(f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
+    print("foundation_model.name:", {foundation_model.name})
     #print(f"Model Config : {latest_model.config}")
     return foundation_model
 
