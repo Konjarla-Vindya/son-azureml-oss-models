@@ -1,5 +1,6 @@
 from azureml.core import Workspace, Environment
-# from batch_inference_and_deployment import BatchDeployemnt
+from batch_inference_and_deployment import BatchDeployemnt
+# from BE_loadmodel import get_latest_model_version
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
@@ -106,36 +107,36 @@ def create_or_get_compute_target(ml_client,  compute):
         ml_client.compute.begin_create_or_update(compute).result()
     return compute
 
-def get_latest_model_version(workspace_ml_client, test_model_name):
-    print("In get_latest_model_version...")
-    version_list = list(workspace_ml_client.models.list(test_model_name))
+# def get_latest_model_version(workspace_ml_client, test_model_name):
+#     print("In get_latest_model_version...")
+#     version_list = list(workspace_ml_client.models.list(test_model_name))
     
-    if len(version_list) == 0:
-        print("Model not found in registry")
-        foundation_model_name = None  # Set to None if the model is not found
-        foundation_model_id = None  # Set id to None as well
-    else:
-        model_version = version_list[0].version
-        foundation_model = workspace_ml_client.models.get(
-            test_model_name, model_version)
-        print(
-            "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
-                foundation_model.name, foundation_model.version, foundation_model.id
-            )
-        )
-        foundation_model_name = foundation_model.name  # Assign the value to a new variable
-        foundation_model_id = foundation_model.id  # Assign the id to a new variable
+#     if len(version_list) == 0:
+#         print("Model not found in registry")
+#         foundation_model_name = None  # Set to None if the model is not found
+#         foundation_model_id = None  # Set id to None as well
+#     else:
+#         model_version = version_list[0].version
+#         foundation_model = workspace_ml_client.models.get(
+#             test_model_name, model_version)
+#         print(
+#             "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
+#                 foundation_model.name, foundation_model.version, foundation_model.id
+#             )
+#         )
+#         foundation_model_name = foundation_model.name  # Assign the value to a new variable
+#         foundation_model_id = foundation_model.id  # Assign the id to a new variable
     
-    # Check if foundation_model_name and foundation_model_id are None or have values
-    if foundation_model_name and foundation_model_id:
-        print(f"Latest model {foundation_model_name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
-        print("foundation_model.name:", foundation_model_name)
-        print("foundation_model.id:", foundation_model_id)
-    else:
-        print("No model found in the registry.")
+#     # Check if foundation_model_name and foundation_model_id are None or have values
+#     if foundation_model_name and foundation_model_id:
+#         print(f"Latest model {foundation_model_name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
+#         print("foundation_model.name:", foundation_model_name)
+#         print("foundation_model.id:", foundation_model_id)
+#     else:
+#         print("No model found in the registry.")
     
-    #print(f"Model Config : {latest_model.config}")
-    return foundation_model
+#     #print(f"Model Config : {latest_model.config}")
+#     return foundation_model
 
 
 # def create_or_update_compute(workspace_ml_client, compute_name, vm_size, min_instances, max_instances, idle_time_before_scale_down):
@@ -277,35 +278,35 @@ if __name__ == "__main__":
 
     #load_model(model_detail)
     #get_latest_model_version(workspace_ml_client, test_model_name)
-    foundation_model = get_latest_model_version(workspace_ml_client, test_model_name)
-    foundation_model_data = {
-    "name": foundation_model.name,
-    "version": foundation_model.version,
-    "id":foundation_model.id
-    # Add other attributes you want to include
-    }
-    foundation_model_json = json.dumps(foundation_model_data)
-    if foundation_model:
-        environment_variables = {
-            "test_model_name": test_model_name,
-            "workspace_ml_client": workspace_ml_client,
-            "registry": queue.registry,
-            "foundation_model": foundation_model_json,
-            "queue": queue.compute,
-            "workspace": queue.workspace
-        }     
-    else:
-        print("No model found. Cannot set environment variables.")
-    # loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
-    # model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
-    # print("model_source_uri---------------------",model_source_uri)
-    # loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
-    # LM=load_model(model_detail)
-    # print("LM-----------------------------",LM)
-    environment_variables = {"test_model_name": foundation_model.name,
-                            "workspace_ml_client":workspace_ml_client,"registry":queue.registry,"foundation_model_ID":foundation_model.id,
-                            "queue":queue.compute,"workspace":queue.workspace}
-    print("environment_variables-------------",environment_variables)
+    # foundation_model = get_latest_model_version(workspace_ml_client, test_model_name)
+    # foundation_model_data = {
+    # "name": foundation_model.name,
+    # "version": foundation_model.version,
+    # "id":foundation_model.id
+    # # Add other attributes you want to include
+    # }
+    # foundation_model_json = json.dumps(foundation_model_data)
+    # if foundation_model:
+    #     environment_variables = {
+    #         "test_model_name": test_model_name,
+    #         "workspace_ml_client": workspace_ml_client,
+    #         "registry": queue.registry,
+    #         "foundation_model": foundation_model_json,
+    #         "queue": queue.compute,
+    #         "workspace": queue.workspace
+    #     }     
+    # else:
+    #     print("No model found. Cannot set environment variables.")
+    # # loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
+    # # model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
+    # # print("model_source_uri---------------------",model_source_uri)
+    # # loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
+    # # LM=load_model(model_detail)
+    # # print("LM-----------------------------",LM)
+    # environment_variables = {"test_model_name": foundation_model.name,
+    #                         "workspace_ml_client":workspace_ml_client,"registry":queue.registry,"foundation_model_ID":foundation_model.id,
+    #                         "queue":queue.compute,"workspace":queue.workspace}
+    # print("environment_variables-------------",environment_variables)
     print("queue.compute---", queue.compute)
     print("queue.workspace====", queue.workspace)
 
@@ -318,23 +319,23 @@ if __name__ == "__main__":
 
     # compute_cluster = create_or_update_compute(workspace_ml_client, compute_name ="cpu-cluster", vm_size="Standard_DS3_V2", min_instances=0, max_instances=3, idle_time_before_scale_down=120)
     
-    command_job = run_azure_ml_job(code="./", command_to_run="python batch_inference_and_deployment.py",
-                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
+    # command_job = run_azure_ml_job(code="./", command_to_run="python batch_inference_and_deployment.py",
+    #                                environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
 
-    create_and_get_job_studio_url(command_job, workspace_ml_client)
+    # create_and_get_job_studio_url(command_job, workspace_ml_client)
 
 
-    # BEDeployment = BatchDeployemnt(
-    #     test_model_name=foundation_model,
-    #     workspace_ml_client=workspace_ml_client,
-    #     registry=queue.registry,
-    #     foundation_model_ID=foundation_model.id,
-    #     queue=queue.compute,
-    #     workspace=queue.workspace
-    # )
-    # BEDeployment.batch_infernce_and_deployment(
-    #         instance_type=queue.instance_type
-    #     )
+    BEDeployment = BatchDeployemnt(
+        test_model_name=test_model_name,
+        workspace_ml_client=workspace_ml_client,
+        registry=queue.registry,
+        # foundation_model_ID=foundation_model.id,
+        queue=queue.compute,
+        workspace=queue.workspace
+    )
+    BEDeployment.batch_infernce_and_deployment(
+            instance_type=queue.instance_type
+        )
 
 
 
