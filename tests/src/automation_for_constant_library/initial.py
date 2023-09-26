@@ -271,8 +271,8 @@ if __name__ == "__main__":
     # LM=load_model(model_detail)
     # print("LM-----------------------------",LM)
     environment_variables = {"test_model_name": foundation_model,
-                            workspace_ml_client=workspace_ml_client,registry=queue.registry,foundation_model_ID=foundation_model.id,
-                            queue=queue.compute,workspace=queue.workspace}
+                            "workspace_ml_client":workspace_ml_client,"registry":queue.registry,"foundation_model_ID":foundation_model.id,
+                            "queue":queue.compute,"workspace":queue.workspace}
     print("environment_variables-------------",environment_variables)
     print("queue.compute---", queue.compute)
     print("queue.workspace====", queue.workspace)
