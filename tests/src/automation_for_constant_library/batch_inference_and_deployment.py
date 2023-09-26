@@ -54,7 +54,7 @@ class BatchDeployemnt:
         # workspace = self.workspace
         # queue = self.compute
         # #latest_model = self.get_latest_model_version(self.workspace_ml_client, model_name)
-        deployment_name = "Autodemo"
+        # deployment_name = "Autodemo"
 
     # def get_latest_model_version(self, workspace_ml_client, model_name):
     #     print("In get_latest_model_version...")
@@ -127,7 +127,7 @@ def create_or_update_batch_endpoint(workspace_ml_client, foundation_model, descr
 
 def create_or_update_batch_deployment(
     workspace_ml_client,
-    deployment_name,
+    deployment_name = "Autodemo",
     endpoint_name,
     foundation_model,
     compute,
