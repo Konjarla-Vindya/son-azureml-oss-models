@@ -1,3 +1,5 @@
+from model_inference_and_deployment import ModelInferenceAndDeployemnt
+from mlflow.tracking.client import MlflowClient
 import time
 import json
 import os
@@ -48,24 +50,24 @@ class BatchDeployemnt:
         compute = "queue.compute" 
         workspace = queue.workspace 
 
-    def get_latest_model_version(self, workspace_ml_client, model_name):
-        print("In get_latest_model_version...")
-        version_list = list(workspace_ml_client.models.list(model_name))
-        if len(version_list) == 0:
-            print("Model not found in registry")
-        else:
-            model_version = version_list[0].version
-            foundation_model = workspace_ml_client.models.get(
-                model_name, model_version)
-            print(
-                "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
-                    foundation_model.name, foundation_model.version, foundation_model.id
-                )
-            )
-        print(
-            f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
-        print(f"Model Config : {latest_model.config}")
-        return foundation_model
+    # def get_latest_model_version(self, workspace_ml_client, model_name):
+    #     print("In get_latest_model_version...")
+    #     version_list = list(workspace_ml_client.models.list(model_name))
+    #     if len(version_list) == 0:
+    #         print("Model not found in registry")
+    #     else:
+    #         model_version = version_list[0].version
+    #         foundation_model = workspace_ml_client.models.get(
+    #             model_name, model_version)
+    #         print(
+    #             "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
+    #                 foundation_model.name, foundation_model.version, foundation_model.id
+    #             )
+    #         )
+    #     print(
+    #         f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
+    #     print(f"Model Config : {latest_model.config}")
+    #     return foundation_model
 
 
 def create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description=""):
@@ -156,6 +158,8 @@ def set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_
 
 
 if __name__ == "__main__":
+
+    client = MlflowClient()
     # Example usage:
     # Replace the parameters with your desired values
     # deployment_name = "demo"
