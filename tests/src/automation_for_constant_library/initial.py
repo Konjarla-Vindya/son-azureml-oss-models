@@ -122,7 +122,7 @@ def get_latest_model_version(workspace_ml_client, test_model_name):
         )
     print(
         f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
-    print(f"Model Config : {latest_model.config}")
+    #print(f"Model Config : {latest_model.config}")
     return foundation_model
 
 # def create_or_update_compute(workspace_ml_client, compute_name, vm_size, min_instances, max_instances, idle_time_before_scale_down):
@@ -283,7 +283,7 @@ if __name__ == "__main__":
     # idle_time_before_scale_down = 120
 
     # compute_cluster = create_or_update_compute(workspace_ml_client, compute_name ="cpu-cluster", vm_size="Standard_DS3_V2", min_instances=0, max_instances=3, idle_time_before_scale_down=120)
-    get_latest_model_version
+    
     command_job = run_azure_ml_job(code="./", command_to_run="python batch_inference_and_deployment.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
 
