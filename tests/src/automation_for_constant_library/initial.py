@@ -1,5 +1,5 @@
 from azureml.core import Workspace, Environment
-from batch_inference_and_deployment import BatchDeployemnt
+from batch_inference_and_deployment import BatchDeployment
 # from BE_loadmodel import get_latest_model_version
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
@@ -325,7 +325,7 @@ if __name__ == "__main__":
     # create_and_get_job_studio_url(command_job, workspace_ml_client)
 
 
-    BEDeployment = BatchDeployemnt(
+    BEDeployment = BatchDeployment(
         test_model_name=test_model_name,
         workspace_ml_client=workspace_ml_client,
         registry=queue.registry,
