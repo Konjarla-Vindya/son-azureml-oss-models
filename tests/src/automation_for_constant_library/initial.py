@@ -109,8 +109,11 @@ def create_or_get_compute_target(ml_client,  compute):
 def get_latest_model_version(workspace_ml_client, test_model_name):
     print("In get_latest_model_version...")
     version_list = list(workspace_ml_client.models.list(test_model_name))
+    
     if len(version_list) == 0:
         print("Model not found in registry")
+        foundation_model_name = None  # Set to None if the model is not found
+        foundation_model_id = None  # Set id to None as well
     else:
         model_version = version_list[0].version
         foundation_model = workspace_ml_client.models.get(
@@ -120,13 +123,20 @@ def get_latest_model_version(workspace_ml_client, test_model_name):
                 foundation_model.name, foundation_model.version, foundation_model.id
             )
         )
-        foundation_model_name = foundation_model.name 
-        foundation_model.id = foundation_model.id
-    print(f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
-    print("foundation_model.name:", {foundation_model.name})
-    print("foundation_model.id:", {foundation_model.id})
+        foundation_model_name = foundation_model.name  # Assign the value to a new variable
+        foundation_model_id = foundation_model.id  # Assign the id to a new variable
+    
+    # Check if foundation_model_name and foundation_model_id are None or have values
+    if foundation_model_name and foundation_model_id:
+        print(f"Latest model {foundation_model_name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
+        print("foundation_model.name:", foundation_model_name)
+        print("foundation_model.id:", foundation_model_id)
+    else:
+        print("No model found in the registry.")
+    
     #print(f"Model Config : {latest_model.config}")
     return foundation_model
+
 
 # def create_or_update_compute(workspace_ml_client, compute_name, vm_size, min_instances, max_instances, idle_time_before_scale_down):
 
