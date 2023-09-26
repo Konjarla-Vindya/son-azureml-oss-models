@@ -259,8 +259,8 @@ if __name__ == "__main__":
     model_detail = registered_model_detail[0]
     print("Latest registered model: " , model_detail)
     print("Latest registered model version is : ", model_detail.version)
-    print("Latest registered model id is : ", model_detail.id)
-    print("Latest registered model name is : ", model_detail.name)
+    # print("Latest registered model id is : ", model_detail.id)
+    # print("Latest registered model name is : ", model_detail.name)
 
     load_model(model_detail)
     get_latest_model_version(workspace_ml_client, model_detail)
