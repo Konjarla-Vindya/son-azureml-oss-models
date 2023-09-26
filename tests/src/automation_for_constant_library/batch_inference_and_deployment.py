@@ -1,4 +1,5 @@
 from mlflow.tracking.client import MlflowClient
+from batch_inference_and_deployment import BatchDeployemnt
 import time
 import json
 import os
@@ -164,6 +165,14 @@ def set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_
 if __name__ == "__main__":
 
     client = MlflowClient()
+    BEDeployment = BatchDeployemnt(
+        test_model_name=foundation_model,
+        workspace_ml_client=workspace_ml_client,
+        registry=queue.registry,
+        foundation_model_ID=foundation_model.id,
+        queue=queue.compute,
+        workspace=queue.workspace
+    )
     # Example usage:
     # Replace the parameters with your desired values
     # deployment_name = "demo"
