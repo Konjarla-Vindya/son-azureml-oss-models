@@ -3,6 +3,7 @@ from mlflow.tracking.client import MlflowClient
 import time
 import json
 import os
+from azureml.core import Run
 from azure.ai.ml.constants import AssetTypes
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
@@ -164,10 +165,14 @@ def set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_
 
 if __name__ == "__main__":
 
+    foundation_model_json = os.environ.get("foundation_model")
+    foundation_model = json.loads(foundation_model_json)
+    print(f"Using foundation_model.name: {foundation_model['name']}")
+    print(f"Using foundation_model.id: {foundation_model['id']}")
     workspace_ml_client=os.environ.get('workspace_ml_client')
-    test_model_name = os.environ.get('test_model_name')
+    foundation_model_name = os.environ.get('test_model_name')
     registry=os.environ.get('registry')
-    foundation_model.id=os.environ.get('foundation_model_ID')
+    foundation_model.id=os.environ.get('foundation_model.id')
     queue=os.environ.get('queue')
     workspace=os.environ.get('workspace')
     client = MlflowClient()
