@@ -106,15 +106,15 @@ def create_or_get_compute_target(ml_client,  compute):
         ml_client.compute.begin_create_or_update(compute).result()
     return compute
 
-def get_latest_model_version(workspace_ml_client, model_detail):
+def get_latest_model_version(workspace_ml_client, test_model_name):
     print("In get_latest_model_version...")
-    version_list = list(workspace_ml_client.models.list(model_detail))
+    version_list = list(workspace_ml_client.models.list(test_model_name))
     if len(version_list) == 0:
         print("Model not found in registry")
     else:
         model_version = version_list[0].version
         foundation_model = workspace_ml_client.models.get(
-            model_detail, model_version)
+            test_model_name, model_version)
         print(
             "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
                 foundation_model.name, foundation_model.version, foundation_model.id
@@ -262,8 +262,8 @@ if __name__ == "__main__":
     # print("Latest registered model id is : ", model_detail.id)
     # print("Latest registered model name is : ", model_detail.name)
 
-    load_model(model_detail)
-    get_latest_model_version(workspace_ml_client, model_detail)
+    #load_model(model_detail)
+    get_latest_model_version(workspace_ml_client, test_model_name)
     # loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
     # model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
     # print("model_source_uri---------------------",model_source_uri)
