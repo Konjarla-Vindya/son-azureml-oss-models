@@ -1,7 +1,8 @@
 {
     "queue_name": "test-northcentralus-1",
     "models": [
-        "xlnet-base-cased"
+        "cl-tohoku/bert-base-japanese",
+        "cl-tohoku/bert-base-japanese-char"
     ],
     "workspace": "test-northcentralus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
