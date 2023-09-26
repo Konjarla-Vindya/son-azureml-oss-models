@@ -122,6 +122,7 @@ def get_latest_model_version(workspace_ml_client, test_model_name):
         )
     print(
         f"Latest model {foundation_model.name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
+        print("foundation_model.name:", {foundation_model.name})
     #print(f"Model Config : {latest_model.config}")
     return foundation_model
 
@@ -270,7 +271,7 @@ if __name__ == "__main__":
     # loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
     # LM=load_model(model_detail)
     # print("LM-----------------------------",LM)
-    environment_variables = {"test_model_name": foundation_model.name,
+    environment_variables = {"test_model_name": test_model_name,
                             "workspace_ml_client":workspace_ml_client,"registry":queue.registry,"foundation_model_ID":foundation_model.id,
                             "queue":queue.compute,"workspace":queue.workspace}
     print("environment_variables-------------",environment_variables)
