@@ -330,8 +330,8 @@ if __name__ == "__main__":
         workspace_ml_client=workspace_ml_client,
         registry=queue.registry,
         # foundation_model_ID=foundation_model.id,
-        queue=queue.compute,
-        workspace=queue.workspace
+        # queue=queue.compute,
+        # workspace=queue.workspace
     )
     BEDeployment.batch_infernce_and_deployment(
             instance_type=queue.instance_type
