@@ -1,5 +1,6 @@
 from mlflow.tracking.client import MlflowClient
 # from batch_inference_and_deployment import BatchDeployemnt
+# from BE_loadmodel import get_latest_model_version
 import time
 import json
 import os
@@ -40,20 +41,20 @@ from azureml.core import Workspace
 #     with open(queue_file) as f:
 #         return ConfigBox(json.load(f))
         
-# class BatchDeployemnt:
-#     def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
-#         self.test_model_name = test_model_name
-#         self.workspace_ml_client = workspace_ml_client
-#         self.registry = registry
-#         self.foundation_model.id=foundation_model_ID
-#         self.compute = queue 
-#         self.workspace = workspace 
-#         foundation_model = self.test_model_name
-#         foundation_model.id=self.foundation_model.id
-#         workspace = self.workspace
-#         queue = self.compute
-#         #latest_model = self.get_latest_model_version(self.workspace_ml_client, model_name)
-#         deployment_name = "Autodemo"
+class BatchDeployemnt:
+    def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
+        self.test_model_name = test_model_name
+        self.workspace_ml_client = workspace_ml_client
+        self.registry = registry
+        # self.foundation_model.id=foundation_model_ID
+        # self.compute = queue 
+        # self.workspace = workspace 
+        # foundation_model = self.test_model_name
+        # foundation_model.id=self.foundation_model.id
+        # workspace = self.workspace
+        # queue = self.compute
+        # #latest_model = self.get_latest_model_version(self.workspace_ml_client, model_name)
+        deployment_name = "Autodemo"
 
     # def get_latest_model_version(self, workspace_ml_client, model_name):
     #     print("In get_latest_model_version...")
@@ -74,6 +75,36 @@ from azureml.core import Workspace
     #     print(f"Model Config : {latest_model.config}")
     #     return foundation_model
 
+def get_latest_model_version(workspace_ml_client, test_model_name):
+    print("In get_latest_model_version...")
+    version_list = list(workspace_ml_client.models.list(test_model_name))
+    
+    if len(version_list) == 0:
+        print("Model not found in registry")
+        foundation_model_name = None  # Set to None if the model is not found
+        foundation_model_id = None  # Set id to None as well
+    else:
+        model_version = version_list[0].version
+        foundation_model = workspace_ml_client.models.get(
+            test_model_name, model_version)
+        print(
+            "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
+                foundation_model.name, foundation_model.version, foundation_model.id
+            )
+        )
+        foundation_model_name = foundation_model.name  # Assign the value to a new variable
+        foundation_model_id = foundation_model.id  # Assign the id to a new variable
+    
+    # Check if foundation_model_name and foundation_model_id are None or have values
+    if foundation_model_name and foundation_model_id:
+        print(f"Latest model {foundation_model_name} version {foundation_model.version} created at {foundation_model.creation_context.created_at}")
+        print("foundation_model.name:", foundation_model_name)
+        print("foundation_model.id:", foundation_model_id)
+    else:
+        print("No model found in the registry.")
+    
+    #print(f"Model Config : {latest_model.config}")
+    return foundation_model
 
 def create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description=""):
     #foundation_model = self.test_model_name
@@ -163,19 +194,21 @@ def set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_
     #         print(log_line)
 
 
-if __name__ == "__main__":
 
-    foundation_model_json = os.environ.get("foundation_model")
-    foundation_model = json.loads(foundation_model_json)
-    print(f"Using foundation_model.name: {foundation_model['name']}")
-    print(f"Using foundation_model.id: {foundation_model['id']}")
-    workspace_ml_client=os.environ.get('workspace_ml_client')
-    foundation_model_name = os.environ.get('test_model_name')
-    registry=os.environ.get('registry')
-    foundation_model.id=os.environ.get('foundation_model.id')
-    queue=os.environ.get('queue')
-    workspace=os.environ.get('workspace')
-    client = MlflowClient()
+# if __name__ == "__main__":
+
+#     foundation_model = get_foundation_model(workspace, test_model_name)
+#     foundation_model_json = os.environ.get("foundation_model")
+#     foundation_model = json.loads(foundation_model_json)
+#     print(f"Using foundation_model.name: {foundation_model['name']}")
+#     print(f"Using foundation_model.id: {foundation_model['id']}")
+#     workspace_ml_client=os.environ.get('workspace_ml_client')
+#     foundation_model_name = os.environ.get('test_model_name')
+#     registry=os.environ.get('registry')
+#     foundation_model.id=os.environ.get('foundation_model.id')
+#     queue=os.environ.get('queue')
+#     workspace=os.environ.get('workspace')
+#     client = MlflowClient()
     # BEDeployment = BatchDeployemnt(
     #     test_model_name=foundation_model,
     #     workspace_ml_client=workspace_ml_client,
@@ -223,23 +256,23 @@ if __name__ == "__main__":
     #         workspace_ml_client=workspace_ml_client,
     #         registry=queue.registry
     #     )
-    created_endpoint = create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description)
-    created_deployment = create_or_update_batch_deployment(
-        workspace_ml_client,
-        deployment_name,
-        endpoint_name,
-        foundation_model,
-        compute,
-        error_threshold=0,
-        instance_count=1,
-        logging_level="info",
-        max_concurrency_per_instance=2,
-        mini_batch_size=10,
-        output_file_name="predictions.csv",
-        max_retries=3,
-        timeout=300,
-    )
-    set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_name)
+    # created_endpoint = create_or_update_batch_endpoint(workspace_ml_client, foundation_model, description)
+    # created_deployment = create_or_update_batch_deployment(
+    #     workspace_ml_client,
+    #     deployment_name,
+    #     endpoint_name,
+    #     foundation_model,
+    #     compute,
+    #     error_threshold=0,
+    #     instance_count=1,
+    #     logging_level="info",
+    #     max_concurrency_per_instance=2,
+    #     mini_batch_size=10,
+    #     output_file_name="predictions.csv",
+    #     max_retries=3,
+    #     timeout=300,
+    # )
+    # set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_name)
     
     # Example usage:
     # Replace the parameters with your desired values
