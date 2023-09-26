@@ -294,7 +294,7 @@ if __name__ == "__main__":
         test_model_name=foundation_model,
         workspace_ml_client=workspace_ml_client,
         registry=queue.registry,
-        foundation_model.id=foundation_model.id,
+        foundation_model_ID=foundation_model.id,
         queue=queue.compute,
         workspace=queue.workspace
     )
