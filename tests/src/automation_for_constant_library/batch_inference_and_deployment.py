@@ -1,5 +1,5 @@
 from mlflow.tracking.client import MlflowClient
-from batch_inference_and_deployment import BatchDeployemnt
+# from batch_inference_and_deployment import BatchDeployemnt
 import time
 import json
 import os
@@ -39,20 +39,20 @@ from azureml.core import Workspace
 #     with open(queue_file) as f:
 #         return ConfigBox(json.load(f))
         
-class BatchDeployemnt:
-    def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
-        self.test_model_name = test_model_name
-        self.workspace_ml_client = workspace_ml_client
-        self.registry = registry
-        self.foundation_model.id=foundation_model_ID
-        self.compute = queue 
-        self.workspace = workspace 
-        foundation_model = self.test_model_name
-        foundation_model.id=self.foundation_model.id
-        workspace = self.workspace
-        queue = self.compute
-        #latest_model = self.get_latest_model_version(self.workspace_ml_client, model_name)
-        deployment_name = "Autodemo"
+# class BatchDeployemnt:
+#     def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
+#         self.test_model_name = test_model_name
+#         self.workspace_ml_client = workspace_ml_client
+#         self.registry = registry
+#         self.foundation_model.id=foundation_model_ID
+#         self.compute = queue 
+#         self.workspace = workspace 
+#         foundation_model = self.test_model_name
+#         foundation_model.id=self.foundation_model.id
+#         workspace = self.workspace
+#         queue = self.compute
+#         #latest_model = self.get_latest_model_version(self.workspace_ml_client, model_name)
+#         deployment_name = "Autodemo"
 
     # def get_latest_model_version(self, workspace_ml_client, model_name):
     #     print("In get_latest_model_version...")
@@ -164,15 +164,21 @@ def set_default_batch_deployment(workspace_ml_client, endpoint_name, deployment_
 
 if __name__ == "__main__":
 
+    workspace_ml_client=os.environ.get('workspace_ml_client')
+    test_model_name = os.environ.get('test_model_name')
+    registry=os.environ.get('registry')
+    foundation_model.id=os.environ.get('foundation_model_ID')
+    queue=os.environ.get('queue')
+    workspace=os.environ.get('workspace')
     client = MlflowClient()
-    BEDeployment = BatchDeployemnt(
-        test_model_name=foundation_model,
-        workspace_ml_client=workspace_ml_client,
-        registry=queue.registry,
-        foundation_model_ID=foundation_model.id,
-        queue=queue.compute,
-        workspace=queue.workspace
-    )
+    # BEDeployment = BatchDeployemnt(
+    #     test_model_name=foundation_model,
+    #     workspace_ml_client=workspace_ml_client,
+    #     registry=queue.registry,
+    #     foundation_model_ID=foundation_model.id,
+    #     queue=queue.compute,
+    #     workspace=queue.workspace
+    # )
     # Example usage:
     # Replace the parameters with your desired values
     # deployment_name = "demo"
