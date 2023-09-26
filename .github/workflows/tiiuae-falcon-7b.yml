@@ -7,7 +7,7 @@ env:
   test_model_name: tiiuae/falcon-7b
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-norwayeast-0
+  test_queue: test-northcentralus-5
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -42,7 +42,23 @@ jobs:
     - name: pip-install-sentencepiece
       run: pip install sentencepiece
     - name: pip-install-fugashi[unidic-lite]
-      run: pip install fugashi[unidic-lite]  
+      run: pip install fugashi[unidic-lite]
+    - name: pip-install-einops
+      run: pip install einops
+    - name: pip-install-flash_attn
+      run: pip install flash_attn
+    - name: pip-install-tiktoken
+      run: pip install tiktoken
+    - name: pip-install-transformers_stream_generator
+      run: pip install transformers_stream_generator
+    - name: pip-install-cpm_kernels
+      run: pip install cpm_kernels
+    - name: pip-install-bitsandbytes-cuda111
+      run: pip install bitsandbytes-cuda111
+    - name: pip-install-ipadic
+      run: pip install ipadic
+    - name: pip-install-mecab-python3
+      run: pip install mecab-python3
     - name: deploy-model-step
       id: deploy-model-step
       run: python generic_initial_automation.py
