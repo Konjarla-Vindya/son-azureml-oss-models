@@ -1,6 +1,6 @@
 from azureml.core import Workspace, Environment
 from mlflow.tracking.client import MlflowClient
-from batch_inference_and_deployment import BatchDeployemnt
+# from batch_inference_and_deployment import BatchDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
@@ -56,19 +56,19 @@ if __name__ == "__main__":
     # print("Latest registered model id is : ", model_detail.id)
     # print("Latest registered model name is : ", model_detail.name)
 
-    model.get_latest_model_version((client = client, model_name = model)
+    model.get_latest_model_version(client = client, model_name = model)
 
 
 
 
-    BEDeployment = BatchDeployemnt(
-            test_model_name=foundation_model,
-            workspace_ml_client=workspace_ml_client,
-            registry=queue.registry,
-            foundation_model.id=foundation_model.id
-        )
-    # BEDeployment.batch_infernce_and_deployment(
-    #         instance_type=queue.instance_type
+    # BEDeployment = BatchDeployemnt(
+    #         test_model_name=foundation_model,
+    #         workspace_ml_client=workspace_ml_client,
+    #         registry=queue.registry,
+    #         foundation_model.id=foundation_model.id
     #     )
+    # # BEDeployment.batch_infernce_and_deployment(
+    # #         instance_type=queue.instance_type
+    # #     )
 
    
