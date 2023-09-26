@@ -278,7 +278,12 @@ if __name__ == "__main__":
     #load_model(model_detail)
     #get_latest_model_version(workspace_ml_client, test_model_name)
     foundation_model = get_latest_model_version(workspace_ml_client, test_model_name)
-    foundation_model_json = json.dumps(foundation_model.__dict__)
+    foundation_model_data = {
+    "name": foundation_model.name,
+    "version": foundation_model.version,
+    "id":foundation_model.id
+    # Add other attributes you want to include}
+    foundation_model_json = json.dumps(foundation_model_data)
     if foundation_model:
         environment_variables = {
             "test_model_name": test_model_name,
