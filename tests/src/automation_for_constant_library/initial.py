@@ -278,12 +278,13 @@ if __name__ == "__main__":
     #load_model(model_detail)
     #get_latest_model_version(workspace_ml_client, test_model_name)
     foundation_model = get_latest_model_version(workspace_ml_client, test_model_name)
+    foundation_model_json = json.dumps(foundation_model.__dict__)
     if foundation_model:
         environment_variables = {
             "test_model_name": test_model_name,
             "workspace_ml_client": workspace_ml_client,
             "registry": queue.registry,
-            "foundation_model_ID": foundation_model.id,
+            "foundation_model": foundation_model_json,
             "queue": queue.compute,
             "workspace": queue.workspace
         }     
@@ -295,7 +296,7 @@ if __name__ == "__main__":
     # loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
     # LM=load_model(model_detail)
     # print("LM-----------------------------",LM)
-    environment_variables = {"test_model_name": test_model_name,
+    environment_variables = {"test_model_name": foundation_model_name,
                             "workspace_ml_client":workspace_ml_client,"registry":queue.registry,"foundation_model_ID":foundation_model.id,
                             "queue":queue.compute,"workspace":queue.workspace}
     print("environment_variables-------------",environment_variables)
