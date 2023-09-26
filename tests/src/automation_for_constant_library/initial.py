@@ -1,5 +1,5 @@
 from azureml.core import Workspace, Environment
-from model_inference_and_deployment import ModelInferenceAndDeployemnt
+# from batch_inference_and_deployment import BatchDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
@@ -232,15 +232,16 @@ if __name__ == "__main__":
     latest_env = workspace_ml_client.environments.get(
         name=queue.environment, version=str(latest_version))
     print("Latest Environment :", latest_env)
-    version_list = list(workspace_ml_client.models.list(test_model_name))
-
-    client = MlflowClient()
-    registered_model_detail = client.get_latest_versions(
-        name=test_model_name, stages=["None"])
-    model_detail = registered_model_detail[0]
-    print("Latest registered model version is : ", model_detail.version)
-    # print("Latest registered model id is : ", model_detail.id)
-    # print("Latest registered model name is : ", model_detail.name)
+    
+    # version_list = list(workspace_ml_client.models.list(test_model_name))
+    # client = MlflowClient()
+    # registered_model_detail = client.get_latest_versions(
+    #     name=test_model_name, stages=["None"])
+    # model_detail = registered_model_detail[0]
+    # print("Latest registered model: " model_detail)
+    # print("Latest registered model version is : ", model_detail.version)
+    # # print("Latest registered model id is : ", model_detail.id)
+    # # print("Latest registered model name is : ", model_detail.name)
     
     # loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
     # model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
@@ -263,15 +264,10 @@ if __name__ == "__main__":
 
     # compute_cluster = create_or_update_compute(workspace_ml_client, compute_name ="cpu-cluster", vm_size="Standard_DS3_V2", min_instances=0, max_instances=3, idle_time_before_scale_down=120)
 
-    command_job = run_azure_ml_job(code="./", command_to_run="python batch_inference_and_deployment.py",
-                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables,test_model_name=test_model_name, 
-                                workspace_ml_client=workspace_ml_client,registry=queue.registry,workspace = queue.workspace )
+    command_job = run_azure_ml_job(code="./", command_to_run="python BE_loadmodel.py",
+                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
 
     create_and_get_job_studio_url(command_job, workspace_ml_client)
-    
-
-
-    
 
 
     # BEDeployment = BatchDeployemnt(
@@ -279,8 +275,10 @@ if __name__ == "__main__":
     #         workspace_ml_client=workspace_ml_client,
     #         registry=queue.registry
     #     )
-    # BEDeployment.batch_infernce_and_deployment(
-    #         instance_type=queue.instance_type
-    #     )
+    # # BEDeployment.batch_infernce_and_deployment(
+    # #         instance_type=queue.instance_type
+    # #     )
+
+
 
 
