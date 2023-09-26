@@ -264,7 +264,8 @@ if __name__ == "__main__":
     # compute_cluster = create_or_update_compute(workspace_ml_client, compute_name ="cpu-cluster", vm_size="Standard_DS3_V2", min_instances=0, max_instances=3, idle_time_before_scale_down=120)
 
     command_job = run_azure_ml_job(code="./", command_to_run="python batch_inference_and_deployment.py",
-                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
+                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables,test_model_name=test_model_name, 
+                                workspace_ml_client=workspace_ml_client,registry=queue.registry,workspace = queue.workspace )
 
     create_and_get_job_studio_url(command_job, workspace_ml_client)
     
