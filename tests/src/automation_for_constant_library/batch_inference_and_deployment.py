@@ -1,4 +1,3 @@
-from model_inference_and_deployment import ModelInferenceAndDeployemnt
 from mlflow.tracking.client import MlflowClient
 import time
 import json
@@ -45,12 +44,14 @@ class BatchDeployemnt:
         self.workspace_ml_client = workspace_ml_client
         self.registry = registry
         self.foundation_model.id=foundation_model.id
+        self.compute = queue 
+        self.workspace = workspace 
         foundation_model = self.test_model_name
         foundation_model.id=self.foundation_model.id
+        workspace = self.workspace
+        queue = self.compute
         #latest_model = self.get_latest_model_version(self.workspace_ml_client, model_name)
         deployment_name = "Autodemo"
-        compute = "queue.compute" 
-        workspace = queue.workspace 
 
     # def get_latest_model_version(self, workspace_ml_client, model_name):
     #     print("In get_latest_model_version...")
