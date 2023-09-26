@@ -276,7 +276,19 @@ if __name__ == "__main__":
     # print("Latest registered model name is : ", model_detail.name)
 
     #load_model(model_detail)
-    get_latest_model_version(workspace_ml_client, test_model_name)
+    #get_latest_model_version(workspace_ml_client, test_model_name)
+    foundation_model = get_latest_model_version(workspace_ml_client, test_model_name)
+    if foundation_model:
+        environment_variables = {
+            "test_model_name": test_model_name,
+            "workspace_ml_client": workspace_ml_client,
+            "registry": queue.registry,
+            "foundation_model_ID": foundation_model.id,
+            "queue": queue.compute,
+            "workspace": queue.workspace
+        }     
+    else:
+        print("No model found. Cannot set environment variables.")
     # loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
     # model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
     # print("model_source_uri---------------------",model_source_uri)
