@@ -101,8 +101,9 @@ lastweek_updated = df[(df['Day'] >= range_min) &
 lastweek_updated_downloads = lastweek_updated[(lastweek_updated["downloads"])>=10]
 #lastweek_updated_downloads.to_csv("lastweek_updated_models_min10.csv")
 lastweek_updated_downloads_txt = lastweek_updated_downloads["modelId"]
-#lastweek_updated_downloads_txt.to_csv("lastweek_updated_models_min10_downloads.csv")
-with open("lastweek_updated_models_min10_downloads.csv", mode="w", newline="") as file:
+lastweek_updated_downloads_txt.to_csv("lastweek_updated_models_min10_downloads.csv")
+filename = "lastweek_updated_models_min10_downloads.csv"
+with open(filename, mode="w", newline="") as file:
   writer = csv.writer(file)
   writer.writerows(lastweek_updated_downloads_txt)
 #with open("lastweek_updated_models_min10_downloads.csv", "w", encoding="utf-8") as f:
