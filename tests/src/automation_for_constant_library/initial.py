@@ -249,11 +249,10 @@ if __name__ == "__main__":
     # loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
     # LM=load_model(model_detail)
     # print("LM-----------------------------",LM)
-    environment_variables = {"test_model_name": test_model_name
-                            ,"model_source_uri": model_detail.source}
+    environment_variables = {"test_model_name": test_model_name}
     print("environment_variables-------------",environment_variables)
-    print("queue.compute---",queue.compute)
-    print("queue.workspace====",queue.workspace)
+    print("queue.compute---", queue.compute)
+    print("queue.workspace====", queue.workspace)
 
     # compute_name = "cpu-cluster"
     # description = "An AML compute cluster"
