@@ -86,12 +86,12 @@ def main():
     # Initialize the MLflow client
     mlflow_client = MlflowClient()
 
-    # Replace these variables with your actual values
-    test_model_name = "your_test_model_name"
-    registry = "your_registry"
-    foundation_model_id = "your_foundation_model_id"
-    compute_name = "your_compute_name"
-    workspace = "your_workspace"
+    # # Replace these variables with your actual values
+    # test_model_name = "your_test_model_name"
+    # registry = "your_registry"
+    # foundation_model_id = "your_foundation_model_id"
+    # compute_name = "your_compute_name"
+    # workspace = "your_workspace"
 
     # Create a BatchDeployment instance
     batch_deployment = BatchDeployemnt(
