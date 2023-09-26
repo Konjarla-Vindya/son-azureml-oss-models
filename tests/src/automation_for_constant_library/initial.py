@@ -333,7 +333,7 @@ if __name__ == "__main__":
         # queue=queue.compute,
         # workspace=queue.workspace
     )
-    BEDeployment.batch_infernce_and_deployment(
+    BEDeployment.batch_inference_and_deployment(
             instance_type=queue.instance_type
         )
 
