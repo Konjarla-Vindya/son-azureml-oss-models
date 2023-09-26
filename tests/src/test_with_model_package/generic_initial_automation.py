@@ -3,16 +3,18 @@ from model_inference_and_deployment import ModelInferenceAndDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
-from azure.ai.ml import MLClient, UserIdentityConfiguration
+from azure.ai.ml import MLClient
 import mlflow
 import json
 import os
 import sys
 from box import ConfigBox
+from utils.logging import get_logger
 
 # constants
 check_override = True
 
+logger = get_logger(__name__)
 
 def get_error_messages():
     # load ../config/errors.json into a dictionary
@@ -57,7 +59,7 @@ def get_test_queue() -> ConfigBox:
 
 def get_sku_override():
     try:
-        with open('../../config/sku-override/{test_set}.json') as json_file:
+        with open(f'../../config/sku-override/{test_set}.json') as json_file:
             return json.load(json_file)
     except Exception as e:
         print(f"::warning:: Could not find sku-override file: \n{e}")
@@ -67,14 +69,14 @@ def get_sku_override():
 # finds the next model in the queue and sends it to github step output
 # so that the next step in this job can pick it up and trigger the next model using 'gh workflow run' cli command
 def set_next_trigger_model(queue):
-    print("In set_next_trigger_model...")
+    logger.info("In set_next_trigger_model...")
 # file the index of test_model_name in models list queue dictionary
     model_list = list(queue.models)
     #model_name_without_slash = test_model_name.replace('/', '-')
-    #check_mlflow_model = "MLFlow-"+test_model_name
-    index = model_list.index(test_model_name)
+    check_mlflow_model = "MLFlow-MP-"+test_model_name
+    index = model_list.index(check_mlflow_model)
     #index = model_list.index(test_model_name)
-    print(f"index of {test_model_name} in queue: {index}")
+    logger.info(f"index of {test_model_name} in queue: {index}")
 # if index is not the last element in the list, get the next element in the list
     if index < len(model_list) - 1:
         next_model = model_list[index + 1]
@@ -82,11 +84,11 @@ def set_next_trigger_model(queue):
         if (test_keep_looping == "true"):
             next_model = queue[0]
         else:
-            print("::warning:: finishing the queue")
+            logger.warning("::warning:: finishing the queue")
             next_model = ""
 # write the next model to github step output
     with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
-        print(f'NEXT_MODEL={next_model}')
+        logger.info(f'NEXT_MODEL={next_model}')
         print(f'NEXT_MODEL={next_model}', file=fh)
 
 
@@ -95,7 +97,7 @@ def create_or_get_compute_target(ml_client,  compute):
     try:
         compute = ml_client.compute.get(cpu_compute_target)
     except Exception:
-        print("Creating a new cpu compute target...")
+        logger.info("Creating a new cpu compute target...")
         compute = AmlCompute(
             name=cpu_compute_target, size=compute, min_instances=0, max_instances=4
         )
@@ -105,13 +107,13 @@ def create_or_get_compute_target(ml_client,  compute):
 
 
 def run_azure_ml_job(code, command_to_run, environment, compute, environment_variables):
+    logger.info("Creating the command object method")
     command_job = command(
         code=code,
         command=command_to_run,
         environment=environment,
         compute=compute,
-        environment_variables=environment_variables,
-        identity= UserIdentityConfiguration()
+        environment_variables=environment_variables
     )
     return command_job
 
@@ -127,7 +129,7 @@ def create_and_get_job_studio_url(command_job, workspace_ml_client):
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
     if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
-        print("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
+        logger.error("::error:: One or more of the environment variables test_model_name, test_sku_type, test_queue, test_set, test_trigger_next_model, test_keep_looping are not set")
         exit(1)
 
     queue = get_test_queue()
@@ -139,23 +141,23 @@ if __name__ == "__main__":
     if test_trigger_next_model == "true":
         set_next_trigger_model(queue)
     # print values of all above variables
-    print (f"test_subscription_id: {queue['subscription']}")
-    print (f"test_resource_group: {queue['subscription']}")
-    print (f"test_workspace_name: {queue['workspace']}")
-    print (f"test_model_name: {test_model_name}")
-    print (f"test_sku_type: {test_sku_type}")
-    print (f"test_registry: queue['registry']")
-    print (f"test_trigger_next_model: {test_trigger_next_model}")
-    print (f"test_queue: {test_queue}")
-    print (f"test_set: {test_set}")
-    print("Here is my test model name : ", test_model_name)
+    logger.info (f"test_subscription_id: {queue['subscription']}")
+    logger.info (f"test_resource_group: {queue['subscription']}")
+    logger.info (f"test_workspace_name: {queue['workspace']}")
+    logger.info (f"test_model_name: {test_model_name}")
+    logger.info (f"test_sku_type: {test_sku_type}")
+    logger.info (f"test_registry: queue['registry']")
+    logger.info (f"test_trigger_next_model: {test_trigger_next_model}")
+    logger.info (f"test_queue: {test_queue}")
+    logger.info (f"test_set: {test_set}")
+    logger.info(f"Here is my test model name : {test_model_name}")
     try:
         credential = DefaultAzureCredential()
         credential.get_token("https://management.azure.com/.default")
     except Exception as ex:
         # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
         credential = InteractiveBrowserCredential()
-    print("workspace_name : ", queue.workspace)
+    logger.info(f"workspace_name : {queue.workspace}")
     try:
         workspace_ml_client = MLClient.from_config(credential=credential)
     except:
@@ -164,32 +166,25 @@ if __name__ == "__main__":
             subscription_id=queue.subscription,
             resource_group_name=queue.resource_group,
             workspace_name=queue.workspace
-            #registry_name="sonata-registry"
         )
     ws = Workspace(
         subscription_id=queue.subscription,
         resource_group=queue.resource_group,
         workspace_name=queue.workspace
     )
-    registry_mlclient = MLClient(
-        credential=credential,
-        registry_name="sonata-registry",
-        subscription_id=queue.subscription,
-        resource_group_name=queue.resource_group
-    )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(
         workspace_ml_client, queue.compute)
-    environment_variables = {"test_model_name": test_model_name, "registry":"sonata-registry"}
+    environment_variables = {"AZUREML_ARTIFACTS_DEFAULT_TIMEOUT":600.0,"test_model_name": test_model_name}
     env_list = workspace_ml_client.environments.list(name=queue.environment)
     latest_version = 0
     for env in env_list:
         if latest_version <= int(env.version):
             latest_version = int(env.version)
-    print("Latest Environment Version:", latest_version)
+    logger.info(f"Latest Environment Version: {latest_version}")
     latest_env = workspace_ml_client.environments.get(
         name=queue.environment, version=str(latest_version))
-    print("Latest Environment :", latest_env)
+    logger.info(f"Latest Environment : {latest_env}")
     command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py",
                                    environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     create_and_get_job_studio_url(command_job, workspace_ml_client)
