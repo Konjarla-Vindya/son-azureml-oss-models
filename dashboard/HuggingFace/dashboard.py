@@ -12,7 +12,7 @@ class Dashboard():
         #self.github_token = "API_TOKEN"
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
-        self.repo = self.auth.get_repo("Azure/azure-ai-model-catalog")
+        self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
         self.repo_full_name = self.repo.full_name
         self.data = {
             "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
@@ -22,7 +22,7 @@ class Dashboard():
 
     def get_all_workflow_names(self,limit=30):
         #workflow_name = ["MLFlow-codellama/CodeLlama-13b-Instruct-hf","MLFlow-mosaicml/mpt-7b-storywriter","MLFlow-microsoft/MiniLM-L12-H384-uncased"]
-        API = "https://api.github.com/repos/Azure/azure-ai-model-catalog/actions/workflows"
+        API = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/workflows"
         print (f"Getting github workflows from {API}")
         # total_pages = None
         # current_page = 1
@@ -69,6 +69,7 @@ class Dashboard():
     def workflow_last_run(self): 
         workflows_to_include = self.get_all_workflow_names()
         normalized_workflows = [workflow_name.replace("/","-") for workflow_name in workflows_to_include]
+        workflow_actual_name = workflow_actual_name for workflow_actual_name in workflows_to_include
         # normalized_workflows = [hf_name for hf_name in workflows_to_include]
         # hf_name = [hf_name for hf_name in workflows_to_include]
         #print(workflow_name)
@@ -124,7 +125,7 @@ class Dashboard():
                     #self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({url})")
                 run_link = f"https://github.com/{self.repo_full_name}/actions/runs/{last_run['id']}"
                 models_entry = {
-                    "Model": workflow_name.replace("MLFlow-",""),
+                    "Model": workflow_actual_name.replace("MLFlow-",""),
                     # "HFLink": f"[Link](https://huggingface.co/{workflow_name.replace(".yml", "").replace("MLFlow-","")})",
                     # "Status": "<span style='background-color: #00FF00; padding: 2px 6px; border-radius: 3px;'>PASS</span>" if last_run["conclusion"] == "success" else "<span style='background-color: #FF0000; padding: 2px 6px; border-radius: 3px;'>FAIL</span>",
                     # "Status": " ✅ PASS" if last_run["conclusion"] == "success" elif last_run["conclusion"] == "failure" "❌ FAIL",
