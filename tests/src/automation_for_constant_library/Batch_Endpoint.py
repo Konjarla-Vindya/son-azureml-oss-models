@@ -233,7 +233,7 @@ if __name__ == "__main__":
         name=queue.environment, version=str(latest_version))
     print("Latest Environment :", latest_env)
     
-    version_list = list(workspace_ml_client.models.list(test_model_name))
+    #version_list = list(workspace_ml_client.models.list(test_model_name))
     client = MlflowClient()
     registered_model_detail = client.get_latest_versions(
         name=test_model_name, stages=["None"])
