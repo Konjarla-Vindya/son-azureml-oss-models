@@ -1,4 +1,4 @@
-Pass %	Failure	Failure %	Cancelled	Running/In Progress
+
 
 | Category        | 🚀Total Model| ✅Pass %|❌Failure|🚫Cancelled|⏳Running| 
 | ----------- | ----------------- | -------- | -------- | --------  | -------- |
