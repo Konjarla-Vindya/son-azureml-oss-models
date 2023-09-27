@@ -141,7 +141,7 @@ def create_and_configure_batch_endpoint(
     # Create the BatchEndpoint
     endpoint = BatchEndpoint(
         name=endpoint_name,
-        description=f"Batch endpoint for {foundation_model.name}, for fill-mask task",
+        description=f"Batch endpoint for {foundation_model.name} ",
     )
     workspace_ml_client.begin_create_or_update(endpoint).result()
 
