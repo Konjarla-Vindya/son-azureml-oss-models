@@ -12,7 +12,7 @@ class Dashboard():
         #self.github_token = "API_TOKEN"
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
-        self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
+        self.repo = self.auth.get_repo("Azure/azure-ai-model-catalog")
         self.repo_full_name = self.repo.full_name
         self.data = {
             "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
@@ -22,7 +22,7 @@ class Dashboard():
 
     def get_all_workflow_names(self,limit=50):
         #workflow_name = ["MLFlow-codellama/CodeLlama-13b-Instruct-hf","MLFlow-mosaicml/mpt-7b-storywriter","MLFlow-microsoft/MiniLM-L12-H384-uncased"]
-        API = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/workflows"
+        API = "https://api.github.com/repos/Azure/azure-ai-model-catalog/actions/workflows"
         print (f"Getting github workflows from {API}")
         # total_pages = None
         # current_page = 1
