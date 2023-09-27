@@ -235,11 +235,11 @@ if __name__ == "__main__":
     
     #version_list = list(workspace_ml_client.models.list(test_model_name))
     client = MlflowClient()
-    registered_model_detail = client.get_latest_versions(
-        name=test_model_name, stages=["None"])
-    model_detail = registered_model_detail[0]
-    print("Latest registered model: " , model_detail)
-    print("Latest registered model version is : ", model_detail.version)
+    # registered_model_detail = client.get_latest_versions(
+    #     name=test_model_name, stages=["None"])
+    # model_detail = registered_model_detail[0]
+    # print("Latest registered model: " , model_detail)
+    # print("Latest registered model version is : ", model_detail.version)
     print("queue.compute---", queue.compute)
     print("queue.workspace====", queue.workspace)
     foundation_model = get_latest_model_version(workspace_ml_client, test_model_name)
