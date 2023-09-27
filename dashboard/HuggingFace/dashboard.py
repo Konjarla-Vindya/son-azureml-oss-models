@@ -125,8 +125,10 @@ class Dashboard():
                     #url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml"
                     #self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({url})")
                 run_link = f"https://github.com/{self.repo_full_name}/actions/runs/{last_run['id']}"
+                HF_Link = f"https://huggingface.co/{workflow_actual_name}"
                 models_entry = {
                     "Model": workflow_actual_name,
+                    "HF_Link": f"[Link]({HF_Link})",
                     # "HFLink": f"[Link](https://huggingface.co/{workflow_name.replace(".yml", "").replace("MLFlow-","")})",
                     # "Status": "<span style='background-color: #00FF00; padding: 2px 6px; border-radius: 3px;'>PASS</span>" if last_run["conclusion"] == "success" else "<span style='background-color: #FF0000; padding: 2px 6px; border-radius: 3px;'>FAIL</span>",
                     # "Status": " ✅ PASS" if last_run["conclusion"] == "success" elif last_run["conclusion"] == "failure" "❌ FAIL",
