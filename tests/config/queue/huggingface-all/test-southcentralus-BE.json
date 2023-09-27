@@ -2,7 +2,6 @@
     "queue_name": "test-southcentralus-BE",
     "models": [
         "bert-base-cased",
-        "bert-large-uncased",
         "distilbert-base-uncased",
         "xlnet-base-cased"
     ],
