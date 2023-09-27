@@ -136,7 +136,7 @@ def create_and_configure_batch_endpoint(
 ):
     # Create a unique endpoint name using a timestamp
     timestamp = int(time.time())
-    endpoint_name = f"fill-maskws1-{timestamp}"
+    endpoint_name = f"{test_model_name}-{timestamp}"
 
     # Create the BatchEndpoint
     endpoint = BatchEndpoint(
