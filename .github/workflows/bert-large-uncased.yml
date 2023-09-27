@@ -7,7 +7,7 @@ env:
   test_model_name: bert-large-uncased
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-southcentralus-1
+  test_queue: test-southcentralus-BE
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -45,10 +45,10 @@ jobs:
       run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
-      run: python generic_initial_automation.py
+      run: python Batch_Endpoint.py
       working-directory: tests/src/automation_for_constant_library
     - name: trigger-next-model-step
       env:
-        GITHUB_TOKEN: ${{ secrets.API_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
       if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
       run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
