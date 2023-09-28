@@ -4,7 +4,7 @@ import re
 import pandas
 from datetime import datetime
 from github import Github, Auth
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 
  
 
@@ -104,7 +104,7 @@ class Dashboard():
                # badge_url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
                 html_url = jobs_data["jobs"][0]["html_url"] if jobs_data.get("jobs") else ""
                 job_url = jobs_data["jobs"][0]["html_url"]
-                error_messages = self.extract_error_messages(job_url)
+                # error_messages = self.extract_error_messages(job_url)
 
  
 
@@ -133,7 +133,7 @@ class Dashboard():
                     "Status": f"{'✅ PASS' if last_run['conclusion'] == 'success' else '❌ FAIL' if last_run['conclusion'] == 'failure' else '🚫 CANCELLED' if last_run['conclusion'] == 'cancelled' else '⏳ RUNNING'}",
                     "LastRunLink": f"[Link]({run_link})",
                     "LastRunTimestamp": last_run["created_at"],
-                    "Error Message": error_messages
+                    # "Error Message": error_messages
                 }
 
                 self.models_data.append(models_entry)
@@ -148,36 +148,36 @@ class Dashboard():
         self.models_data.sort(key=lambda x: (x["Status"] != "❌ FAIL", x["Status"]))
         return self.data
 
-    def extract_error_messages(self, job_url):
-        try:
-            response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
-            response.raise_for_status()
-            html_content = response.text
-            print(html_content)
-            print(job_url)
-            # Parse the HTML content using BeautifulSoup
-            soup = BeautifulSoup(html_content, "html.parser")
+    # def extract_error_messages(self, job_url):
+    #     try:
+    #         response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
+    #         response.raise_for_status()
+    #         html_content = response.text
+    #         print(html_content)
+    #         print(job_url)
+    #         # Parse the HTML content using BeautifulSoup
+    #         soup = BeautifulSoup(html_content, "html.parser")
     
-            # Find and extract both error and failure messages
-            error_messages = []
+    #         # Find and extract both error and failure messages
+    #         error_messages = []
     
-            for paragraph in soup.find_all("p"):
-                text = paragraph.get_text()
-                # Check if the text contains common error or failure indicators
-                if re.search(r'(raise error|raise|error|error message|failure message|\"message\":)', text, re.IGNORECASE):
-                    # Truncate the message at the first occurrence of '\n'
-                    first_newline_index = text.find('\n')
-                    if first_newline_index != -1:
-                        text = text[:first_newline_index]
-                    error_messages.append(text.strip())  # Strip leading/trailing whitespace
+    #         for paragraph in soup.find_all("p"):
+    #             text = paragraph.get_text()
+    #             # Check if the text contains common error or failure indicators
+    #             if re.search(r'(raise error|raise|error|error message|failure message|\"message\":)', text, re.IGNORECASE):
+    #                 # Truncate the message at the first occurrence of '\n'
+    #                 first_newline_index = text.find('\n')
+    #                 if first_newline_index != -1:
+    #                     text = text[:first_newline_index]
+    #                 error_messages.append(text.strip())  # Strip leading/trailing whitespace
     
-            error_messages = "\n".join(error_messages)
+    #         error_messages = "\n".join(error_messages)
     
-            return error_messages
+    #         return error_messages
     
-        except requests.exceptions.RequestException as e:
-            print(f"An error occurred while fetching messages from '{job_url}': {e}")
-            return "Error: Unable to fetch messages"
+    #     except requests.exceptions.RequestException as e:
+    #         print(f"An error occurred while fetching messages from '{job_url}': {e}")
+    #         return "Error: Unable to fetch messages"
     
 
     def results(self, last_runs_dict):
