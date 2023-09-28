@@ -104,11 +104,11 @@ class Dashboard():
                 html_url = jobs_data["jobs"][0]["html_url"] if jobs_data.get("jobs") else ""
 
  
-                self.data["workflow_name_mp"] = data["workflow_name"].startswith("MLFlow-MP") == True 
-                self.data["workflow_name_di"] = data["workflow_name"].startswith("MLFlow-DI") == True 
+                #self.data["workflow_name_mp"] = data["workflow_name"].startswith("MLFlow-MP") == True 
+                #self.data["workflow_name_di"] = data["workflow_name"].startswith("MLFlow-DI") == True 
                 self.data["workflow_id"].append(last_run["workflow_id"])
-                self.data["workflow_name_mp"].append(workflow_name.replace(".yml", ""))
-                self.data["workflow_name_di"].append(workflow_name.replace(".yml", ""))
+                self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
+                #self.data["workflow_name_di"].append(workflow_name.replace(".yml", ""))
                 self.data["last_runid"].append(last_run["id"])
                 self.data["created_at"].append(last_run["created_at"])
                 self.data["updated_at"].append(last_run["updated_at"])
@@ -158,16 +158,16 @@ class Dashboard():
         # df = df.sort_values(by=['status'], ascending=['failure' in df['status'].values])
       
         results_dict["total_mp"] = df["workflow_id"].count()
-        results_dict["success_mp"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success') & (df['workflow_name_mp'] == True)]['workflow_id'].count()
-        results_dict["failure_mp"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure') & (df['workflow_name_mp'] == True)]['workflow_id'].count()
-        results_dict["cancelled_mp"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled') & (df['workflow_name_mp'] == True)]['workflow_id'].count()
-        results_dict["running_mp"] = df.loc[df['status'] == 'in_progress'& (df['workflow_name_mp'] == True)]['workflow_id'].count()  # Add running count
+        results_dict["success_mp"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success') & (df['workflow_name'].startswith("MLFlow-MP") == True)]['workflow_id'].count()
+        results_dict["failure_mp"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure') & (df['workflow_name'].startswith("MLFlow-MP") == True)]['workflow_id'].count()
+        results_dict["cancelled_mp"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled') & (df['workflow_name'].startswith("MLFlow-MP") == True)]['workflow_id'].count()
+        results_dict["running_mp"] = df.loc[df['status'] == 'in_progress'& (df['workflow_name'].startswith("MLFlow-MP") == True)]['workflow_id'].count()  # Add running count
 
         results_dict["total_di"] = df["workflow_id"].count()
-        results_dict["success_di"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success') & (df['workflow_name_di'] == True)]['workflow_id'].count()
-        results_dict["failure_di"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure') & (df['workflow_name_di'] == True)]['workflow_id'].count()
-        results_dict["cancelled_di"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled') & (df['workflow_name_di'] == True)]['workflow_id'].count()
-        results_dict["running-di"] = df.loc[df['status'] == 'in_progress'& (df['workflow_name_mp'] == True)]['workflow_id'].count()  # Add running count
+        results_dict["success_di"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success') & (df['workflow_name'].startswith("MLFlow-MP") == True)]['workflow_id'].count()
+        results_dict["failure_di"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure') & (df['workflow_name'.startswith("MLFlow-MP")] == True)]['workflow_id'].count()
+        results_dict["cancelled_di"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled') & (df['workflow_name'].startswith("MLFlow-MP") == True)]['workflow_id'].count()
+        results_dict["running-di"] = df.loc[df['status'] == 'in_progress'& (df['workflow_name'].startswith("MLFlow-MP") == True)]['workflow_id'].count()  # Add running count
 
 
         success_rate_di = results_dict["success_di"]/results_dict["total_di"]*100.00
