@@ -22,15 +22,15 @@ class Dashboard():
         }
         self.models_data = []  # Initialize models_data as an empty list
 
-    def get_all_workflow_names(self,limit=50):
+    def get_all_workflow_names(self):
         #workflow_name = ["MLFlow-codellama/CodeLlama-13b-Instruct-hf","MLFlow-mosaicml/mpt-7b-storywriter","MLFlow-microsoft/MiniLM-L12-H384-uncased"]
         API = "https://api.github.com/repos/Azure/azure-ai-model-catalog/actions/workflows"
         print (f"Getting github workflows from {API}")
-        # total_pages = None
-        # current_page = 1
-        # per_page = 100
+        total_pages = None
+        current_page = 1
+        per_page = 100
         workflow_name = []
-        # while total_pages is None or current_page <= total_pages:
+        while total_pages is None or current_page <= total_pages:
 
         headers = {
             "Authorization": f"Bearer {self.github_token}",
@@ -44,14 +44,14 @@ class Dashboard():
             for workflow in workflows["workflows"]:
                 if workflow["name"].lower().startswith("mlflow-mp-") or workflow["name"].lower().startswith("mlflow-di-"):
                     workflow_name.append(workflow["name"])
-            # if not workflows["workflows"]:
-            #     break
-            # workflow_name.extend(json_response['workflows["name"]'])
-            # if current_page == 1:
-            # # divide total_count by per_page and round up to get total_pages
-            #     total_pages = int(workflows['total_count'] / per_page) + 1
-            # current_page += 1
-            # print a single dot to show progress
+            if not workflows["workflows"]:
+                break
+            workflow_name.extend(json_response['workflows["name"]'])
+            if current_page == 1:
+            # divide total_count by per_page and round up to get total_pages
+                total_pages = int(workflows['total_count'] / per_page) + 1
+            current_page += 1
+            print a single dot to show progress
             print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
         else:
             print (f"Error: {response.status_code} {response.text}")
