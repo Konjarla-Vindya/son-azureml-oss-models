@@ -1,7 +1,7 @@
 {
     "queue_name": "test-japanwest-1",
     "models": [
-        "Qwen/Qwen-7B-Chat-Int4"
+        "MLFlow-Qwen/Qwen-7B-Chat-Int4"
     ],
     "workspace": "test-japanwest",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
