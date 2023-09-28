@@ -218,6 +218,7 @@ class Dashboard():
     def results(self, dashboard_tasks):
        
         # dashboard_tasks  =  workflow_last_run()
+        
         with open("dashboard_tasks.md", "w", encoding="utf-8") as f:
             f.write(dashboard_tasks)
             
@@ -225,7 +226,8 @@ class Dashboard():
 def main():
 
         my_class = Dashboard()
-        dashboard_tasks = my_class.workflow_last_run()
+        matrix_table = my_class.workflow_last_run()
+        dashboard_tasks  = matrix_table.to_markdown()
         my_class.results(dashboard_tasks)
 
 if __name__ == "__main__":
