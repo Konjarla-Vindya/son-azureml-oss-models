@@ -147,34 +147,34 @@ class Dashboard():
         return self.data
 
     def extract_error_messages(self, job_url):
-    try:
-        response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
-        response.raise_for_status()
-        html_content = response.text
-
-        # Parse the HTML content using BeautifulSoup
-        soup = BeautifulSoup(html_content, "html.parser")
-
-        # Find and extract both error and failure messages
-        error_messages = []
-
-        for paragraph in soup.find_all("p"):
-            text = paragraph.get_text()
-            # Check if the text contains common error or failure indicators
-            if re.search(r'(raise error|raise|error|error message|failure message)', text, re.IGNORECASE):
-                # Truncate the message at the first occurrence of '\n'
-                first_newline_index = text.find('\n')
-                if first_newline_index != -1:
-                    text = text[:first_newline_index]
-                error_messages.append(text.strip())  # Strip leading/trailing whitespace
-
-        combined_messages = "\n".join(error_messages)
-
-        return combined_messages
-
-    except requests.exceptions.RequestException as e:
-        print(f"An error occurred while fetching messages from '{job_url}': {e}")
-        return "Error: Unable to fetch messages"
+        try:
+            response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
+            response.raise_for_status()
+            html_content = response.text
+    
+            # Parse the HTML content using BeautifulSoup
+            soup = BeautifulSoup(html_content, "html.parser")
+    
+            # Find and extract both error and failure messages
+            error_messages = []
+    
+            for paragraph in soup.find_all("p"):
+                text = paragraph.get_text()
+                # Check if the text contains common error or failure indicators
+                if re.search(r'(raise error|raise|error|error message|failure message)', text, re.IGNORECASE):
+                    # Truncate the message at the first occurrence of '\n'
+                    first_newline_index = text.find('\n')
+                    if first_newline_index != -1:
+                        text = text[:first_newline_index]
+                    error_messages.append(text.strip())  # Strip leading/trailing whitespace
+    
+            combined_messages = "\n".join(error_messages)
+    
+            return combined_messages
+    
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred while fetching messages from '{job_url}': {e}")
+            return "Error: Unable to fetch messages"
     
 
     def results(self, last_runs_dict):
