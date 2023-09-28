@@ -131,6 +131,7 @@ class Dashboard():
                     "Status": f"{'✅ PASS' if last_run['conclusion'] == 'success' else '❌ FAIL' if last_run['conclusion'] == 'failure' else '🚫 CANCELLED' if last_run['conclusion'] == 'cancelled' else '⏳ RUNNING'}",
                     "LastRunLink": f"[Link]({run_link})",
                     "LastRunTimestamp": last_run["created_at"]
+                    "MP/DI": f"{'MP' if workflow_name.startswith("MLFlow-MP") == 'True' else 'DI' if workflow_name.startswith("MLFlow-DI") == 'True' else 'None' }"
                 }
 
                 self.models_data.append(models_entry)
