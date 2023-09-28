@@ -40,7 +40,7 @@ class Dashboard():
                 workflows = response.json()
                 # append workflow_runs to runs list
                 for workflow in workflows["workflows"]:
-                    if workflow["name"].lower().startswith("mlflow-mp"|"mlflow-di"):
+                    if (workflow["name"].lower().startswith("mlflow-mp") | workflow["name"].lower().startswith("mlflow-di")):
                         workflow_name.append(workflow["name"])
                 if not workflows["workflows"]:
                     break
@@ -184,7 +184,7 @@ class Dashboard():
         current_date = datetime.now().strftime('%Y%m%d')
     
         # Create a README file with the current datetime in the filename
-        readme_filename = f"README_{current_date}.md"
+        readme_filename = f"Readme-MI-DI.md_{current_date}.md"
 
  
 
@@ -194,7 +194,7 @@ class Dashboard():
             f.write(os.linesep)
             f.write(models_md)
 
-        with open("README.md", "w", encoding="utf-8") as f:
+        with open("Readme-MI-DI.md", "w", encoding="utf-8") as f:
             f.write(summary_text)
             f.write(os.linesep)
             f.write(os.linesep)
