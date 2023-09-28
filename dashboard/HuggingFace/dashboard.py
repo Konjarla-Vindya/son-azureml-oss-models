@@ -153,6 +153,7 @@ class Dashboard():
             response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
             response.raise_for_status()
             html_content = response.text
+            print(html_content)
             print(job_url)
             # Parse the HTML content using BeautifulSoup
             soup = BeautifulSoup(html_content, "html.parser")
@@ -170,9 +171,9 @@ class Dashboard():
                         text = text[:first_newline_index]
                     error_messages.append(text.strip())  # Strip leading/trailing whitespace
     
-            combined_messages = "\n".join(error_messages)
+            error_messages = "\n".join(error_messages)
     
-            return combined_messages
+            return error_messages
     
         except requests.exceptions.RequestException as e:
             print(f"An error occurred while fetching messages from '{job_url}': {e}")
