@@ -215,9 +215,9 @@ class Dashboard():
     #         return "Error: Unable to fetch messages"
     
 
-    def results(self, last_runs_dict):
+    def results(self, dashboard_tasks):
        
-        dashboard_tasks  =  workflow_last_run()
+        # dashboard_tasks  =  workflow_last_run()
         with open("dashboard_tasks.md", "w", encoding="utf-8") as f:
             f.write(dashboard_tasks)
             
@@ -225,8 +225,8 @@ class Dashboard():
 def main():
 
         my_class = Dashboard()
-        last_runs_dict = my_class.workflow_last_run()
-        my_class.results(last_runs_dict)
+        dashboard_tasks = my_class.workflow_last_run()
+        my_class.results(dashboard_tasks)
 
 if __name__ == "__main__":
     main()
