@@ -3,6 +3,7 @@ import requests
 import pandas
 from datetime import datetime
 from github import Github, Auth
+from bs4 import BeautifulSoup
 
  
 
