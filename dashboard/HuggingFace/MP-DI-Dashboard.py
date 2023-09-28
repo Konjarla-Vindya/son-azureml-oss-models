@@ -40,7 +40,7 @@ class Dashboard():
                 workflows = response.json()
                 # append workflow_runs to runs list
                 for workflow in workflows["workflows"]:
-                    if workflow["name"].lower().startswith("mlflow"):
+                    if workflow["name"].lower().startswith("mlflow-mp"|"mlflow-di"):
                         workflow_name.append(workflow["name"])
                 if not workflows["workflows"]:
                     break
@@ -153,7 +153,7 @@ class Dashboard():
 
         df = pandas.DataFrame.from_dict(last_runs_dict)
         # df = df.sort_values(by=['status'], ascending=['failure' in df['status'].values])
-        results_dict["total"]
+      
         results_dict["total"] = df["workflow_id"].count()
         results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
         results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
