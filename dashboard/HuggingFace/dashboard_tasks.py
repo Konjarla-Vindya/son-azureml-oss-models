@@ -69,86 +69,123 @@ class Dashboard():
 
 
 
-    def workflow_last_run(self): 
+    def workflow_last_run(self):   
         workflows_to_include = self.get_all_workflow_names()
         normalized_workflows = [workflow_name.replace("/","-") for workflow_name in workflows_to_include]
         workflow_actual_name = [workflow_actual_name for workflow_actual_name in workflows_to_include]
-        workflow_actual_names = [name.replace("MLFlow-", "") for name in workflow_actual_name]
+        workflow_actual_names = [name.replace("MLFlow-MP-", "").replace("MLFlow-DI-","") for name in workflow_actual_name]
+        
+        # Initialize counters for different statuses and categories
+        success_count = 0
+        failure_count = 0
+        cancelled_count = 0
+        running_count = 0
+        not_tested_count = 0
+    
+        dynamic_installation_statuses = {
+            "success": 0,
+            "failure": 0,
+            "cancelled": 0,
+            "running": 0,
+            "not_tested": 0
+        }
+    
+        packaging_statuses = {
+            "success": 0,
+            "failure": 0,
+            "cancelled": 0,
+            "running": 0,
+            "not_tested": 0
+        }
+    
+        total_dynamic_installation_count = 0
+        total_packaging_count = 0
+        
         for workflow_actual_name, workflow_name in zip(workflow_actual_names, normalized_workflows):
             try:
                 workflow_runs_url = f"https://api.github.com/repos/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/runs"
                 response = requests.get(workflow_runs_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
                 response.raise_for_status()
                 runs_data = response.json()
-
- 
-
+    
                 if "workflow_runs" not in runs_data:
                     print(f"No runs found for workflow '{workflow_name}'. Skipping...")
                     continue
-
- 
-
+    
                 workflow_runs = runs_data["workflow_runs"]
                 if not workflow_runs:
                     print(f"No runs found for workflow '{workflow_name}'. Skipping...")
                     continue
-
- 
-
+    
                 last_run = workflow_runs[0]
                 jobs_response = requests.get(last_run["jobs_url"], headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
                 jobs_data = jobs_response.json()
+    
+                
+    
+                # Count statuses and categorize by category
+                category = None
+                if workflow_name.startswith("mlflow-di-"):
+                    category = "Online Endpoint Deployment - Dynamic Installation"
+                    total_dynamic_installation_count += 1
+                elif workflow_name.startswith("mlflow-mp-"):
+                    category = "Online Endpoint Deployment - Packaging"
+                    total_packaging_count += 1
+    
+                if last_run["conclusion"] == "success":
+                    if category == "Online Endpoint Deployment - Dynamic Installation":
+                        dynamic_installation_statuses["success"] += 1
+                    elif category == "Online Endpoint Deployment - Packaging":
+                        packaging_statuses["success"] += 1
+                    success_count += 1
+                elif last_run["conclusion"] == "failure":
+                    if category == "Online Endpoint Deployment - Dynamic Installation":
+                        dynamic_installation_statuses["failure"] += 1
+                    elif category == "Online Endpoint Deployment - Packaging":
+                        packaging_statuses["failure"] += 1
+                    failure_count += 1
+                elif last_run["conclusion"] == "cancelled":
+                    if category == "Online Endpoint Deployment - Dynamic Installation":
+                        dynamic_installation_statuses["cancelled"] += 1
+                    elif category == "Online Endpoint Deployment - Packaging":
+                        packaging_statuses["cancelled"] += 1
+                    cancelled_count += 1
+                elif last_run["status"] == "in_progress":
+                    running_count += 1
+                else:
+                    not_tested_count += 1
+     # Calculate percentages
+        success_percentage = (success_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
+        failure_percentage = (failure_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
+        cancelled_percentage = (cancelled_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
+        running_percentage = (running_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
+        not_tested_percentage = (not_tested_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
+    
+        # Create and print the matrix table with the "Category" column
+        matrix_table = f"""
+        Category | Total Model | Pass | Pass % | Failure | Failure % | Cancelled | Running/In Progress | Not Tested
+        -------- | ----------- | ---- | ------- | ------- | ---------- | --------- | ------------------- | ----------
+        Online Endpoint Deployment - Dynamic Installation | {total_dynamic_installation_count} | {dynamic_installation_statuses["success"]} | {success_percentage:.2f}% | {dynamic_installation_statuses["failure"]} | {failure_percentage:.2f}% | {dynamic_installation_statuses["cancelled"]} | {dynamic_installation_statuses["running"]} | {dynamic_installation_statuses["not_tested"]}
+        Online Endpoint Deployment - Packaging | {total_packaging_count} | {packaging_statuses["success"]} | {success_percentage:.2f}% | {packaging_statuses["failure"]} | {failure_percentage:.2f}% | {packaging_statuses["cancelled"]} | {packaging_statuses["running"]} | {packaging_statuses["not_tested"]}
+        Batch Endpoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        Finetune | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        FT Model Online Endpoint Deployment - Dynamic Installation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        FT Model Online Endpoint Deployment - Packaging | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        FT Model Batch EndPoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        FT Model Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        Import | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        Inference with Parameters | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        """
+    
+        print(matrix_table)    
+       except requests.exceptions.RequestException as e:
+           print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
 
- 
+   
 
-               # badge_url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
-                html_url = jobs_data["jobs"][0]["html_url"] if jobs_data.get("jobs") else ""
-                job_url = jobs_data["jobs"][0]["html_url"]
-                # error_messages = self.extract_error_messages(job_url)
-
- 
-
-                self.data["workflow_id"].append(last_run["workflow_id"])
-                self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
-                self.data["last_runid"].append(last_run["id"])
-                self.data["created_at"].append(last_run["created_at"])
-                self.data["updated_at"].append(last_run["updated_at"])
-                self.data["status"].append(last_run["status"])
-                self.data["conclusion"].append(last_run["conclusion"])
-                self.data["jobs_url"].append(html_url)
-
- 
-
-                #if html_url:
-                    #self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({html_url})")
-                #else:
-                    #url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml"
-                    #self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({url})")
-                run_link = f"https://github.com/{self.repo_full_name}/actions/runs/{last_run['id']}"
-                # job_link  = f"https://github.com/{self.repo_full_name}/actions/runs/{last_run['id']}/jobs/"
-                HF_Link = f"https://huggingface.co/{workflow_actual_name}"
-                models_entry = {
-                    "Model": workflow_actual_name,
-                    "HF_Link": f"[Link]({HF_Link})",
-                    "Status": f"{'✅ PASS' if last_run['conclusion'] == 'success' else '❌ FAIL' if last_run['conclusion'] == 'failure' else '🚫 CANCELLED' if last_run['conclusion'] == 'cancelled' else '⏳ RUNNING'}",
-                    "LastRunLink": f"[Link]({run_link})",
-                    "LastRunTimestamp": last_run["created_at"],
-                    # "Error Message": error_messages
-                }
-
-                self.models_data.append(models_entry)
-
- 
-
-            except requests.exceptions.RequestException as e:
-                print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")
-
- 
-        # self.models_data.sort(key=lambda x: x["Status"])
-        self.models_data.sort(key=lambda x: (x["Status"] != "❌ FAIL", x["Status"]))
-        return self.data
-
+   return matrix_table
+           
     # def extract_error_messages(self, job_url):
     #     try:
     #         response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
@@ -182,152 +219,9 @@ class Dashboard():
     
 
     def results(self, last_runs_dict):
-        if not isinstance(last_runs_dict, list):
-            print("Error: last_runs_dict should be a list of dictionaries.")
-            return
-        # Initialize counters for different statuses
-        success_count = 0
-        failure_count = 0
-        cancelled_count = 0
-        running_count = 0
-        not_tested_count = 0
-    
-        # Create dictionaries to store workflow statuses by category
-        dynamic_installation_statuses = {
-            "success": 0,
-            "failure": 0,
-            "cancelled": 0,
-            "running": 0,
-            "not_tested": 0
-        }
-    
-        packaging_statuses = {
-            "success": 0,
-            "failure": 0,
-            "cancelled": 0,
-            "running": 0,
-            "not_tested": 0
-        }
-    
-        # Initialize total counts with respect to naming conventions
-        total_dynamic_installation_count = 0
-        total_packaging_count = 0
-    
-        # Loop through the last_runs_dict and categorize workflows by status and category
-        for run in last_runs_dict:
-            status = run["status"]
-            category = None
-    
-            if run["workflow_name"].startswith("mlflow-di-"):
-                category = "Online Endpoint Deployment - Dynamic Installation"
-                total_dynamic_installation_count += 1
-            elif run["workflow_name"].startswith("mlflow-mp-"):
-                category = "Online Endpoint Deployment - Packaging"
-                total_packaging_count += 1
-    
-            if status == "completed":
-                if run["conclusion"] == "success":
-                    if category == "Online Endpoint Deployment - Dynamic Installation":
-                        dynamic_installation_statuses["success"] += 1
-                    elif category == "Online Endpoint Deployment - Packaging":
-                        packaging_statuses["success"] += 1
-                    success_count += 1
-                elif run["conclusion"] == "failure":
-                    if category == "Online Endpoint Deployment - Dynamic Installation":
-                        dynamic_installation_statuses["failure"] += 1
-                    elif category == "Online Endpoint Deployment - Packaging":
-                        packaging_statuses["failure"] += 1
-                    failure_count += 1
-                elif run["conclusion"] == "cancelled":
-                    if category == "Online Endpoint Deployment - Dynamic Installation":
-                        dynamic_installation_statuses["cancelled"] += 1
-                    elif category == "Online Endpoint Deployment - Packaging":
-                        packaging_statuses["cancelled"] += 1
-                    cancelled_count += 1
-            elif status == "in_progress":
-                if category == "Online Endpoint Deployment - Dynamic Installation":
-                    dynamic_installation_statuses["running"] += 1
-                elif category == "Online Endpoint Deployment - Packaging":
-                    packaging_statuses["running"] += 1
-                running_count += 1
-            else:
-                not_tested_count += 1
-    
-        # Calculate percentages
-        success_percentage = (success_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
-        failure_percentage = (failure_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
-        cancelled_percentage = (cancelled_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
-        running_percentage = (running_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
-        not_tested_percentage = (not_tested_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
-    
-        # Create and print the matrix table with the "Category" column
-        matrix_table = f"""
-        Category | Total Model | Pass | Pass % | Failure | Failure % | Cancelled | Running/In Progress | Not Tested
-        -------- | ----------- | ---- | ------- | ------- | ---------- | --------- | ------------------- | ----------
-        Online Endpoint Deployment - Dynamic Installation | {total_dynamic_installation_count} | {dynamic_installation_statuses["success"]} | {success_percentage:.2f}% | {dynamic_installation_statuses["failure"]} | {failure_percentage:.2f}% | {dynamic_installation_statuses["cancelled"]} | {dynamic_installation_statuses["running"]} | {dynamic_installation_statuses["not_tested"]}
-        Online Endpoint Deployment - Packaging | {total_packaging_count} | {packaging_statuses["success"]} | {success_percentage:.2f}% | {packaging_statuses["failure"]} | {failure_percentage:.2f}% | {packaging_statuses["cancelled"]} | {packaging_statuses["running"]} | {packaging_statuses["not_tested"]}
-        Batch Endpoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
-        Finetune | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
-        Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
-        FT Model Online Endpoint Deployment - Dynamic Installation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
-        FT Model Online Endpoint Deployment - Packaging | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
-        FT Model Batch EndPoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
-        FT Model Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
-        Import | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
-        Inference with Parameters | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
-        """
-    
-        print(matrix_table)
-
-        # results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0,"running":0, "not_tested": 0, "total_duration": 0}
-        # summary = []
-
- 
-
-        # df = pandas.DataFrame.from_dict(last_runs_dict)
-        # # df = df.sort_values(by=['status'], ascending=['failure' in df['status'].values])
-        # results_dict["total"] = df["workflow_id"].count()
-        # results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
-        # results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
-        # results_dict["cancelled"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled')]['workflow_id'].count()
-        # results_dict["running"] = df.loc[df['status'] == 'in_progress']['workflow_id'].count()  # Add running count
-
-
-        # success_rate = results_dict["success"]/results_dict["total"]*100.00
-        # failure_rate = results_dict["failure"]/results_dict["total"]*100.00
-        # cancel_rate = results_dict["cancelled"]/results_dict["total"]*100.00
-        # running_rate = results_dict["running"] / results_dict["total"] * 100.00  # Calculate running rate
-
- 
-
-        # summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|⏳Running|")
-        # summary.append("-----|-------|-------|-------|-------|")
-        # summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|{results_dict['running']}|")
-        # summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|{running_rate:.2f}%|")
-
- 
-
-        # models_df = pandas.DataFrame.from_dict(self.models_data)
-        # models_md = models_df.to_markdown()
-
- 
-
-        # summary_text = "\n".join(summary)
-        # current_date = datetime.now().strftime('%Y%m%d')
-    
-        # # Create a README file with the current datetime in the filename
-        # readme_filename = f"README_{current_date}.md"
-
- 
-
-        # with open(readme_filename, "w", encoding="utf-8") as f:
-        #     f.write(summary_text)
-        #     f.write(os.linesep)
-        #     f.write(os.linesep)
-        #     f.write(models_md)
 
         with open("dashboard_tasks.md", "w", encoding="utf-8") as f:
-            f.write(matrix_table)
+            f.write(workflow_last_run())
             
 
 def main():
