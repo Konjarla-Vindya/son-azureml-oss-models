@@ -111,7 +111,7 @@ class Model:
         Returns:
             _type_: _description_
         """
-        scoring_input = None 
+        #scoring_input = None 
         scoring_file = f"sample_inputs/{task}.json"
         # check of scoring_file exists
         try:
