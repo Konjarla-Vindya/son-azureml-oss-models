@@ -128,7 +128,7 @@ class Dashboard():
                 if workflow_name.lower().startswith("mlflow-di-"):
                     category = "Online Endpoint Deployment - Dynamic Installation"
                     total_dynamic_installation_count += 1
-                elif workflow_name.lower.().startswith("mlflow-mp-"):
+                elif workflow_name.lower().startswith("mlflow-mp-"):
                     category = "Online Endpoint Deployment - Packaging"
                     total_packaging_count += 1
     
