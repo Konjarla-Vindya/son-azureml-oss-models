@@ -216,9 +216,10 @@ class Dashboard():
     
 
     def results(self, last_runs_dict):
-
+       
+        dashboard_tasks  =  workflow_last_run()
         with open("dashboard_tasks.md", "w", encoding="utf-8") as f:
-            f.write(workflow_last_run())
+            f.write(dashboard_tasks)
             
 
 def main():
