@@ -104,8 +104,8 @@ class Dashboard():
                 html_url = jobs_data["jobs"][0]["html_url"] if jobs_data.get("jobs") else ""
 
  
-                data["workflow_name_mp"] = data["workflow_name"].startswith("MLFlow-MP") == True 
-                data["workflow_name_di"] = data["workflow_name"].startswith("MLFlow-DI") == True 
+                self.data["workflow_name_mp"] = data["workflow_name"].startswith("MLFlow-MP") == True 
+                self.data["workflow_name_di"] = data["workflow_name"].startswith("MLFlow-DI") == True 
                 self.data["workflow_id"].append(last_run["workflow_id"])
                 self.data["workflow_name_mp"].append(workflow_name.replace(".yml", ""))
                 self.data["workflow_name_di"].append(workflow_name.replace(".yml", ""))
