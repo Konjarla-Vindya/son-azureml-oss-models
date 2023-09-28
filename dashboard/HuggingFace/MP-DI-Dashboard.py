@@ -165,7 +165,7 @@ class Dashboard():
 
         results_dict["total_di"] = df["workflow_id"].count()
         results_dict["success_di"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success') & (df['workflow_name'].startswith("MLFlow-MP") == True)]['workflow_id'].count()
-        results_dict["failure_di"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure') & (df['workflow_name'.startswith("MLFlow-MP")] == True)]['workflow_id'].count()
+        results_dict["failure_di"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure') & (df['workflow_name'].startswith("MLFlow-MP") == True)]['workflow_id'].count()
         results_dict["cancelled_di"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled') & (df['workflow_name'].startswith("MLFlow-MP") == True)]['workflow_id'].count()
         results_dict["running-di"] = df.loc[df['status'] == 'in_progress'& (df['workflow_name'].startswith("MLFlow-MP") == True)]['workflow_id'].count()  # Add running count
 
