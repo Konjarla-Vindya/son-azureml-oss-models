@@ -228,7 +228,7 @@ class Dashboard():
         #     f.write(os.linesep)
         #     f.write(models_md)
 
-        with open("README.md", "w", encoding="utf-8") as f:
+        with open("dashboard_tasks.md", "w", encoding="utf-8") as f:
             f.write(summary_text)
             f.write(os.linesep)
             f.write(os.linesep)
