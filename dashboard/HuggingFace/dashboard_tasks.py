@@ -182,44 +182,139 @@ class Dashboard():
     
 
     def results(self, last_runs_dict):
-        results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0,"running":0, "not_tested": 0, "total_duration": 0}
-        summary = []
-
- 
-
-        df = pandas.DataFrame.from_dict(last_runs_dict)
-        # df = df.sort_values(by=['status'], ascending=['failure' in df['status'].values])
-        results_dict["total"] = df["workflow_id"].count()
-        results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
-        results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
-        results_dict["cancelled"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled')]['workflow_id'].count()
-        results_dict["running"] = df.loc[df['status'] == 'in_progress']['workflow_id'].count()  # Add running count
-
-
-        success_rate = results_dict["success"]/results_dict["total"]*100.00
-        failure_rate = results_dict["failure"]/results_dict["total"]*100.00
-        cancel_rate = results_dict["cancelled"]/results_dict["total"]*100.00
-        running_rate = results_dict["running"] / results_dict["total"] * 100.00  # Calculate running rate
-
- 
-
-        summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|⏳Running|")
-        summary.append("-----|-------|-------|-------|-------|")
-        summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|{results_dict['running']}|")
-        summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|{running_rate:.2f}%|")
-
- 
-
-        models_df = pandas.DataFrame.from_dict(self.models_data)
-        models_md = models_df.to_markdown()
-
- 
-
-        summary_text = "\n".join(summary)
-        current_date = datetime.now().strftime('%Y%m%d')
+        
+        # Initialize counters for different statuses
+        success_count = 0
+        failure_count = 0
+        cancelled_count = 0
+        running_count = 0
+        not_tested_count = 0
     
-        # Create a README file with the current datetime in the filename
-        readme_filename = f"README_{current_date}.md"
+        # Create dictionaries to store workflow statuses by category
+        dynamic_installation_statuses = {
+            "success": 0,
+            "failure": 0,
+            "cancelled": 0,
+            "running": 0,
+            "not_tested": 0
+        }
+    
+        packaging_statuses = {
+            "success": 0,
+            "failure": 0,
+            "cancelled": 0,
+            "running": 0,
+            "not_tested": 0
+        }
+    
+        # Initialize total counts with respect to naming conventions
+        total_dynamic_installation_count = 0
+        total_packaging_count = 0
+    
+        # Loop through the last_runs_dict and categorize workflows by status and category
+        for run in last_runs_dict:
+            status = run["status"]
+            category = None
+    
+            if run["workflow_name"].startswith("mlflow-di-"):
+                category = "Online Endpoint Deployment - Dynamic Installation"
+                total_dynamic_installation_count += 1
+            elif run["workflow_name"].startswith("mlflow-mp-"):
+                category = "Online Endpoint Deployment - Packaging"
+                total_packaging_count += 1
+    
+            if status == "completed":
+                if run["conclusion"] == "success":
+                    if category == "Online Endpoint Deployment - Dynamic Installation":
+                        dynamic_installation_statuses["success"] += 1
+                    elif category == "Online Endpoint Deployment - Packaging":
+                        packaging_statuses["success"] += 1
+                    success_count += 1
+                elif run["conclusion"] == "failure":
+                    if category == "Online Endpoint Deployment - Dynamic Installation":
+                        dynamic_installation_statuses["failure"] += 1
+                    elif category == "Online Endpoint Deployment - Packaging":
+                        packaging_statuses["failure"] += 1
+                    failure_count += 1
+                elif run["conclusion"] == "cancelled":
+                    if category == "Online Endpoint Deployment - Dynamic Installation":
+                        dynamic_installation_statuses["cancelled"] += 1
+                    elif category == "Online Endpoint Deployment - Packaging":
+                        packaging_statuses["cancelled"] += 1
+                    cancelled_count += 1
+            elif status == "in_progress":
+                if category == "Online Endpoint Deployment - Dynamic Installation":
+                    dynamic_installation_statuses["running"] += 1
+                elif category == "Online Endpoint Deployment - Packaging":
+                    packaging_statuses["running"] += 1
+                running_count += 1
+            else:
+                not_tested_count += 1
+    
+        # Calculate percentages
+        success_percentage = (success_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
+        failure_percentage = (failure_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
+        cancelled_percentage = (cancelled_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
+        running_percentage = (running_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
+        not_tested_percentage = (not_tested_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
+    
+        # Create and print the matrix table with the "Category" column
+        matrix_table = f"""
+        Category | Total Model | Pass | Pass % | Failure | Failure % | Cancelled | Running/In Progress | Not Tested
+        -------- | ----------- | ---- | ------- | ------- | ---------- | --------- | ------------------- | ----------
+        Online Endpoint Deployment - Dynamic Installation | {total_dynamic_installation_count} | {dynamic_installation_statuses["success"]} | {success_percentage:.2f}% | {dynamic_installation_statuses["failure"]} | {failure_percentage:.2f}% | {dynamic_installation_statuses["cancelled"]} | {dynamic_installation_statuses["running"]} | {dynamic_installation_statuses["not_tested"]}
+        Online Endpoint Deployment - Packaging | {total_packaging_count} | {packaging_statuses["success"]} | {success_percentage:.2f}% | {packaging_statuses["failure"]} | {failure_percentage:.2f}% | {packaging_statuses["cancelled"]} | {packaging_statuses["running"]} | {packaging_statuses["not_tested"]}
+        Batch Endpoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        Finetune | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        FT Model Online Endpoint Deployment - Dynamic Installation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        FT Model Online Endpoint Deployment - Packaging | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        FT Model Batch EndPoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        FT Model Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        Import | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        Inference with Parameters | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0
+        """
+    
+        print(matrix_table)
+
+        # results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0,"running":0, "not_tested": 0, "total_duration": 0}
+        # summary = []
+
+ 
+
+        # df = pandas.DataFrame.from_dict(last_runs_dict)
+        # # df = df.sort_values(by=['status'], ascending=['failure' in df['status'].values])
+        # results_dict["total"] = df["workflow_id"].count()
+        # results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
+        # results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
+        # results_dict["cancelled"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled')]['workflow_id'].count()
+        # results_dict["running"] = df.loc[df['status'] == 'in_progress']['workflow_id'].count()  # Add running count
+
+
+        # success_rate = results_dict["success"]/results_dict["total"]*100.00
+        # failure_rate = results_dict["failure"]/results_dict["total"]*100.00
+        # cancel_rate = results_dict["cancelled"]/results_dict["total"]*100.00
+        # running_rate = results_dict["running"] / results_dict["total"] * 100.00  # Calculate running rate
+
+ 
+
+        # summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|⏳Running|")
+        # summary.append("-----|-------|-------|-------|-------|")
+        # summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|{results_dict['running']}|")
+        # summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|{running_rate:.2f}%|")
+
+ 
+
+        # models_df = pandas.DataFrame.from_dict(self.models_data)
+        # models_md = models_df.to_markdown()
+
+ 
+
+        # summary_text = "\n".join(summary)
+        # current_date = datetime.now().strftime('%Y%m%d')
+    
+        # # Create a README file with the current datetime in the filename
+        # readme_filename = f"README_{current_date}.md"
 
  
 
@@ -230,12 +325,8 @@ class Dashboard():
         #     f.write(models_md)
 
         with open("dashboard_tasks.md", "w", encoding="utf-8") as f:
-            f.write(summary_text)
-            f.write(os.linesep)
-            f.write(os.linesep)
-            f.write(models_md)
-
- 
+            f.write(matrix_table)
+            
 
 def main():
 
