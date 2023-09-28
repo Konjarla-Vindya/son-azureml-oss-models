@@ -181,11 +181,7 @@ class Dashboard():
         """
     
         print(matrix_table)    
-       
-
-   
-
-   return matrix_table
+        return matrix_table
            
     # def extract_error_messages(self, job_url):
     #     try:
