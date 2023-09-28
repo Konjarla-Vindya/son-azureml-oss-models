@@ -168,9 +168,13 @@ class Dashboard():
         running_rate = results_dict["running"] / results_dict["total"] * 100.00  # Calculate running rate
 
  
-
-        summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|⏳Running|")
-        summary.append("-----|-------|-------|-------|-------|")
+        
+        summary.append("| Category | 🚀Total | ✅Success|❌Failure|🚫Cancelled|⏳Running|") 
+        summary.append("| ----------- | ----------------- | -------- | -------- | --------  | -------- |")
+        summary.append("| Online Endpoint Deployment - Dynamic Installation ")      
+        summary.append("| Online Endpoint Deployment - Packaging )
+        #summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|⏳Running|")
+        #summary.append("-----|-------|-------|-------|-------|")
         summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|{results_dict['running']}|")
         summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|{running_rate:.2f}%|")
 
