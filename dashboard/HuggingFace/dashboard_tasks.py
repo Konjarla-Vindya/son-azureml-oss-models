@@ -200,7 +200,7 @@ class Dashboard():
         # |Inference with Parameters | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
         # """
         summary_text = "\n".join(summary)
-        print summary_text   
+        print (summary_text)   
         return summary_text
            
     # def extract_error_messages(self, job_url):
