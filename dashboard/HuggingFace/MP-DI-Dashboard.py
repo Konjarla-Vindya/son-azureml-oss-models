@@ -104,10 +104,11 @@ class Dashboard():
                 html_url = jobs_data["jobs"][0]["html_url"] if jobs_data.get("jobs") else ""
 
  
-
+                data["workflow_name_mp"] = data["workflow_name"].startswith("MLFlow-MP") == True 
+                data["workflow_name_di"] = data["workflow_name"].startswith("MLFlow-DI") == True 
                 self.data["workflow_id"].append(last_run["workflow_id"])
-                self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
-                #self.data["workflow_name"].append(workflow_name.replace(".yml", ""))
+                self.data["workflow_name_mp"].append(workflow_name.replace(".yml", ""))
+                self.data["workflow_name_di"].append(workflow_name.replace(".yml", ""))
                 self.data["last_runid"].append(last_run["id"])
                 self.data["created_at"].append(last_run["created_at"])
                 self.data["updated_at"].append(last_run["updated_at"])
@@ -155,17 +156,28 @@ class Dashboard():
         df = pandas.DataFrame.from_dict(last_runs_dict)
         # df = df.sort_values(by=['status'], ascending=['failure' in df['status'].values])
       
-        results_dict["total"] = df["workflow_id"].count()
-        results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
-        results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
-        results_dict["cancelled"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled')]['workflow_id'].count()
-        results_dict["running"] = df.loc[df['status'] == 'in_progress']['workflow_id'].count()  # Add running count
+        results_dict["total_mp"] = df["workflow_id"].count()
+        results_dict["success_mp""] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success') & (df['workflow_name_mp'] == True)]['workflow_id'].count()
+        results_dict["failure_mp""] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure') & (df['workflow_name_mp'] == True)]['workflow_id'].count()
+        results_dict["cancelled_mp""] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled') & (df['workflow_name_mp'] == True)]['workflow_id'].count()
+        results_dict["running_mp""] = df.loc[df['status'] == 'in_progress'& (df['workflow_name_mp'] == True)]['workflow_id'].count()  # Add running count
+
+        results_dict["total_di""] = df["workflow_id"].count()
+        results_dict["success_di""] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success') & (df['workflow_name_di'] == True)]['workflow_id'].count()
+        results_dict["failure_di""] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure') & (df['workflow_name_di'] == True)]['workflow_id'].count()
+        results_dict["cancelled_di""] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled') & (df['workflow_name_di'] == True)]['workflow_id'].count()
+        results_dict["running-di"] = df.loc[df['status'] == 'in_progress'& (df['workflow_name_mp'] == True)]['workflow_id'].count()  # Add running count
 
 
-        success_rate = results_dict["success"]/results_dict["total"]*100.00
-        failure_rate = results_dict["failure"]/results_dict["total"]*100.00
-        cancel_rate = results_dict["cancelled"]/results_dict["total"]*100.00
-        running_rate = results_dict["running"] / results_dict["total"] * 100.00  # Calculate running rate
+        success_rate_di = results_dict["success_di"]/results_dict["total_di"]*100.00
+        failure_rate_di = results_dict["failure_di"]/results_dict["total_di"]*100.00
+        cancel_rate_di = results_dict["cancelled_di"]/results_dict["total_di"]*100.00
+        running_rate_di = results_dict["running_di"] / results_dict["total_di"] * 100.00  # Calculate running rate
+
+        success_rate_mp = results_dict["success_mp"]/results_dict["total_mp"]*100.00
+        failure_rate_mp = results_dict["failure_mp"]/results_dict["total_mp"]*100.00
+        cancel_rate_mp = results_dict["cancelled_mp"]/results_dict["total_mp"]*100.00
+        running_rate_mp = results_dict["running_mp"] / results_dict["total_mp"] * 100.00  # Calculate running rate
 
  
         
@@ -175,9 +187,9 @@ class Dashboard():
         #summary.append("| Online Endpoint Deployment - Packaging| )
         #summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|⏳Running|")
         #summary.append("-----|-------|-------|-------|-------|")
-        summary.append(f"Online Endpoint Deployment - Dynamic Installation|{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|{results_dict['running']}|")
-        summary.append(f"Online Endpoint Deployment - Packaging|100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|{running_rate:.2f}%|")
-
+        summary.append(f"Online Endpoint Deployment - Dynamic Installation|{results_dict['total_di']}|{results_dict['success_di']}|{results_dict['failure_di']}|{results_dict['cancelled_di']}|{results_dict['running_di']}|")
+        summary.append(f"Online Endpoint Deployment - Model Packaging|{results_dict['total_mp']}|{results_dict['success_mp']}|{results_dict['failure_mp']}|{results_dict['cancelled_mp']}|{results_dict['running_mp']}|")
+         
  
 
         models_df = pandas.DataFrame.from_dict(self.models_data)
