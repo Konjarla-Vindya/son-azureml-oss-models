@@ -154,8 +154,8 @@ class Dashboard():
                     running_count += 1
                 else:
                     not_tested_count += 1
-        except requests.exceptions.RequestException as e:
-           print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")         
+            except requests.exceptions.RequestException as e:
+               print(f"An error occurred while fetching run information for workflow '{workflow_name}': {e}")         
      # Calculate percentages
         success_percentage = (success_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
         failure_percentage = (failure_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
