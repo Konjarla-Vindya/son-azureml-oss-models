@@ -235,8 +235,8 @@ class Dashboard():
 def main():
 
         my_class = Dashboard()
-        matrix_table = my_class.workflow_last_run()
-        dashboard_tasks  = matrix_table.to_markdown()
+        dashboard_tasks = my_class.workflow_last_run()
+          
         my_class.results(dashboard_tasks)
 
 if __name__ == "__main__":
