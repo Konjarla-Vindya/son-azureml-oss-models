@@ -162,35 +162,45 @@ class Dashboard():
         cancelled_percentage = (cancelled_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
         running_percentage = (running_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
         not_tested_percentage = (not_tested_count / total_dynamic_installation_count) * 100 if total_dynamic_installation_count > 0 else 0
-        # summary = []
-        # summary.append("| Category | Total Model | Pass | Pass % | Failure | Failure % | Cancelled | Running/In Progress | Not Tested|") 
-        # summary.append("| ----------- | ----------------- | -------- | -------- | --------  | -------- |")
-        # #summary.append("| Online Endpoint Deployment - Dynamic Installation| ")      
-        # #summary.append("| Online Endpoint Deployment - Packaging| )
+        summary = []
+        summary.append("Category | Total Model | Pass | Pass % | Failure | Failure % | Cancelled | Running/In Progress | Not Tested|") 
+        summary.append("-------- | ----------- | ---- | ------- | ------- | ---------- | --------- | ------------------- | ----------|")
+        summary.append(f"Online Endpoint Deployment - Dynamic Installation | {total_dynamic_installation_count} | {dynamic_installation_statuses["success"]} | {success_percentage:.2f}% | {dynamic_installation_statuses["failure"]} | {failure_percentage:.2f}% | {dynamic_installation_statuses["cancelled"]} | {dynamic_installation_statuses["running"]} | {dynamic_installation_statuses["not_tested"]}|")      
+        summary.append(f"Online Endpoint Deployment - Packaging | {total_packaging_count} | {packaging_statuses["success"]} | {success_percentage:.2f}% | {packaging_statuses["failure"]} | {failure_percentage:.2f}% | {packaging_statuses["cancelled"]} | {packaging_statuses["running"]} | {packaging_statuses["not_tested"]} |")
+        summary.append(f"Batch Endpoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |")
+        summary.append(f"Finetune | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |")
+        summary.append(f"Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |")
+        summary.append(f"FT Model Online Endpoint Deployment - Dynamic Installation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |")
+        summary.append(f"FT Model Online Endpoint Deployment - Packaging | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |")
+        summary.append(f"FT Model Batch EndPoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |")
+        summary.append(f"FT Model Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |")
+        summary.append(f"Import | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |")
+        summary.append(f"Inference with Parameters | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |")
+        
         # #summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|⏳Running|")
         # #summary.append("-----|-------|-------|-------|-------|")
         # summary.append(f"Online Endpoint Deployment - Dynamic Installation|{results_dict['total_di']}|{results_dict['success_di']}|{results_dict['failure_di']}|{results_dict['cancelled_di']}|{results_dict['running_di']}|")
         # summary.append(f"Online Endpoint Deployment - Model Packaging|{results_dict['total_mp']}|{results_dict['success_mp']}|{results_dict['failure_mp']}|{results_dict['cancelled_mp']}|{results_dict['running_mp']}|")
     
         # Create and print the matrix table with the "Category" column
-        matrix_table = f"""
-        |Category | Total Model | Pass | Pass % | Failure | Failure % | Cancelled | Running/In Progress | Not Tested|
-        |-------- | ----------- | ---- | ------- | ------- | ---------- | --------- | ------------------- | ----------|
-        |Online Endpoint Deployment - Dynamic Installation | {total_dynamic_installation_count} | {dynamic_installation_statuses["success"]} | {success_percentage:.2f}% | {dynamic_installation_statuses["failure"]} | {failure_percentage:.2f}% | {dynamic_installation_statuses["cancelled"]} | {dynamic_installation_statuses["running"]} | {dynamic_installation_statuses["not_tested"]}|
-        |Online Endpoint Deployment - Packaging | {total_packaging_count} | {packaging_statuses["success"]} | {success_percentage:.2f}% | {packaging_statuses["failure"]} | {failure_percentage:.2f}% | {packaging_statuses["cancelled"]} | {packaging_statuses["running"]} | {packaging_statuses["not_tested"]} |
-        |Batch Endpoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
-        |Finetune | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
-        |Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
-        |FT Model Online Endpoint Deployment - Dynamic Installation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
-        |FT Model Online Endpoint Deployment - Packaging | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
-        |FT Model Batch EndPoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
-        |FT Model Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
-        |Import | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
-        |Inference with Parameters | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
-        """
-    
-        print(matrix_table)    
-        return matrix_table
+        # matrix_table = f"""
+        # |Category | Total Model | Pass | Pass % | Failure | Failure % | Cancelled | Running/In Progress | Not Tested|
+        # |-------- | ----------- | ---- | ------- | ------- | ---------- | --------- | ------------------- | ----------|
+        # |Online Endpoint Deployment - Dynamic Installation | {total_dynamic_installation_count} | {dynamic_installation_statuses["success"]} | {success_percentage:.2f}% | {dynamic_installation_statuses["failure"]} | {failure_percentage:.2f}% | {dynamic_installation_statuses["cancelled"]} | {dynamic_installation_statuses["running"]} | {dynamic_installation_statuses["not_tested"]}|
+        # |Online Endpoint Deployment - Packaging | {total_packaging_count} | {packaging_statuses["success"]} | {success_percentage:.2f}% | {packaging_statuses["failure"]} | {failure_percentage:.2f}% | {packaging_statuses["cancelled"]} | {packaging_statuses["running"]} | {packaging_statuses["not_tested"]} |
+        # |Batch Endpoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
+        # |Finetune | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
+        # |Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
+        # |FT Model Online Endpoint Deployment - Dynamic Installation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
+        # |FT Model Online Endpoint Deployment - Packaging | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
+        # |FT Model Batch EndPoint Deployment | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
+        # |FT Model Evaluation | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
+        # |Import | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
+        # |Inference with Parameters | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
+        # """
+        summary_text = "\n".join(summary)
+        print summary_text   
+        return summary_text
            
     # def extract_error_messages(self, job_url):
     #     try:
@@ -224,20 +234,19 @@ class Dashboard():
     #         return "Error: Unable to fetch messages"
     
 
-    def results(self, dashboard_tasks):
+    def results(self, summary_text):
        
         # dashboard_tasks  =  workflow_last_run()
         
         with open("dashboard_tasks.md", "w", encoding="utf-8") as f:
-            f.write(dashboard_tasks)
+            f.write(summary_text)
             
 
 def main():
 
         my_class = Dashboard()
-        dashboard_tasks = my_class.workflow_last_run()
-          
-        my_class.results(dashboard_tasks)
+        summary_text = my_class.workflow_last_run()  
+        my_class.results(summary_text)
 
 if __name__ == "__main__":
     main()
