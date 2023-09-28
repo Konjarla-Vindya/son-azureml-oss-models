@@ -182,7 +182,9 @@ class Dashboard():
     
 
     def results(self, last_runs_dict):
-        
+        if not isinstance(last_runs_dict, list):
+        print("Error: last_runs_dict should be a list of dictionaries.")
+        return
         # Initialize counters for different statuses
         success_count = 0
         failure_count = 0
