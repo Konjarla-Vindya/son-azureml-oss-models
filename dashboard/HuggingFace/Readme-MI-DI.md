@@ -1,7 +1,7 @@
 | Category | 🚀Total | ✅Success|❌Failure|🚫Cancelled|⏳Running|
 | ----------- | ----------------- | -------- | -------- | --------  | -------- |
-Online Endpoint Deployment - Dynamic Installation|70|35|0|0|0|
-Online Endpoint Deployment - Model Packaging|70|35|0|0|0|
+Online Endpoint Deployment - Dynamic Installation|35|35|0|0|0|
+Online Endpoint Deployment - Model Packaging|35|35|0|0|0|
 
 |    | Model                                                     | Status   | LastRunLink                                                                     | LastRunTimestamp     | Model Package/Dynmaic Installation   |
 |---:|:----------------------------------------------------------|:---------|:--------------------------------------------------------------------------------|:---------------------|:-------------------------------------|
