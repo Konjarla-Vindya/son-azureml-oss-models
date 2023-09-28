@@ -40,7 +40,7 @@ class Dashboard():
                 workflows = response.json()
                 # append workflow_runs to runs list
                 for workflow in workflows["workflows"]:
-                    if (workflow["name"].lower().startswith("mlflow-mp") | workflow["name"].lower().startswith("mlflow-di")):
+                    if (workflow["name"].startswith("MLFlow-MP") | workflow["name"].startswith("MLFlow-DI")):
                         workflow_name.append(workflow["name"])
                 if not workflows["workflows"]:
                     break
@@ -124,7 +124,7 @@ class Dashboard():
                     #self.data["badge"].append(f"[![{workflow_name}]({badge_url})]({url})")
                 run_link = f"https://github.com/{self.repo_full_name}/actions/runs/{last_run['id']}"
                 models_entry = {
-                    "Model": workflow_name.replace(".yml", "").replace("MLFlow-",""),
+                    "Model": workflow_name.replace(".yml", ""),
                     # "HFLink": f"[Link](https://huggingface.co/{workflow_name.replace(".yml", "").replace("MLFlow-","")})",
                     # "Status": "<span style='background-color: #00FF00; padding: 2px 6px; border-radius: 3px;'>PASS</span>" if last_run["conclusion"] == "success" else "<span style='background-color: #FF0000; padding: 2px 6px; border-radius: 3px;'>FAIL</span>",
                     # "Status": " ✅ PASS" if last_run["conclusion"] == "success" elif last_run["conclusion"] == "failure" "❌ FAIL",
