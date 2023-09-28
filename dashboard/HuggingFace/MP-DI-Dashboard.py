@@ -148,7 +148,8 @@ class Dashboard():
         return self.data
 
     def results(self, last_runs_dict):
-        results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0,"running":0, "not_tested": 0, "total_duration": 0}
+        results_dict = {"total_mp": 0, "success_mp": 0, "failure_mp": 0, "cancelled_mp": 0,"running_mp":0, "not_tested_mp": 0, "total_duration_mp": 0,
+                        "total_di": 0, "success_di": 0, "failure_di": 0, "cancelled_di": 0,"running_di":0, "not_tested_di": 0, "total_duration_di": 0}
         summary = []
 
  
