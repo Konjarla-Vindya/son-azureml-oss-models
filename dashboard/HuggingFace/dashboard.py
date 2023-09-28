@@ -153,7 +153,7 @@ class Dashboard():
             response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
             response.raise_for_status()
             html_content = response.text
-    
+            print(job_url)
             # Parse the HTML content using BeautifulSoup
             soup = BeautifulSoup(html_content, "html.parser")
     
@@ -163,7 +163,7 @@ class Dashboard():
             for paragraph in soup.find_all("p"):
                 text = paragraph.get_text()
                 # Check if the text contains common error or failure indicators
-                if re.search(r'(raise error|raise|error|error message|failure message)', text, re.IGNORECASE):
+                if re.search(r'(raise error|raise|error|error message|failure message|\"message\":)', text, re.IGNORECASE):
                     # Truncate the message at the first occurrence of '\n'
                     first_newline_index = text.find('\n')
                     if first_newline_index != -1:
