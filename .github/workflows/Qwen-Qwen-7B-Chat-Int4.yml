@@ -1,4 +1,4 @@
-name: Qwen/Qwen-7B-Chat-Int4
+name: MLFlow-Qwen/Qwen-7B-Chat-Int4
 
 on: 
   workflow_dispatch:
