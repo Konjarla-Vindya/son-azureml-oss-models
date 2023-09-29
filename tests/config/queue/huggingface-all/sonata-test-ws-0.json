@@ -1,0 +1,13 @@
+{
+    "queue_name": "sonata-test-ws-0",
+    "models": [
+        "t5-small"
+    ],
+    "workspace": "sonata-test-ws",
+    "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "sonata-test-rg",
+    "registry": "HuggingFace",
+    "environment": "automate-venv",
+    "compute": "Standard-D64as-v4",
+    "instance_type": "Standard_D64as_v4"
+}
