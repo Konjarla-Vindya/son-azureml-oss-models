@@ -1,5 +1,5 @@
 from utils.logging import get_logger
-from src.automation_for_constant_library.fetch_task import HfTask
+from automation_for_constant_library.fetch_task import HfTask
 import re
 
 logger = get_logger(__name__)
