@@ -7,7 +7,7 @@ env:
   test_model_name: t5-small
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-japaneast-2
+  test_queue: test-northeurope-0.json
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -42,13 +42,15 @@ jobs:
     - name: pip-install-sentencepiece
       run: pip install sentencepiece
     - name: pip-install-fugashi[unidic-lite]
-      run: pip install fugashi[unidic-lite]  
+      run: pip install fugashi[unidic-lite]
+    - name: pip-install-datasets
+      run: pip install datasets
     - name: deploy-model-step
       id: deploy-model-step
-      run: python generic_initial_automation.py
-      working-directory: tests/src/automation_for_constant_library
+      run: python generic_pipeline_component.py
+      working-directory: tests/src/pipeline_component
     - name: trigger-next-model-step
       env:
-        GITHUB_TOKEN: ${{ secrets.API_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
       if: ${{ env.test_trigger_next_model == 'true' && steps.deploy-model-step.outputs.NEXT_MODEL != '' && (success() || failure())}}
       run: gh workflow run ${{ steps.deploy-model-step.outputs.NEXT_MODEL }} --ref ${{ github.ref_name }}
