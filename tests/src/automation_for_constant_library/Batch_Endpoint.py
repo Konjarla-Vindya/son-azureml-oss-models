@@ -94,8 +94,8 @@ def get_task_specified_input(self, task):
         return folder_path , scoring_input
     
 def get_specified_input(self):
-    Batch_inputs=f"Batch_inputs"
-    scoring_file = f"../../config/sample_inputs/{self.registry}/Batch_inputs"
+    # Batch_inputs=f"Batch_inputs"
+    scoring_file = f"../../config/sample_inputs/{self.registry}/Batch_inputs/"
     for file in Batch_inputs
         scoring_file = f"Batch_inputs/{file}.json"
 
