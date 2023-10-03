@@ -2,6 +2,8 @@ import os,sys
 import requests
 import re
 import pandas
+import urllib.request
+import urllib.error
 from datetime import datetime
 from github import Github, Auth
 from bs4 import BeautifulSoup
@@ -149,37 +151,47 @@ class Dashboard():
         return self.data
 
     def extract_error_messages(self, job_url):
+        error_messages = []
         try:
-            response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
-            print("job_url:", job_url)
-            response.raise_for_status()
-            html_content = response.text
-            print(html_content)
+             with urllib.request.urlopen(job_url) as f:
+             a_variable = f.read().decode('utf-8')
+             print(a_variable)
+        except urllib.error.URLError as e:
+             error_message = str(e)
+             error_messages.append(error_message)
+             print(error_message)
+
+        return error_messages
+            # response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
+            # print("job_url:", job_url)
+            # response.raise_for_status()
+            # html_content = response.text
+            # print(html_content)
     
             # Parse the HTML content using BeautifulSoup
-            soup = BeautifulSoup(html_content, "html.parser")
+            # soup = BeautifulSoup(html_content, "html.parser")
     
             # Find and extract both error and failure messages
-            error_messages = []
+            
     
-            for paragraph in soup.find_all("p"):
-                text = paragraph.get_text()
-                # Check if the text contains common error or failure indicators
-                if re.search(r'(raise error|raise|error|error message|failure message|\"message\":)', text, re.IGNORECASE):
-                    # Truncate the message at the first occurrence of '\n'
-                    first_newline_index = text.find('\n')
-                    if first_newline_index != -1:
-                        text = text[:first_newline_index]
-                    error_messages.append(text.strip())  # Strip leading/trailing whitespace
+            # for paragraph in soup.find_all("p"):
+            #     text = paragraph.get_text()
+            #     # Check if the text contains common error or failure indicators
+            #     if re.search(r'(raise error|raise|error|error message|failure message|\"message\":)', text, re.IGNORECASE):
+            #         # Truncate the message at the first occurrence of '\n'
+            #         first_newline_index = text.find('\n')
+            #         if first_newline_index != -1:
+            #             text = text[:first_newline_index]
+            #         error_messages.append(text.strip())  # Strip leading/trailing whitespace
     
-            if error_messages:
-                return "\n".join(error_messages)
-            else:
-                return "No error messages found"
+            # if error_messages:
+            #     return "\n".join(error_messages)
+            # else:
+            #     return "No error messages found"
     
-        except requests.exceptions.RequestException as e:
-            print(f"An error occurred while fetching messages from '{job_url}': {e}")
-            return "Error: Unable to fetch messages"
+        # except requests.exceptions.RequestException as e:
+        #     print(f"An error occurred while fetching messages from '{job_url}': {e}")
+        #     return "Error: Unable to fetch messages"
 
     
 
