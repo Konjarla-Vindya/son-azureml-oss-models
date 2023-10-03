@@ -64,7 +64,9 @@ def get_sku_override():
         return None
 
 def get_task_specified_input(task):
-        folder_path = f"../../config/sample_inputs/{registry}/{task}/batch_inputs"
+    # print (f"test_registry: {queue['registry']}")
+        
+        folder_path = f"../../config/sample_inputs/queue.registry/{task}/batch_inputs"
         #folder_path = os.path.abspath("../../task/batch_inputs")
         #scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
         file_names = os.listdir(folder_path)
@@ -252,7 +254,7 @@ if __name__ == "__main__":
     print (f"test_workspace_name: {queue['workspace']}")
     print (f"test_model_name: {test_model_name}")
     print (f"test_sku_type: {test_sku_type}")
-    print (f"test_registry: queue['registry']")
+    print (f"test_registry: {queue['registry']}")
     print (f"test_trigger_next_model: {test_trigger_next_model}")
     print (f"test_queue: {test_queue}")
     print (f"test_set: {test_set}")
