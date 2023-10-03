@@ -89,6 +89,7 @@ def get_task_specified_input(task):
     
     # Now you can include both the folder input and individual file inputs in the job
     job_inputs = [folder_input] + inputs
+    return folder_path
     
     # # Invoke the batch endpoint with the list of inputs
     # job = workspace_ml_client.batch_endpoints.invoke(endpoint_name=endpoint.name, input=job_inputs)
