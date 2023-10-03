@@ -359,6 +359,7 @@ if __name__ == "__main__":
         endpoint_name=endpoint.name, input=input
     )
     if job is not None:
+        print(f"Job name: {job.name}")
         # Stream the job status
         for status in workspace_ml_client.jobs.stream(job.name):
             print(status)
