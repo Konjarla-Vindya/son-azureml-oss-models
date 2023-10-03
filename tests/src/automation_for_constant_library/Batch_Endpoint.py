@@ -12,7 +12,9 @@ from box import ConfigBox
 # from utils.logging import get_logger
 from azureml.core.compute import AmlCompute
 from azureml.core.compute_target import ComputeTargetException
+from azure.ai.ml.constants import AssetTypes
 from mlflow.tracking.client import MlflowClient
+import time
 from azure.ai.ml.entities import (
     AmlCompute,
     BatchDeployment,
@@ -61,6 +63,40 @@ def get_sku_override():
         print(f"::warning:: Could not find sku-override file: \n{e}")
         return None
 
+def get_task_specified_input(self, task):
+        folder_path = f"../../config/sample_inputs/{self.registry}/{task}/batch_inputs"
+        #folder_path = os.path.abspath("../../task/batch_inputs")
+        #scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
+        file_names = os.listdir(folder_path)
+        # Process each file in the folder
+        for file_name in file_names:
+            # Construct the full path to the file
+            file_path = os.path.join(folder_path, file_name)
+            
+            # Check if it's a file (not a directory) and read its content
+            if os.path.isfile(file_path):
+                with open(file_path, 'r') as file:
+                    file_content = file.read()
+                
+                # Process the file content as needed
+                print(f"File Name: {file_name}")
+                print("File Content:")
+                print(file_content)
+                print("\n")
+        # check of scoring_file exists
+        # try:
+        #     with open(folder_path) as f:
+        #         scoring_input = ConfigBox(json.load(f))
+        #         print(f"scoring_input file:\n\n {scoring_input}\n\n")
+        # except Exception as e:
+        #     print(
+        #         f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
+        # return scoring_file, scoring_input
+def get_specified_input(self):
+    Batch_inputs=f"Batch_inputs"
+    scoring_file = f"../../config/sample_inputs/{self.registry}/Batch_inputs"
+    for file in Batch_inputs
+        scoring_file = f"Batch_inputs/{file}.json"
 
 def set_next_trigger_model(queue):
     print("In set_next_trigger_model...")
@@ -128,8 +164,7 @@ def get_latest_model_version(workspace_ml_client, test_model_name):
     #print(f"Model Config : {latest_model.config}")
     return foundation_model
 
-import time
-from azure.ai.ml.entities import BatchEndpoint, BatchDeployment, BatchRetrySettings
+
 
 def create_and_configure_batch_endpoint(
     foundation_model, compute, workspace_ml_client
@@ -173,6 +208,20 @@ def create_and_configure_batch_endpoint(
     # Retrieve and print the default deployment name
     endpoint = workspace_ml_client.batch_endpoints.get(endpoint_name)
     print(f"The default deployment is {endpoint.defaults.deployment_name}")
+
+
+
+def invoke_batch_endpoint(workspace_ml_client, endpoint_name, batch_inputs_dir):
+    task = latest_model.flavors["transformers"]["task"]
+    scoring_file, scoring_input = self.get_specified_input(task=task)
+    # Define the input object
+    input = Input(path=batch_inputs_dir, type=AssetTypes.URI_FOLDER)
+    
+    # Invoke the batch endpoint
+    job = workspace_ml_client.batch_endpoints.invoke(endpoint_name=endpoint_name, input=input)
+    
+    # Stream the job status
+    return workspace_ml_client.jobs.stream(job.name)
 
 
 
@@ -250,6 +299,7 @@ if __name__ == "__main__":
     # workspace_ml_client = {}  # Your ML Client object
 
     create_and_configure_batch_endpoint(foundation_model, queue.compute, workspace_ml_client)
+    stream = invoke_batch_endpoint(workspace_ml_client, endpoint_name, task)
 
 
     # BEDeployment = BatchDeployemnt(
