@@ -67,8 +67,8 @@ def get_task_specified_input(task):
     # print (f"test_registry: {queue['registry']}")
         
         folder_path = f"../../config/sample_inputs/{queue.registry}/{task}/batch_inputs"
-        print("folder path :" , folder_path)
-        print("resistry queuq:" {queue['registry']})
+        # print("folder path :" , folder_path)
+        # print("resistry queuq:" , {queue['registry']})
         #folder_path = os.path.abspath("../../task/batch_inputs")
         #scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
         file_names = os.listdir(folder_path)
