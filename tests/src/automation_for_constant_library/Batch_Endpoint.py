@@ -210,7 +210,7 @@ def create_and_configure_batch_endpoint(
     endpoint = workspace_ml_client.batch_endpoints.get(endpoint_name)
     print(f"The default deployment is {endpoint.defaults.deployment_name}")
 
-    task = latest_model.flavors["transformers"]["task"]
+    task = foundation_model.flavors["transformers"]["task"]
     folder_path , scoring_input = self.get_specified_input(task=task)
     input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
 
