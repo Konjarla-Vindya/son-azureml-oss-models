@@ -155,11 +155,11 @@ class Dashboard():
         try:
              with urllib.request.urlopen(job_url) as f:
                  a_variable = f.read().decode('utf-8')
-                 print(a_variable)
+                 # print(a_variable)
         except urllib.error.URLError as e:
              error_message = str(e)
              error_messages.append(error_message)
-             print(error_message)
+             print(error_messages)
 
         return error_messages
             # response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
