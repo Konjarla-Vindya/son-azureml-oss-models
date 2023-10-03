@@ -151,10 +151,11 @@ class Dashboard():
     def extract_error_messages(self, job_url):
         try:
             response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
+            print("job_url:", job_url)
             response.raise_for_status()
             html_content = response.text
             print(html_content)
-            print(job_url)
+    
             # Parse the HTML content using BeautifulSoup
             soup = BeautifulSoup(html_content, "html.parser")
     
@@ -171,13 +172,15 @@ class Dashboard():
                         text = text[:first_newline_index]
                     error_messages.append(text.strip())  # Strip leading/trailing whitespace
     
-            error_messages = "\n".join(error_messages)
-    
-            return error_messages
+            if error_messages:
+                return "\n".join(error_messages)
+            else:
+                return "No error messages found"
     
         except requests.exceptions.RequestException as e:
             print(f"An error occurred while fetching messages from '{job_url}': {e}")
             return "Error: Unable to fetch messages"
+
     
 
     def results(self, last_runs_dict):
