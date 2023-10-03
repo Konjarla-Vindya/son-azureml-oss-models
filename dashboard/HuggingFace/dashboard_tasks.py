@@ -200,8 +200,22 @@ class Dashboard():
         # |Inference with Parameters | 0 | 0 | 0.00% | 0 | 0.00% | 0 | 0 | 0 |
         # """
         summary_text = "\n".join(summary)
+        models_entry = {
+                    "Model": workflow_name.replace(".yml", ""),
+                    # "HFLink": f"[Link](https://huggingface.co/{workflow_name.replace(".yml", "").replace("MLFlow-","")})",
+                    # "Status": "<span style='background-color: #00FF00; padding: 2px 6px; border-radius: 3px;'>PASS</span>" if last_run["conclusion"] == "success" else "<span style='background-color: #FF0000; padding: 2px 6px; border-radius: 3px;'>FAIL</span>",
+                    # "Status": " ✅ PASS" if last_run["conclusion"] == "success" elif last_run["conclusion"] == "failure" "❌ FAIL",
+                    "Status": f"{'✅ PASS' if last_run['conclusion'] == 'success' else '❌ FAIL' if last_run['conclusion'] == 'failure' else '🚫 CANCELLED' if last_run['conclusion'] == 'cancelled' else '⏳ RUNNING'}",
+                    "LastRunLink": f"[Link]({run_link})",
+                    "LastRunTimestamp": last_run["created_at"],
+                    "Model Package/Dynmaic Installation": f"""{'Model Package' if workflow_name.startswith("MLFlow-MP") == True else 'Dynmaic Installation' if workflow_name.startswith("MLFlow-DI") == True else 'None' }"""
+                }
+
+                self.models_data.append(models_entry)
         print (summary_text)   
-        return summary_text
+        print (models_entry)
+        self.models_data.sort(key=lambda x: (x["Status"] != "❌ FAIL", x["Status"]))
+        return summary_text, models_entry
            
     # def extract_error_messages(self, job_url):
     #     try:
@@ -235,19 +249,24 @@ class Dashboard():
     #         return "Error: Unable to fetch messages"
     
 
-    def results(self, summary_text):
+    def results(self, summary_text, models_entry):
        
         # dashboard_tasks  =  workflow_last_run()
-        
+        models_df = pandas.DataFrame.from_dict(self.models_data)
+        models_md = models_df.to_markdown()
         with open("dashboard_tasks.md", "w", encoding="utf-8") as f:
             f.write(summary_text)
+            f.write(os.linesep)
+            f.write(os.linesep)
+            f.write(models_md)
+            
             
 
 def main():
 
         my_class = Dashboard()
         summary_text = my_class.workflow_last_run()  
-        my_class.results(summary_text)
+        my_class.results(summary_text, models_entry)
 
 if __name__ == "__main__":
     main()
