@@ -153,15 +153,25 @@ class Dashboard():
     def extract_error_messages(self, job_url):
         error_messages = []
         try:
-             with urllib.request.urlopen(job_url) as f:
-                 a_variable = f.read().decode('utf-8')
-                 # print(a_variable)
+            with urllib.request.urlopen(job_url) as f:
+                job_response = f.read().decode('utf-8')
+                # Search for error messages starting with '\"message\":' and ending with '\n'
+                error_messages = re.findall(r'"message":(.*?)(?=\n|$)', job_response)
         except urllib.error.URLError as e:
-             error_message = str(e)
-             error_messages.append(error_message)
-             print(error_messages)
-
+            error_messages.append(str(e))
+        
         return error_messages
+        # error_messages = []
+        # try:
+        #      with urllib.request.urlopen(job_url) as f:
+        #          a_variable = f.read().decode('utf-8')
+        #          # print(a_variable)
+        # except urllib.error.URLError as e:
+        #      error_message = str(e)
+        #      error_messages.append(error_message)
+        #      print(error_messages)
+
+        # return error_messages
             # response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
             # print("job_url:", job_url)
             # response.raise_for_status()
