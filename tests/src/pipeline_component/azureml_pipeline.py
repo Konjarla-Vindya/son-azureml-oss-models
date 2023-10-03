@@ -4,6 +4,7 @@ from azure.ai.ml.constants import AssetTypes
 from utils.logging import get_logger
 import mlflow
 import time
+import sys
 
 
 COMPUTE_CLUSTER = "cpu-cluster"
@@ -18,33 +19,39 @@ class AzurePipeline:
 
     @pipeline()
     def evaluation_pipeline(self, mlflow_model, data_path):
-        logger.info("Started configuring the job")
-        pipeline_component_func = self.registry_ml_client.components.get(
-            name="mlflow_oss_model_evaluation_pipeline", label="latest"
-        )
-        evaluation_job = pipeline_component_func(
-            # specify the foundation model available in the azureml system registry or a model from the workspace
-            # mlflow_model = Input(type=AssetTypes.MLFLOW_MODEL, path=f"{mlflow_model_path}"),
-            mlflow_model=mlflow_model,
-            # test data
-            test_data=Input(type=AssetTypes.URI_FILE, path=data_path),
-            # The following parameters map to the dataset fields
-            input_column_names="input_string",
-            label_column_name="ro",
-            # compute settings
-            compute_name=COMPUTE_CLUSTER,
-            # specify the instance type for serverless job
-            # instance_type= "STANDARD_NC24",
-            # Evaluation settings
-            task="text-translation",
-            # config file containing the details of evaluation metrics to calculate
-            evaluation_config=Input(
-                type=AssetTypes.URI_FILE, path="./evaluation/eval_config.json"),
-            # config cluster/device job is running on
-            # set device to GPU/CPU on basis if GPU count was found
-            device="auto",
-        )
-        return {"evaluation_result": evaluation_job.outputs.evaluation_result}
+        try:
+            logger.info("Started configuring the job")
+            pipeline_component_func = self.registry_ml_client.components.get(
+                name="mlflow_oss_model_evaluation_pipeline", label="latest"
+            )
+            evaluation_job = pipeline_component_func(
+                # specify the foundation model available in the azureml system registry or a model from the workspace
+                # mlflow_model = Input(type=AssetTypes.MLFLOW_MODEL, path=f"{mlflow_model_path}"),
+                mlflow_model=mlflow_model,
+                # test data
+                test_data=Input(type=AssetTypes.URI_FILE, path=data_path),
+                # The following parameters map to the dataset fields
+                input_column_names="input_string",
+                label_column_name="ro",
+                # compute settings
+                compute_name=COMPUTE_CLUSTER,
+                # specify the instance type for serverless job
+                # instance_type= "STANDARD_NC24",
+                # Evaluation settings
+                task="text-translation",
+                # config file containing the details of evaluation metrics to calculate
+                evaluation_config=Input(
+                    type=AssetTypes.URI_FILE, path="./evaluation/eval_config.json"),
+                # config cluster/device job is running on
+                # set device to GPU/CPU on basis if GPU count was found
+                device="auto",
+            )
+            return {"evaluation_result": evaluation_job.outputs.evaluation_result}
+        except Exception as ex:
+            _, _, exc_tb = sys.exc_info()
+            logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
+                         f" the exception is this one : \n {ex}")
+            raise Exception(ex)
 
     def run_pipeline(self, data_path, foundation_model):
         pipeline_jobs = []
