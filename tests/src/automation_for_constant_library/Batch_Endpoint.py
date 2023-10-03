@@ -64,6 +64,7 @@ def get_sku_override():
         return None
 
 def get_task_specified_input(task):
+    print("pulling inputs")
     folder_path = f"../../config/sample_inputs/{queue.registry}/{task}/batch_inputs"
 
     # List all file names in the folder
@@ -247,19 +248,19 @@ def create_and_configure_batch_endpoint(
     print(f"The default deployment is {endpoint.defaults.deployment_name}")
     return endpoint
 
-    task = foundation_model.flavors["transformers"]["task"]
-    print("task :", {task})
-    folder_path = get_task_specified_input(task=task)
-    print(" input taken running Batch Job")
-    input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
+    # task = foundation_model.flavors["transformers"]["task"]
+    # print("task :", {task})
+    # folder_path = get_task_specified_input(task=task)
+    # print(" input taken running Batch Job")
+    # input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
 
-    # Invoke the batch endpoint
-    job = workspace_ml_client.batch_endpoints.invoke(
-        endpoint_name=endpoint.name, input=input
-    )
-    # Stream the job status
-    for status in workspace_ml_client.jobs.stream(job.name):
-        print(status)
+    # # Invoke the batch endpoint
+    # job = workspace_ml_client.batch_endpoints.invoke(
+    #     endpoint_name=endpoint.name, input=input
+    # )
+    # # Stream the job status
+    # for status in workspace_ml_client.jobs.stream(job.name):
+    #     print(status)
 
 
 
@@ -346,6 +347,19 @@ if __name__ == "__main__":
     # workspace_ml_client = {}  # Your ML Client object
 
     endpoint = create_and_configure_batch_endpoint(foundation_model, queue.compute, workspace_ml_client)
+    task = foundation_model.flavors["transformers"]["task"]
+    print("task :", {task})
+    folder_path = get_task_specified_input(task=task)
+    print(" input taken running Batch Job")
+    input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
+
+    # Invoke the batch endpoint
+    job = workspace_ml_client.batch_endpoints.invoke(
+        endpoint_name=endpoint.name, input=input
+    )
+    # Stream the job status
+    for status in workspace_ml_client.jobs.stream(job.name):
+        print(status)
     #stream = invoke_batch_endpoint(workspace_ml_client, endpoint_name = endpoint_name, folder_path)
 
 
