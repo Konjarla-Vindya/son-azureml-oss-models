@@ -295,7 +295,7 @@ if __name__ == "__main__":
     # workspace_ml_client = {}  # Your ML Client object
 
     create_and_configure_batch_endpoint(foundation_model, queue.compute, workspace_ml_client)
-    stream = invoke_batch_endpoint(workspace_ml_client, endpoint_name, task)
+    stream = invoke_batch_endpoint(workspace_ml_client, endpoint_name = endpoint_name, task)
 
 
     # BEDeployment = BatchDeployemnt(
