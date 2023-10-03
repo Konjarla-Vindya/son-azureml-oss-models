@@ -193,7 +193,7 @@ class Dashboard():
         #summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|⏳Running|")
         #summary.append("-----|-------|-------|-------|-------|")
         summary.append(f"Online Endpoint Deployment - Dynamic Installation|{results_dict['total_di']}|{results_dict['success_di']}|{(results_dict['success_di']/results_dict['total_di'])*100}%|{results_dict['failure_di']}|{(results_dict['failure_di']/results_dict['total_di'])*100}%|{results_dict['cancelled_di']}|{results_dict['running_di']}|{results_dict['not_tested_di']}|")
-        summary.append(f"Online Endpoint Deployment - Model Packaging|{results_dict['total_mp']}|{results_dict['success_mp']}|{(results_dict['success_mp']/results_dict['total_mp'])*100}%|{results_dict['failure_mp']}|{(results_dict['failure_mp']/results_dict['total_mp'])*100}%|{results_dict['cancelled_mp']}|{results_dict['running_mp']}|{results_dict["not_tested_mp"]}|")
+        summary.append(f"Online Endpoint Deployment - Model Packaging|{results_dict['total_mp']}|{results_dict['success_mp']}|{(results_dict['success_mp']/results_dict['total_mp'])*100}%|{results_dict['failure_mp']}|{(results_dict['failure_mp']/results_dict['total_mp'])*100}%|{results_dict['cancelled_mp']}|{results_dict['running_mp']}|{results_dict['not_tested_mp']}|")
 
         models_df = pandas.DataFrame.from_dict(self.models_data)
         models_md = models_df.to_markdown()
