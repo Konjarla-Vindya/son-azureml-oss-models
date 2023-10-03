@@ -211,7 +211,7 @@ class Dashboard():
                     "Model Package/Dynmaic Installation": f"""{'Model Package' if workflow_name.startswith("MLFlow-MP") == True else 'Dynmaic Installation' if workflow_name.startswith("MLFlow-DI") == True else 'None' }"""
                 }
 
-                self.models_data.append(models_entry)
+        self.models_data.append(models_entry)
         print (summary_text)   
         print (models_entry)
         self.models_data.sort(key=lambda x: (x["Status"] != "❌ FAIL", x["Status"]))
