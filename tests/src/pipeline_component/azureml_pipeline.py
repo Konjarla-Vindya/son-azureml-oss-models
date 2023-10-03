@@ -17,7 +17,7 @@ class AzurePipeline:
         self.task = task
 
 
-    @pipeline()
+    #@pipeline()
     def evaluation_pipeline(self, mlflow_model, data_path):
         try:
             logger.info("Started configuring the job")
