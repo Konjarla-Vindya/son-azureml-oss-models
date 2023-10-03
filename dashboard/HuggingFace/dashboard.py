@@ -155,12 +155,12 @@ class Dashboard():
         try:
             with urllib.request.urlopen(job_url) as f:
                 job_response = f.read().decode('utf-8')
-                soup = BeautifulSoup(job_response, 'html.parser')
-                for paragraph in soup.find_all('p'):
-                    text = paragraph.get_text()
-                    # Check if the text contains '\"message\":'
-                    if '\"message\":' in text:
-                        error_messages.append(text.strip())
+                # Parse the JSON response
+                response_json = json.loads(job_response)
+                
+                # Check if the JSON response contains 'message' key
+                if 'message' in response_json:
+                    error_messages.append(response_json['message'])
         except urllib.error.URLError as e:
             error_messages.append(str(e))
         
