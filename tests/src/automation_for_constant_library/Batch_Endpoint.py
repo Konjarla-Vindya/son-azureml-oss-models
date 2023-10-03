@@ -93,11 +93,11 @@ def get_task_specified_input(self, task):
                 f"::warning:: Could not find scoring_file: {folder_path }. Finishing without sample scoring: \n{e}")
         return folder_path , scoring_input
     
-def get_specified_input(self):
-    # Batch_inputs=f"Batch_inputs"
-    scoring_file = f"../../config/sample_inputs/{self.registry}/Batch_inputs/"
-    for file in Batch_inputs
-        scoring_file = f"Batch_inputs/{file}.json"
+# def get_specified_input(self):
+#     # Batch_inputs=f"Batch_inputs"
+#     scoring_file = f"../../config/sample_inputs/{self.registry}/Batch_inputs/"
+#     for file in Batch_inputs
+#         scoring_file = f"Batch_inputs/{file}.json"
 
 def set_next_trigger_model(queue):
     print("In set_next_trigger_model...")
