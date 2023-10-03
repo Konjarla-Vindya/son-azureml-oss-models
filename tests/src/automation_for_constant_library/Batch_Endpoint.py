@@ -210,17 +210,29 @@ def create_and_configure_batch_endpoint(
     endpoint = workspace_ml_client.batch_endpoints.get(endpoint_name)
     print(f"The default deployment is {endpoint.defaults.deployment_name}")
 
-
-
-def invoke_batch_endpoint(workspace_ml_client, endpoint_name, folder_path):
     task = latest_model.flavors["transformers"]["task"]
     folder_path , scoring_input = self.get_specified_input(task=task)
-    # Define the input object
-    input = Input(path=folder_path , type=AssetTypes.URI_FOLDER)
+    input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
+
     # Invoke the batch endpoint
-    job = workspace_ml_client.batch_endpoints.invoke(endpoint_name=endpoint_name, input=input)
+    job = workspace_ml_client.batch_endpoints.invoke(
+        endpoint_name=endpoint.name, input=input
+    )
     # Stream the job status
-    return workspace_ml_client.jobs.stream(job.name)
+    for status in workspace_ml_client.jobs.stream(job.name):
+        print(status)
+
+
+
+# def invoke_batch_endpoint(workspace_ml_client, endpoint_name, folder_path):
+#     task = latest_model.flavors["transformers"]["task"]
+#     folder_path , scoring_input = self.get_specified_input(task=task)
+#     # Define the input object
+#     input = Input(path=folder_path , type=AssetTypes.URI_FOLDER)
+#     # Invoke the batch endpoint
+#     job = workspace_ml_client.batch_endpoints.invoke(endpoint_name=endpoint_name, input=input)
+#     # Stream the job status
+#     return workspace_ml_client.jobs.stream(job.name)
 
 
 
@@ -295,7 +307,7 @@ if __name__ == "__main__":
     # workspace_ml_client = {}  # Your ML Client object
 
     create_and_configure_batch_endpoint(foundation_model, queue.compute, workspace_ml_client)
-    stream = invoke_batch_endpoint(workspace_ml_client, endpoint_name = endpoint_name, folder_path)
+    #stream = invoke_batch_endpoint(workspace_ml_client, endpoint_name = endpoint_name, folder_path)
 
 
     # BEDeployment = BatchDeployemnt(
