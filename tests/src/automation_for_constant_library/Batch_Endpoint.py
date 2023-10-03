@@ -89,12 +89,12 @@ def get_task_specified_input(task):
     # Now you can include both the folder input and individual file inputs in the job
     job_inputs = [folder_input] + inputs
     
-    # Invoke the batch endpoint with the list of inputs
-    job = workspace_ml_client.batch_endpoints.invoke(endpoint_name=endpoint.name, input=job_inputs)
+    # # Invoke the batch endpoint with the list of inputs
+    # job = workspace_ml_client.batch_endpoints.invoke(endpoint_name=endpoint.name, input=job_inputs)
     
-    # Ensure you check the job status or stream the job's status as needed
-    for status in workspace_ml_client.jobs.stream(job.name):
-        print(status)
+    # # Ensure you check the job status or stream the job's status as needed
+    # for status in workspace_ml_client.jobs.stream(job.name):
+    #     print(status)
 
     # print (f"test_registry: {queue['registry']}")
         
@@ -248,7 +248,9 @@ def create_and_configure_batch_endpoint(
     return endpoint
 
     task = foundation_model.flavors["transformers"]["task"]
+    print("task :", {task})
     folder_path = get_task_specified_input(task=task)
+    print(" input taken running Batch Job")
     input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
 
     # Invoke the batch endpoint
