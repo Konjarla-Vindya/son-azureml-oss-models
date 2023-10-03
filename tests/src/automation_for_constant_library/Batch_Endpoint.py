@@ -64,38 +64,70 @@ def get_sku_override():
         return None
 
 def get_task_specified_input(task):
+    folder_path = f"../../config/sample_inputs/{queue.registry}/{task}/batch_inputs"
+
+    # List all file names in the folder
+    file_names = os.listdir(folder_path)
+    
+    # Create a list to store individual input objects for each file
+    inputs = []
+    
+    # Process each file in the folder
+    for file_name in file_names:
+        # Construct the full path to the file
+        file_path = os.path.join(folder_path, file_name)
+        
+        # Check if it's a file (not a directory)
+        if os.path.isfile(file_path):
+            # Create an Input object for the file and add it to the list of inputs
+            file_input = Input(path=file_path, type=AssetTypes.URI_FILE)
+            inputs.append(file_input)
+    
+    # Create an Input object for the folder containing all files
+    folder_input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
+    
+    # Now you can include both the folder input and individual file inputs in the job
+    job_inputs = [folder_input] + inputs
+    
+    # Invoke the batch endpoint with the list of inputs
+    job = workspace_ml_client.batch_endpoints.invoke(endpoint_name=endpoint.name, input=job_inputs)
+    
+    # Ensure you check the job status or stream the job's status as needed
+    for status in workspace_ml_client.jobs.stream(job.name):
+        print(status)
+
     # print (f"test_registry: {queue['registry']}")
         
-        folder_path = f"../../config/sample_inputs/{queue.registry}/{task}/batch_inputs"
-        # print("folder path :" , folder_path)
-        # print("resistry queuq:" , {queue['registry']})
-        #folder_path = os.path.abspath("../../task/batch_inputs")
-        #scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
-        file_names = os.listdir(folder_path)
-        # Process each file in the folder
-        for file_name in file_names:
-            # Construct the full path to the file
-            file_path = os.path.join(folder_path, file_name)
+        # folder_path = f"../../config/sample_inputs/{queue.registry}/{task}/batch_inputs"
+        # # print("folder path :" , folder_path)
+        # # print("resistry queuq:" , {queue['registry']})
+        # #folder_path = os.path.abspath("../../task/batch_inputs")
+        # #scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
+        # file_names = os.listdir(folder_path)
+        # # Process each file in the folder
+        # for file_name in file_names:
+        #     # Construct the full path to the file
+        #     file_path = os.path.join(folder_path, file_name)
             
-            # Check if it's a file (not a directory) and read its content
-            if os.path.isfile(file_path):
-                with open(file_path, 'r') as file:
-                    file_content = file.read()
+        #     # Check if it's a file (not a directory) and read its content
+        #     if os.path.isfile(file_path):
+        #         with open(file_path, 'r') as file:
+        #             file_content = file.read()
                 
-                # Process the file content as needed
-                print(f"File Name: {file_name}")
-                print("File Content:")
-                print(file_content)
-                print("\n")
-        #check of scoring_file exists
-        # try:
-        #     with open(folder_path) as f:
-        #         scoring_input = ConfigBox(csv.load(f))
-        #         print(f"scoring_input file:\n\n {scoring_input}\n\n")
-        # except Exception as e:
-        #     print(
-        #         f"::warning:: Could not find scoring_file: {folder_path }. Finishing without sample scoring: \n{e}")
-        # return folder_path , scoring_input
+        #         # Process the file content as needed
+        #         print(f"File Name: {file_name}")
+        #         print("File Content:")
+        #         print(file_content)
+        #         print("\n")
+        # #check of scoring_file exists
+        # # try:
+        # #     with open(folder_path) as f:
+        # #         scoring_input = ConfigBox(csv.load(f))
+        # #         print(f"scoring_input file:\n\n {scoring_input}\n\n")
+        # # except Exception as e:
+        # #     print(
+        # #         f"::warning:: Could not find scoring_file: {folder_path }. Finishing without sample scoring: \n{e}")
+        # # return folder_path , scoring_input
     
 # def get_specified_input(self):
 #     # Batch_inputs=f"Batch_inputs"
