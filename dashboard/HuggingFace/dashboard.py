@@ -151,7 +151,7 @@ class Dashboard():
     def extract_error_messages(self, job_url):
         try:
             response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
-            print("job_url : "job_url)
+            print("job_url:", job_url)
             response.raise_for_status()
             html_content = response.text
             print(html_content)
