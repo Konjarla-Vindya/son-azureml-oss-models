@@ -212,7 +212,7 @@ def create_and_configure_batch_endpoint(
 
 
 
-def invoke_batch_endpoint(workspace_ml_client, endpoint_name, batch_inputs_dir):
+def invoke_batch_endpoint(workspace_ml_client, endpoint_name, folder_path):
     task = latest_model.flavors["transformers"]["task"]
     folder_path , scoring_input = self.get_specified_input(task=task)
     # Define the input object
@@ -295,7 +295,7 @@ if __name__ == "__main__":
     # workspace_ml_client = {}  # Your ML Client object
 
     create_and_configure_batch_endpoint(foundation_model, queue.compute, workspace_ml_client)
-    stream = invoke_batch_endpoint(workspace_ml_client, endpoint_name = endpoint_name, task)
+    stream = invoke_batch_endpoint(workspace_ml_client, endpoint_name = endpoint_name, folder_path)
 
 
     # BEDeployment = BatchDeployemnt(
