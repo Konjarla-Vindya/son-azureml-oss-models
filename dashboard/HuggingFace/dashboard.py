@@ -155,8 +155,12 @@ class Dashboard():
         try:
             with urllib.request.urlopen(job_url) as f:
                 job_response = f.read().decode('utf-8')
-                # Search for error messages starting with '\"message\":' and ending with '\n'
-                error_messages = re.findall(r'"message":(.*?)(?=\n|$)', job_response)
+                soup = BeautifulSoup(job_response, 'html.parser')
+                for paragraph in soup.find_all('p'):
+                    text = paragraph.get_text()
+                    # Check if the text contains '\"message\":'
+                    if '\"message\":' in text:
+                        error_messages.append(text.strip())
         except urllib.error.URLError as e:
             error_messages.append(str(e))
         
