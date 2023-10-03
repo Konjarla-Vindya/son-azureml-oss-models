@@ -83,15 +83,16 @@ def get_task_specified_input(self, task):
                 print("File Content:")
                 print(file_content)
                 print("\n")
-        # check of scoring_file exists
-        # try:
-        #     with open(folder_path) as f:
-        #         scoring_input = ConfigBox(json.load(f))
-        #         print(f"scoring_input file:\n\n {scoring_input}\n\n")
-        # except Exception as e:
-        #     print(
-        #         f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
-        # return scoring_file, scoring_input
+        #check of scoring_file exists
+        try:
+            with open(folder_path) as f:
+                scoring_input = ConfigBox(csv.load(f))
+                print(f"scoring_input file:\n\n {scoring_input}\n\n")
+        except Exception as e:
+            print(
+                f"::warning:: Could not find scoring_file: {folder_path }. Finishing without sample scoring: \n{e}")
+        return folder_path , scoring_input
+    
 def get_specified_input(self):
     Batch_inputs=f"Batch_inputs"
     scoring_file = f"../../config/sample_inputs/{self.registry}/Batch_inputs"
@@ -213,18 +214,13 @@ def create_and_configure_batch_endpoint(
 
 def invoke_batch_endpoint(workspace_ml_client, endpoint_name, batch_inputs_dir):
     task = latest_model.flavors["transformers"]["task"]
-    scoring_file, scoring_input = self.get_specified_input(task=task)
+    folder_path , scoring_input = self.get_specified_input(task=task)
     # Define the input object
-    input = Input(path=batch_inputs_dir, type=AssetTypes.URI_FOLDER)
-    
+    input = Input(path=folder_path , type=AssetTypes.URI_FOLDER)
     # Invoke the batch endpoint
     job = workspace_ml_client.batch_endpoints.invoke(endpoint_name=endpoint_name, input=input)
-    
     # Stream the job status
     return workspace_ml_client.jobs.stream(job.name)
-
-
-
 
 
 
