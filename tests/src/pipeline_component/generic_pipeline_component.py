@@ -43,6 +43,7 @@ test_keep_looping = os.environ.get('test_keep_looping')
 
 FILE_NAME = "pipeline_task.json"
 
+
 def get_test_queue() -> ConfigBox:
     queue_file = f"../../config/queue/{test_set}/{test_queue}.json"
     with open(queue_file) as f:
@@ -123,6 +124,7 @@ def get_dataset(task, data_path):
     attribute = getattr(LoadDataset, task)
     return attribute(load_dataset)
 
+
 def get_pipeline_task(task):
     try:
         with open(FILE_NAME) as f:
@@ -131,8 +133,9 @@ def get_pipeline_task(task):
                 f"Library name based on its task :\n\n {pipeline_task}\n\n")
     except Exception as e:
         logger.error(
-        f"::Error:: Could not find library from here :{pipeline_task}.Here is the exception\n{e}")
+            f"::Error:: Could not find library from here :{pipeline_task}.Here is the exception\n{e}")
     return pipeline_task.get(task)
+
 
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -176,7 +179,11 @@ if __name__ == "__main__":
         workspace_name=queue.workspace
     )
     registry_ml_client = MLClient(
-        credential=credential, registry_name="azureml-preview-test1")
+        credential=credential,
+        subscription_id="4f26493f-21d2-4726-92ea-1ddd550b1d27",
+        resource_group_name="registry-builtin-prp-test",
+        registry_name="azureml-preview-test1"
+    )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(
         workspace_ml_client, queue.compute)
