@@ -245,6 +245,7 @@ def create_and_configure_batch_endpoint(
     # Retrieve and print the default deployment name
     endpoint = workspace_ml_client.batch_endpoints.get(endpoint_name)
     print(f"The default deployment is {endpoint.defaults.deployment_name}")
+    return endpoint
 
     task = foundation_model.flavors["transformers"]["task"]
     folder_path = get_task_specified_input(task=task)
@@ -342,7 +343,7 @@ if __name__ == "__main__":
     # compute_name = "your_compute_name"
     # workspace_ml_client = {}  # Your ML Client object
 
-    create_and_configure_batch_endpoint(foundation_model, queue.compute, workspace_ml_client)
+    endpoint = create_and_configure_batch_endpoint(foundation_model, queue.compute, workspace_ml_client)
     #stream = invoke_batch_endpoint(workspace_ml_client, endpoint_name = endpoint_name, folder_path)
 
 
