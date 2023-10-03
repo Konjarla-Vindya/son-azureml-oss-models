@@ -63,8 +63,8 @@ def get_sku_override():
         print(f"::warning:: Could not find sku-override file: \n{e}")
         return None
 
-def get_task_specified_input(self, task):
-        folder_path = f"../../config/sample_inputs/{self.registry}/{task}/batch_inputs"
+def get_task_specified_input(task):
+        folder_path = f"../../config/sample_inputs/{registry}/{task}/batch_inputs"
         #folder_path = os.path.abspath("../../task/batch_inputs")
         #scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
         file_names = os.listdir(folder_path)
@@ -211,7 +211,7 @@ def create_and_configure_batch_endpoint(
     print(f"The default deployment is {endpoint.defaults.deployment_name}")
 
     task = foundation_model.flavors["transformers"]["task"]
-    folder_path , scoring_input = self.get_specified_input(task=task)
+    folder_path , scoring_input = get_specified_input(task=task)
     input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
 
     # Invoke the batch endpoint
