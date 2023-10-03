@@ -358,13 +358,13 @@ if __name__ == "__main__":
     job = workspace_ml_client.batch_endpoints.invoke(
         endpoint_name=endpoint.name, input=input
     )
-    if job is not None:
-        print(f"Job name: {job.name}")
-        # Stream the job status
-        for status in workspace_ml_client.jobs.stream(job.name):
-            print(status)
-    else:
-        print("Job object is None. There might be an issue with the batch endpoint invocation.")
+    # if job is not None:
+    #     print(f"Job name: {job.name}")
+    #     # Stream the job status
+    #     for status in workspace_ml_client.jobs.stream(job.name):
+    #         print(status)
+    # else:
+    #     print("Job object is None. There might be an issue with the batch endpoint invocation.")
 
 
     # BEDeployment = BatchDeployemnt(
