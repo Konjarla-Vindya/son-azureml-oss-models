@@ -88,14 +88,14 @@ def get_task_specified_input(task):
                 print(file_content)
                 print("\n")
         #check of scoring_file exists
-        try:
-            with open(folder_path) as f:
-                scoring_input = ConfigBox(csv.load(f))
-                print(f"scoring_input file:\n\n {scoring_input}\n\n")
-        except Exception as e:
-            print(
-                f"::warning:: Could not find scoring_file: {folder_path }. Finishing without sample scoring: \n{e}")
-        return folder_path , scoring_input
+        # try:
+        #     with open(folder_path) as f:
+        #         scoring_input = ConfigBox(csv.load(f))
+        #         print(f"scoring_input file:\n\n {scoring_input}\n\n")
+        # except Exception as e:
+        #     print(
+        #         f"::warning:: Could not find scoring_file: {folder_path }. Finishing without sample scoring: \n{e}")
+        # return folder_path , scoring_input
     
 # def get_specified_input(self):
 #     # Batch_inputs=f"Batch_inputs"
@@ -215,7 +215,7 @@ def create_and_configure_batch_endpoint(
     print(f"The default deployment is {endpoint.defaults.deployment_name}")
 
     task = foundation_model.flavors["transformers"]["task"]
-    folder_path , scoring_input = get_task_specified_input(task=task)
+    folder_path = get_task_specified_input(task=task)
     input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
 
     # Invoke the batch endpoint
