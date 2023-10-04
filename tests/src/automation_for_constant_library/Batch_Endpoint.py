@@ -363,13 +363,24 @@ if __name__ == "__main__":
     job = workspace_ml_client.batch_endpoints.invoke(
         endpoint_name=endpoint.name, input=input
     )
-    print("Submitted Job to AML")
-    # Get the final status of the job
-    job_status = job.get_status()
-    print("Job Status:", job_status)
 
-    # Print the job status as an output variable
-    print(f"::set-output name=job_status::{job_status}")
+    # Stream job logs and monitor job status
+    for log in workspace_ml_client.jobs.stream(job.name):
+        print(log.message)
+    
+    # The job has completed at this point, and you can access its status and other information
+    job_details = workspace_ml_client.jobs.get(job.name)
+    print("Job Status:", job_details.status)
+
+
+
+    # print("Submitted Job to AML")
+    # # Get the final status of the job
+    # job_status = job.get_status()
+    # print("Job Status:", job_status)
+
+    # # Print the job status as an output variable
+    # print(f"::set-output name=job_status::{job_status}")
 
 
     # if job is not None:
