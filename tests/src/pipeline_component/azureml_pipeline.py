@@ -58,8 +58,8 @@ class AzurePipeline:
             pipeline_jobs = []
             experiment_name = "text-translation-evaluation"
             pipeline_object = self.evaluation_pipeline(
-                    #mlflow_model=Input(type=AssetTypes.MLFLOW_MODEL, path=f"{foundation_model.id}"),
-                    mlflow_model = f"{foundation_model.id}",
+                    mlflow_model=Input(type=AssetTypes.MLFLOW_MODEL, path=f"{foundation_model.id}"),
+                    #mlflow_model = f"{foundation_model.id}",
                     data_path = data_path
                 )
             # don't reuse cached results from previous jobs
