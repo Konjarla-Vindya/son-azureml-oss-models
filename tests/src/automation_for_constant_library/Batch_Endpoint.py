@@ -75,6 +75,7 @@ def get_task_specified_input(task):
     
     # Process each file in the folder
     for file_name in file_names:
+        print("File Name:", file_name)
         # Construct the full path to the file
         file_path = os.path.join(folder_path, file_name)
         
