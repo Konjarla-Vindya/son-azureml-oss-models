@@ -92,7 +92,7 @@ def get_task_specified_input(task):
     # job_inputs = [folder_input] + inputs
     # return job_inputs
     job_inputs = [folder_input] + inputs
-    print("job_inputs:", {job_inputs})
+    # print("job_inputs:", {job_inputs})
     return folder_path
     
     # # Invoke the batch endpoint with the list of inputs
