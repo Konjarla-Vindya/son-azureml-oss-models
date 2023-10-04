@@ -363,14 +363,17 @@ if __name__ == "__main__":
     job = workspace_ml_client.batch_endpoints.invoke(
         endpoint_name=endpoint.name, input=input
     )
+    workspace_ml_client.jobs.stream(job.name)
 
-    # Stream job logs and monitor job status
-    for log in workspace_ml_client.jobs.stream(job.name):
-        print(log.message)
+
+
+    # # Stream job logs and monitor job status
+    # for log in workspace_ml_client.jobs.stream(job.name):
+    #     print(log.message)
     
-    # The job has completed at this point, and you can access its status and other information
-    job_details = workspace_ml_client.jobs.get(job.name)
-    print("Job Status:", job_details.status)
+    # # The job has completed at this point, and you can access its status and other information
+    # job_details = workspace_ml_client.jobs.get(job.name)
+    # print("Job Status:", job_details.status)
 
 
 
