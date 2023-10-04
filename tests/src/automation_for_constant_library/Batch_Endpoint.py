@@ -361,13 +361,13 @@ if __name__ == "__main__":
 
     #test_model_name = registered_model_name
     print("model name replaced with - :", {registered_model_name})
-    registered_model_detail = client.get_latest_versions(
-        name=registered_model_name , stages=["None"])
-    model_detail = registered_model_detail[0]
-    print("Latest registered model: " , model_detail)
-    print("Latest registered model version is : ", model_detail.version)
-    print("queue.compute---", queue.compute)
-    print("queue.workspace====", queue.workspace)
+    # registered_model_detail = client.get_latest_versions(
+    #     name=registered_model_name , stages=["None"])
+    # model_detail = registered_model_detail[0]
+    # print("Latest registered model: " , model_detail)
+    # print("Latest registered model version is : ", model_detail.version)
+    # print("queue.compute---", queue.compute)
+    # print("queue.workspace====", queue.workspace)
     foundation_model = get_latest_model_version(workspace_ml_client, registered_model_name )
     # Example usage:
     # Replace these variables with your actual values
