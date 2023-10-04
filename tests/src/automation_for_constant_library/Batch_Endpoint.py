@@ -360,6 +360,7 @@ if __name__ == "__main__":
 
 
     #test_model_name = registered_model_name
+    print("model name replaced with - :" {registered_model_name})
     registered_model_detail = client.get_latest_versions(
         name=registered_model_name , stages=["None"])
     model_detail = registered_model_detail[0]
