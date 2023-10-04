@@ -83,41 +83,6 @@ def set_next_trigger_model(queue):
         print(f'NEXT_MODEL={next_model}', file=fh)
 
 
-def create_or_get_compute_target(ml_client,  compute):
-    cpu_compute_target = compute
-    try:
-        compute = ml_client.compute.get(cpu_compute_target)
-    except Exception:
-        logger.info("Creating a new cpu compute target...")
-        compute = AmlCompute(
-            name=cpu_compute_target, size=compute, min_instances=0, max_instances=4
-        )
-        ml_client.compute.begin_create_or_update(compute).result()
-
-    return compute
-
-
-def run_azure_ml_job(code, command_to_run, environment, compute, environment_variables):
-    logger.info("Creating the command object method")
-    command_job = command(
-        code=code,
-        command=command_to_run,
-        environment=environment,
-        compute=compute,
-        environment_variables=environment_variables
-    )
-    return command_job
-
-
-def create_and_get_job_studio_url(command_job, workspace_ml_client):
-
-    #ml_client = mlflow.tracking.MlflowClient()
-    returned_job = workspace_ml_client.jobs.create_or_update(command_job)
-    # wait for the job to complete
-    workspace_ml_client.jobs.stream(returned_job.name)
-    return returned_job.studio_url
-
-
 def get_file_path(task):
     file_name = task+".json"
     data_path = f"./datasets/{file_name}"
@@ -173,11 +138,11 @@ registry_ml_client = MLClient(
 )
 mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 COMPUTE_CLUSTER = "cpu-cluster"
-data_path = "./datasets/translation.json"
 @pipeline()
 def evaluation_pipeline(self, mlflow_model):
     try:
         logger.info("Started configuring the job")
+        data_path = "./datasets/translation.json"
         pipeline_component_func = registry_ml_client.components.get(
             name="mlflow_oss_model_evaluation_pipeline", label="latest"
         )
