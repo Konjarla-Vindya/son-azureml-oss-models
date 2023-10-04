@@ -23,6 +23,7 @@ class Dashboard():
             "updated_at": [], "status": [], "conclusion": [], "jobs_url": []
         }
         self.models_data = []  # Initialize models_data as an empty list
+        print (Github(auth=self.token))
 
     def get_all_workflow_names(self,limit=50):
         #workflow_name = ["MLFlow-codellama/CodeLlama-13b-Instruct-hf","MLFlow-mosaicml/mpt-7b-storywriter","MLFlow-microsoft/MiniLM-L12-H384-uncased"]
