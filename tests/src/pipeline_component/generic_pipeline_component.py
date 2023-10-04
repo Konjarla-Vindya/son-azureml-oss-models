@@ -12,6 +12,10 @@ from utils.logging import get_logger
 from fetch_model_detail import ModelDetail
 from dataset_loader import LoadDataset
 from azureml_pipeline import AzurePipeline
+from azure.ai.ml.dsl import pipeline
+from azure.ai.ml import Input
+from azure.ai.ml.constants import AssetTypes
+
 
 # constants
 check_override = True
@@ -136,6 +140,36 @@ def get_pipeline_task(task):
             f"::Error:: Could not find library from here :{pipeline_task}.Here is the exception\n{e}")
     return pipeline_task.get(task)
 
+queue = get_test_queue()
+
+try:
+    credential = DefaultAzureCredential()
+    credential.get_token("https://management.azure.com/.default")
+except Exception as ex:
+    # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
+    credential = InteractiveBrowserCredential()
+    logger.info(f"workspace_name : {queue.workspace}")
+try:
+    workspace_ml_client = MLClient.from_config(credential=credential)
+except:
+    workspace_ml_client = MLClient(
+        credential=credential,
+        subscription_id=queue.subscription,
+        resource_group_name=queue.resource_group,
+        workspace_name=queue.workspace
+    )
+ws = Workspace(
+    subscription_id=queue.subscription,
+    resource_group=queue.resource_group,
+    workspace_name=queue.workspace
+)
+registry_ml_client = MLClient(
+    credential=credential,
+    # subscription_id="4f26493f-21d2-4726-92ea-1ddd550b1d27",
+    # resource_group_name="registry-builtin-prp-test",
+    registry_name="azureml-preview-test1"
+)
+mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -157,34 +191,34 @@ if __name__ == "__main__":
     logger.info(f"test_queue: {test_queue}")
     logger.info(f"test_set: {test_set}")
     logger.info(f"Here is my test model name : {test_model_name}")
-    try:
-        credential = DefaultAzureCredential()
-        credential.get_token("https://management.azure.com/.default")
-    except Exception as ex:
-        # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
-        credential = InteractiveBrowserCredential()
-    logger.info(f"workspace_name : {queue.workspace}")
-    try:
-        workspace_ml_client = MLClient.from_config(credential=credential)
-    except:
-        workspace_ml_client = MLClient(
-            credential=credential,
-            subscription_id=queue.subscription,
-            resource_group_name=queue.resource_group,
-            workspace_name=queue.workspace
-        )
-    ws = Workspace(
-        subscription_id=queue.subscription,
-        resource_group=queue.resource_group,
-        workspace_name=queue.workspace
-    )
-    registry_ml_client = MLClient(
-        credential=credential,
-        # subscription_id="4f26493f-21d2-4726-92ea-1ddd550b1d27",
-        # resource_group_name="registry-builtin-prp-test",
-        registry_name="azureml-preview-test1"
-    )
-    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+    # try:
+    #     credential = DefaultAzureCredential()
+    #     credential.get_token("https://management.azure.com/.default")
+    # except Exception as ex:
+    #     # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
+    #     credential = InteractiveBrowserCredential()
+    # logger.info(f"workspace_name : {queue.workspace}")
+    # try:
+    #     workspace_ml_client = MLClient.from_config(credential=credential)
+    # except:
+    #     workspace_ml_client = MLClient(
+    #         credential=credential,
+    #         subscription_id=queue.subscription,
+    #         resource_group_name=queue.resource_group,
+    #         workspace_name=queue.workspace
+    #     )
+    # ws = Workspace(
+    #     subscription_id=queue.subscription,
+    #     resource_group=queue.resource_group,
+    #     workspace_name=queue.workspace
+    # )
+    # registry_ml_client = MLClient(
+    #     credential=credential,
+    #     # subscription_id="4f26493f-21d2-4726-92ea-1ddd550b1d27",
+    #     # resource_group_name="registry-builtin-prp-test",
+    #     registry_name="azureml-preview-test1"
+    # )
+    # mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(
         workspace_ml_client, queue.compute)
     environment_variables = {
