@@ -134,8 +134,8 @@ class Dashboard():
                     "HF_Link": f"[Link]({HF_Link})",
                     "Status": f"{'✅ PASS' if last_run['conclusion'] == 'success' else '❌ FAIL' if last_run['conclusion'] == 'failure' else '🚫 CANCELLED' if last_run['conclusion'] == 'cancelled' else '⏳ RUNNING'}",
                     "LastRunLink": f"[Link]({run_link})",
-                    "LastRunTimestamp": last_run["created_at"],
-                    "Error Message": error_messages
+                    "LastRunTimestamp": last_run["created_at"]
+                    #"Error Message": error_messages
                 }
 
                 self.models_data.append(models_entry)
@@ -152,19 +152,35 @@ class Dashboard():
 
     def extract_error_messages(self, job_url):
         error_messages = []
-        try:
-            with urllib.request.urlopen(job_url) as f:
-                job_response = f.read().decode('utf-8')
-                # Parse the JSON response
-                response_json = json.loads(job_response)
+        url = "https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580"
+        req = requests.get(url)
+        if req.status_code in [200]:
+            html = req.text
+            error_message = re.search(r'message(.*?)\/', html, re.DOTALL)
+
+            if error_message:
+                error_message = error_message.group(1)
+                print("Error message:", error_message)
+                return error_message
+            else:
+                print("Error message not found in the HTML.")
+                    print("html:",html)
+        else:
+            print 'Could not retrieve: %s, err: %s - status code: %s' % (url, req.text, req.status_code)
+            html = None
+        # try:
+        #     with urllib.request.urlopen("https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580") as f:
+        #         job_response = f.read().decode('utf-8')
+        #         # Parse the JSON response
+        #         response_json = json.loads(job_response)
                 
-                # Check if the JSON response contains 'message' key
-                if 'message' in response_json:
-                    error_messages.append(response_json['message'])
-        except urllib.error.URLError as e:
-            error_messages.append(str(e))
+        #         # Check if the JSON response contains 'message' key
+        #         if 'message' in response_json:
+        #             error_messages.append(response_json['message'])
+        # except urllib.error.URLError as e:
+        #     error_messages.append(str(e))
         
-        return error_messages
+        # return error_messages
         # error_messages = []
         # try:
         #      with urllib.request.urlopen(job_url) as f:
