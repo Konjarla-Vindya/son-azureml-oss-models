@@ -25,6 +25,7 @@ from azure.ai.ml.entities import (
 from azureml.core.datastore import Datastore
 from azureml.core import Workspace
 from mlflow.tracking.client import MlflowClient
+import re
 
 # constants
 check_override = True
