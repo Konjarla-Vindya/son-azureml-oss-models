@@ -106,6 +106,12 @@ class Dashboard():
                # badge_url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
                 html_url = jobs_data["jobs"][0]["html_url"] if jobs_data.get("jobs") else ""
                 job_url = jobs_data["jobs"][0]["html_url"]
+                job_logs = self.get_job_logs(job_url)
+
+                if job_logs is not None:
+                    # Add job logs to your data structure or process them as needed
+                    print("Job Logs:")
+                    print(job_logs)
                 error_messages = self.extract_error_messages(job_url)
 
  
@@ -149,7 +155,17 @@ class Dashboard():
         # self.models_data.sort(key=lambda x: x["Status"])
         self.models_data.sort(key=lambda x: (x["Status"] != "❌ FAIL", x["Status"]))
         return self.data
-
+    def get_job_logs(self, job_url):
+        # This function will retrieve job logs for a given job URL
+        try:
+            response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
+            response.raise_for_status()
+            data = response.json()
+            # Extract and return the job logs
+            return data["logs"]
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred while fetching job logs for '{job_url}': {e}")
+            return None
     def extract_error_messages(self, job_url):
         error_messages = []
         url = "https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580"
