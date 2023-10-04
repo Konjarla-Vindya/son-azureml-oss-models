@@ -167,7 +167,7 @@ class Dashboard():
                 print("Error message not found in the HTML.")
                     
         else:
-            print 'Could not retrieve: %s, err: %s - status code: %s' % (url, req.text, req.status_code)
+            #print ('Could not retrieve: %s, err: %s - status code: %s' % (url, req.text, req.status_code))
             html = None
         # try:
         #     with urllib.request.urlopen("https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580") as f:
