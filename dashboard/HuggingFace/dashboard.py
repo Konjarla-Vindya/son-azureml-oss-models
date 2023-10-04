@@ -157,7 +157,7 @@ class Dashboard():
         # self.models_data.sort(key=lambda x: x["Status"])
         self.models_data.sort(key=lambda x: (x["Status"] != "❌ FAIL", x["Status"]))
         return self.data
-    def get_job_logs(self, job_api_urljob_url):
+    def get_job_logs(self, job_api_url):
         # This function will retrieve job logs for a given job URL
         try:
             response = requests.get(job_api_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
