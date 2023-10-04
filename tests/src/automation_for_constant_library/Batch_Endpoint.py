@@ -215,7 +215,7 @@ def create_and_configure_batch_endpoint(
 ):
     # Create a unique endpoint name using a timestamp
     #timestamp = int(time.time())
-    endpoint_name = f"{test_model_name}"
+    endpoint_name = f"{registered_model_name}"
     print("Endpoint name:", {endpoint_name})
 
     # Create the BatchEndpoint
