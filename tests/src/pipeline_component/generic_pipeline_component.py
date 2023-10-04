@@ -124,8 +124,9 @@ def get_file_path(task):
     return data_path
 
 
-def get_dataset(task, data_path):
-    load_dataset = LoadDataset(task=task, data_path=data_path)
+def get_dataset(task, data_path, latest_model):
+    load_dataset = LoadDataset(task=task, data_path=data_path, latest_model=latest_model)
+    task = task.replce("-", "_")
     attribute = getattr(LoadDataset, task)
     return attribute(load_dataset)
 
@@ -277,7 +278,7 @@ if __name__ == "__main__":
     latest_model, task = model_detail.get_model_detail(
         test_model_name=test_model_name)
     data_path = get_file_path(task=task)
-    res = get_dataset(task=task, data_path=data_path)
+    res = get_dataset(task=task, data_path=data_path, latest_model=latest_model)
     pieline_task = get_pipeline_task(task)
     # azure_pipeline = AzurePipeline(
     #     workspace_ml_client=workspace_ml_client,
