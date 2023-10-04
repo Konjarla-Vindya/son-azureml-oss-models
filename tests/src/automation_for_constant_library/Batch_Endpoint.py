@@ -357,7 +357,7 @@ if __name__ == "__main__":
     print("task :", {task})
     folder_path = get_task_specified_input(task=task)
     print(" input taken running Batch Job")
-    input = Input(path=job_inputs, type=AssetTypes.URI_FOLDER)
+    input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
 
     # Invoke the batch endpoint
     job = workspace_ml_client.batch_endpoints.invoke(
