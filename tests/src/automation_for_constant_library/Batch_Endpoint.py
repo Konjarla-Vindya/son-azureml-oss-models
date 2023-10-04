@@ -356,13 +356,22 @@ if __name__ == "__main__":
     task = foundation_model.flavors["transformers"]["task"]
     print("task :", {task})
     folder_path = get_task_specified_input(task=task)
-    print(" input taken running Batch Job")
+    print(" input taken, running Batch Job")
     input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
 
     # Invoke the batch endpoint
     job = workspace_ml_client.batch_endpoints.invoke(
         endpoint_name=endpoint.name, input=input
     )
+    print("Submitted Job to AML")
+    # Get the final status of the job
+    job_status = job.get_status()
+    print("Job Status:", job_status)
+
+    # Print the job status as an output variable
+    print(f"::set-output name=job_status::{job_status}")
+
+
     # if job is not None:
     #     print(f"Job name: {job.name}")
     #     # Stream the job status
