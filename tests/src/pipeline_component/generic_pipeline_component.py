@@ -172,9 +172,9 @@ registry_ml_client = MLClient(
 )
 mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 COMPUTE_CLUSTER = "cpu-cluster"
-#data_path = "./"
+data_path = "./datasets/translation.json"
 @pipeline()
-def evaluation_pipeline(self, mlflow_model, data_path):
+def evaluation_pipeline(self, mlflow_model):
     try:
         logger.info("Started configuring the job")
         pipeline_component_func = registry_ml_client.components.get(
@@ -290,9 +290,9 @@ if __name__ == "__main__":
         pipeline_jobs = []
         experiment_name = "text-translation-evaluation"
         pipeline_object = evaluation_pipeline(
-                mlflow_model=Input(type=AssetTypes.MLFLOW_MODEL, path=f"{latest_model.id}"),
+                mlflow_model=Input(type=AssetTypes.MLFLOW_MODEL, path=f"{latest_model.id}")
                 #mlflow_model = f"{latest_model.id}",
-                data_path = data_path
+                #data_path = data_path
             )
         # don't reuse cached results from previous jobs
         pipeline_object.settings.force_rerun = True
