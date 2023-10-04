@@ -22,6 +22,8 @@ class LoadDataset:
                 test_data_df["input_string"] = test_data_df["translation"].apply(lambda x: x["en"])
                 test_data_df["ro"] = test_data_df["translation"].apply(lambda x: x["ro"])
                 test_data_df.to_json(self.data_path, lines=True, orient="records")
+                df = pd.read_json(self.data_path, lines=True)
+                logger.info(f"Here is ths value{df.head(0)}")
         except Exception as ex:
             _, _, exc_tb = sys.exc_info()
             logger.error(

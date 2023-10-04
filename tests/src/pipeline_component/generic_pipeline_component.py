@@ -172,7 +172,7 @@ registry_ml_client = MLClient(
 )
 mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 COMPUTE_CLUSTER = "cpu-cluster"
-
+#data_path = "./"
 @pipeline()
 def evaluation_pipeline(self, mlflow_model, data_path):
     try:
