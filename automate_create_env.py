@@ -27,7 +27,8 @@ pip_dependencies = [
    "xformers==0.0.20","azureml-mlflow==1.53.0","azure-core==1.27.1","torchvision",
    "sacremoses","python-box","sentencepiece","fugashi[unidic-lite]", "einops",
     "tiktoken","transformers_stream_generator","cpm_kernels","ipadic","mecab-python3",
-    "git+https://github.com/huggingface/transformers","vllm","ninja",bitsandbytes-cuda111"
+    "git+https://github.com/huggingface/transformers","vllm","ninja","bitsandbytes-cuda116",
+    "optimum","auto-gptq"
    ]
    
 env_name_str = "mistral_env"
