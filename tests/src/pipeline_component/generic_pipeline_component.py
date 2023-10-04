@@ -82,6 +82,18 @@ def set_next_trigger_model(queue):
         logger.info(f'NEXT_MODEL={next_model}')
         print(f'NEXT_MODEL={next_model}', file=fh)
 
+def create_or_get_compute_target(ml_client,  compute):
+    cpu_compute_target = compute
+    try:
+        compute = ml_client.compute.get(cpu_compute_target)
+    except Exception:
+        logger.info("Creating a new cpu compute target...")
+        compute = AmlCompute(
+            name=cpu_compute_target, size=compute, min_instances=0, max_instances=4
+        )
+        ml_client.compute.begin_create_or_update(compute).result()
+
+    return compute
 
 def get_file_path(task):
     file_name = task+".json"
