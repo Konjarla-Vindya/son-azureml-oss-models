@@ -31,7 +31,7 @@ pip_dependencies = [
     "optimum","auto-gptq"
    ]
    
-env_name_str = "mistral_env"
+env_name_str = "updated_env"
 
 create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name_str)
 
