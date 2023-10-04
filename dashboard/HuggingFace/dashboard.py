@@ -153,10 +153,15 @@ class Dashboard():
     def extract_error_messages(self, job_url):
         error_messages = []
         url = "https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580"
-        req = requests.get(url)
+        url1 = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6143705785/logs"
+        response = requests.get(url1, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
+        response.raise_for_status()
+        data = response.json()
+        print(data)
+        req = requests.get(url1)
         if req.status_code in [200]:
             html = req.text
-            print("html:",html)
+            # print("html:",html)
             error_message = re.search(r'message(.*?)\/', html, re.DOTALL)
 
             if error_message:
