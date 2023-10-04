@@ -156,6 +156,7 @@ class Dashboard():
         req = requests.get(url)
         if req.status_code in [200]:
             html = req.text
+            print("html:",html)
             error_message = re.search(r'message(.*?)\/', html, re.DOTALL)
 
             if error_message:
@@ -164,7 +165,7 @@ class Dashboard():
                 return error_message
             else:
                 print("Error message not found in the HTML.")
-                    print("html:",html)
+                    
         else:
             print 'Could not retrieve: %s, err: %s - status code: %s' % (url, req.text, req.status_code)
             html = None
