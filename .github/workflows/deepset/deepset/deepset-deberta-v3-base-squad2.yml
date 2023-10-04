@@ -1,4 +1,4 @@
-name: deepset/minilm-uncased-squad2
+name: deepset/deberta-v3-base-squad2
 
 on: 
   workflow_dispatch:
