@@ -26,10 +26,11 @@ pip_dependencies = [
    "torch==2.0.1","torchvision==0.15.2","transformers==4.29.0",
    "xformers==0.0.20","azureml-mlflow==1.53.0","azure-core==1.27.1","torchvision",
    "sacremoses","python-box","sentencepiece","fugashi[unidic-lite]", "einops",
-    "tiktoken","transformers_stream_generator","cpm_kernels","ipadic","mecab-python3"
+    "tiktoken","transformers_stream_generator","cpm_kernels","ipadic","mecab-python3",
+    "git+https://github.com/huggingface/transformers","vllm","ninja",bitsandbytes-cuda111"
    ]
    
-env_name_str = "automate-venv"
+env_name_str = "mistral_env"
 
 create_conda_yaml(channels, conda_dependencies, pip_dependencies, env_name_str)
 
