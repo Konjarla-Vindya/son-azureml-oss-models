@@ -177,9 +177,9 @@ def create_or_get_compute_target(ml_client,  compute):
         ml_client.compute.begin_create_or_update(compute).result()
     return compute
 
-def get_latest_model_version(workspace_ml_client, test_model_name):
+def get_latest_model_version(workspace_ml_client, registered_model_name ):
     print("In get_latest_model_version...")
-    version_list = list(workspace_ml_client.models.list(test_model_name))
+    version_list = list(workspace_ml_client.models.list(registered_model_name ))
     
     if len(version_list) == 0:
         print("Model not found in registry")
@@ -188,7 +188,7 @@ def get_latest_model_version(workspace_ml_client, test_model_name):
     else:
         model_version = version_list[0].version
         foundation_model = workspace_ml_client.models.get(
-            test_model_name, model_version)
+            registered_model_name , model_version)
         print(
             "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
                 foundation_model.name, foundation_model.version, foundation_model.id
@@ -352,24 +352,22 @@ if __name__ == "__main__":
     expression_check = re.findall(regx_for_expression, test_model_name)
     if expression_check:
         # Replace the expression with hyphen
-        test_model_name = regx_for_expression.sub("-", test_model_name)
+        registered_model_name  = regx_for_expression.sub("-", test_model_name)
     else:
         # If threr will be model namr with / then replace it
-        test_model_name = test_model_name
-
-
+        registered_model_name  = test_model_name
 
 
 
     #test_model_name = registered_model_name
     registered_model_detail = client.get_latest_versions(
-        name=test_model_name, stages=["None"])
+        name=registered_model_name , stages=["None"])
     model_detail = registered_model_detail[0]
     print("Latest registered model: " , model_detail)
     print("Latest registered model version is : ", model_detail.version)
     print("queue.compute---", queue.compute)
     print("queue.workspace====", queue.workspace)
-    foundation_model = get_latest_model_version(workspace_ml_client, test_model_name)
+    foundation_model = get_latest_model_version(workspace_ml_client, registered_model_name )
     # Example usage:
     # Replace these variables with your actual values
     # foundation_model = {"name": "your_model_name", "id": "your_model_id"}
