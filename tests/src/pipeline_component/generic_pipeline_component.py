@@ -82,6 +82,7 @@ def set_next_trigger_model(queue):
         logger.info(f'NEXT_MODEL={next_model}')
         print(f'NEXT_MODEL={next_model}', file=fh)
 
+
 def create_or_get_compute_target(ml_client,  compute):
     cpu_compute_target = compute
     try:
@@ -95,6 +96,7 @@ def create_or_get_compute_target(ml_client,  compute):
 
     return compute
 
+
 def get_file_path(task):
     file_name = task+".json"
     data_path = f"./datasets/{file_name}"
@@ -102,7 +104,8 @@ def get_file_path(task):
 
 
 def get_dataset(task, data_path, latest_model):
-    load_dataset = LoadDataset(task=task, data_path=data_path, latest_model=latest_model)
+    load_dataset = LoadDataset(
+        task=task, data_path=data_path, latest_model=latest_model)
     task = task.replce("-", "_")
     attribute = getattr(LoadDataset, task)
     return attribute(load_dataset)
@@ -118,6 +121,7 @@ def get_pipeline_task(task):
         logger.error(
             f"::Error:: Could not find library from here :{pipeline_task}.Here is the exception\n{e}")
     return pipeline_task.get(task)
+
 
 queue = get_test_queue()
 
@@ -150,6 +154,8 @@ registry_ml_client = MLClient(
 )
 mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 COMPUTE_CLUSTER = "cpu-cluster"
+
+
 @pipeline()
 def evaluation_pipeline(self, mlflow_model):
     try:
@@ -184,8 +190,9 @@ def evaluation_pipeline(self, mlflow_model):
     except Exception as ex:
         _, _, exc_tb = sys.exc_info()
         logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
-                        f" the exception is this one : \n {ex}")
+                     f" the exception is this one : \n {ex}")
         raise Exception(ex)
+
 
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -255,7 +262,8 @@ if __name__ == "__main__":
     latest_model, task = model_detail.get_model_detail(
         test_model_name=test_model_name)
     data_path = get_file_path(task=task)
-    res = get_dataset(task=task, data_path=data_path, latest_model=latest_model)
+    res = get_dataset(task=task, data_path=data_path,
+                      latest_model=latest_model)
     pieline_task = get_pipeline_task(task)
     # azure_pipeline = AzurePipeline(
     #     workspace_ml_client=workspace_ml_client,
@@ -268,10 +276,11 @@ if __name__ == "__main__":
         pipeline_jobs = []
         experiment_name = "text-translation-evaluation"
         pipeline_object = evaluation_pipeline(
-                mlflow_model=Input(type=AssetTypes.MLFLOW_MODEL, path=f"{latest_model.id}")
-                #mlflow_model = f"{latest_model.id}",
-                #data_path = data_path
-            )
+            mlflow_model=Input(type=AssetTypes.MLFLOW_MODEL,
+                               path=f"{latest_model.id}")
+            #mlflow_model = f"{latest_model.id}",
+            #data_path = data_path
+        )
         # don't reuse cached results from previous jobs
         pipeline_object.settings.force_rerun = True
         pipeline_object.settings.default_compute = COMPUTE_CLUSTER
@@ -285,12 +294,13 @@ if __name__ == "__main__":
             pipeline_object, experiment_name=experiment_name
         )
         # add model['name'] and pipeline_job.name as key value pairs to a dictionary
-        pipeline_jobs.append({"model_name": latest_model.name, "job_name": pipeline_job.name})
+        pipeline_jobs.append(
+            {"model_name": latest_model.name, "job_name": pipeline_job.name})
         # wait for the pipeline job to complete
         workspace_ml_client.jobs.stream(pipeline_job.name)
-        #return pipeline_jobs
+        # return pipeline_jobs
     except Exception as ex:
         _, _, exc_tb = sys.exc_info()
         logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
-                        f" the exception is this one : \n {ex}")
+                     f" the exception is this one : \n {ex}")
         raise Exception(ex)
