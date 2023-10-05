@@ -84,6 +84,21 @@ def get_task_specified_input(task):
         if os.path.isfile(file_path):
             # Create an Input object for the file and add it to the list of inputs
             file_input = Input(path=file_path, type=AssetTypes.URI_FILE)
+            # Handle the "fill-mask" task by replacing [MASK] with <mask> in the input data
+            if task.lower() == "fill-mask":
+                try:
+                    with open(file_path, 'r') as file:
+                        file_content = file.read()
+                    
+                    # Replace [MASK] with <mask> in the input data
+                    file_content = file_content.replace('[MASK]', '<mask>')
+                    
+                    # Write the modified content back to the file
+                    with open(file_path, 'w') as file:
+                        file.write(file_content)
+
+                except Exception as e:
+                    print(f"Error processing {file_name} for 'fill-mask' task: {str(e)}")
             inputs.append(file_input)
     
     # Create an Input object for the folder containing all files
@@ -164,6 +179,17 @@ def get_latest_model_version(workspace_ml_client, test_model_name ):
 def create_and_configure_batch_endpoint(
     foundation_model_name, foundation_model, compute, workspace_ml_client
 ):
+
+     reserve_keywords = ["microsoft"]
+    regx_for_reserve_keyword = re.compile(
+        '|'.join(map(re.escape, reserve_keywords)))
+    reserve_keywords_check = re.findall(
+        regx_for_reserve_keyword, foundation_model_name)
+    if reserve_keywords_check:
+        foundation_model_name = regx_for_reserve_keyword.sub(
+            '', foundation_model_name)
+        foundation_model_name = foundation_model_name.lstrip("-")
+
 
     if foundation_model_name[0].isdigit():
             num_pattern = "[0-9]"
@@ -290,18 +316,18 @@ if __name__ == "__main__":
         # Replace the expression with hyphen
         test_model_name  = regx_for_expression.sub("-", test_model_name)
 
-    reserve_keywords = ["microsoft"]
-    # Create the regular expression to ignore
-    regx_for_reserve_keyword = re.compile(
-        '|'.join(map(re.escape, reserve_keywords)))
-    # Check the model_name contains any of the string
-    reserve_keywords_check = re.findall(
-        regx_for_reserve_keyword, test_model_name)
-    if reserve_keywords_check:
-        # Replace the resenve keyword with nothing with hyphen
-        test_model_name = regx_for_reserve_keyword.sub(
-            '', test_model_name)
-        test_model_name = test_model_name.lstrip("-")
+    # reserve_keywords = ["microsoft"]
+    # # Create the regular expression to ignore
+    # regx_for_reserve_keyword = re.compile(
+    #     '|'.join(map(re.escape, reserve_keywords)))
+    # # Check the model_name contains any of the string
+    # reserve_keywords_check = re.findall(
+    #     regx_for_reserve_keyword, test_model_name)
+    # if reserve_keywords_check:
+    #     # Replace the resenve keyword with nothing with hyphen
+    #     test_model_name = regx_for_reserve_keyword.sub(
+    #         '', test_model_name)
+    #     test_model_name = test_model_name.lstrip("-")
 
     # else:
     #     # If threr will be model namr with / then replace it
