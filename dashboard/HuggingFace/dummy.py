@@ -26,12 +26,18 @@ if response.status_code == 200:
         
         # Define the API endpoint to fetch job details for the latest run
         job_api_url = f"https://api.github.com/repos/{username}/{repository}/actions/runs/{run_id}/jobs"
+        api = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6205287620/logs"
        
 
 
         # Send a GET request to fetch job details
         job_response = requests.get(job_api_url, headers=headers)
+        api_response = requests.get(api, headers=headers)
         print("Job Response Status Code:", job_response.status_code)  # Debugging statement
+        print("API Response Status Code:", api_response.status_code)  # Debugging statement
+        if api_response.status_code == 200:
+            api_data = api_response.json()
+            print("Log Data:", api_data)  # Debugging statement
         if job_response.status_code == 200:
             job_data = job_response.json()
             print("Job Data:", job_data)  # Debugging statement
