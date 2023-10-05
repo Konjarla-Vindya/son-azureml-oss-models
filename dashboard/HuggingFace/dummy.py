@@ -4,7 +4,7 @@ import os
 # Set your GitHub username, repository name, workflow name, and personal access token
 username = "Konjarla-Vindya"
 repository = "son-azureml-oss-models"
-workflow_name = "dashboard.yml"
+workflow_name = "distilbert-base-cased-distilled-squad.yml"
 access_token = os.environ['token']
 
 
