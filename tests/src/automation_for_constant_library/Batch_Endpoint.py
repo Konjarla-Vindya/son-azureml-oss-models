@@ -64,6 +64,23 @@ def get_sku_override():
         print(f"::warning:: Could not find sku-override file: \n{e}")
         return None
 
+# Function to dynamically replace masking tokens
+def process_input_for_fill_mask_task(file_path, model_mask_token):
+    try:
+        with open(file_path, 'r') as file:
+            file_content = file.read()
+
+        # Detect and replace the masking token based on the model's mask token
+        file_content = re.sub(r'\[MASK\]', model_mask_token, file_content)
+        file_content = re.sub(r'<mask>', model_mask_token, file_content)
+
+        # Write the modified content back to the file
+        with open(file_path, 'w') as file:
+            file.write(file_content)
+
+    except Exception as e:
+        print(f"Error processing {file_path} for 'fill-mask' task: {str(e)}")
+
 def get_task_specified_input(task):
     print("pulling inputs")
     folder_path = f"../../config/sample_inputs/{queue.registry}/{task}/batch_inputs"
@@ -86,19 +103,22 @@ def get_task_specified_input(task):
             file_input = Input(path=file_path, type=AssetTypes.URI_FILE)
             # Handle the "fill-mask" task by replacing [MASK] with <mask> in the input data
             if task.lower() == "fill-mask":
-                try:
-                    with open(file_path, 'r') as file:
-                        file_content = file.read()
+                process_input_for_fill_mask_task(file_path, model_mask_token)
+            # if task.lower() == "fill-mask":
+            #     try:
+            #         with open(file_path, 'r') as file:
+            #             file_content = file.read()
                     
-                    # Replace [MASK] with <mask> in the input data
-                    file_content = file_content.replace('[MASK]', '<mask>')
+            #         # Replace [MASK] with <mask> in the input data
+            #         file_content = file_content.replace('[MASK]', '<mask>')
                     
-                    # Write the modified content back to the file
-                    with open(file_path, 'w') as file:
-                        file.write(file_content)
+            #         # Write the modified content back to the file
+            #         with open(file_path, 'w') as file:
+            #             file.write(file_content)
 
-                except Exception as e:
-                    print(f"Error processing {file_name} for 'fill-mask' task: {str(e)}")
+            #     except Exception as e:
+            #         print(f"Error processing {file_name} for 'fill-mask' task: {str(e)}")
+            
             inputs.append(file_input)
     
     # Create an Input object for the folder containing all files
@@ -107,6 +127,9 @@ def get_task_specified_input(task):
     # print("job_inputs:", {job_inputs})
     return folder_path
     
+
+
+
 
 def set_next_trigger_model(queue):
     print("In set_next_trigger_model...")
@@ -245,7 +268,7 @@ def create_and_configure_batch_endpoint(
     # Retrieve and print the default deployment name
     endpoint = workspace_ml_client.batch_endpoints.get(endpoint_name)
     print(f"The default deployment is {endpoint.defaults.deployment_name}")
-    return endpoint
+    return endpoint_name
 
 
 
@@ -330,7 +353,7 @@ if __name__ == "__main__":
 
     task = foundation_model.flavors["transformers"]["task"]
     print("task :", {task})
-    endpoint = create_and_configure_batch_endpoint(foundation_model_name, foundation_model, queue.compute, workspace_ml_client, task)
+    endpoint_name = create_and_configure_batch_endpoint(foundation_model_name, foundation_model, queue.compute, workspace_ml_client, task)
     
     folder_path = get_task_specified_input(task=task)
     print(" input taken, running Batch Job")
@@ -338,7 +361,7 @@ if __name__ == "__main__":
 
     # Invoke the batch endpoint
     job = workspace_ml_client.batch_endpoints.invoke(
-        endpoint_name=endpoint.name, input=input
+        endpoint_name=endpoint_name, input=input
     )
     workspace_ml_client.jobs.stream(job.name)
 
