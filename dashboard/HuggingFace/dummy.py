@@ -26,11 +26,12 @@ if response.status_code == 200:
         
         # Define the API endpoint to fetch job details for the latest run
         job_api_url = f"https://api.github.com/repos/{username}/{repository}/actions/runs/{run_id}/jobs"
-        print("Job Response Status Code:", job_response.status_code)  # Debugging statement
+       
 
 
         # Send a GET request to fetch job details
         job_response = requests.get(job_api_url, headers=headers)
+        print("Job Response Status Code:", job_response.status_code)  # Debugging statement
         if job_response.status_code == 200:
             job_data = job_response.json()
             print("Job Data:", job_data)  # Debugging statement
