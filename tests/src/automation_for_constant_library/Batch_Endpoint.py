@@ -180,7 +180,7 @@ def create_and_configure_batch_endpoint(
     foundation_model_name, foundation_model, compute, workspace_ml_client
 ):
 
-     reserve_keywords = ["microsoft"]
+    reserve_keywords = ["microsoft"]
     regx_for_reserve_keyword = re.compile(
         '|'.join(map(re.escape, reserve_keywords)))
     reserve_keywords_check = re.findall(
