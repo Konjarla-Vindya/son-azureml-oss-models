@@ -172,7 +172,8 @@ class Dashboard():
         error_messages = []
         url = "https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580"
         url1 = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6143705785/logs"
-        response = requests.get(url1, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
+        url2 = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6416915991/logs"
+        response = requests.get(url2, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
         response.raise_for_status()
         data = response.json()
         print(data)
