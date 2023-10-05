@@ -162,19 +162,19 @@ def get_latest_model_version(workspace_ml_client, test_model_name ):
 
 
 def create_and_configure_batch_endpoint(
-    foundation_model, compute, workspace_ml_client
+    foundation_model_name, foundation_model, compute, workspace_ml_client
 ):
 
-    if test_model_name[0].isdigit():
+    if foundation_model_name[0].isdigit():
             num_pattern = "[0-9]"
-            test_model_name = re.sub(num_pattern, '', test_model_name)
-            test_model_name = test_model_name.strip("-")
+            foundation_model_name = re.sub(num_pattern, '', foundation_model_name)
+            foundation_model_name = foundation_model_name.strip("-")
         # Check the model name is more then 32 character
-    if len(test_model_name.name) > 32:
-        model_name = test_model_name[:31]
+    if len(foundation_model_name) > 32:
+        model_name = foundation_model_name[:31]
         endpoint_name = model_name.rstrip("-")
     else:
-        endpoint_name = test_model_name
+        endpoint_name = foundation_model_name
             
             #endpoint_name = f"{registered_model_name}"
     print("Endpoint name:", {endpoint_name})
@@ -314,10 +314,10 @@ if __name__ == "__main__":
    
     print("model name replaced with - :", {test_model_name})
     
-    foundation_model = get_latest_model_version(workspace_ml_client, test_model_name )
+    foundation_model, foundation_model_name = get_latest_model_version(workspace_ml_client, test_model_name )
     
 
-    endpoint = create_and_configure_batch_endpoint(foundation_model, queue.compute, workspace_ml_client)
+    endpoint = create_and_configure_batch_endpoint(, foundation_model_name, foundation_model, queue.compute, workspace_ml_client)
     task = foundation_model.flavors["transformers"]["task"]
     print("task :", {task})
     folder_path = get_task_specified_input(task=task)
