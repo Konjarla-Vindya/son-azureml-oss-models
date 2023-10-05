@@ -1,3 +1,4 @@
+from azureml.core import Workspace, Environment
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
