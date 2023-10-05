@@ -312,7 +312,7 @@ if __name__ == "__main__":
 
 
    
-    print("model name replaced with - :", {registered_model_name})
+    print("model name replaced with - :", {test_model_name})
     
     foundation_model = get_latest_model_version(workspace_ml_client, test_model_name )
     
