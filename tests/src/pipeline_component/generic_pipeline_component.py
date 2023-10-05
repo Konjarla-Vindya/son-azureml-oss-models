@@ -106,7 +106,7 @@ def get_file_path(task):
 def get_dataset(task, data_path, latest_model):
     load_dataset = LoadDataset(
         task=task, data_path=data_path, latest_model=latest_model)
-    task = task.replce("-", "_")
+    task = task.replace("-", "_")
     if task.__contains__("translation"):
         attribute = getattr(LoadDataset, "translation")
     else:
