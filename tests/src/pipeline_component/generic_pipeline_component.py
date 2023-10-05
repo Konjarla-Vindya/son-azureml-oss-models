@@ -123,7 +123,7 @@ def get_pipeline_task(task):
     except Exception as e:
         logger.error(
             f"::Error:: Could not find library from here :{pipeline_task}.Here is the exception\n{e}")
-    return pipeline_task.get(task)
+    return pipeline_task
 
 
 queue = get_test_queue()
@@ -160,10 +160,10 @@ COMPUTE_CLUSTER = "cpu-cluster"
 
 
 @pipeline()
-def evaluation_pipeline(self, mlflow_model):
+def evaluation_pipeline(task, mlflow_model, test_data, input_column_names, label_column_name, evaluation_file_path):
     try:
         logger.info("Started configuring the job")
-        data_path = "./datasets/translation.json"
+        #data_path = "./datasets/translation.json"
         pipeline_component_func = registry_ml_client.components.get(
             name="mlflow_oss_model_evaluation_pipeline", label="latest"
         )
@@ -172,19 +172,21 @@ def evaluation_pipeline(self, mlflow_model):
             # mlflow_model = Input(type=AssetTypes.MLFLOW_MODEL, path=f"{mlflow_model_path}"),
             mlflow_model=mlflow_model,
             # test data
-            test_data=Input(type=AssetTypes.URI_FILE, path=data_path),
+            test_data=Input(type=AssetTypes.URI_FILE, path=test_data),
             # The following parameters map to the dataset fields
-            input_column_names="input_string",
-            label_column_name="ro",
+            input_column_names=input_column_names,
+            label_column_name=label_column_name,
             # compute settings
             compute_name=COMPUTE_CLUSTER,
             # specify the instance type for serverless job
             # instance_type= "STANDARD_NC24",
             # Evaluation settings
-            task="text-translation",
+            task=task,
             # config file containing the details of evaluation metrics to calculate
-            evaluation_config=Input(
-                type=AssetTypes.URI_FILE, path="./evaluation/eval_config.json"),
+            # evaluation_config=Input(
+            #     type=AssetTypes.URI_FILE, path="./evaluation/eval_config.json"),
+             evaluation_config=Input(
+                type=AssetTypes.URI_FILE, path=evaluation_file_path),
             # config cluster/device job is running on
             # set device to GPU/CPU on basis if GPU count was found
             device="auto",
@@ -265,9 +267,13 @@ if __name__ == "__main__":
     latest_model, task = model_detail.get_model_detail(
         test_model_name=test_model_name)
     data_path = get_file_path(task=task)
-    res = get_dataset(task=task, data_path=data_path,
-                      latest_model=latest_model)
-    pieline_task = get_pipeline_task(task)
+    input_column_names, label_column_name = get_dataset(task=task, data_path=data_path,
+                                                        latest_model=latest_model)
+    pieline_task_dict = get_pipeline_task(task)
+    for key in pieline_task_dict.keys():
+        if task.__contains__(key):
+            pieline_task = pieline_task_dict.get(key)
+
     # azure_pipeline = AzurePipeline(
     #     workspace_ml_client=workspace_ml_client,
     #     registry_ml_client=registry_ml_client,
@@ -279,8 +285,13 @@ if __name__ == "__main__":
         pipeline_jobs = []
         experiment_name = "text-translation-evaluation"
         pipeline_object = evaluation_pipeline(
+            task=pieline_task,
             mlflow_model=Input(type=AssetTypes.MLFLOW_MODEL,
-                               path=f"{latest_model.id}")
+                               path=f"{latest_model.id}"),
+        test_data = Input(type=AssetTypes.URI_FILE, path=data_path),
+        input_column_names=input_column_names,
+        label_column_name=label_column_name,
+        evaluation_file_path=Input(type=AssetTypes.URI_FILE, path=f"./evaluation/{pieline_task}/eval_config.json"),
             #mlflow_model = f"{latest_model.id}",
             #data_path = data_path
         )

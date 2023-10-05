@@ -14,6 +14,8 @@ class LoadDataset:
         self.task = task
         self.data_path = data_path
         self.latest_model = latest_model
+        self.input_feature = None
+        self.output_feature = None
 
     def translation(self):
         try:
@@ -30,6 +32,9 @@ class LoadDataset:
                 # test_data_df.to_json(self.data_path, lines=True, orient="records")
                 df = pd.read_json(self.data_path, lines=True)
                 logger.info(f"Here is ths value{df.head(2)}")
+                self.input_feature = "input_string"
+                self.output_feature = "ro"
+                return self.input_feature, self.output_feature
         except Exception as ex:
             _, _, exc_tb = sys.exc_info()
             logger.error(
