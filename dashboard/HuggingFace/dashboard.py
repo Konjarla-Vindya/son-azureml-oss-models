@@ -66,7 +66,7 @@ class Dashboard():
         # # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
         # with open(f"../logs/get_all_workflow_names/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
         #     json.dump(workflow_name, f, indent=4)
-        print(workflow_name)
+        # print(workflow_name)
         return workflow_name
 
 
@@ -110,15 +110,15 @@ class Dashboard():
                 logs_url = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6416915991/logs"
                 logs_info = requests.get(logs_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
                 logs_data = logs_info.json()
-                print (logs_data)
+                print ("logs:",logs_data)
                 job_api_url = job_url.replace("https://github.com", "https://api.github.com")
                 job_logs = self.get_job_logs(job_api_url)
 
-                if job_logs is not None:
-                    # Add job logs to your data structure or process them as needed
-                    print("Job Logs:")
-                    print(job_logs)
-                error_messages = self.extract_error_messages(job_api_url)
+                # if job_logs is not None:
+                #     # Add job logs to your data structure or process them as needed
+                #     print("Job Logs:")
+                #     print(job_logs)
+                # error_messages = self.extract_error_messages(job_api_url)
 
  
 
@@ -161,86 +161,86 @@ class Dashboard():
         # self.models_data.sort(key=lambda x: x["Status"])
         self.models_data.sort(key=lambda x: (x["Status"] != "❌ FAIL", x["Status"]))
         return self.data
-    def get_job_logs(self, job_api_url):
-        # This function will retrieve job logs for a given job URL
-        try:
-            response = requests.get(job_api_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
-            response.raise_for_status()
-            data = response.json()
-            # Extract and return the job logs
-            return data["logs"]
-        except requests.exceptions.RequestException as e:
-            print(f"An error occurred while fetching job logs for '{job_api_url}': {e}")
-            return None
-    def extract_error_messages(self, job_url):
-        error_messages = []
-        url = "https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580"
-        url1 = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6143705785/logs"
-        url2 = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6416915991/logs"
-        response = requests.get(url2, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
-        response.raise_for_status()
-        data = response.json()
-        print(data)
-        req = requests.get(url1)
-        if req.status_code in [200]:
-            html = req.text
-            # print("html:",html)
-            error_message = re.search(r'message(.*?)\/', html, re.DOTALL)
+    # def get_job_logs(self, job_api_url):
+    #     # This function will retrieve job logs for a given job URL
+    #     try:
+    #         response = requests.get(job_api_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
+    #         response.raise_for_status()
+    #         data = response.json()
+    #         # Extract and return the job logs
+    #         return data["logs"]
+    #     except requests.exceptions.RequestException as e:
+    #         print(f"An error occurred while fetching job logs for '{job_api_url}': {e}")
+    #         return None
+    # def extract_error_messages(self, job_url):
+    #     error_messages = []
+    #     url = "https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580"
+    #     url1 = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6143705785/logs"
+    #     url2 = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6416915991/logs"
+    #     response = requests.get(url2, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
+    #     response.raise_for_status()
+    #     data = response.json()
+    #     print(data)
+    #     req = requests.get(url1)
+    #     if req.status_code in [200]:
+    #         html = req.text
+    #         # print("html:",html)
+    #         error_message = re.search(r'message(.*?)\/', html, re.DOTALL)
 
-            if error_message:
-                error_message = error_message.group(1)
-                print("Error message:", error_message)
-                return error_message
-            else:
-                print("Error message not found in the HTML.")
+    #         if error_message:
+    #             error_message = error_message.group(1)
+    #             print("Error message:", error_message)
+    #             return error_message
+    #         else:
+    #             print("Error message not found in the HTML.")
                     
-        else:
-            #print ('Could not retrieve: %s, err: %s - status code: %s' % (url, req.text, req.status_code))
-            html = None
-        # try:
-        #     with urllib.request.urlopen("https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580") as f:
-        #         job_response = f.read().decode('utf-8')
-        #         # Parse the JSON response
-        #         response_json = json.loads(job_response)
+    #     else:
+    #         #print ('Could not retrieve: %s, err: %s - status code: %s' % (url, req.text, req.status_code))
+    #         html = None
+    #     # try:
+    #     #     with urllib.request.urlopen("https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580") as f:
+    #     #         job_response = f.read().decode('utf-8')
+    #     #         # Parse the JSON response
+    #     #         response_json = json.loads(job_response)
                 
-        #         # Check if the JSON response contains 'message' key
-        #         if 'message' in response_json:
-        #             error_messages.append(response_json['message'])
-        # except urllib.error.URLError as e:
-        #     error_messages.append(str(e))
+    #     #         # Check if the JSON response contains 'message' key
+    #     #         if 'message' in response_json:
+    #     #             error_messages.append(response_json['message'])
+    #     # except urllib.error.URLError as e:
+    #     #     error_messages.append(str(e))
         
-        # return error_messages
-        # error_messages = []
-        # try:
-        #      with urllib.request.urlopen(job_url) as f:
-        #          a_variable = f.read().decode('utf-8')
-        #          # print(a_variable)
-        # except urllib.error.URLError as e:
-        #      error_message = str(e)
-        #      error_messages.append(error_message)
-        #      print(error_messages)
+    #     # return error_messages
+    #     # error_messages = []
+    #     # try:
+    #     #      with urllib.request.urlopen(job_url) as f:
+    #     #          a_variable = f.read().decode('utf-8')
+    #     #          # print(a_variable)
+    #     # except urllib.error.URLError as e:
+    #     #      error_message = str(e)
+    #     #      error_messages.append(error_message)
+    #     #      print(error_messages)
 
-        # return error_messages
-            # response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
-            # print("job_url:", job_url)
-            # response.raise_for_status()
-            # html_content = response.text
-            # print(html_content)
+    #     # return error_messages
+    #         # response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
+    #         # print("job_url:", job_url)
+    #         # response.raise_for_status()
+    #         # html_content = response.text
+    #         # print(html_content)
     
-            # Parse the HTML content using BeautifulSoup
-            # soup = BeautifulSoup(html_content, "html.parser")
+    #         # Parse the HTML content using BeautifulSoup
+    #         # soup = BeautifulSoup(html_content, "html.parser")
     
-            # Find and extract both error and failure messages
+    #         # Find and extract both error and failure messages
             
     
-            # for paragraph in soup.find_all("p"):
-            #     text = paragraph.get_text()
-            #     # Check if the text contains common error or failure indicators
-            #     if re.search(r'(raise error|raise|error|error message|failure message|\"message\":)', text, re.IGNORECASE):
-            #         # Truncate the message at the first occurrence of '\n'
-            #         first_newline_index = text.find('\n')
-            #         if first_newline_index != -1:
-            #             text = text[:first_newline_index]
+    #         # for paragraph in soup.find_all("p"):
+    #         #     text = paragraph.get_text()
+    #         #     # Check if the text contains common error or failure indicators
+    #         #     if re.search(r'(raise error|raise|error|error message|failure message|\"message\":)', text, re.IGNORECASE):
+    #         #         # Truncate the message at the first occurrence of '\n'
+    #         #         first_newline_index = text.find('\n')
+    #         #         if first_newline_index != -1:
+    #         #             text = text[:first_newline_index]
             #         error_messages.append(text.strip())  # Strip leading/trailing whitespace
     
             # if error_messages:
