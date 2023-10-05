@@ -65,14 +65,14 @@ def get_sku_override():
         return None
 
 # Function to dynamically replace masking tokens
-def process_input_for_fill_mask_task(file_path, model_mask_token):
+def process_input_for_fill_mask_task(file_path, mask_token):
     try:
         with open(file_path, 'r') as file:
             file_content = file.read()
 
         # Detect and replace the masking token based on the model's mask token
-        file_content = re.sub(r'\[MASK\]', model_mask_token, file_content)
-        file_content = re.sub(r'<mask>', model_mask_token, file_content)
+        file_content = re.sub(r'\[MASK\]', mask_token, file_content)
+        #file_content = re.sub(r'<mask>', mask_token, file_content)
 
         # Write the modified content back to the file
         with open(file_path, 'w') as file:
@@ -81,7 +81,7 @@ def process_input_for_fill_mask_task(file_path, model_mask_token):
     except Exception as e:
         print(f"Error processing {file_path} for 'fill-mask' task: {str(e)}")
 
-def get_task_specified_input(task):
+def get_task_specified_input(task, test_model_name):
     print("pulling inputs")
     folder_path = f"../../config/sample_inputs/{queue.registry}/{task}/batch_inputs"
 
@@ -103,7 +103,10 @@ def get_task_specified_input(task):
             file_input = Input(path=file_path, type=AssetTypes.URI_FILE)
             # Handle the "fill-mask" task by replacing [MASK] with <mask> in the input data
             if task.lower() == "fill-mask":
-                process_input_for_fill_mask_task(file_path, model_mask_token)
+                tokenizer = AutoTokenizer.from_pretrained(
+                test_model_name, trust_remote_code=True, use_auth_token=True)
+                mask_token = tokenizer.mask_token  
+                process_input_for_fill_mask_task(file_path, mask_token)
             # if task.lower() == "fill-mask":
             #     try:
             #         with open(file_path, 'r') as file:
@@ -355,7 +358,7 @@ if __name__ == "__main__":
     print("task :", {task})
     endpoint_name = create_and_configure_batch_endpoint(foundation_model_name, foundation_model, queue.compute, workspace_ml_client, task)
     
-    folder_path = get_task_specified_input(task=task)
+    folder_path = get_task_specified_input(task=task, test_model_name)
     print(" input taken, running Batch Job")
     input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
 
@@ -366,6 +369,5 @@ if __name__ == "__main__":
     workspace_ml_client.jobs.stream(job.name)
 
     workspace_ml_client.batch_endpoints.begin_delete(name=endpoint_name).result()
-
 
 
