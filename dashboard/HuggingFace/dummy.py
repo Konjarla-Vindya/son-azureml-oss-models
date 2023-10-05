@@ -40,9 +40,10 @@ if response.status_code == 200:
                     log_response = requests.get(log_url, headers=headers)
                     if log_response.status_code == 200:
                         log_content = log_response.text
+                        print(log_content)
                         # Save the log to a file
-                        with open(f"{job_name}_log.txt", "w") as log_file:
-                            log_file.write(log_content)
+                        # with open(f"{job_name}_log.txt", "w") as log_file:
+                        #     log_file.write(log_content)
                     else:
                         print(f"Failed to download job log for {job_name}")
         else:
