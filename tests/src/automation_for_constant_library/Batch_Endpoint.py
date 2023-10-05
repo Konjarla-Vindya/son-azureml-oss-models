@@ -1,3 +1,4 @@
+from transformers import AutoTokenizer
 from azureml.core import Workspace, Environment
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
