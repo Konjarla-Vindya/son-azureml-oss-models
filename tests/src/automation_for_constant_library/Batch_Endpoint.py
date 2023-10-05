@@ -1,5 +1,3 @@
-from azureml.core import Workspace, Environment
-#from batch_inference_and_deployment import BatchDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
@@ -26,6 +24,7 @@ from azureml.core.datastore import Datastore
 from azureml.core import Workspace
 from mlflow.tracking.client import MlflowClient
 import re
+from datetime import datetime
 
 # constants
 check_override = True
@@ -177,8 +176,12 @@ def get_latest_model_version(workspace_ml_client, test_model_name ):
 
 
 def create_and_configure_batch_endpoint(
-    foundation_model_name, foundation_model, compute, workspace_ml_client
+    foundation_model_name, foundation_model, compute, workspace_ml_client, task
 ):
+
+    # Create a unique endpoint name using a timestamp
+    timestamp = int(time.time())
+    endpoint_name = task + str(timestamp)
 
     reserve_keywords = ["microsoft"]
     regx_for_reserve_keyword = re.compile(
@@ -198,12 +201,13 @@ def create_and_configure_batch_endpoint(
         # Check the model name is more then 32 character
     if len(foundation_model_name) > 32:
         model_name = foundation_model_name[:31]
-        endpoint_name = model_name.rstrip("-")
+        deployment_name = model_name.rstrip("-")
     else:
-        endpoint_name = foundation_model_name
+        deployment_name = foundation_model_name
             
             #endpoint_name = f"{registered_model_name}"
     print("Endpoint name:", {endpoint_name})
+    print("Deployment name:", {deployment_name})
 
     # Create the BatchEndpoint
     endpoint = BatchEndpoint(
@@ -212,7 +216,7 @@ def create_and_configure_batch_endpoint(
     )
     workspace_ml_client.begin_create_or_update(endpoint).result()
 
-    deployment_name = "demo"
+    deployment_name = f"{deployment_name}"
 
     # Create the BatchDeployment
     deployment = BatchDeployment(
@@ -316,26 +320,6 @@ if __name__ == "__main__":
         # Replace the expression with hyphen
         test_model_name  = regx_for_expression.sub("-", test_model_name)
 
-    # reserve_keywords = ["microsoft"]
-    # # Create the regular expression to ignore
-    # regx_for_reserve_keyword = re.compile(
-    #     '|'.join(map(re.escape, reserve_keywords)))
-    # # Check the model_name contains any of the string
-    # reserve_keywords_check = re.findall(
-    #     regx_for_reserve_keyword, test_model_name)
-    # if reserve_keywords_check:
-    #     # Replace the resenve keyword with nothing with hyphen
-    #     test_model_name = regx_for_reserve_keyword.sub(
-    #         '', test_model_name)
-    #     test_model_name = test_model_name.lstrip("-")
-
-    # else:
-    #     # If threr will be model namr with / then replace it
-    #     registered_model_name  = test_model_name
-
-    
-
-
 
    
     print("model name replaced with - :", {test_model_name})
@@ -343,7 +327,7 @@ if __name__ == "__main__":
     foundation_model, foundation_model_name = get_latest_model_version(workspace_ml_client, test_model_name )
     
 
-    endpoint = create_and_configure_batch_endpoint(foundation_model_name, foundation_model, queue.compute, workspace_ml_client)
+    endpoint = create_and_configure_batch_endpoint(foundation_model_name, foundation_model, queue.compute, workspace_ml_client, task)
     task = foundation_model.flavors["transformers"]["task"]
     print("task :", {task})
     folder_path = get_task_specified_input(task=task)
@@ -356,6 +340,7 @@ if __name__ == "__main__":
     )
     workspace_ml_client.jobs.stream(job.name)
 
+    workspace_ml_client.batch_endpoints.begin_delete(name=endpoint_name).result()
 
 
 
