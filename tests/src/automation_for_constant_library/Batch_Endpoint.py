@@ -88,59 +88,10 @@ def get_task_specified_input(task):
     
     # Create an Input object for the folder containing all files
     folder_input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
-    
-    # Now you can include both the folder input and individual file inputs in the job
-    # job_inputs = [folder_input] + inputs
-    # return job_inputs
     job_inputs = [folder_input] + inputs
     # print("job_inputs:", {job_inputs})
     return folder_path
     
-    # # Invoke the batch endpoint with the list of inputs
-    # job = workspace_ml_client.batch_endpoints.invoke(endpoint_name=endpoint.name, input=job_inputs)
-    
-    # # Ensure you check the job status or stream the job's status as needed
-    # for status in workspace_ml_client.jobs.stream(job.name):
-    #     print(status)
-
-    # print (f"test_registry: {queue['registry']}")
-        
-        # folder_path = f"../../config/sample_inputs/{queue.registry}/{task}/batch_inputs"
-        # # print("folder path :" , folder_path)
-        # # print("resistry queuq:" , {queue['registry']})
-        # #folder_path = os.path.abspath("../../task/batch_inputs")
-        # #scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
-        # file_names = os.listdir(folder_path)
-        # # Process each file in the folder
-        # for file_name in file_names:
-        #     # Construct the full path to the file
-        #     file_path = os.path.join(folder_path, file_name)
-            
-        #     # Check if it's a file (not a directory) and read its content
-        #     if os.path.isfile(file_path):
-        #         with open(file_path, 'r') as file:
-        #             file_content = file.read()
-                
-        #         # Process the file content as needed
-        #         print(f"File Name: {file_name}")
-        #         print("File Content:")
-        #         print(file_content)
-        #         print("\n")
-        # #check of scoring_file exists
-        # # try:
-        # #     with open(folder_path) as f:
-        # #         scoring_input = ConfigBox(csv.load(f))
-        # #         print(f"scoring_input file:\n\n {scoring_input}\n\n")
-        # # except Exception as e:
-        # #     print(
-        # #         f"::warning:: Could not find scoring_file: {folder_path }. Finishing without sample scoring: \n{e}")
-        # # return folder_path , scoring_input
-    
-# def get_specified_input(self):
-#     # Batch_inputs=f"Batch_inputs"
-#     scoring_file = f"../../config/sample_inputs/{self.registry}/Batch_inputs/"
-#     for file in Batch_inputs
-#         scoring_file = f"Batch_inputs/{file}.json"
 
 def set_next_trigger_model(queue):
     print("In set_next_trigger_model...")
@@ -177,9 +128,9 @@ def create_or_get_compute_target(ml_client,  compute):
         ml_client.compute.begin_create_or_update(compute).result()
     return compute
 
-def get_latest_model_version(workspace_ml_client, registered_model_name ):
+def get_latest_model_version(workspace_ml_client, test_model_name ):
     print("In get_latest_model_version...")
-    version_list = list(workspace_ml_client.models.list(registered_model_name ))
+    version_list = list(workspace_ml_client.models.list(test_model_name ))
     
     if len(version_list) == 0:
         print("Model not found in registry")
@@ -188,7 +139,7 @@ def get_latest_model_version(workspace_ml_client, registered_model_name ):
     else:
         model_version = version_list[0].version
         foundation_model = workspace_ml_client.models.get(
-            registered_model_name , model_version)
+            test_model_name , model_version)
         print(
             "\n\nUsing model name: {0}, version: {1}, id: {2} for inferencing".format(
                 foundation_model.name, foundation_model.version, foundation_model.id
@@ -213,9 +164,19 @@ def get_latest_model_version(workspace_ml_client, registered_model_name ):
 def create_and_configure_batch_endpoint(
     foundation_model, compute, workspace_ml_client
 ):
-    # Create a unique endpoint name using a timestamp
-    #timestamp = int(time.time())
-    endpoint_name = f"{registered_model_name}"
+
+    if foundation_model_name[0].isdigit():
+            num_pattern = "[0-9]"
+            foundation_model_name = re.sub(num_pattern, '', foundation_model_name)
+            foundation_model_name = foundation_model_name.strip("-")
+        # Check the model name is more then 32 character
+        if len(foundation_model.name) > 32:
+            model_name = foundation_model_name[:31]
+            endpoint_name = model_name.rstrip("-")
+        else:
+            endpoint_name = foundation_model_name
+            
+            #endpoint_name = f"{registered_model_name}"
     print("Endpoint name:", {endpoint_name})
 
     # Create the BatchEndpoint
@@ -255,31 +216,6 @@ def create_and_configure_batch_endpoint(
     print(f"The default deployment is {endpoint.defaults.deployment_name}")
     return endpoint
 
-    # task = foundation_model.flavors["transformers"]["task"]
-    # print("task :", {task})
-    # folder_path = get_task_specified_input(task=task)
-    # print(" input taken running Batch Job")
-    # input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
-
-    # # Invoke the batch endpoint
-    # job = workspace_ml_client.batch_endpoints.invoke(
-    #     endpoint_name=endpoint.name, input=input
-    # )
-    # # Stream the job status
-    # for status in workspace_ml_client.jobs.stream(job.name):
-    #     print(status)
-
-
-
-# def invoke_batch_endpoint(workspace_ml_client, endpoint_name, folder_path):
-#     task = latest_model.flavors["transformers"]["task"]
-#     folder_path , scoring_input = self.get_specified_input(task=task)
-#     # Define the input object
-#     input = Input(path=folder_path , type=AssetTypes.URI_FOLDER)
-#     # Invoke the batch endpoint
-#     job = workspace_ml_client.batch_endpoints.invoke(endpoint_name=endpoint_name, input=input)
-#     # Stream the job status
-#     return workspace_ml_client.jobs.stream(job.name)
 
 
 
@@ -352,28 +288,34 @@ if __name__ == "__main__":
     expression_check = re.findall(regx_for_expression, test_model_name)
     if expression_check:
         # Replace the expression with hyphen
-        registered_model_name  = regx_for_expression.sub("-", test_model_name)
-    else:
-        # If threr will be model namr with / then replace it
-        registered_model_name  = test_model_name
+        test_model_name  = regx_for_expression.sub("-", test_model_name)
+
+    reserve_keywords = ["microsoft"]
+    # Create the regular expression to ignore
+    regx_for_reserve_keyword = re.compile(
+        '|'.join(map(re.escape, reserve_keywords)))
+    # Check the model_name contains any of the string
+    reserve_keywords_check = re.findall(
+        regx_for_reserve_keyword, test_model_name)
+    if reserve_keywords_check:
+        # Replace the resenve keyword with nothing with hyphen
+        test_model_name = regx_for_reserve_keyword.sub(
+            '', test_model_name)
+        test_model_name = test_model_name.lstrip("-")
+
+    # else:
+    #     # If threr will be model namr with / then replace it
+    #     registered_model_name  = test_model_name
+
+    
 
 
 
-    #test_model_name = registered_model_name
+   
     print("model name replaced with - :", {registered_model_name})
-    # registered_model_detail = client.get_latest_versions(
-    #     name=registered_model_name , stages=["None"])
-    # model_detail = registered_model_detail[0]
-    # print("Latest registered model: " , model_detail)
-    # print("Latest registered model version is : ", model_detail.version)
-    # print("queue.compute---", queue.compute)
-    # print("queue.workspace====", queue.workspace)
-    foundation_model = get_latest_model_version(workspace_ml_client, registered_model_name )
-    # Example usage:
-    # Replace these variables with your actual values
-    # foundation_model = {"name": "your_model_name", "id": "your_model_id"}
-    # compute_name = "your_compute_name"
-    # workspace_ml_client = {}  # Your ML Client object
+    
+    foundation_model = get_latest_model_version(workspace_ml_client, test_model_name )
+    
 
     endpoint = create_and_configure_batch_endpoint(foundation_model, queue.compute, workspace_ml_client)
     task = foundation_model.flavors["transformers"]["task"]
@@ -387,48 +329,6 @@ if __name__ == "__main__":
         endpoint_name=endpoint.name, input=input
     )
     workspace_ml_client.jobs.stream(job.name)
-
-
-
-    # # Stream job logs and monitor job status
-    # for log in workspace_ml_client.jobs.stream(job.name):
-    #     print(log.message)
-    
-    # # The job has completed at this point, and you can access its status and other information
-    # job_details = workspace_ml_client.jobs.get(job.name)
-    # print("Job Status:", job_details.status)
-
-
-
-    # print("Submitted Job to AML")
-    # # Get the final status of the job
-    # job_status = job.get_status()
-    # print("Job Status:", job_status)
-
-    # # Print the job status as an output variable
-    # print(f"::set-output name=job_status::{job_status}")
-
-
-    # if job is not None:
-    #     print(f"Job name: {job.name}")
-    #     # Stream the job status
-    #     for status in workspace_ml_client.jobs.stream(job.name):
-    #         print(status)
-    # else:
-    #     print("Job object is None. There might be an issue with the batch endpoint invocation.")
-
-
-    # BEDeployment = BatchDeployemnt(
-    #     test_model_name=test_model_name,
-    #     workspace_ml_client=workspace_ml_client,
-    #     registry=queue.registry,
-    #     # foundation_model_ID=foundation_model.id,
-    #     # queue=queue.compute,
-    #     # workspace=queue.workspace
-    # )
-    # BEDeployment.batch_inference_and_deployment(
-    #         instance_type=queue.instance_type
-    #     )
 
 
 
