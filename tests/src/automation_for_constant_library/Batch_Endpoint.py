@@ -170,11 +170,11 @@ def create_and_configure_batch_endpoint(
             foundation_model_name = re.sub(num_pattern, '', foundation_model_name)
             foundation_model_name = foundation_model_name.strip("-")
         # Check the model name is more then 32 character
-        if len(foundation_model.name) > 32:
-            model_name = foundation_model_name[:31]
-            endpoint_name = model_name.rstrip("-")
-        else:
-            endpoint_name = foundation_model_name
+    if len(foundation_model.name) > 32:
+        model_name = foundation_model_name[:31]
+        endpoint_name = model_name.rstrip("-")
+    else:
+        endpoint_name = foundation_model_name
             
             #endpoint_name = f"{registered_model_name}"
     print("Endpoint name:", {endpoint_name})
