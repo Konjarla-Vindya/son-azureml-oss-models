@@ -10,6 +10,7 @@ import os
 import sys
 from box import ConfigBox
 # from utils.logging import get_logger
+from huggingface_hub import login
 from azureml.core.compute import AmlCompute
 from azureml.core.compute_target import ComputeTargetException
 from azure.ai.ml.constants import AssetTypes
@@ -105,6 +106,8 @@ def get_task_specified_input(task, test_model_name):
             # Handle the "fill-mask" task by replacing [MASK] with <mask> in the input data
             if task.lower() == "fill-mask":
                 tokenizer = AutoTokenizer.from_pretrained(
+                test_model_name)
+                #tokenizer = AutoTokenizer.from_pretrained(
                 test_model_name, trust_remote_code=True, use_auth_token=True)
                 mask_token = tokenizer.mask_token  
                 process_input_for_fill_mask_task(file_path, mask_token)
