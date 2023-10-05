@@ -358,7 +358,9 @@ if __name__ == "__main__":
     print("task :", {task})
     endpoint_name = create_and_configure_batch_endpoint(foundation_model_name, foundation_model, queue.compute, workspace_ml_client, task)
     
-    folder_path = get_task_specified_input(task=task, test_model_name)
+    folder_path = get_task_specified_input(task=task, test_model_name=test_model_name)
+
+    #folder_path = get_task_specified_input(task=task, test_model_name)
     print(" input taken, running Batch Job")
     input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
 
