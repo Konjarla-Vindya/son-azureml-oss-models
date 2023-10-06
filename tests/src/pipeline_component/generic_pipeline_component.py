@@ -328,7 +328,7 @@ if __name__ == "__main__":
             label_column_name=label_column_name,
             evaluation_file_path=Input(
                 type=AssetTypes.URI_FILE, path=f"./evaluation/{task}/eval_config.json"),
-            compute=queue.instance_type,
+            compute=queue.compute,
             #mlflow_model = f"{latest_model.id}",
             #data_path = data_path
         )
