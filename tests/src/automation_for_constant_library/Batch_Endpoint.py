@@ -338,7 +338,7 @@ if __name__ == "__main__":
 
 
 
-    task = foundation_model.flavors["transformers"]["task"]
+    task = test_model_name.flavors["transformers"]["task"]
     print("task :", {task})
     folder_path = get_task_specified_input(task=task, test_model_name=test_model_name)
     
