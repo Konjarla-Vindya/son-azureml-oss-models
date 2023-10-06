@@ -246,6 +246,7 @@ def create_and_configure_batch_endpoint(
     workspace_ml_client.begin_create_or_update(endpoint).result()
 
     deployment_name = f"{deployment_name}"
+    print("DN :", {deployment_name})
 
     # Create the BatchDeployment
     deployment = BatchDeployment(
