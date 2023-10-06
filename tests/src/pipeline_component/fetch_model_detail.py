@@ -52,4 +52,4 @@ class ModelDetail:
             task = hfApi.get_task()
         logger.info(f"latest_model: {latest_model}")
         logger.info(f"Task is : {task}")
-        return latest_model, task
+        return latest_model
