@@ -16,6 +16,8 @@ from azure.ai.ml.dsl import pipeline
 from azure.ai.ml import Input
 from azure.ai.ml.constants import AssetTypes
 import time
+import pandas as pd
+from fetch_task import HfTask
 
 
 # constants
@@ -107,10 +109,11 @@ def get_dataset(task, data_path, latest_model):
     load_dataset = LoadDataset(
         task=task, data_path=data_path, latest_model=latest_model)
     task = task.replace("-", "_")
-    if task.__contains__("translation"):
-        attribute = getattr(LoadDataset, "translation")
-    else:
-        attribute = getattr(LoadDataset, task)
+    # if task.__contains__("translation"):
+    #     attribute = getattr(LoadDataset, "translation")
+    # else:
+    #     attribute = getattr(LoadDataset, task)
+    attribute = getattr(LoadDataset, task)
     return attribute(load_dataset)
 
 
@@ -123,7 +126,7 @@ def get_pipeline_task(task):
     except Exception as e:
         logger.error(
             f"::Error:: Could not find library from here :{pipeline_task}.Here is the exception\n{e}")
-    return pipeline_task
+    return pipeline_task.get(task)
 
 
 queue = get_test_queue()
@@ -160,7 +163,7 @@ COMPUTE_CLUSTER = "cpu-cluster"
 
 
 @pipeline()
-def evaluation_pipeline(task, mlflow_model, test_data, input_column_names, label_column_name, evaluation_file_path):
+def evaluation_pipeline(task, mlflow_model, test_data, input_column_names, label_column_name, evaluation_file_path, compute):
     try:
         logger.info("Started configuring the job")
         #data_path = "./datasets/translation.json"
@@ -177,7 +180,7 @@ def evaluation_pipeline(task, mlflow_model, test_data, input_column_names, label
             input_column_names=input_column_names,
             label_column_name=label_column_name,
             # compute settings
-            compute_name=COMPUTE_CLUSTER,
+            compute_name=compute,
             # specify the instance type for serverless job
             # instance_type= "STANDARD_NC24",
             # Evaluation settings
@@ -185,7 +188,7 @@ def evaluation_pipeline(task, mlflow_model, test_data, input_column_names, label
             # config file containing the details of evaluation metrics to calculate
             # evaluation_config=Input(
             #     type=AssetTypes.URI_FILE, path="./evaluation/eval_config.json"),
-             evaluation_config=Input(
+            evaluation_config=Input(
                 type=AssetTypes.URI_FILE, path=evaluation_file_path),
             # config cluster/device job is running on
             # set device to GPU/CPU on basis if GPU count was found
@@ -197,6 +200,37 @@ def evaluation_pipeline(task, mlflow_model, test_data, input_column_names, label
         logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
                      f" the exception is this one : \n {ex}")
         raise Exception(ex)
+
+
+def display_metrics(pipeline_jobs):
+    metrics_df = pd.DataFrame()
+    for job in pipeline_jobs:
+        logger.info(job)
+        logger.info(job['model_name'][24:])
+        # concat 'tags.mlflow.rootRunId=' and pipeline_job.name in single quotes as filter variable
+        filter = "tags.mlflow.rootRunId='" + job["job_name"] + "'"
+        runs = mlflow.search_runs(
+            experiment_names=[
+                experiment_name], filter_string=filter, output_format="list"
+        )
+        # get the compute_metrics runs.
+        # using a hacky way till 'Bug 2320997: not able to show eval metrics in FT notebooks - mlflow client now showing display names' is fixed
+        for run in runs:
+            if len(run.data.metrics) > 0:
+                print(run.data.metrics)
+            print(run.data.metrics)
+            # else, check if run.data.metrics.accuracy exists
+            if "exact_match" in run.data.metrics:
+                # get the metrics from the mlflow run
+                run_metric = run.data.metrics
+                # add the model name to the run_metric dictionary
+                run_metric["model_name"] = job["model_name"]
+                # convert the run_metric dictionary to a pandas dataframe
+                temp_df = pd.DataFrame(run_metric, index=[0])
+                # concat the temp_df to the metrics_df
+                metrics_df = pd.concat(
+                    [metrics_df, temp_df], ignore_index=True)
+    return metrics_df
 
 
 if __name__ == "__main__":
@@ -264,15 +298,16 @@ if __name__ == "__main__":
     #                                environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     # create_and_get_job_studio_url(command_job, workspace_ml_client)
     model_detail = ModelDetail(workspace_ml_client=workspace_ml_client)
-    latest_model, task = model_detail.get_model_detail(
+    latest_model = model_detail.get_model_detail(
         test_model_name=test_model_name)
+    task = HfTask(model_name=test_model_name).get_task()
     data_path = get_file_path(task=task)
     input_column_names, label_column_name = get_dataset(task=task, data_path=data_path,
                                                         latest_model=latest_model)
-    pieline_task_dict = get_pipeline_task(task)
-    for key in pieline_task_dict.keys():
-        if task.__contains__(key):
-            pieline_task = pieline_task_dict.get(key)
+    pieline_task = get_pipeline_task(task)
+    # for key in pieline_task_dict.keys():
+    #     if task.__contains__(key):
+    #         pieline_task = pieline_task_dict.get(key)
 
     # azure_pipeline = AzurePipeline(
     #     workspace_ml_client=workspace_ml_client,
@@ -283,15 +318,17 @@ if __name__ == "__main__":
     #     data_path=data_path, foundation_model=latest_model)
     try:
         pipeline_jobs = []
-        experiment_name = "text-translation-evaluation"
+        experiment_name = f"{pieline_task}-evaluation"
         pipeline_object = evaluation_pipeline(
             task=pieline_task,
             mlflow_model=Input(type=AssetTypes.MLFLOW_MODEL,
                                path=f"{latest_model.id}"),
-        test_data = Input(type=AssetTypes.URI_FILE, path=data_path),
-        input_column_names=input_column_names,
-        label_column_name=label_column_name,
-        evaluation_file_path=Input(type=AssetTypes.URI_FILE, path=f"./evaluation/{pieline_task}/eval_config.json"),
+            test_data=Input(type=AssetTypes.URI_FILE, path=data_path),
+            input_column_names=input_column_names,
+            label_column_name=label_column_name,
+            evaluation_file_path=Input(
+                type=AssetTypes.URI_FILE, path=f"./evaluation/{task}/eval_config.json"),
+            compute=queue.compute,
             #mlflow_model = f"{latest_model.id}",
             #data_path = data_path
         )
@@ -318,3 +355,5 @@ if __name__ == "__main__":
         logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
                      f" the exception is this one : \n {ex}")
         raise Exception(ex)
+    metrics_df = display_metrics(pipeline_jobs=pipeline_jobs)
+    logger.info(f"Evaluation result {metrics_df}")
