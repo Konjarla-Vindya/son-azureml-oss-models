@@ -85,14 +85,14 @@ def set_next_trigger_model(queue):
         print(f'NEXT_MODEL={next_model}', file=fh)
 
 
-def create_or_get_compute_target(ml_client,  compute):
+def create_or_get_compute_target(ml_client,  compute, instance):
     cpu_compute_target = compute
     try:
         compute = ml_client.compute.get(cpu_compute_target)
     except Exception:
         logger.info("Creating a new cpu compute target...")
         compute = AmlCompute(
-            name=cpu_compute_target, size=compute, min_instances=0, max_instances=4
+            name=cpu_compute_target, size=instance, min_instances=0, max_instances=4
         )
         ml_client.compute.begin_create_or_update(compute).result()
 
@@ -282,7 +282,7 @@ if __name__ == "__main__":
     # )
     # mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(
-        workspace_ml_client, queue.compute)
+        ml_client = workspace_ml_client, compute=queue.compute, instance=queue.instance_type)
     environment_variables = {
         "AZUREML_ARTIFACTS_DEFAULT_TIMEOUT": 600.0, "test_model_name": test_model_name}
     env_list = workspace_ml_client.environments.list(name=queue.environment)
