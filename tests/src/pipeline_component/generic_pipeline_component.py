@@ -252,7 +252,7 @@ if __name__ == "__main__":
     logger.info(f"test_trigger_next_model: {test_trigger_next_model}")
     logger.info(f"test_queue: {test_queue}")
     logger.info(f"test_set: {test_set}")
-    logger.info(f"Here is my test model name : {test_model_name}")
+    #logger.info(f"Here is my test model name : {test_model_name}")
     # try:
     #     credential = DefaultAzureCredential()
     #     credential.get_token("https://management.azure.com/.default")
@@ -328,7 +328,7 @@ if __name__ == "__main__":
             label_column_name=label_column_name,
             evaluation_file_path=Input(
                 type=AssetTypes.URI_FILE, path=f"./evaluation/{task}/eval_config.json"),
-            compute=queue.compute,
+            compute=queue.instance_type,
             #mlflow_model = f"{latest_model.id}",
             #data_path = data_path
         )
