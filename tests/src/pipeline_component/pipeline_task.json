@@ -1,3 +1,9 @@
 {
-    "translation": "text-translation"
+    "translation": "text-translation",
+    "fill-mask": "fill-mask",
+    "text-generation":"text-generation",
+    "text-classification": "text-classification",
+    "token-classification": "token-classification",
+    "question-answering" : "question-answering",
+    "summarization": "text-summarization"
 }
