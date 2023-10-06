@@ -64,6 +64,9 @@ class LoadDataset:
                 # test_data_df.to_json(self.data_path, lines=True, orient="records")
                 df = pd.read_json(self.data_path, lines=True)
                 logger.info(f"Here is ths value{df.head(2)}")
+                self.input_feature = "input_string"
+                self.output_feature = "title"
+                return self.input_feature, self.output_feature
         except Exception as ex:
             _, _, exc_tb = sys.exc_info()
             logger.error(
@@ -83,6 +86,9 @@ class LoadDataset:
             # test_data_df.to_json(self.data_path, lines=True, orient="records")
             df = pd.read_json(self.data_path, lines=True)
             logger.info(f"Here is ths value{df.head(2)}")
+            self.input_feature = "context,question"
+            self.output_feature = "answer_text"
+            return self.input_feature, self.output_feature
         except Exception as ex:
             _, _, exc_tb = sys.exc_info()
             logger.error(
@@ -90,18 +96,24 @@ class LoadDataset:
             logger.error(
                 f"::Error:: Error occuring while downloading the datasets and the exception is this : \n {ex}")
 
-    def text_summarization(self):
+    def summarization(self):
         try:
             hf_test_data = load_dataset(
-                "squad_v2", split="validation", streaming=True)
+                "cnn_dailymail", "3.0.0", split="test", streaming=True)
             test_data_df = pd.DataFrame(hf_test_data.take(100))
-            test_data_df["answer_text"] = test_data_df["answers"].apply(
-                lambda x: x["text"][0] if len(x["text"]) > 0 else "")
+            test_data_df["input_string"] = test_data_df["article"]
+            test_data_df["summary"] = test_data_df["highlights"]
+            # trucating the data to pass the tokenizer limit of the model
+            test_data_df["article"] = test_data_df["article"].str.slice(0, 200)
+            test_data_df["input_string"] = test_data_df["input_string"].str.slice(0, 200)
             with open(self.data_path, "w") as f:
                 f.write(test_data_df.to_json(lines=True, orient="records"))
             # test_data_df.to_json(self.data_path, lines=True, orient="records")
             df = pd.read_json(self.data_path, lines=True)
             logger.info(f"Here is ths value{df.head(2)}")
+            self.input_feature = "input_string"
+            self.output_feature = "summary"
+            return self.input_feature, self.output_feature
         except Exception as ex:
             _, _, exc_tb = sys.exc_info()
             logger.error(
@@ -134,6 +146,9 @@ class LoadDataset:
             # test_data_df.to_json(self.data_path, lines=True, orient="records")
             df = pd.read_json(self.data_path, lines=True)
             logger.info(f"Here is ths value{df.head(2)}")
+            self.input_feature = "input_string"
+            self.output_feature = "label_string"
+            return self.input_feature, self.output_feature
         except Exception as ex:
             _, _, exc_tb = sys.exc_info()
             logger.error(
@@ -154,6 +169,9 @@ class LoadDataset:
             # test_data_df.to_json(self.data_path, lines=True, orient="records")
             df = pd.read_json(self.data_path, lines=True)
             logger.info(f"Here is ths value{df.head(2)}")
+            self.input_feature = "input_string"
+            self.output_feature = "ground_truth"
+            return self.input_feature, self.output_feature
         except Exception as ex:
             _, _, exc_tb = sys.exc_info()
             logger.error(
@@ -179,6 +197,9 @@ class LoadDataset:
             # test_data_df.to_json(self.data_path, lines=True, orient="records")
             df = pd.read_json(self.data_path, lines=True)
             logger.info(f"Here is ths value{df.head(2)}")
+            self.input_feature = "input_string"
+            self.output_feature = "ner_tags_str"
+            return self.input_feature, self.output_feature
         except Exception as ex:
             _, _, exc_tb = sys.exc_info()
             logger.error(
