@@ -338,6 +338,9 @@ if __name__ == "__main__":
 
 
 
+    task = foundation_model.flavors["transformers"]["task"]
+    print("task :", {task})
+    folder_path = get_task_specified_input(task=task, test_model_name=test_model_name)
     
     expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
                             "$", "%", "^", "&", "*", "<", ">", "?", "!", "~"]
@@ -349,6 +352,8 @@ if __name__ == "__main__":
     if expression_check:
         # Replace the expression with hyphen
         test_model_name  = regx_for_expression.sub("-", test_model_name)
+        print("test model name before lower - :", {test_model_name})
+        test_model_name  = test_model_name.lower()
 
 
    
@@ -357,11 +362,11 @@ if __name__ == "__main__":
     foundation_model, foundation_model_name = get_latest_model_version(workspace_ml_client, test_model_name )
     
 
-    task = foundation_model.flavors["transformers"]["task"]
-    print("task :", {task})
+    # task = foundation_model.flavors["transformers"]["task"]
+    # print("task :", {task})
     endpoint_name = create_and_configure_batch_endpoint(foundation_model_name, foundation_model, queue.compute, workspace_ml_client, task)
     
-    folder_path = get_task_specified_input(task=task, test_model_name=test_model_name)
+    # folder_path = get_task_specified_input(task=task, test_model_name=test_model_name)
 
     #folder_path = get_task_specified_input(task=task, test_model_name)
     print(" input taken, running Batch Job")
