@@ -13,14 +13,32 @@ headers = {
     "Accept": "application/vnd.github.v3+json"
 }
 response = requests.get(f"https://api.github.com/repos/{repository}/actions/workflows", headers=headers)
-workflow_runs = response.json()["workflow_runs"]
-latest_run = workflow_runs[0]
+response.raise_for_status()
+
+# Find the workflow by name
+workflow_id = None
+for workflow in response.json()["workflows"]:
+    if workflow["name"] == workflow_name:
+        workflow_id = workflow["id"]
+        break
+
+if workflow_id is None:
+    print(f"Workflow '{workflow_name}' not found.")
+    exit(1)
+
+# Get the latest workflow run for the workflow
+response = requests.get(f"https://api.github.com/repos/{repository}/actions/runs", headers=headers, params={"workflow_id": workflow_id})
+response.raise_for_status()
+
+# Get the run ID of the latest run
+latest_run_id = response.json()["workflow_runs"][0]["id"]
 
 # Get the log URL for the latest run
-log_url = latest_run["logs_url"]
+log_url = f"https://api.github.com/repos/{repository}/actions/runs/{latest_run_id}/logs"
+log_response = requests.get(log_url, headers=headers)
+log_response.raise_for_status()
 
 # Fetch the log content
-log_response = requests.get(log_url, headers=headers)
 log_content = log_response.json()["content"]
 
 # Decode the log content
@@ -28,7 +46,6 @@ decoded_content = base64.b64decode(log_content).decode("utf-8")
 
 # Print or process the log content as needed
 print(decoded_content)
-
 
 
 
