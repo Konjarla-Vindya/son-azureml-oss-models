@@ -5,7 +5,8 @@ import os
 # Replace with your GitHub repository, PAT, and workflow name
 repository = "Konjarla-Vindya/son-azureml-oss-models"
 token = os.environ['token']
-# workflow_name = "distilbert-base-cased-distilled-squad.yml"
+workflow_name = "dashboard.yml"
+# "distilbert-base-cased-distilled-squad.yml"
 
 # Get the latest workflow run
 headers = {
@@ -19,34 +20,43 @@ response.raise_for_status()
 # Find the workflow by name
 workflow_id = None
 for workflow in response.json()["workflows"]:
-    # if workflow["name"] == workflow_name:
+    if workflow["name"] == workflow_name:
         workflow_id = workflow["id"]
         break
 
-# if workflow_id is None:
-#     print(f"Workflow '{workflow_name}' not found.")
-#     exit(1)
+if workflow_id is None:
+    print(f"Workflow '{workflow_name}' not found.")
+    exit(1)
 
 # Get the latest workflow run for the workflow
 response = requests.get(f"https://api.github.com/repos/{repository}/actions/runs", headers=headers, params={"workflow_id": workflow_id})
 response.raise_for_status()
 
-# Get the run ID of the latest run
-latest_run_id = response.json()["workflow_runs"][0]["id"]
+try:
+    # Get the run ID of the latest run
+    latest_run_id = response.json()["workflow_runs"][0]["id"]
 
-# Get the log URL for the latest run
-log_url = f"https://api.github.com/repos/{repository}/actions/runs/{latest_run_id}/logs"
-log_response = requests.get(log_url, headers=headers)
-log_response.raise_for_status()
+    # Get the log URL for the latest run
+    log_url = f"https://api.github.com/repos/{repository}/actions/runs/{latest_run_id}/logs"
+    log_response = requests.get(log_url, headers=headers)
+    log_response.raise_for_status()
 
-# Fetch the log content
-log_content = log_response.json()["content"]
+    # Fetch the log content
+    log_content = log_response.json()["content"]
 
-# Decode the log content
-decoded_content = base64.b64decode(log_content).decode("utf-8")
+    # Decode the log content
+    decoded_content = base64.b64decode(log_content).decode("utf-8")
 
-# Print or process the log content as needed
-print(decoded_content)
+    # Print or process the log content as needed
+    print(decoded_content)
+
+except requests.exceptions.HTTPError as e:
+    if e.response.status_code == 404:
+        print("The log for the latest workflow run was not found. Please check the workflow run ID.")
+    else:
+        print(f"HTTP error: {e}")
+except Exception as e:
+    print(f"An error occurred: {e}")
 
 
 
