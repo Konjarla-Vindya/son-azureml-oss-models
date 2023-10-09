@@ -5,7 +5,7 @@ import os
 # Replace with your GitHub repository, PAT, and workflow name
 repository = "Konjarla-Vindya/son-azureml-oss-models"
 token = os.environ['token']
-workflow_name = "distilbert-base-cased-distilled-squad.yml"
+# workflow_name = "distilbert-base-cased-distilled-squad.yml"
 
 # Get the latest workflow run
 headers = {
@@ -23,9 +23,9 @@ for workflow in response.json()["workflows"]:
         workflow_id = workflow["id"]
         break
 
-if workflow_id is None:
-    print(f"Workflow '{workflow_name}' not found.")
-    exit(1)
+# if workflow_id is None:
+#     print(f"Workflow '{workflow_name}' not found.")
+#     exit(1)
 
 # Get the latest workflow run for the workflow
 response = requests.get(f"https://api.github.com/repos/{repository}/actions/runs", headers=headers, params={"workflow_id": workflow_id})
