@@ -45,6 +45,7 @@ for workflow in response.json()["workflows"]:
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
             print(f"The log for the latest workflow run of '{workflow_name}' was not found. Please check the workflow run ID.")
+            print (log_url)
         else:
             print(f"HTTP error: {e}")
     except Exception as e:
