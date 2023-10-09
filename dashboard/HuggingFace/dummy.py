@@ -10,7 +10,8 @@ workflow_name = "distilbert-base-cased-distilled-squad.yml"
 # Get the latest workflow run
 headers = {
     "Authorization": f"token {token}",
-    "Accept": "application/vnd.github.v3+json"
+    "Accept": "application/vnd.github.v3+json",
+    "X-GitHub-Api-Version: 2022-11-28"
 }
 response = requests.get(f"https://api.github.com/repos/{repository}/actions/workflows", headers=headers)
 response.raise_for_status()
