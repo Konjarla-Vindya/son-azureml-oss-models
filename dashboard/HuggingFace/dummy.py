@@ -40,7 +40,10 @@ for workflow in response.json()["workflows"]:
 
         # Print or process the log content as needed
         print(f"Workflow: {workflow_name}")
-        print(decoded_content)
+        # print(f"Workflow: {workflow_name}")
+        print(f"Run ID: {latest_run_id}")
+        print(f"Log Content:\n{decoded_content}")
+        # print(decoded_content)
 
     except requests.exceptions.HTTPError as e:
         if e.response.status_code == 404:
