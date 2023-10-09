@@ -1,5 +1,6 @@
 import requests
 import base64
+import os
 
 # Replace with your GitHub repository, PAT, and workflow name
 repository = "Konjarla-Vindya/son-azureml-oss-models"
