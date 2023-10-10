@@ -279,7 +279,7 @@ if __name__ == "__main__":
         credential=credential,
         # subscription_id="4f26493f-21d2-4726-92ea-1ddd550b1d27",
         # resource_group_name="registry-builtin-prp-test",
-        registry_name="azureml-preview-test1"
+        registry_name=queue.registry
     )
     logger.info(f"registry_ml_client : {registry_ml_client}")
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
