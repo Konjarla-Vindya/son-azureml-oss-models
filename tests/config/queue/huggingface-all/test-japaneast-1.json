@@ -1,7 +1,7 @@
 {
     "queue_name": "test-japaneast-1",
     "models": [
-        "WizardLM/WizardCoder-Python-34B-V1.0"
+        "gpt2"
     ],
     "workspace": ["test-japaneast","test-northcentralus"],
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
