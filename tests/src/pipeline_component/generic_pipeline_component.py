@@ -101,7 +101,7 @@ def create_or_get_compute_target(ml_client,  compute, instance):
 
 def get_file_path(task):
     file_name = task+".json"
-    data_path = f"./datasets/{file_name}"
+    data_path = f"./datasets/{task}{file_name}"
     return data_path
 
 
@@ -129,39 +129,39 @@ def get_pipeline_task(task):
     return pipeline_task.get(task)
 
 
-queue = get_test_queue()
+# queue = get_test_queue()
 
-try:
-    credential = DefaultAzureCredential()
-    credential.get_token("https://management.azure.com/.default")
-except Exception as ex:
-    # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
-    credential = InteractiveBrowserCredential()
-    logger.info(f"workspace_name : {queue.workspace}")
-try:
-    workspace_ml_client = MLClient.from_config(credential=credential)
-except:
-    workspace_ml_client = MLClient(
-        credential=credential,
-        subscription_id=queue.subscription,
-        resource_group_name=queue.resource_group,
-        workspace_name=queue.workspace
-    )
-ws = Workspace(
-    subscription_id=queue.subscription,
-    resource_group=queue.resource_group,
-    workspace_name=queue.workspace
-)
-registry_ml_client = MLClient(
-    credential=credential,
-    # subscription_id="4f26493f-21d2-4726-92ea-1ddd550b1d27",
-    # resource_group_name="registry-builtin-prp-test",
-    registry_name="azureml-preview-test1"
-)
-mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+# try:
+#     credential = DefaultAzureCredential()
+#     credential.get_token("https://management.azure.com/.default")
+# except Exception as ex:
+#     # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
+#     credential = InteractiveBrowserCredential()
+#     logger.info(f"workspace_name : {queue.workspace}")
+# try:
+#     workspace_ml_client = MLClient.from_config(credential=credential)
+# except:
+#     workspace_ml_client = MLClient(
+#         credential=credential,
+#         subscription_id=queue.subscription,
+#         resource_group_name=queue.resource_group,
+#         workspace_name=queue.workspace
+#     )
+# ws = Workspace(
+#     subscription_id=queue.subscription,
+#     resource_group=queue.resource_group,
+#     workspace_name=queue.workspace
+# )
+# registry_ml_client = MLClient(
+#     credential=credential,
+#     # subscription_id="4f26493f-21d2-4726-92ea-1ddd550b1d27",
+#     # resource_group_name="registry-builtin-prp-test",
+#     registry_name="azureml-preview-test1"
+# )
+# mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
 COMPUTE_CLUSTER = "cpu-cluster"
 
-
+registry_ml_client = ''
 @pipeline()
 def evaluation_pipeline(task, mlflow_model, test_data, input_column_names, label_column_name, evaluation_file_path, compute):
     try:
@@ -253,47 +253,47 @@ if __name__ == "__main__":
     logger.info(f"test_queue: {test_queue}")
     logger.info(f"test_set: {test_set}")
     #logger.info(f"Here is my test model name : {test_model_name}")
-    # try:
-    #     credential = DefaultAzureCredential()
-    #     credential.get_token("https://management.azure.com/.default")
-    # except Exception as ex:
-    #     # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
-    #     credential = InteractiveBrowserCredential()
-    # logger.info(f"workspace_name : {queue.workspace}")
-    # try:
-    #     workspace_ml_client = MLClient.from_config(credential=credential)
-    # except:
-    #     workspace_ml_client = MLClient(
-    #         credential=credential,
-    #         subscription_id=queue.subscription,
-    #         resource_group_name=queue.resource_group,
-    #         workspace_name=queue.workspace
-    #     )
-    # ws = Workspace(
-    #     subscription_id=queue.subscription,
-    #     resource_group=queue.resource_group,
-    #     workspace_name=queue.workspace
-    # )
-    # registry_ml_client = MLClient(
-    #     credential=credential,
-    #     # subscription_id="4f26493f-21d2-4726-92ea-1ddd550b1d27",
-    #     # resource_group_name="registry-builtin-prp-test",
-    #     registry_name="azureml-preview-test1"
-    # )
-    # mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+    try:
+        credential = DefaultAzureCredential()
+        credential.get_token("https://management.azure.com/.default")
+    except Exception as ex:
+        # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
+        credential = InteractiveBrowserCredential()
+    logger.info(f"workspace_name : {queue.workspace}")
+    try:
+        workspace_ml_client = MLClient.from_config(credential=credential)
+    except:
+        workspace_ml_client = MLClient(
+            credential=credential,
+            subscription_id=queue.subscription,
+            resource_group_name=queue.resource_group,
+            workspace_name=queue.workspace
+        )
+    ws = Workspace(
+        subscription_id=queue.subscription,
+        resource_group=queue.resource_group,
+        workspace_name=queue.workspace
+    )
+    registry_ml_client = MLClient(
+        credential=credential,
+        # subscription_id="4f26493f-21d2-4726-92ea-1ddd550b1d27",
+        # resource_group_name="registry-builtin-prp-test",
+        registry_name="azureml-preview-test1"
+    )
+    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(
         ml_client = workspace_ml_client, compute=queue.compute, instance=queue.instance_type)
-    environment_variables = {
-        "AZUREML_ARTIFACTS_DEFAULT_TIMEOUT": 600.0, "test_model_name": test_model_name}
-    env_list = workspace_ml_client.environments.list(name=queue.environment)
-    latest_version = 0
-    for env in env_list:
-        if latest_version <= int(env.version):
-            latest_version = int(env.version)
-    logger.info(f"Latest Environment Version: {latest_version}")
-    latest_env = workspace_ml_client.environments.get(
-        name=queue.environment, version=str(latest_version))
-    logger.info(f"Latest Environment : {latest_env}")
+    # environment_variables = {
+    #     "AZUREML_ARTIFACTS_DEFAULT_TIMEOUT": 600.0, "test_model_name": test_model_name}
+    # env_list = workspace_ml_client.environments.list(name=queue.environment)
+    # latest_version = 0
+    # for env in env_list:
+    #     if latest_version <= int(env.version):
+    #         latest_version = int(env.version)
+    # logger.info(f"Latest Environment Version: {latest_version}")
+    # latest_env = workspace_ml_client.environments.get(
+    #     name=queue.environment, version=str(latest_version))
+    # logger.info(f"Latest Environment : {latest_env}")
     # command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py",
     #                                environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     # create_and_get_job_studio_url(command_job, workspace_ml_client)
