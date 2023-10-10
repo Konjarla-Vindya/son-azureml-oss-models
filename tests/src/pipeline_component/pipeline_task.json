@@ -3,7 +3,7 @@
     "fill-mask": "fill-mask",
     "text-generation":"text-generation",
     "text-classification": "text-classification",
-    "token-classification": "token-classification",
+    "token-classification": "text-named-entity-recognition",
     "question-answering" : "question-answering",
     "summarization": "text-summarization"
 }
