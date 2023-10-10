@@ -1,4 +1,4 @@
-name: WizardLM/WizardCoder-Python-34B-V1.0
+name: MLFlow-WizardLM/WizardCoder-Python-34B-V1.0
 
 on: 
   workflow_dispatch:
