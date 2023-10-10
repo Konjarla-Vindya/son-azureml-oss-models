@@ -269,6 +269,7 @@ if __name__ == "__main__":
             resource_group_name=queue.resource_group,
             workspace_name=queue.workspace
         )
+    logger.info(f"workspace_ml_client : {workspace_ml_client}")
     ws = Workspace(
         subscription_id=queue.subscription,
         resource_group=queue.resource_group,
@@ -280,6 +281,7 @@ if __name__ == "__main__":
         # resource_group_name="registry-builtin-prp-test",
         registry_name="azureml-preview-test1"
     )
+    logger.info(f"registry_ml_client : {registry_ml_client}")
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(
         ml_client = workspace_ml_client, compute=queue.compute, instance=queue.instance_type)
