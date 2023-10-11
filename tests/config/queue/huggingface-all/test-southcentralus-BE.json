@@ -8,6 +8,6 @@
     "resource_group": "huggingface-registry-test1",
     "registry": "HuggingFace",
     "environment": "automate-venv",
-    "compute": "Standard-NC6s-v3",
+    "compute": "gpu-cluster-big",
     "instance_type": "Standard_NC6s_v3"
 }
