@@ -188,6 +188,7 @@ if __name__ == "__main__":
             resource_group=resource_group,
             workspace_name=workspace_name
         )
+        print(ws)
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(
         workspace_ml_client, queue.compute)
