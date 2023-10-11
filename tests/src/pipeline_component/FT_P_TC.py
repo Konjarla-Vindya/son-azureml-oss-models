@@ -202,7 +202,7 @@ def get_training_and_optimization_parameters(foundation_model):
     return training_parameters, optimization_parameters
 
 
-def find_gpus_in_compute(workspace_ml_client, compute):
+def find_gpus_in_compute(workspace_ml_client, compute_target):
     gpu_count_found = False
     workspace_compute_sku_list = workspace_ml_client.compute.list_sizes()
     available_sku_sizes = []
@@ -227,7 +227,7 @@ def find_gpus_in_compute(workspace_ml_client, compute):
 
 def create_and_run_azure_ml_pipeline(
     foundation_model,
-    compute_cluster,
+    compute_target,
     gpus_per_node,
     training_parameters,
     optimization_parameters,
@@ -352,9 +352,9 @@ if __name__ == "__main__":
     #foundation_model, foundation_model_name = get_latest_model_version(workspace_ml_client, test_model_name.lower())
     foundation_model = get_latest_model_version(workspace_ml_client, test_model_name.lower())
     training_params, optimization_params = get_training_and_optimization_parameters(foundation_model)
-    gpus_per_node = find_gpus_in_compute(workspace_ml_client, compute)
+    gpus_per_node = find_gpus_in_compute(workspace_ml_client, compute_target)
     print(f"Number of GPUs in compute: {gpus_per_node}")
-    pipeline_job = create_and_run_azure_ml_pipeline(foundation_model, compute, gpus_per_node, training_parameters, optimization_parameters, experiment_name)
+    pipeline_job = create_and_run_azure_ml_pipeline(foundation_model, compute_target, gpus_per_node, training_parameters, optimization_parameters, experiment_name)
     print("Completed")
 
     
