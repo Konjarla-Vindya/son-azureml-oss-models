@@ -228,7 +228,8 @@ if __name__ == "__main__":
     
         # Now you can use workspace_ml_client and ws for each workspace configuration
         # Perform tasks specific to each workspace here
-        print(ws)    
+        print(ws)
+        print(workspace_ml_client)
         mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
         compute_target = create_or_get_compute_target(
             workspace_ml_client, queue.compute)
