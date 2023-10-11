@@ -291,14 +291,14 @@ def create_or_get_aml_compute(workspace_ml_client, compute_cluster, compute_clus
     else:
         raise ValueError(f"Number of GPUs in compute '{compute_cluster}' not found. Available skus are: {available_sku_sizes}. This should not happen. Please check the selected compute cluster: {compute_cluster} and try again.")
     
-    return compute, gpus_per_node
+    return compute, gpus_per_node, compute_cluster
 
 
 
 
 def create_and_run_azure_ml_pipeline(
     foundation_model,
-    compute,
+    compute_cluster,
     gpus_per_node,
     training_parameters,
     optimization_parameters,
@@ -314,10 +314,10 @@ def create_and_run_azure_ml_pipeline(
     def create_pipeline():
         text_classification_pipeline = pipeline_component_func(
             mlflow_model_path=foundation_model.id,
-            compute_model_import=compute,
-            compute_preprocess=compute,
-            compute_finetune=compute,
-            compute_model_evaluation=compute,
+            compute_model_import=compute_cluster,
+            compute_preprocess=compute_cluster,
+            compute_finetune=compute_cluster,
+            compute_model_evaluation=compute_cluster,
             train_file_path=Input(
                 type="uri_file", path="./emotion-dataset/small_train.jsonl"
             ),
@@ -415,7 +415,7 @@ if __name__ == "__main__":
     computes_allow_list = ["standard_nc6s_v3", "standard_nc12s_v2"]
     
     # Call the function
-    compute, gpus_per_node = create_or_get_aml_compute(workspace_ml_client, compute_cluster, compute_cluster_size, computes_allow_list)
+    compute, gpus_per_node, compute_cluster = create_or_get_aml_compute(workspace_ml_client, compute_cluster, compute_cluster_size, computes_allow_list)
 
 
 
@@ -441,7 +441,7 @@ if __name__ == "__main__":
     training_parameters, optimization_parameters = get_training_and_optimization_parameters(foundation_model)
     #gpus_per_node = find_gpus_in_compute(workspace_ml_client, compute)
     print(f"Number of GPUs in compute: {gpus_per_node}")
-    pipeline_job = create_and_run_azure_ml_pipeline(foundation_model, compute, gpus_per_node, training_parameters, optimization_parameters, experiment_name)
+    pipeline_job = create_and_run_azure_ml_pipeline(foundation_model, compute_cluster, gpus_per_node, training_parameters, optimization_parameters, experiment_name)
     print("Completed")
 
     
