@@ -167,7 +167,7 @@ def get_latest_model_version(workspace_ml_client, test_model_name):
         print("No model found in the registry.")
     
     #print(f"Model Config : {latest_model.config}")
-    return foundation_model
+    return foundation_model, foundation_model_name, foundation_model.id
 
 
 
@@ -252,7 +252,7 @@ if __name__ == "__main__":
     client = MlflowClient()
     
    
-    foundation_model = get_latest_model_version(workspace_ml_client, test_model_name.lower())
+    foundation_model, foundation_model_name = get_latest_model_version(workspace_ml_client, test_model_name.lower())
     
 
     
