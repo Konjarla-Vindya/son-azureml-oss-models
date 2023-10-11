@@ -155,20 +155,39 @@ if __name__ == "__main__":
         # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
         credential = InteractiveBrowserCredential()
     print("workspace_name : ", queue.workspace)
-    try:
-        workspace_ml_client = MLClient.from_config(credential=credential)
-    except:
-        workspace_ml_client = MLClient(
-            credential=credential,
-            subscription_id=queue.subscription,
-            resource_group_name=queue.resource_group,
-            workspace_name=queue.workspace
+    workspaces = [
+    {
+        "subscription_id": "your_subscription_id_1",
+        "resource_group": "resource_group_name_1",
+        "workspace_name": "workspace_name_1",
+    },
+    {
+        "subscription_id": "your_subscription_id_2",
+        "resource_group": "resource_group_name_2",
+        "workspace_name": "workspace_name_2",
+    },
+    # Add more workspaces as needed
+    ]
+    for workspace_info in workspaces:
+        subscription_id = workspace_info["subscription_id"]
+        resource_group = workspace_info["resource_group"]
+        workspace_name = workspace_info["workspace_name"]
+    
+    
+        try:
+            workspace_ml_client = MLClient.from_config(credential=credential)
+        except:
+            workspace_ml_client = MLClient(
+                credential=credential,
+                subscription_id=subscription_id,
+                resource_group_name=resource_group,
+                workspace_name=workspace_name
+            )
+        ws = Workspace(
+            subscription_id=subscription_id,
+            resource_group=resource_group,
+            workspace_name=workspace_name
         )
-    ws = Workspace(
-        subscription_id=queue.subscription,
-        resource_group=queue.resource_group,
-        workspace_name=queue.workspace
-    )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     compute_target = create_or_get_compute_target(
         workspace_ml_client, queue.compute)
