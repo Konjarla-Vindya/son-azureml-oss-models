@@ -1,0 +1,19 @@
+name: HELLO_WORLD1
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  start-tests-job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check-out-repo-step
+      uses: actions/checkout@v2
+    - name: start-tests-step
+      run:
+        echo "Hello World1"
+        echo "Print Hello World1"  
+    - name: trigger-next-workflow
+      env:
+        GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
+      run: gh workflow run HELLO_WORLD --ref main
