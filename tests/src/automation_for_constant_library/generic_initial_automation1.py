@@ -155,40 +155,80 @@ if __name__ == "__main__":
         # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
         credential = InteractiveBrowserCredential()
     print("workspace_name : ", queue.workspace)
-    workspaces = [
-    {
-        "subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
-        "resource_group": "huggingface-registry-test1",
-        "workspace_name": "test-japaneast",
-    },
-    {
-        "subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
-        "resource_group": "huggingface-registry-test1",
-        "workspace_name": "test-northcentralus",
-    },
-    # Add more workspaces as needed
-    ]
-    for workspace_info in workspaces:
-        subscription_id = workspace_info["subscription_id"]
-        resource_group = workspace_info["resource_group"]
-        workspace_name = workspace_info["workspace_name"]
+    # workspaces = [
+    # {
+    #     "subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    #     "resource_group": "huggingface-registry-test1",
+    #     "workspace_name": "test-japaneast",
+    # },
+    # {
+    #     "subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    #     "resource_group": "huggingface-registry-test1",
+    #     "workspace_name": "test-northcentralus",
+    # },
+    # # Add more workspaces as needed
+    # ]
+    # for workspace_info in workspaces:
+    #     subscription_id = workspace_info["subscription_id"]
+    #     resource_group = workspace_info["resource_group"]
+    #     workspace_name = workspace_info["workspace_name"]
     
+    
+    #     try:
+    #         workspace_ml_client = MLClient.from_config(credential=credential)
+    #     except:
+    #         workspace_ml_client = MLClient(
+    #             credential=credential,
+    #             subscription_id=subscription_id,
+    #             resource_group_name=resource_group,
+    #             workspace_name=workspace_name
+    #         )
+    #     ws = Workspace(
+    #         subscription_id=subscription_id,
+    #         resource_group=resource_group,
+    #         workspace_name=workspace_name
+    #     )
+    #     print(f"Current Workspace: {workspace_name} ({subscription_id}, {resource_group})")
+    workspace_configs = [
+    {"subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c", "resource_group": "huggingface-registry-test1", "workspace_name": "test-japaneast"},
+    {"subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c", "resource_group": "huggingface-registry-test1", "workspace_name": "test-northcentralus"},
+    # Add more workspace configurations as needed
+    ]
+
+    for config in workspace_configs:
+        try:
+            # Try to authenticate using DefaultAzureCredential
+            credential = DefaultAzureCredential()
+            credential.get_token("https://management.azure.com/.default")
+        except Exception as ex:
+            # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential doesn't work
+            credential = InteractiveBrowserCredential()
+    
+        # Print the workspace name (optional)
+        print("workspace_name:", config["workspace_name"])
     
         try:
+            # Try to create MLClient from config
             workspace_ml_client = MLClient.from_config(credential=credential)
         except:
+            # If MLClient.from_config fails, create MLClient with explicit parameters
             workspace_ml_client = MLClient(
                 credential=credential,
-                subscription_id=subscription_id,
-                resource_group_name=resource_group,
-                workspace_name=workspace_name
+                subscription_id=config["subscription_id"],
+                resource_group_name=config["resource_group"],
+                workspace_name=config["workspace_name"]
             )
+    
+        # Create Workspace object (optional)
         ws = Workspace(
-            subscription_id=subscription_id,
-            resource_group=resource_group,
-            workspace_name=workspace_name
+            subscription_id=config["subscription_id"],
+            resource_group=config["resource_group"],
+            workspace_name=config["workspace_name"]
         )
-        print(f"Current Workspace: {workspace_name} ({subscription_id}, {resource_group})")
+    
+        # Now you can use workspace_ml_client and ws for each workspace configuration
+        # Perform tasks specific to each workspace here
+        print(ws)    
         mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
         compute_target = create_or_get_compute_target(
             workspace_ml_client, queue.compute)
