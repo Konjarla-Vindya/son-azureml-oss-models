@@ -421,7 +421,7 @@ if __name__ == "__main__":
 
 
     
-    compute = create_or_get_compute_target(workspace_ml_client, queue.compute)
+    # compute = create_or_get_compute_target(workspace_ml_client, queue.compute)
     print("printing:",{compute})
     env_list = workspace_ml_client.environments.list(name=queue.environment)
     latest_version = 0
