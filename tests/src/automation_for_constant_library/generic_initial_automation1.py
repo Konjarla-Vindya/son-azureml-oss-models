@@ -148,13 +148,13 @@ if __name__ == "__main__":
     print (f"test_queue: {test_queue}")
     print (f"test_set: {test_set}")
     print("Here is my test model name : ", test_model_name)
-    try:
-        credential = DefaultAzureCredential()
-        credential.get_token("https://management.azure.com/.default")
-    except Exception as ex:
-        # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
-        credential = InteractiveBrowserCredential()
-    print("workspace_name : ", queue.workspace)
+    # try:
+    #     credential = DefaultAzureCredential()
+    #     credential.get_token("https://management.azure.com/.default")
+    # except Exception as ex:
+    #     # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential not work
+    #     credential = InteractiveBrowserCredential()
+    # print("workspace_name : ", queue.workspace)
     # workspaces = [
     # {
     #     "subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
