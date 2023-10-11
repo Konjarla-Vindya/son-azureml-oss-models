@@ -157,14 +157,14 @@ if __name__ == "__main__":
     print("workspace_name : ", queue.workspace)
     workspaces = [
     {
-        "subscription_id": "your_subscription_id_1",
-        "resource_group": "resource_group_name_1",
-        "workspace_name": "workspace_name_1",
+        "subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+        "resource_group": "huggingface-registry-test1",
+        "workspace_name": "test-japaneast",
     },
     {
-        "subscription_id": "your_subscription_id_2",
-        "resource_group": "resource_group_name_2",
-        "workspace_name": "workspace_name_2",
+        "subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+        "resource_group": "huggingface-registry-test1",
+        "workspace_name": "test-northcentralus",
     },
     # Add more workspaces as needed
     ]
