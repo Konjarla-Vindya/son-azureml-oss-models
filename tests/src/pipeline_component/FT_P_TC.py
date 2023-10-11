@@ -202,6 +202,66 @@ def get_training_and_optimization_parameters(foundation_model):
     return training_parameters, optimization_parameters
 
 
+def create_and_run_azure_ml_pipeline(
+    foundation_model,
+    compute_cluster,
+    gpus_per_node,
+    training_parameters,
+    optimization_parameters,
+    experiment_name,
+):
+    # Fetch the pipeline component
+    pipeline_component_func = registry_ml_client.components.get(
+        name="text_classification_pipeline", label="latest"
+    )
+
+    # Define the pipeline job
+    @pipeline()
+    def create_pipeline():
+        text_classification_pipeline = pipeline_component_func(
+            mlflow_model_path=foundation_model.id,
+            compute_model_import=compute_cluster,
+            compute_preprocess=compute_cluster,
+            compute_finetune=compute_cluster,
+            compute_model_evaluation=compute_cluster,
+            train_file_path=Input(
+                type="uri_file", path="./emotion-dataset/small_train.jsonl"
+            ),
+            validation_file_path=Input(
+                type="uri_file", path="./emotion-dataset/small_validation.jsonl"
+            ),
+            test_file_path=Input(
+                type="uri_file", path="./emotion-dataset/small_test.jsonl"
+            ),
+            evaluation_config=Input(
+                type="uri_file", path="./text-classification-config.json"
+            ),
+            sentence1_key="text",
+            label_key="label_string",
+            number_of_gpu_to_use_finetuning=gpus_per_node,
+            **training_parameters,
+            **optimization_parameters
+        )
+        return {
+            "trained_model": text_classification_pipeline.outputs.mlflow_model_folder
+        }
+
+    # Create the pipeline object
+    pipeline_object = create_pipeline()
+
+    # Configure pipeline settings
+    pipeline_object.settings.force_rerun = True
+    pipeline_object.settings.continue_on_step_failure = False
+
+    # Submit the pipeline job
+    pipeline_job = workspace_ml_client.jobs.create_or_update(
+        pipeline_object, experiment_name=experiment_name
+    )
+
+    # Wait for the pipeline job to complete
+    workspace_ml_client.jobs.stream(pipeline_job.name)
+
+
 
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -248,16 +308,11 @@ if __name__ == "__main__":
     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     registry_ml_client = MLClient(credential, registry_name="azureml-preview-test1")
-
     experiment_name = "Auto_text-classification-emotion-detection"
 
     # # generating a unique timestamp that can be used for names and versions that need to be unique
     # timestamp = str(int(time.time()))
     compute_target = create_or_get_compute_target(workspace_ml_client, queue.compute)
-    #foundation_model, foundation_model_name = get_latest_model_version(workspace_ml_client, test_model_name.lower())
-    foundation_model = get_latest_model_version(workspace_ml_client, test_model_name.lower())
-    training_params, optimization_params = get_training_and_optimization_parameters(foundation_model)
-
     env_list = workspace_ml_client.environments.list(name=queue.environment)
     latest_version = 0
     for env in env_list:
@@ -271,11 +326,19 @@ if __name__ == "__main__":
 
     client = MlflowClient()
     
-    registered_model_detail = client.get_latest_versions(
-        name=test_model_name, stages=["None"])
-    model_detail = registered_model_detail[0]
+    #foundation_model, foundation_model_name = get_latest_model_version(workspace_ml_client, test_model_name.lower())
+    foundation_model = get_latest_model_version(workspace_ml_client, test_model_name.lower())
+    training_params, optimization_params = get_training_and_optimization_parameters(foundation_model)
+    pipeline job = create_and_run_azure_ml_pipeline(foundation_model, compute_cluster, gpus_per_node, training_parameters, optimization_parameters, experiment_name)
+    print("Completed")
+
     
-    print("Latest registered model version is : ", model_detail.version)
+    
+    # registered_model_detail = client.get_latest_versions(
+    #     name=test_model_name, stages=["None"])
+    # model_detail = registered_model_detail[0]
+    
+    # print("Latest registered model version is : ", model_detail.version)
     
     # loaded_model = mlflow.transformers.load_model(model_uri=model_detail.source, return_type="pipeline")
     # model_source_uri = foundation_model.properties["mlflow.modelSourceUri"]
@@ -283,27 +346,27 @@ if __name__ == "__main__":
     # loaded_model = mlflow.transformers.load_model(model_uri=model_source_uri)
     # LM=load_model(model_detail)
     # print("LM-----------------------------",LM)
-    environment_variables = {"test_model_name": test_model_name
-                            ,"model_source_uri": model_detail.source}
-    print("environment_variables-------------",environment_variables)
-    print("queue.compute---",queue.compute)
-    print("queue.workspace====",queue.workspace)
-    command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
-                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
+    # environment_variables = {"test_model_name": test_model_name
+    #                         ,"model_source_uri": model_detail.source}
+    # print("environment_variables-------------",environment_variables)
+    # print("queue.compute---",queue.compute)
+    # print("queue.workspace====",queue.workspace)
+    # command_job = run_azure_ml_job(code="./", command_to_run="python FTTest.py",
+    #                                environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
     
-    create_and_get_job_studio_url(command_job, workspace_ml_client)
+    # create_and_get_job_studio_url(command_job, workspace_ml_client)
 
-    FT_model_name = f"FT_P-TC-{test_model_name}"
+    # FT_model_name = f"FT_P-TC-{test_model_name}"
    
 
-    InferenceAndDeployment = ModelInferenceAndDeployemnt(
-        test_model_name=FT_model_name,
-        workspace_ml_client=workspace_ml_client,
-        registry=queue.registry
-    )
-    InferenceAndDeployment.model_infernce_and_deployment(
-        instance_type=queue.instance_type
-    )
+    # InferenceAndDeployment = ModelInferenceAndDeployemnt(
+    #     test_model_name=FT_model_name,
+    #     workspace_ml_client=workspace_ml_client,
+    #     registry=queue.registry
+    # )
+    # InferenceAndDeployment.model_infernce_and_deployment(
+    #     instance_type=queue.instance_type
+    # )
 
 
 
@@ -345,83 +408,83 @@ if __name__ == "__main__":
 
 
 
-def create_and_submit_pipeline(
-    ml_client: MLClient,
-    registry_ml_client,
-    foundation_model,
-    compute_cluster,
-    experiment_name,
-    gpus_per_node,
-    training_parameters,
-    optimization_parameters,
-):
-    # Fetch the pipeline component
-    pipeline_component_func = registry_ml_client.components.get(
-        name="text_classification_pipeline", label="latest"
-    )
+# def create_and_submit_pipeline(
+#     ml_client: MLClient,
+#     registry_ml_client,
+#     foundation_model,
+#     compute_cluster,
+#     experiment_name,
+#     gpus_per_node,
+#     training_parameters,
+#     optimization_parameters,
+# ):
+#     # Fetch the pipeline component
+#     pipeline_component_func = registry_ml_client.components.get(
+#         name="text_classification_pipeline", label="latest"
+#     )
 
-    # Define the pipeline job
-    @pipeline()
-    def create_pipeline():
-        text_classification_pipeline = pipeline_component_func(
-            mlflow_model_path=foundation_model.id,
-            compute_model_import=compute_cluster,
-            compute_preprocess=compute_cluster,
-            compute_finetune=compute_cluster,
-            compute_model_evaluation=compute_cluster,
-            train_file_path=Input(
-                type="uri_file", path="./emotion-dataset/small_train.jsonl"
-            ),
-            validation_file_path=Input(
-                type="uri_file", path="./emotion-dataset/small_validation.jsonl"
-            ),
-            test_file_path=Input(
-                type="uri_file", path="./emotion-dataset/small_test.jsonl"
-            ),
-            evaluation_config=Input(
-                type="uri_file", path="./text-classification-config.json"
-            ),
-            sentence1_key="text",
-            label_key="label_string",
-            number_of_gpu_to_use_finetuning=gpus_per_node,
-            **training_parameters,
-            **optimization_parameters
-        )
-        return {
-            "trained_model": text_classification_pipeline.outputs.mlflow_model_folder
-        }
+#     # Define the pipeline job
+#     @pipeline()
+#     def create_pipeline():
+#         text_classification_pipeline = pipeline_component_func(
+#             mlflow_model_path=foundation_model.id,
+#             compute_model_import=compute_cluster,
+#             compute_preprocess=compute_cluster,
+#             compute_finetune=compute_cluster,
+#             compute_model_evaluation=compute_cluster,
+#             train_file_path=Input(
+#                 type="uri_file", path="./emotion-dataset/small_train.jsonl"
+#             ),
+#             validation_file_path=Input(
+#                 type="uri_file", path="./emotion-dataset/small_validation.jsonl"
+#             ),
+#             test_file_path=Input(
+#                 type="uri_file", path="./emotion-dataset/small_test.jsonl"
+#             ),
+#             evaluation_config=Input(
+#                 type="uri_file", path="./text-classification-config.json"
+#             ),
+#             sentence1_key="text",
+#             label_key="label_string",
+#             number_of_gpu_to_use_finetuning=gpus_per_node,
+#             **training_parameters,
+#             **optimization_parameters
+#         )
+#         return {
+#             "trained_model": text_classification_pipeline.outputs.mlflow_model_folder
+#         }
 
-    pipeline_object = create_pipeline()
-    pipeline_object.settings.force_rerun = True
-    pipeline_object.settings.continue_on_step_failure = False
+#     pipeline_object = create_pipeline()
+#     pipeline_object.settings.force_rerun = True
+#     pipeline_object.settings.continue_on_step_failure = False
 
-    # Submit the pipeline job
-    pipeline_job = ml_client.jobs.create_or_update(
-        pipeline_object, experiment_name=experiment_name
-    )
+#     # Submit the pipeline job
+#     pipeline_job = ml_client.jobs.create_or_update(
+#         pipeline_object, experiment_name=experiment_name
+#     )
 
-    # Wait for the pipeline job to complete
-    ml_client.jobs.stream(pipeline_job.name)
-    return pipeline_job
+#     # Wait for the pipeline job to complete
+#     ml_client.jobs.stream(pipeline_job.name)
+#     return pipeline_job
 
-# Usage example:
-# Replace these values with your actual inputs
-ml_client = MLClient(...)  # Initialize your MLClient
-registry_ml_client = ...  # Initialize your registry_ml_client
-foundation_model = ...  # Your foundation model
-compute_cluster = ...  # Your compute cluster
-experiment_name = "your_experiment_name"
-gpus_per_node = ...  # Number of GPUs per node
-training_parameters = ...  # Your training parameters
-optimization_parameters = ...  # Your optimization parameters
+# # Usage example:
+# # Replace these values with your actual inputs
+# ml_client = MLClient(...)  # Initialize your MLClient
+# registry_ml_client = ...  # Initialize your registry_ml_client
+# foundation_model = ...  # Your foundation model
+# compute_cluster = ...  # Your compute cluster
+# experiment_name = "your_experiment_name"
+# gpus_per_node = ...  # Number of GPUs per node
+# training_parameters = ...  # Your training parameters
+# optimization_parameters = ...  # Your optimization parameters
 
-pipeline_job = create_and_submit_pipeline(
-    ml_client,
-    registry_ml_client,
-    foundation_model,
-    compute_cluster,
-    experiment_name,
-    gpus_per_node,
-    training_parameters,
-    optimization_parameters,
-)
+# pipeline_job = create_and_submit_pipeline(
+#     ml_client,
+#     registry_ml_client,
+#     foundation_model,
+#     compute_cluster,
+#     experiment_name,
+#     gpus_per_node,
+#     training_parameters,
+#     optimization_parameters,
+# )
