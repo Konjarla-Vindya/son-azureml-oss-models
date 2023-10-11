@@ -1,4 +1,4 @@
-name: albert-base-v2
+name: MLFlow-albert-base-v2
 
 on: 
   workflow_dispatch:
@@ -7,7 +7,7 @@ env:
   test_model_name: albert-base-v2
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-eastus-2
+  test_queue: test-japaneast-20
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -45,7 +45,7 @@ jobs:
       run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
-      run: python generic_initial_automation.py
+      run: python generic_initial_automation1.py
       working-directory: tests/src/automation_for_constant_library
     - name: trigger-next-model-step
       env:
