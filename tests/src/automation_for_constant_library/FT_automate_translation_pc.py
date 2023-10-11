@@ -35,12 +35,14 @@ except:
         resource_group_name=resource_group_name,
         workspace_name=workspace_name,
     )
+    
+registry_ml_client = MLClient(credential, registry_name="azureml-preview-test1")
 
 # download the dataset using the helper script. This needs datasets library: https://pypi.org/project/datasets/
 import os
 
 exit_status = os.system(
-    "python ./download-dataset.py --download_dir wmt16-en-ro-dataset"
+    "python ./download_dataset.py --download_dir wmt16-en-ro-dataset"
 )
 if exit_status != 0:
     raise Exception("Error downloading dataset")
@@ -174,12 +176,42 @@ except Exception as ex:
 #         f"Number of GPU's in compute {compute.size} not found. Available skus are: {available_sku_sizes}."
 #         f"This should not happen. Please check the selected compute cluster: {compute_cluster} and try again."
 #     )
-    
+# fetch the pipeline component
+pipeline_component_func = registry_ml_client.components.get(
+    name="translation_pipeline", label="latest"
+)
+# fetch Model from WS    
+model_name = "t5-small"
+foundation_model = workspace_ml_client.models.get(model_name, label="latest")
+print(
+    "\n\nUsing model name: {0}, version: {1}, id: {2} for fine tuning".format(
+        foundation_model.name, foundation_model.version, foundation_model.id
+    )
+)
+# Input data specification as a dictionary
+input_data = {
+    "train_file_path": {
+        "type": "uri_file",
+        "path": "./wmt16-en-ro-dataset/small_train.jsonl"
+    },
+    "validation_file_path": {
+        "type": "uri_file",
+        "path": "./wmt16-en-ro-dataset/small_validation.jsonl"
+    },
+    "test_file_path": {
+        "type": "uri_file",
+        "path": "./wmt16-en-ro-dataset/small_test.jsonl"
+    },
+    "evaluation_config": {
+        "type": "uri_file",
+        "path": "./translation-config.json"
+    }
+}
 
 # Model Training and Pipeline Setup
 @pipeline()
 def create_pipeline():
-    translation_pipeline = pipeline_component_func(
+    translation_pipeline = pipeline_component_func(**input_data,
         # specify the foundation model available in the azureml system registry id identified in step #3
         mlflow_model_path=foundation_model.id,
         # huggingface_id = 't5-small', # if you want to use a huggingface model, uncomment this line and comment the above line
