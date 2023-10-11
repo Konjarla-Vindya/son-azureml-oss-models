@@ -258,7 +258,7 @@ def create_and_run_azure_ml_pipeline(
                 type="uri_file", path="./emotion-dataset/small_test.jsonl"
             ),
             evaluation_config=Input(
-                type="uri_file", path="./text-classification-config.json"
+                type="uri_file", path="./emotion-dataset/text-classification-config.json"
             ),
             sentence1_key="text",
             label_key="label_string",
