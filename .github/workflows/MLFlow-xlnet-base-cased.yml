@@ -1,4 +1,4 @@
-name: xlnet-base-cased
+name: MLFlow-xlnet-base-cased
 
 on: 
   workflow_dispatch:
