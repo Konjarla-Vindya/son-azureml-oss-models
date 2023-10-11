@@ -13,7 +13,4 @@ jobs:
       run:
         echo "Hello World1"
         echo "Print Hello World1"  
-    - name: trigger-next-workflow
-      env:
-        GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
-      run: gh workflow run HELLO_WORLD --ref main
+    
