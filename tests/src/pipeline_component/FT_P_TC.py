@@ -109,7 +109,7 @@ def create_or_get_compute_target(ml_client,  compute):
             name=cpu_compute_target, size=compute, min_instances=0, max_instances=3, idle_time_before_scale_down = 120
         )
         ml_client.compute.begin_create_or_update(compute).result()
-        print(f"New compute target created: {compute.name}")
+    print(f"New compute target created: {compute.name}")
     return compute
 
 def run_azure_ml_job(code, command_to_run, environment, compute, environment_variables):
