@@ -190,7 +190,7 @@ if __name__ == "__main__":
     #     )
     #     print(f"Current Workspace: {workspace_name} ({subscription_id}, {resource_group})")
     workspace_configs = [
-    {"subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c", "resource_group": "huggingface-registry-test1", "workspace_name": "test-japaneast"},
+    {"subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c", "resource_group": "huggingface-registry-test1", "workspace_name": "test-eastus"},
     {"subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c", "resource_group": "huggingface-registry-test1", "workspace_name": "test-northcentralus"},
     # Add more workspace configurations as needed
     ]
