@@ -189,28 +189,28 @@ if __name__ == "__main__":
             workspace_name=workspace_name
         )
         print(f"Current Workspace: {workspace_name} ({subscription_id}, {resource_group})")
-    mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
-    compute_target = create_or_get_compute_target(
-        workspace_ml_client, queue.compute)
-    environment_variables = {"test_model_name": test_model_name}
-    env_list = workspace_ml_client.environments.list(name=queue.environment)
-    latest_version = 0
-    for env in env_list:
-        if latest_version <= int(env.version):
-            latest_version = int(env.version)
-    print("Latest Environment Version:", latest_version)
-    latest_env = workspace_ml_client.environments.get(
-        name=queue.environment, version=str(latest_version))
-    print("Latest Environment :", latest_env)
-    command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py",
-                                   environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
-    create_and_get_job_studio_url(command_job, workspace_ml_client)
-
-    InferenceAndDeployment = ModelInferenceAndDeployemnt(
-        test_model_name=test_model_name,
-        workspace_ml_client=workspace_ml_client,
-        registry=queue.registry
-    )
-    InferenceAndDeployment.model_infernce_and_deployment(
-        instance_type=queue.instance_type
-    )
+        mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
+        compute_target = create_or_get_compute_target(
+            workspace_ml_client, queue.compute)
+        environment_variables = {"test_model_name": test_model_name}
+        env_list = workspace_ml_client.environments.list(name=queue.environment)
+        latest_version = 0
+        for env in env_list:
+            if latest_version <= int(env.version):
+                latest_version = int(env.version)
+        print("Latest Environment Version:", latest_version)
+        latest_env = workspace_ml_client.environments.get(
+            name=queue.environment, version=str(latest_version))
+        print("Latest Environment :", latest_env)
+        command_job = run_azure_ml_job(code="./", command_to_run="python generic_model_download_and_register.py",
+                                       environment=latest_env, compute=queue.compute, environment_variables=environment_variables)
+        create_and_get_job_studio_url(command_job, workspace_ml_client)
+    
+        InferenceAndDeployment = ModelInferenceAndDeployemnt(
+            test_model_name=test_model_name,
+            workspace_ml_client=workspace_ml_client,
+            registry=queue.registry
+        )
+        InferenceAndDeployment.model_infernce_and_deployment(
+            instance_type=queue.instance_type
+        )
