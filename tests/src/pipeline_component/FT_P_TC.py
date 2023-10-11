@@ -109,6 +109,7 @@ def create_or_get_compute_target(ml_client,  compute):
             name=cpu_compute_target, size=compute, min_instances=0, max_instances=3, idle_time_before_scale_down = 120
         )
         ml_client.compute.begin_create_or_update(compute).result()
+        print(f"New compute target created: {compute.name}")
     return compute
 
 def run_azure_ml_job(code, command_to_run, environment, compute, environment_variables):
@@ -202,7 +203,7 @@ def get_training_and_optimization_parameters(foundation_model):
     return training_parameters, optimization_parameters
 
 
-def find_gpus_in_compute(workspace_ml_client, compute_target):
+def find_gpus_in_compute(workspace_ml_client, compute):
     gpu_count_found = False
     workspace_compute_sku_list = workspace_ml_client.compute.list_sizes()
     available_sku_sizes = []
@@ -227,7 +228,7 @@ def find_gpus_in_compute(workspace_ml_client, compute_target):
 
 def create_and_run_azure_ml_pipeline(
     foundation_model,
-    compute_target,
+    compute,
     gpus_per_node,
     training_parameters,
     optimization_parameters,
@@ -243,10 +244,10 @@ def create_and_run_azure_ml_pipeline(
     def create_pipeline():
         text_classification_pipeline = pipeline_component_func(
             mlflow_model_path=foundation_model.id,
-            compute_model_import=compute_cluster,
-            compute_preprocess=compute_cluster,
-            compute_finetune=compute_cluster,
-            compute_model_evaluation=compute_cluster,
+            compute_model_import=compute,
+            compute_preprocess=compute,
+            compute_finetune=compute,
+            compute_model_evaluation=compute,
             train_file_path=Input(
                 type="uri_file", path="./emotion-dataset/small_train.jsonl"
             ),
@@ -335,7 +336,8 @@ if __name__ == "__main__":
 
     # # generating a unique timestamp that can be used for names and versions that need to be unique
     # timestamp = str(int(time.time()))
-    compute_target = create_or_get_compute_target(workspace_ml_client, queue.compute)
+    compute = create_or_get_compute_target(workspace_ml_client, queue.compute)
+    print("printing:",{compute})
     env_list = workspace_ml_client.environments.list(name=queue.environment)
     latest_version = 0
     for env in env_list:
@@ -352,9 +354,9 @@ if __name__ == "__main__":
     #foundation_model, foundation_model_name = get_latest_model_version(workspace_ml_client, test_model_name.lower())
     foundation_model = get_latest_model_version(workspace_ml_client, test_model_name.lower())
     training_params, optimization_params = get_training_and_optimization_parameters(foundation_model)
-    gpus_per_node = find_gpus_in_compute(workspace_ml_client, compute_target)
+    gpus_per_node = find_gpus_in_compute(workspace_ml_client, compute)
     print(f"Number of GPUs in compute: {gpus_per_node}")
-    pipeline_job = create_and_run_azure_ml_pipeline(foundation_model, compute_target, gpus_per_node, training_parameters, optimization_parameters, experiment_name)
+    pipeline_job = create_and_run_azure_ml_pipeline(foundation_model, compute, gpus_per_node, training_parameters, optimization_parameters, experiment_name)
     print("Completed")
 
     
