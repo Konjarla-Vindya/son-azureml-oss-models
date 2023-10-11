@@ -439,7 +439,7 @@ if __name__ == "__main__":
     #foundation_model, foundation_model_name = get_latest_model_version(workspace_ml_client, test_model_name.lower())
     foundation_model = get_latest_model_version(workspace_ml_client, test_model_name.lower())
     training_parameters, optimization_parameters = get_training_and_optimization_parameters(foundation_model)
-    gpus_per_node = find_gpus_in_compute(workspace_ml_client, compute)
+    #gpus_per_node = find_gpus_in_compute(workspace_ml_client, compute)
     print(f"Number of GPUs in compute: {gpus_per_node}")
     pipeline_job = create_and_run_azure_ml_pipeline(foundation_model, compute, gpus_per_node, training_parameters, optimization_parameters, experiment_name)
     print("Completed")
