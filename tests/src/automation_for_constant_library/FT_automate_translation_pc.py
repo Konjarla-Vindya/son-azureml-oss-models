@@ -16,6 +16,8 @@ from azure.ai.ml.dsl import pipeline
 from azureml.core import Workspace, Environment
 from azure.ai.ml.entities import CommandComponent, PipelineComponent, Job, Component
 from azure.ai.ml import PyTorchDistribution, Input
+from azure.ai.ml.entities import Model
+from azure.ai.ml.constants import AssetTypes
 
 check_override = True
 # model to test
@@ -206,6 +208,28 @@ def create_or_get_aml_compute(workspace_ml_client, compute_cluster, compute_clus
     
     return compute, gpus_per_node, compute_cluster
 
+
+
+def download_and_process_dataset(download_dir, output_dir, frac=1):
+    # Download the dataset
+    exit_status = os.system(f"python ./download_dataset.py --download_dir {download_dir}")
+    if exit_status != 0:
+        raise Exception("Error downloading dataset")
+
+    # Load the train.jsonl, validation.jsonl, and test.jsonl files
+    train_df = pd.read_json(f"{download_dir}/train.jsonl", lines=True)
+    validation_df = pd.read_json(f"{download_dir}/validation.jsonl", lines=True)
+    test_df = pd.read_json(f"{download_dir}/test.jsonl", lines=True)
+
+    # Save a fraction of the rows from the dataframes
+    train_df.sample(frac=frac).to_json(f"{output_dir}/small_train.jsonl", orient="records", lines=True)
+    validation_df.sample(frac=frac).to_json(f"{output_dir}/small_validation.jsonl", orient="records", lines=True)
+    test_df.sample(frac=frac).to_json(f"{output_dir}/small_test.jsonl", orient="records", lines=True)
+
+# Example usage:
+download_and_process_dataset("wmt16-en-ro-dataset", "wmt16-en-ro-dataset", frac=1)
+
+
 def create_and_run_azure_ml_pipeline(
     foundation_model,
     compute_cluster,
@@ -230,13 +254,13 @@ def create_and_run_azure_ml_pipeline(
             compute_model_evaluation=compute_cluster,
             # map the dataset splits to parameters
             train_file_path=Input(
-                type="uri_file", path="./wmt16-en-ro-dataset/small_train.jsonl"
+                type="uri_file", path="./download_dir/small_train.jsonl"
             ),
             validation_file_path=Input(
-                type="uri_file", path="./wmt16-en-ro-dataset/small_validation.jsonl"
+                type="uri_file", path="./download_dir/small_validation.jsonl"
             ),
             test_file_path=Input(
-                type="uri_file", path="./wmt16-en-ro-dataset/small_test.jsonl"
+                type="uri_file", path="./download_dir/small_test.jsonl"
             ),
             evaluation_config=Input(type="uri_file", path="./translation-config.json"),
             # The following parameters map to the dataset fields
@@ -351,4 +375,73 @@ if __name__ == "__main__":
     print("Completed")
 
 
+
+# def get_runs_from_mlflow(workspace_ml_client, experiment_name, pipeline_job):
+
+#     mlflow_tracking_uri = workspace_ml_client.workspaces.get(
+#         workspace_ml_client.workspace_name
+#     ).mlflow_tracking_uri
+#     mlflow.set_tracking_uri(mlflow_tracking_uri)
+
+#     # Concatenate 'tags.mlflow.rootRunId=' and pipeline_job.name in single quotes as filter variable
+#     filter = "tags.mlflow.rootRunId='" + pipeline_job.name + "'"
+#     runs = mlflow.search_runs(
+#         experiment_names=[experiment_name], filter_string=filter, output_format="list"
+#     )
+#     training_run = None
+#     evaluation_run = None
+
+#     # Get the training and evaluation runs.
+#     # Using a workaround until the issue 'Bug 2320997: not able to show eval metrics in FT notebooks - mlflow client now showing display names' is fixed
+#     for run in runs:
+#         # Check if run.data.metrics.epoch exists
+#         if "epoch" in run.data.metrics:
+#             training_run = run
+#         # Else, check if run.data.metrics.accuracy exists
+#         elif "bleu_1" in run.data.metrics:
+#             evaluation_run = run
+#     if training_run:
+#         print("Training metrics:\n")
+#         print(json.dumps(training_run.data.metrics, indent=2))
+#     else:
+#         print("No Training job found")
+
+#     if evaluation_run:
+#         print("\nEvaluation metrics:\n")
+#         print(json.dumps(evaluation_run.data.metrics, indent=2))
+#     else:
+#         print("No Evaluation job found")
+
+#     return training_run, evaluation_run
+
+
+
+# def register_model_from_pipeline_output(workspace_ml_client, pipeline_job, model_name, timestamp):
+#     # Check if the `trained_model` output is available
+#     print("Pipeline job outputs: ", workspace_ml_client.jobs.get(pipeline_job.name).outputs)
+
+#     # Fetch the model from pipeline job output - not working, hence fetching from fine-tune child job
+#     model_path_from_job = "azureml://jobs/{0}/outputs/{1}".format(
+#         pipeline_job.name, "trained_model"
+#     )
+
+#     finetuned_model_name = model_name + "-wmt16-en-ro-src"
+#     finetuned_model_name = finetuned_model_name.replace("/", "-")
+#     print("Path to register model: ", model_path_from_job)
+
+#     prepare_to_register_model = Model(
+#         path=model_path_from_job,
+#         type=AssetTypes.MLFLOW_MODEL,
+#         name=finetuned_model_name,
+#         version=timestamp,  # Use timestamp as the version to avoid version conflicts
+#         description=model_name + " fine-tuned model for translation wmt16 en to ro",
+#     )
+#     print("Prepare to register model:\n", prepare_to_register_model)
+
+#     # Register the model from the pipeline job output
+#     registered_model = workspace_ml_client.models.create_or_update(prepare_to_register_model)
+#     print("Registered model:\n", registered_model)
+
+# # Call the function with the appropriate arguments to register the model
+# register_model_from_pipeline_output(workspace_ml_client, pipeline_job, model_name, timestamp)
 
