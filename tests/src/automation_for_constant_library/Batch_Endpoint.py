@@ -28,6 +28,8 @@ from azureml.core import Workspace
 from mlflow.tracking.client import MlflowClient
 import re
 from datetime import datetime
+import base64
+import logging
 
 # constants
 check_override = True
@@ -371,6 +373,7 @@ if __name__ == "__main__":
     #folder_path = get_task_specified_input(task=task, test_model_name)
     print(" input taken, running Batch Job")
     input = Input(path=folder_path, type=AssetTypes.URI_FOLDER)
+    print("Invoking the job")
 
     # Invoke the batch endpoint
     job = workspace_ml_client.batch_endpoints.invoke(
