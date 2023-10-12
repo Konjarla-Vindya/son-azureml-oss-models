@@ -265,7 +265,7 @@ def create_and_run_azure_ml_pipeline(
             test_file_path=Input(
                 type="uri_file", path="./wmt16-en-ro-dataset/small_test.jsonl"
             ),
-            evaluation_config=Input(type="uri_file", path="./translation-config.json"),
+            #evaluation_config=Input(type="uri_file", path="./translation-config.json"),
             # The following parameters map to the dataset fields
             # source_lang parameter maps to the "en" field in the wmt16 dataset
             source_lang="en",
