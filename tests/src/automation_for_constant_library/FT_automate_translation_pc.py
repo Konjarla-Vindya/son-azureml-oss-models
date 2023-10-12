@@ -122,10 +122,10 @@ def get_latest_model_version(workspace_ml_client, test_model_name):
 def get_training_and_optimization_parameters(foundation_model):
     # Training parameters
     training_parameters = {
-        "num_train_epochs": 3,
+        "num_train_epochs": 1,
         "per_device_train_batch_size": 1,
         "per_device_eval_batch_size": 1,
-        "learning_rate": 2e-5,
+        "learning_rate": 2e-1,
         "metric_for_best_model": "bleu",
     }
     print(f"The following training parameters are enabled - {training_parameters}")
@@ -208,26 +208,29 @@ def create_or_get_aml_compute(workspace_ml_client, compute_cluster, compute_clus
     
     return compute, gpus_per_node, compute_cluster
 
+#Download dataset
 
-
-def download_and_process_dataset(download_dir, output_dir, frac=1):
-    # Download the dataset
-    exit_status = os.system(f"python ./download_dataset.py --download_dir {download_dir}")
+def download_and_process_dataset():
+    # Download the dataset using the helper script.
+    exit_status = os.system("python ./download-dataset.py --download_dir wmt16-en-ro-dataset")
     if exit_status != 0:
         raise Exception("Error downloading dataset")
 
-    # Load the train.jsonl, validation.jsonl, and test.jsonl files
-    train_df = pd.read_json(f"{download_dir}/train.jsonl", lines=True)
-    validation_df = pd.read_json(f"{download_dir}/validation.jsonl", lines=True)
-    test_df = pd.read_json(f"{download_dir}/test.jsonl", lines=True)
+    # Load the train.jsonl, validation.jsonl, and test.jsonl files.
+    train_df = pd.read_json("./wmt16-en-ro-dataset/train.jsonl", lines=True)
+    validation_df = pd.read_json("./wmt16-en-ro-dataset/validation.jsonl", lines=True)
+    test_df = pd.read_json("./wmt16-en-ro-dataset/test.jsonl", lines=True)
 
-    # Save a fraction of the rows from the dataframes
-    train_df.sample(frac=frac).to_json(f"{output_dir}/small_train.jsonl", orient="records", lines=True)
-    validation_df.sample(frac=frac).to_json(f"{output_dir}/small_validation.jsonl", orient="records", lines=True)
-    test_df.sample(frac=frac).to_json(f"{output_dir}/small_test.jsonl", orient="records", lines=True)
+    # Set the fraction parameter to control the number of examples to be saved.
+    frac = 0.1  # You can adjust this value as needed.
+
+    # Save a fraction of the rows from the dataframes with a "small_" prefix in the ./wmt16-en-ro-dataset folder.
+    train_df.sample(frac=frac).to_json("./wmt16-en-ro-dataset/small_train.jsonl", orient="records", lines=True)
+    validation_df.sample(frac=frac).to_json("./wmt16-en-ro-dataset/small_validation.jsonl", orient="records", lines=True)
+    test_df.sample(frac=frac).to_json("./wmt16-en-ro-dataset/small_test.jsonl", orient="records", lines=True)
 
 # Example usage:
-download_and_process_dataset("wmt16-en-ro-dataset", "wmt16-en-ro-dataset", frac=1)
+download_and_process_dataset()
 
 
 def create_and_run_azure_ml_pipeline(
@@ -254,13 +257,13 @@ def create_and_run_azure_ml_pipeline(
             compute_model_evaluation=compute_cluster,
             # map the dataset splits to parameters
             train_file_path=Input(
-                type="uri_file", path="./download_dir/small_train.jsonl"
+                type="uri_file", path="./wmt16-en-ro-dataset/small_train.jsonl"
             ),
             validation_file_path=Input(
-                type="uri_file", path="./download_dir/small_validation.jsonl"
+                type="uri_file", path="./wmt16-en-ro-dataset/small_validation.jsonl"
             ),
             test_file_path=Input(
-                type="uri_file", path="./download_dir/small_test.jsonl"
+                type="uri_file", path="./wmt16-en-ro-dataset/small_test.jsonl"
             ),
             evaluation_config=Input(type="uri_file", path="./translation-config.json"),
             # The following parameters map to the dataset fields
