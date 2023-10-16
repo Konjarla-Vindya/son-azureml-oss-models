@@ -228,6 +228,9 @@ def download_and_process_dataset():
     train_df.sample(frac=frac).to_json("./squad-dataset/small_train.jsonl", orient="records", lines=True)
     validation_df.sample(frac=frac).to_json("./squad-dataset/small_validation.jsonl", orient="records", lines=True)
     test_df.sample(frac=frac).to_json("./squad-dataset/small_test.jsonl", orient="records", lines=True)
+    train_df=train_df.iloc[:100,:]
+    validation_df=validation_df.iloc[:100,:]
+    test_df=test_df.iloc[:100,:]
 
 # Example usage:
 download_and_process_dataset()
