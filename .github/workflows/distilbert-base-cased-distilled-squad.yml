@@ -6,7 +6,7 @@ env:
   test_model_name: distilbert-base-cased-distilled-squad
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-southcentralus-BE
+  test_queue: test-southcentralus-22
   test_set: huggingface-all
   test_keep_looping: false
 
