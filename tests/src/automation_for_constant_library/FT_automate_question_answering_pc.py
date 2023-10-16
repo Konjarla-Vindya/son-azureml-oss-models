@@ -273,7 +273,7 @@ def create_and_run_azure_ml_pipeline(
            answer_start_key="answer_start", 
            answer_text_key="text",
             # training settings
-            number_of_gpu_to_use_finetuning=gpus_per_node,  # set to the number of GPUs available in the compute
+           number_of_gpu_to_use_finetuning=gpus_per_node,  # set to the number of GPUs available in the compute
             **training_parameters,
             **optimization_parameters
         )
