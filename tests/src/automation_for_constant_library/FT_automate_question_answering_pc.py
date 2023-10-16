@@ -226,6 +226,10 @@ def download_and_process_dataset():
 
     # Save a fraction of the rows from the dataframes with a "small_" prefix in the ./wmt16-en-ro-dataset folder.
     train_df.sample(frac=frac).to_json("./squad-dataset/small_train.jsonl", orient="records", lines=True)
+    validation_df, test_df = (
+    validation_df[: len(validation_df) // 2],
+    validation_df[len(validation_df) // 2 :],
+    )
     validation_df.sample(frac=frac).to_json("./squad-dataset/small_validation.jsonl", orient="records", lines=True)
     test_df.sample(frac=frac).to_json("./squad-dataset/small_test.jsonl", orient="records", lines=True)
     train_df=train_df.iloc[:100,:]
