@@ -212,22 +212,22 @@ def create_or_get_aml_compute(workspace_ml_client, compute_cluster, compute_clus
 
 def download_and_process_dataset():
     # Download the dataset using the helper script.
-    exit_status = os.system("python ./download-dataset.py --download_dir wmt16-en-ro-dataset")
+    exit_status = os.system("python ./download-dataset.py --download_dir squad-dataset")
     if exit_status != 0:
         raise Exception("Error downloading dataset")
 
     # Load the train.jsonl, validation.jsonl, and test.jsonl files.
-    train_df = pd.read_json("./wmt16-en-ro-dataset/train.jsonl", lines=True)
-    validation_df = pd.read_json("./wmt16-en-ro-dataset/validation.jsonl", lines=True)
-    test_df = pd.read_json("./wmt16-en-ro-dataset/test.jsonl", lines=True)
+    train_df = pd.read_json("./squad-dataset/train.jsonl", lines=True)
+    validation_df = pd.read_json("./squad-dataset/validation.jsonl", lines=True)
+    test_df = pd.read_json("./squad-dataset/test.jsonl", lines=True)
 
     # Set the fraction parameter to control the number of examples to be saved.
     frac = 0.1  # You can adjust this value as needed.
 
     # Save a fraction of the rows from the dataframes with a "small_" prefix in the ./wmt16-en-ro-dataset folder.
-    train_df.sample(frac=frac).to_json("./wmt16-en-ro-dataset/small_train.jsonl", orient="records", lines=True)
-    validation_df.sample(frac=frac).to_json("./wmt16-en-ro-dataset/small_validation.jsonl", orient="records", lines=True)
-    test_df.sample(frac=frac).to_json("./wmt16-en-ro-dataset/small_test.jsonl", orient="records", lines=True)
+    train_df.sample(frac=frac).to_json("./squad-dataset/small_train.jsonl", orient="records", lines=True)
+    validation_df.sample(frac=frac).to_json("./squad-dataset/small_validation.jsonl", orient="records", lines=True)
+    test_df.sample(frac=frac).to_json("./squad-dataset/small_test.jsonl", orient="records", lines=True)
 
 # Example usage:
 download_and_process_dataset()
@@ -243,7 +243,7 @@ def create_and_run_azure_ml_pipeline(
 ):
     # Fetch the pipeline component
     pipeline_component_func = registry_ml_client.components.get(
-        name="translation_pipeline_for_oss", label="latest"
+        name="question_answering_pipeline_for_oss", label="latest"
     )
     # Model Training and Pipeline Setup
     @pipeline()
@@ -257,20 +257,21 @@ def create_and_run_azure_ml_pipeline(
             compute_model_evaluation=compute_cluster,
             # map the dataset splits to parameters
             train_file_path=Input(
-                type="uri_file", path="./wmt16-en-ro-dataset/small_train.jsonl"
+            type="uri_file", path="./squad-dataset/small_train.jsonl"
             ),
             validation_file_path=Input(
-                type="uri_file", path="./wmt16-en-ro-dataset/small_validation.jsonl"
+            type="uri_file", path="./squad-dataset/small_validation.jsonl"
             ),
-            test_file_path=Input(
-                type="uri_file", path="./wmt16-en-ro-dataset/small_test.jsonl"
+           test_file_path=Input(type="uri_file", path="./squad-dataset/small_test.jsonl"),
+           evaluation_config=Input(
+            type="uri_file", path="./question-answering-config.json"
             ),
-            evaluation_config=Input(type="uri_file", path="./translation-config.json"),
-            # The following parameters map to the dataset fields
-            # source_lang parameter maps to the "en" field in the wmt16 dataset
-            source_lang="en",
-            # target_lang parameter maps to the "ro" field in the wmt16 dataset
-            target_lang="ro",
+            #evaluation_config=Input(type="uri_file", path="./translation-config.json"),
+           question_key="question",
+           context_key="context",
+           answers_key="answers",
+           answer_start_key="answer_start", 
+           answer_text_key="text",
             # training settings
             number_of_gpu_to_use_finetuning=gpus_per_node,  # set to the number of GPUs available in the compute
             **training_parameters,
@@ -341,7 +342,7 @@ if __name__ == "__main__":
     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     registry_ml_client = MLClient(credential, registry_name="azureml-preview-test1")
-    experiment_name = "PC_translation_wmt16"
+    experiment_name = "question-answering-extractive-qna"
     # # generating a unique timestamp that can be used for names and versions that need to be unique
     # timestamp = str(int(time.time()))
 
