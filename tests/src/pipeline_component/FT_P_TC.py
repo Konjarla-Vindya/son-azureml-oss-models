@@ -24,11 +24,13 @@ import ast
 check_override = True
 
 
-
+# model to test
 test_model_name = os.environ.get('test_model_name')
 
+# test cpu or gpu template
 test_sku_type = os.environ.get('test_sku_type')
 
+# bool to decide if we want to trigger the next model in the queue
 test_trigger_next_model = os.environ.get('test_trigger_next_model')
 
 # test queue name - the queue file contains the list of models to test with with a specific workspace
