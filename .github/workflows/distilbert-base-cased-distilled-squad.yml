@@ -31,7 +31,9 @@ jobs:
     - name: pip-install-transformers[torch]
       run: pip install transformers[torch]
     - name: pip-install-torchvision
-      run: pip install torchvision 
+      run: pip install torchvision
+    - name: pip-install-datasets
+      run: pip install datasets
     - name: pip-install-mlflow
       run: pip install mlflow
     - name: pip-install-python-box
@@ -44,7 +46,7 @@ jobs:
       run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
-      run: python Batch_Endpoint.py
+      run: python FT_automate_question_answering_pc.py
       working-directory: tests/src/automation_for_constant_library
 
     # - name: Capture job status
