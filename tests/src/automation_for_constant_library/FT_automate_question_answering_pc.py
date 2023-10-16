@@ -219,7 +219,7 @@ def download_and_process_dataset():
     # Load the train.jsonl, validation.jsonl, and test.jsonl files.
     train_df = pd.read_json("./squad-dataset/train.jsonl", lines=True)
     validation_df = pd.read_json("./squad-dataset/validation.jsonl", lines=True)
-    test_df = pd.read_json("./squad-dataset/test.jsonl", lines=True)
+    #test_df = pd.read_json("./squad-dataset/test.jsonl", lines=True)
 
     # Set the fraction parameter to control the number of examples to be saved.
     frac = 1  # You can adjust this value as needed.
