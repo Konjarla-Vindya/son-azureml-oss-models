@@ -52,7 +52,7 @@ class HfTask:
         required_data = df[df.modelId.apply(lambda x: x == self.model_name)]
         # Get the task
         required_data = required_data["pipeline_tag"].to_string()
-        # Create pattern to avoid number and space
+        # Create pattern fiel number and space
         pattern = r'[0-9\s+]'
         # Replace number and space
         final_data = re.sub(pattern, '', required_data)

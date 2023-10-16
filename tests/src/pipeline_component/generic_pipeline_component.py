@@ -101,7 +101,7 @@ def create_or_get_compute_target(ml_client,  compute, instance):
 
 def get_file_path(task):
     file_name = task+".json"
-    data_path = f"./datasets/{task}{file_name}"
+    data_path = f"./datasets/{task}/{file_name}"
     return data_path
 
 

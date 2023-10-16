@@ -47,7 +47,7 @@ class ModelInferenceAndDeployemnt:
                         f"::error:: {error_messages['error_category']}: {line}")
 
     def get_online_endpoint_logs(self, deployment_name, online_endpoint_name):
-        print("Deployment logs: \n\n")
+        logger.info("Deployment logs: \n\n")
         logs = self.workspace_ml_client.online_deployments.get_logs(
             name=deployment_name, endpoint_name=online_endpoint_name, lines=100000)
         print(logs)
@@ -122,7 +122,6 @@ class ModelInferenceAndDeployemnt:
 
     def cloud_inference(self, scoring_file, scoring_input, online_endpoint_name, deployment_name, task, latest_model):
         try:
-            json_file_name = ''
             logger.info(f"endpoint_name : {online_endpoint_name}")
             logger.info(f"deployment_name : {deployment_name}")
             logger.info(f"Input data is this one : {scoring_input}")
@@ -151,6 +150,7 @@ class ModelInferenceAndDeployemnt:
                 logger.info(
                     f"Getting the reposne from the endpoint is this one : {response}")
                 self.delete_file(file_name=json_file_name)
+
             response_json = json.loads(response)
             output = json.dumps(response_json, indent=2)
             logger.info(f"response: \n\n{output}")
@@ -171,40 +171,19 @@ class ModelInferenceAndDeployemnt:
             logger.info(f"::error::The exception here is this : \n {e}")
             raise Exception(e)
 
-    def create_model_package(self, latest_model, endpoint):
-        logger.info("In create_model_package...")
+    def create_online_endpoint(self, endpoint):
+        logger.info("In create_online_endpoint...")
         try:
-            model_configuration = ModelConfiguration(mode="download")
-            # latest_model_name = self.get_model_name(
-            #     latest_model_name=latest_model.name)
-            logger.info(f"Registered model name is this : {latest_model.name}")
-            package_name = f"package-v2-{latest_model.name}"
-            package_config = ModelPackage(
-                target_environment_name=package_name,
-                inferencing_server=AzureMLOnlineInferencingServer(),
-                model_configuration=model_configuration
-            )
-            model_package = self.workspace_ml_client.models.package(
-                latest_model.name,
-                latest_model.version,
-                package_config
-            )
+            self.workspace_ml_client.online_endpoints.begin_create_or_update(
+                endpoint).wait()
         except Exception as e:
-            _, _, exc_tb = sys.exc_info()
-            logger.error(f"::error:: Could not create Model package: \n")
-            logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
-                         f" the exception is this one :{e}")
-            sys.exit(1)
-        try:
-            self.workspace_ml_client.begin_create_or_update(endpoint).result()
-        except Exception as e:
-            _, _, exc_tb = sys.exc_info()
             logger.error(f"::error:: Could not create endpoint: \n")
-            logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
-                         f" the exception is this one : {e}")
+            logger.error(f"{e}\n\n check logs:\n\n")
             self.prase_logs(str(e))
-            sys.exit(1)
-        return model_package
+            exit(1)
+        online_endpoint_obj = self.workspace_ml_client.online_endpoints.get(
+            name=endpoint.name)
+        logger.info(f"online_endpoint_obj : {online_endpoint_obj}")
 
     def get_model_name(self, latest_model_name):
         # Expression need to be replaced with hyphen
@@ -234,21 +213,9 @@ class ModelInferenceAndDeployemnt:
 
         return latest_model_name
 
-    def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type):
+    def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type, endpoint):
         logger.info("In create_online_deployment...")
         logger.info(f"latest_model.name is this : {latest_model.name}")
-        # # Expression need to be replaced with hyphen
-        # expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
-        #                         "$", "%", "^", "&", "*", "<", ">", "?", "!", "~", "_"]
-        # # Create the regular expression to ignore
-        # regx = re.compile('|'.join(map(re.escape, expression_to_ignore)))
-        # # Check the model_name contains any of there character
-        # expression_check = re.findall(regx, latest_model.name)
-        # if expression_check:
-        #     # Replace the expression with hyphen
-        #     latest_model_name = regx.sub("-", latest_model.name)
-        # else:
-        #     latest_model_name = latest_model.name
         latest_model_name = self.get_model_name(
             latest_model_name=latest_model.name)
         # Check if the model name starts with a digit
@@ -265,15 +232,19 @@ class ModelInferenceAndDeployemnt:
         logger.info(f"deployment name is this one : {deployment_name}")
         deployment_config = ManagedOnlineDeployment(
             name=deployment_name,
-            model=latest_model,
+            model=latest_model.id,
             endpoint_name=online_endpoint_name,
-            environment=model_package,
             instance_type=instance_type,
-            instance_count=1
+            instance_count=1,
+            request_settings=OnlineRequestSettings(
+                max_concurrent_requests_per_instance=1,
+                request_timeout_ms=50000,
+                max_queue_wait_ms=500,
+            )
         )
         try:
-            deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(
-                deployment_config).result()
+            self.workspace_ml_client.online_deployments.begin_create_or_update(
+                deployment_config).wait()
         except Exception as e:
             _, _, exc_tb = sys.exc_info()
             logger.error(f"::error:: Could not create deployment\n")
@@ -285,7 +256,22 @@ class ModelInferenceAndDeployemnt:
             self.workspace_ml_client.online_endpoints.begin_delete(
                 name=online_endpoint_name).wait()
             sys.exit(1)
-
+        endpoint.traffic = {deployment_name: 100}
+        try:
+            self.workspace_ml_client.begin_create_or_update(endpoint).result()
+        except Exception as e:
+            _, _, exc_tb = sys.exc_info()
+            logger.error(f"::error:: Could not create deployment\n")
+            logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
+                         f" the exception is this one : {e}")
+            self.get_online_endpoint_logs(
+                deployment_name, online_endpoint_name)
+            self.workspace_ml_client.online_endpoints.begin_delete(
+                name=endpoint.name).wait()
+            sys.exit(1)
+        deployment_obj = self.workspace_ml_client.online_deployments.get(
+            name=deployment_name, endpoint_name=endpoint.name)
+        logger.info(f"Deployment object is this one: {deployment_obj}")
         return deployment_name
 
     def delete_online_endpoint(self, online_endpoint_name):
@@ -301,7 +287,7 @@ class ModelInferenceAndDeployemnt:
             exit(0)
 
     def get_task_specified_input(self, task):
-        #scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
+        # scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
         scoring_file = f"sample_inputs/{task}.json"
         # check of scoring_file exists
         try:
@@ -309,53 +295,38 @@ class ModelInferenceAndDeployemnt:
                 scoring_input = ConfigBox(json.load(f))
                 logger.info(f"scoring_input file:\n\n {scoring_input}\n\n")
         except Exception as e:
-            logger.error(
-                f"::Error:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
+            logger.warning(
+                f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
         return scoring_file, scoring_input
 
-    def local_inference(self, task, latest_model, scoring_input):
-        model_sourceuri = latest_model.properties["mlflow.modelSourceUri"]
-        loaded_model_pipeline = mlflow.transformers.load_model(
-            model_uri=model_sourceuri)
-        print(
-            f"Latest model name : {latest_model.name} and latest model version : {latest_model.version}", )
-        if task == "fill-mask":
-            pipeline_tokenizer = loaded_model_pipeline.tokenizer
-            for index in range(len(scoring_input.input_data)):
-                scoring_input.input_data[index] = scoring_input.input_data[index].replace(
-                    "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
-
-        output = loaded_model_pipeline(scoring_input.input_data)
-        print("My outupt is this : ", output)
-
-    def model_infernce_and_deployment(self, instance_type):
-        expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
-                                "$", "%", "^", "&", "*", "<", ">", "?", "!", "~"]
-        # Create the regular expression to ignore
-        regx_for_expression = re.compile(
-            '|'.join(map(re.escape, expression_to_ignore)))
-        # Check the model_name contains any of there character
-        expression_check = re.findall(
-            regx_for_expression, self.test_model_name)
-        if expression_check:
-            # Replace the expression with hyphen
-            model_name = regx_for_expression.sub("-", self.test_model_name)
-        else:
-            model_name = self.test_model_name
-        latest_model = self.get_latest_model_version(
-            self.workspace_ml_client, model_name)
+    def model_infernce_and_deployment(self, instance_type, latest_model):
+        # expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
+        #                         "$", "%", "^", "&", "*", "<", ">", "?", "!", "~"]
+        # # Create the regular expression to ignore
+        # regx_for_expression = re.compile(
+        #     '|'.join(map(re.escape, expression_to_ignore)))
+        # # Check the model_name contains any of there character
+        # expression_check = re.findall(
+        #     regx_for_expression, self.test_model_name)
+        # if expression_check:
+        #     # Replace the expression with hyphen
+        #     model_name = regx_for_expression.sub("-", self.test_model_name)
+        # else:
+        #     model_name = self.test_model_name
+        # latest_model = self.get_latest_model_version(
+        #     self.workspace_ml_client, model_name)
         try:
-            # task = latest_model.flavors["transformers"]["task"]
+            #task = latest_model.flavors["transformers"]["task"]
             hfApi = HfTask(model_name=self.test_model_name)
             task = hfApi.get_task()
         except Exception as e:
             logger.warning(
                 f"::warning::From the transformer flavour we are not able to extract the task for this model : {latest_model}")
             sys.exit(1)
+           
         logger.info(f"latest_model: {latest_model}")
         logger.info(f"Task is : {task}")
         scoring_file, scoring_input = self.get_task_specified_input(task=task)
-        # self.local_inference(task=task, latest_model=latest_model, scoring_input=scoring_input)
         # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
         timestamp = int(time.time())
         online_endpoint_name = task + str(timestamp)
@@ -365,13 +336,13 @@ class ModelInferenceAndDeployemnt:
             name=online_endpoint_name,
             auth_mode="key",
         )
-        model_package = self.create_model_package(
-            latest_model=latest_model, endpoint=endpoint)
+        self.create_online_endpoint(endpoint=endpoint)
         deployment_name = self.create_online_deployment(
             latest_model=latest_model,
             online_endpoint_name=online_endpoint_name,
-            model_package=model_package,
-            instance_type=instance_type
+            model_package=" ",
+            instance_type=instance_type,
+            endpoint=endpoint
         )
         self.cloud_inference(
             scoring_file=scoring_file,
