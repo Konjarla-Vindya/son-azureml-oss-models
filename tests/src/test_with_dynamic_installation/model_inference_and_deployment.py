@@ -250,11 +250,11 @@ class ModelInferenceAndDeployemnt:
             logger.error(f"::error:: Could not create deployment\n")
             logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
                          f" the exception is this one : {e}")
-            self.prase_logs(str(e))
-            self.get_online_endpoint_logs(
-                deployment_name, online_endpoint_name)
-            self.workspace_ml_client.online_endpoints.begin_delete(
-                name=online_endpoint_name).wait()
+            # self.prase_logs(str(e))
+            # self.get_online_endpoint_logs(
+            #     deployment_name, online_endpoint_name)
+            # self.workspace_ml_client.online_endpoints.begin_delete(
+            #     name=online_endpoint_name).wait()
             sys.exit(1)
         endpoint.traffic = {deployment_name: 100}
         try:
@@ -264,10 +264,10 @@ class ModelInferenceAndDeployemnt:
             logger.error(f"::error:: Could not create deployment\n")
             logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
                          f" the exception is this one : {e}")
-            self.get_online_endpoint_logs(
-                deployment_name, online_endpoint_name)
-            self.workspace_ml_client.online_endpoints.begin_delete(
-                name=endpoint.name).wait()
+            # self.get_online_endpoint_logs(
+            #     deployment_name, online_endpoint_name)
+            # self.workspace_ml_client.online_endpoints.begin_delete(
+            #     name=endpoint.name).wait()
             sys.exit(1)
         deployment_obj = self.workspace_ml_client.online_deployments.get(
             name=deployment_name, endpoint_name=endpoint.name)
