@@ -25,14 +25,8 @@ jobs:
       run: pip install azure-ai-ml
     - name: pip-install-azureml-core
       run: pip install azureml-core
-    - name: pip-install-ninja
-      run: pip install ninja
     - name: pip-install-bitsandbytes
       run: pip install bitsandbytes
-    - name: pip-install-optimum
-      run: pip install optimum
-    - name: pip-install-auto-gptq
-      run: pip install auto-gptq
     - name: pip-install-datasets
       run: pip install datasets
     - name: pip-install-azureml-mlflow
