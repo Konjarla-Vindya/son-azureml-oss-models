@@ -23,7 +23,8 @@ logger = get_logger(__name__)
 
 
 class ModelInferenceAndDeployemnt:
-    def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
+    def __init__(self, model_name, test_model_name, workspace_ml_client, registry) -> None:
+        self.model_name = model_name
         self.test_model_name = test_model_name
         self.workspace_ml_client = workspace_ml_client
         self.registry = registry
@@ -347,7 +348,7 @@ class ModelInferenceAndDeployemnt:
             self.workspace_ml_client, model_name)
         try:
             # task = latest_model.flavors["transformers"]["task"]
-            hfApi = HfTask(model_name=self.test_model_name)
+            hfApi = HfTask(model_name=self.model_name)
             task = hfApi.get_task()
         except Exception as e:
             logger.warning(
