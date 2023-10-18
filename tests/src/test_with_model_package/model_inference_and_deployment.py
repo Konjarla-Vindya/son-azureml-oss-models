@@ -189,6 +189,7 @@ class ModelInferenceAndDeployemnt:
                 latest_model.version,
                 package_config
             )
+            logger.info(f"Model Package is successfuly created : {model_package}")
         except Exception as e:
             _, _, exc_tb = sys.exc_info()
             logger.error(f"::error:: Could not create Model package: \n")
