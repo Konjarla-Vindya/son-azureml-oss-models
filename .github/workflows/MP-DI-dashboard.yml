@@ -5,7 +5,7 @@ on:
 
 jobs:
   testing:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     env:
       token: ${{ secrets.WORKFLOW_TOKEN }}
