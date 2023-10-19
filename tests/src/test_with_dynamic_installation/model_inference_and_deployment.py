@@ -287,8 +287,8 @@ class ModelInferenceAndDeployemnt:
             exit(0)
 
     def get_task_specified_input(self, task):
-        # scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
-        scoring_file = f"sample_inputs/{task}.json"
+        scoring_file = f"../../config/sample_inputs/HuggingFace/{task}.json"
+        #scoring_file = f"sample_inputs/{task}.json"
         # check of scoring_file exists
         try:
             with open(scoring_file) as f:
