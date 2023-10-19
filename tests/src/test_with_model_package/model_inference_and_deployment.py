@@ -14,7 +14,7 @@ from azure.ai.ml.entities import (
 )
 from utils.logging import get_logger
 from fetch_task import HfTask
-from batch_deployment import BatchDeployment
+from batch_deployment import ModelBatchDeployment
 import mlflow
 from box import ConfigBox
 import re
@@ -386,7 +386,7 @@ class ModelInferenceAndDeployemnt:
         #     latest_model=latest_model
         # )
         # self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
-        batch_deployment = BatchDeployment(
+        batch_deployment = ModelBatchDeployment(
                            model=latest_model,
                            workspace_ml_client=self.workspace_ml_client,
                            task=task,

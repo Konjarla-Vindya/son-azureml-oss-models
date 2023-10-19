@@ -16,7 +16,7 @@ import os
 
 logger = get_logger(__name__)
 
-class BatchDeployment:
+class ModelBatchDeployment:
     def __init__(self, model, workspace_ml_client, task, model_name) -> None:
         self.model = model
         self.workspace_ml_client = workspace_ml_client
