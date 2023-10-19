@@ -1,12 +1,9 @@
 import os,sys
 import requests
-import re
 import pandas
-import urllib.request
-import urllib.error
+import csv
 from datetime import datetime
 from github import Github, Auth
-from bs4 import BeautifulSoup
 
  
 
@@ -16,59 +13,76 @@ class Dashboard():
         #self.github_token = "API_TOKEN"
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
-        self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
+        self.repo = self.auth.get_repo("Azure/azure-ai-model-catalog")
         self.repo_full_name = self.repo.full_name
         self.data = {
             "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
             "updated_at": [], "status": [], "conclusion": [], "jobs_url": []
         }
         self.models_data = []  # Initialize models_data as an empty list
-        print (Github(auth=self.token))
+        self.failed_models = []
 
-    def get_all_workflow_names(self,limit=50):
-        #workflow_name = ["MLFlow-codellama/CodeLlama-13b-Instruct-hf","MLFlow-mosaicml/mpt-7b-storywriter","MLFlow-microsoft/MiniLM-L12-H384-uncased"]
-        API = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/workflows"
-        print (f"Getting github workflows from {API}")
+    def get_all_workflow_names(self):
+        # workflow_name = ["MLFlow-mosaicml/mpt-30b-instruct"]
+         file_path = "tests/config/Models_1K.csv"  # Update this with the actual path
+         try:
+             url = f"https://raw.githubusercontent.com/{self.repo_full_name}/master/{file_path}"
+             response = requests.get(url)
+             response.raise_for_status()
+             
+             # Parse the CSV content and return it as a list
+             csv_data = response.text.splitlines()
+             csv_reader = csv.reader(csv_data)
+             
+             # Assuming the first column contains the data you want to retrieve
+             mlflow_prefixed_data = ["MLFlow-" + row[0] for row in csv_reader]
+             print(mlflow_prefixed_data)
+             return mlflow_prefixed_data
+             
+             
+         except Exception as e:
+             print(f"Error fetching or parsing content from GitHub: {e}")
+             return []
+        # API = "https://api.github.com/repos/Azure/azure-ai-model-catalog/actions/workflows"
+        # print (f"Getting github workflows from {API}")
         # total_pages = None
         # current_page = 1
         # per_page = 100
-        workflow_name = []
+        # workflow_name = []
         # while total_pages is None or current_page <= total_pages:
 
-        headers = {
-            "Authorization": f"Bearer {self.github_token}",
-            "Accept": "application/vnd.github.v3+json"
-        }
-        params = { "per_page": limit}
-        response = requests.get(API, headers=headers, params=params)
-        if response.status_code == 200:
-            workflows = response.json()
-            # append workflow_runs to runs list
-            for workflow in workflows["workflows"]:
-                # if workflow["name"].lower().startswith("mlflow-") :
-                    workflow_name.append(workflow["name"])
-            # if not workflows["workflows"]:
-            #     break
-            # workflow_name.extend(json_response['workflows["name"]'])
-            # if current_page == 1:
-            # # divide total_count by per_page and round up to get total_pages
-            #     total_pages = int(workflows['total_count'] / per_page) + 1
-            # current_page += 1
-            # print a single dot to show progress
-            print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
-        else:
-            print (f"Error: {response.status_code} {response.text}")
-            exit(1)
-        print (f"\n")
-        #create ../logs/get_github_workflows/ if it does not exist
-        # if not os.path.exists("../logs/get_all_workflow_names"):
-        #     os.makedirs("../logs/get_all_workflow_names")
-        # # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
-        # with open(f"../logs/get_all_workflow_names/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
-        #     json.dump(workflow_name, f, indent=4)
-        # print(workflow_name)
-        return workflow_name
-
+        #     headers = {
+        #         "Authorization": f"Bearer {self.github_token}",
+        #         "Accept": "application/vnd.github.v3+json"
+        #     }
+        #     params = { "per_page": per_page, "page": current_page }
+        #     response = requests.get(API, headers=headers, params=params)
+        #     if response.status_code == 200:
+        #         workflows = response.json()
+        #         # append workflow_runs to runs list
+        #         for workflow in workflows["workflows"]:
+        #             if workflow["name"].lower().startswith("mlflow"):
+        #                 workflow_name.append(workflow["name"])
+        #         if not workflows["workflows"]:
+        #             break
+        #         # workflow_name.extend(json_response['workflows["name"]'])
+        #         if current_page == 1:
+        #         # divide total_count by per_page and round up to get total_pages
+        #             total_pages = int(workflows['total_count'] / per_page) + 1
+        #         current_page += 1
+        #         # print a single dot to show progress
+        #         print (f"\rWorkflows fetched: {len(workflow_name)}", end="", flush=True)
+        #     else:
+        #         print (f"Error: {response.status_code} {response.text}")
+        #         exit(1)
+        # print (f"\n")
+        # # create ../logs/get_github_workflows/ if it does not exist
+        # # if not os.path.exists("../logs/get_all_workflow_names"):
+        # #     os.makedirs("../logs/get_all_workflow_names")
+        # # # dump runs as json file in ../logs/get_github_workflows folder with filename as DDMMMYYYY-HHMMSS.json
+        # # with open(f"../logs/get_all_workflow_names/{datetime.now().strftime('%d%b%Y-%H%M%S')}.json", "w") as f:
+        # #     json.dump(workflow_name, f, indent=4)
+        # return workflow_name
 
 
     def workflow_last_run(self): 
@@ -106,20 +120,10 @@ class Dashboard():
 
                # badge_url = f"https://github.com/{self.repo_full_name}/actions/workflows/{workflow_name}.yml/badge.svg"
                 html_url = jobs_data["jobs"][0]["html_url"] if jobs_data.get("jobs") else ""
-                job_url = jobs_data["jobs"][0]["url"]
-                logs_url = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6416915991/logs"
-                logs_info = requests.get(logs_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
-                logs_data = logs_info.json()
-                print ("logs:",logs_data)
-                job_api_url = job_url.replace("https://github.com", "https://api.github.com")
-                job_logs = self.get_job_logs(job_api_url)
-
-                # if job_logs is not None:
-                #     # Add job logs to your data structure or process them as needed
-                #     print("Job Logs:")
-                #     print(job_logs)
-                # error_messages = self.extract_error_messages(job_api_url)
-
+                job_url = jobs_data["jobs"][0]["html_url"]
+                
+                if last_run["conclusion"] == "failure":
+                    self.failed_models.append(workflow_actual_name)
  
 
                 self.data["workflow_id"].append(last_run["workflow_id"])
@@ -146,8 +150,8 @@ class Dashboard():
                     "HF_Link": f"[Link]({HF_Link})",
                     "Status": f"{'✅ PASS' if last_run['conclusion'] == 'success' else '❌ FAIL' if last_run['conclusion'] == 'failure' else '🚫 CANCELLED' if last_run['conclusion'] == 'cancelled' else '⏳ RUNNING'}",
                     "LastRunLink": f"[Link]({run_link})",
-                    "LastRunTimestamp": last_run["created_at"]
-                    #"Error Message": error_messages
+                    "LastRunTimestamp": last_run["created_at"],
+                    
                 }
 
                 self.models_data.append(models_entry)
@@ -161,99 +165,7 @@ class Dashboard():
         # self.models_data.sort(key=lambda x: x["Status"])
         self.models_data.sort(key=lambda x: (x["Status"] != "❌ FAIL", x["Status"]))
         return self.data
-    # def get_job_logs(self, job_api_url):
-    #     # This function will retrieve job logs for a given job URL
-    #     try:
-    #         response = requests.get(job_api_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
-    #         response.raise_for_status()
-    #         data = response.json()
-    #         # Extract and return the job logs
-    #         return data["logs"]
-    #     except requests.exceptions.RequestException as e:
-    #         print(f"An error occurred while fetching job logs for '{job_api_url}': {e}")
-    #         return None
-    # def extract_error_messages(self, job_url):
-    #     error_messages = []
-    #     url = "https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580"
-    #     url1 = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6143705785/logs"
-    #     url2 = "https://api.github.com/repos/Konjarla-Vindya/son-azureml-oss-models/actions/runs/6416915991/logs"
-    #     response = requests.get(url2, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "application/vnd.github.v3+json"})
-    #     response.raise_for_status()
-    #     data = response.json()
-    #     print(data)
-    #     req = requests.get(url1)
-    #     if req.status_code in [200]:
-    #         html = req.text
-    #         # print("html:",html)
-    #         error_message = re.search(r'message(.*?)\/', html, re.DOTALL)
-
-    #         if error_message:
-    #             error_message = error_message.group(1)
-    #             print("Error message:", error_message)
-    #             return error_message
-    #         else:
-    #             print("Error message not found in the HTML.")
-                    
-    #     else:
-    #         #print ('Could not retrieve: %s, err: %s - status code: %s' % (url, req.text, req.status_code))
-    #         html = None
-    #     # try:
-    #     #     with urllib.request.urlopen("https://github.com/Azure/azure-ai-model-catalog/actions/runs/6240729878/job/16941440580") as f:
-    #     #         job_response = f.read().decode('utf-8')
-    #     #         # Parse the JSON response
-    #     #         response_json = json.loads(job_response)
-                
-    #     #         # Check if the JSON response contains 'message' key
-    #     #         if 'message' in response_json:
-    #     #             error_messages.append(response_json['message'])
-    #     # except urllib.error.URLError as e:
-    #     #     error_messages.append(str(e))
-        
-    #     # return error_messages
-    #     # error_messages = []
-    #     # try:
-    #     #      with urllib.request.urlopen(job_url) as f:
-    #     #          a_variable = f.read().decode('utf-8')
-    #     #          # print(a_variable)
-    #     # except urllib.error.URLError as e:
-    #     #      error_message = str(e)
-    #     #      error_messages.append(error_message)
-    #     #      print(error_messages)
-
-    #     # return error_messages
-    #         # response = requests.get(job_url, headers={"Authorization": f"Bearer {self.github_token}", "Accept": "text/html"})
-    #         # print("job_url:", job_url)
-    #         # response.raise_for_status()
-    #         # html_content = response.text
-    #         # print(html_content)
     
-    #         # Parse the HTML content using BeautifulSoup
-    #         # soup = BeautifulSoup(html_content, "html.parser")
-    
-    #         # Find and extract both error and failure messages
-            
-    
-    #         # for paragraph in soup.find_all("p"):
-    #         #     text = paragraph.get_text()
-    #         #     # Check if the text contains common error or failure indicators
-    #         #     if re.search(r'(raise error|raise|error|error message|failure message|\"message\":)', text, re.IGNORECASE):
-    #         #         # Truncate the message at the first occurrence of '\n'
-    #         #         first_newline_index = text.find('\n')
-    #         #         if first_newline_index != -1:
-    #         #             text = text[:first_newline_index]
-            #         error_messages.append(text.strip())  # Strip leading/trailing whitespace
-    
-            # if error_messages:
-            #     return "\n".join(error_messages)
-            # else:
-            #     return "No error messages found"
-    
-        # except requests.exceptions.RequestException as e:
-        #     print(f"An error occurred while fetching messages from '{job_url}': {e}")
-        #     return "Error: Unable to fetch messages"
-
-    
-
     def results(self, last_runs_dict):
         results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0,"running":0, "not_tested": 0, "total_duration": 0}
         summary = []
@@ -296,17 +208,22 @@ class Dashboard():
 
  
 
-        # with open(readme_filename, "w", encoding="utf-8") as f:
-        #     f.write(summary_text)
-        #     f.write(os.linesep)
-        #     f.write(os.linesep)
-        #     f.write(models_md)
+        with open(readme_filename, "w", encoding="utf-8") as f:
+            f.write(summary_text)
+            f.write(os.linesep)
+            f.write(os.linesep)
+            f.write(models_md)
 
         with open("README.md", "w", encoding="utf-8") as f:
             f.write(summary_text)
             f.write(os.linesep)
             f.write(os.linesep)
             f.write(models_md)
+         
+def write_failed_models_to_file(self):
+        with open("failed_models.txt", "w") as file:
+            for model in self.failed_models:
+                file.write(model + "\n")
 
  
 
@@ -315,6 +232,15 @@ def main():
         my_class = Dashboard()
         last_runs_dict = my_class.workflow_last_run()
         my_class.results(last_runs_dict)
+        failed_models = my_class.failed_models
+        data = my_class.data
+        # self.get_failed_models()  # Collect the failed models
+        self.write_failed_models_to_file()  # Write failed models to a file
+      
+   
 
 if __name__ == "__main__":
     main()
+    # my_class.main()
+    # failed_models = my_class.failed_models  # Access the list of failed models
+    # data = my_class.data
