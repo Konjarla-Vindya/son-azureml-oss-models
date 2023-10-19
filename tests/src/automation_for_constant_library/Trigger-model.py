@@ -23,3 +23,4 @@ for json_file in json_files:
             first_item = data[0]
             print(first_item)
             #trigger_model(first_item)
+if __name__ == "__main__":
