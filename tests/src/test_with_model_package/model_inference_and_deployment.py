@@ -332,7 +332,7 @@ class ModelInferenceAndDeployemnt:
         output = loaded_model_pipeline(scoring_input.input_data)
         print("My outupt is this : ", output)
 
-    def model_infernce_and_deployment(self, instance_type, compute):
+    def model_infernce_and_deployment(self, instance_type, compute, task):
         expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
                                 "$", "%", "^", "&", "*", "<", ">", "?", "!", "~"]
         # Create the regular expression to ignore
@@ -348,44 +348,44 @@ class ModelInferenceAndDeployemnt:
             model_name = self.test_model_name
         latest_model = self.get_latest_model_version(
             self.workspace_ml_client, model_name)
-        try:
-            # task = latest_model.flavors["transformers"]["task"]
-            hfApi = HfTask(model_name=self.model_name)
-            task = hfApi.get_task()
-        except Exception as e:
-            logger.warning(
-                f"::warning::From the transformer flavour we are not able to extract the task for this model : {latest_model}")
-            sys.exit(1)
+        # try:
+        #     # task = latest_model.flavors["transformers"]["task"]
+        #     hfApi = HfTask(model_name=self.model_name)
+        #     task = hfApi.get_task()
+        # except Exception as e:
+        #     logger.warning(
+        #         f"::warning::From the transformer flavour we are not able to extract the task for this model : {latest_model}")
+        #     sys.exit(1)
         logger.info(f"latest_model: {latest_model}")
         logger.info(f"Task is : {task}")
-        # scoring_file, scoring_input = self.get_task_specified_input(task=task)
-        # # self.local_inference(task=task, latest_model=latest_model, scoring_input=scoring_input)
-        # # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
-        # timestamp = int(time.time())
-        # online_endpoint_name = task + str(timestamp)
-        # #online_endpoint_name = "Testing" + str(timestamp)
-        # logger.info(f"online_endpoint_name: {online_endpoint_name}")
-        # endpoint = ManagedOnlineEndpoint(
-        #     name=online_endpoint_name,
-        #     auth_mode="key",
-        # )
-        # model_package = self.create_model_package(
-        #     latest_model=latest_model, endpoint=endpoint)
-        # deployment_name = self.create_online_deployment(
-        #     latest_model=latest_model,
-        #     online_endpoint_name=online_endpoint_name,
-        #     model_package=model_package,
-        #     instance_type=instance_type
-        # )
-        # self.cloud_inference(
-        #     scoring_file=scoring_file,
-        #     scoring_input=scoring_input,
-        #     online_endpoint_name=online_endpoint_name,
-        #     deployment_name=deployment_name,
-        #     task=task,
-        #     latest_model=latest_model
-        # )
-        # self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
+        scoring_file, scoring_input = self.get_task_specified_input(task=task)
+        # self.local_inference(task=task, latest_model=latest_model, scoring_input=scoring_input)
+        # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
+        timestamp = int(time.time())
+        online_endpoint_name = task + str(timestamp)
+        #online_endpoint_name = "Testing" + str(timestamp)
+        logger.info(f"online_endpoint_name: {online_endpoint_name}")
+        endpoint = ManagedOnlineEndpoint(
+            name=online_endpoint_name,
+            auth_mode="key",
+        )
+        model_package = self.create_model_package(
+            latest_model=latest_model, endpoint=endpoint)
+        deployment_name = self.create_online_deployment(
+            latest_model=latest_model,
+            online_endpoint_name=online_endpoint_name,
+            model_package=model_package,
+            instance_type=instance_type
+        )
+        self.cloud_inference(
+            scoring_file=scoring_file,
+            scoring_input=scoring_input,
+            online_endpoint_name=online_endpoint_name,
+            deployment_name=deployment_name,
+            task=task,
+            latest_model=latest_model
+        )
+        self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
         batch_deployment = ModelBatchDeployment(
                            model=latest_model,
                            workspace_ml_client=self.workspace_ml_client,

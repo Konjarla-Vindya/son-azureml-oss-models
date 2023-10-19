@@ -3,16 +3,21 @@ from model_inference_and_deployment import ModelInferenceAndDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
-from azure.ai.ml import MLClient
+from azure.ai.ml import MLClient, UserIdentityConfiguration
 import mlflow
 import json
 import os
 import sys
 from box import ConfigBox
 from utils.logging import get_logger
+from fetch_task import HfTask
+from azure.ai.ml.dsl import pipeline
+from azure.core.exceptions import ResourceNotFoundError
+import time
 
 # constants
 check_override = True
+huggingface_model_exists_in_registry = False
 
 logger = get_logger(__name__)
 
@@ -56,6 +61,18 @@ def get_test_queue() -> ConfigBox:
 # function to load the sku override details from sku-override file
 # this is useful if you want to force a specific sku for a model
 
+def create_or_get_compute_target(ml_client, compute, instance_type):
+    cpu_compute_target = compute
+    try:
+        compute = ml_client.compute.get(cpu_compute_target)
+    except ResourceNotFoundError:
+        logger.info("Creating a new compute...")
+        compute = AmlCompute(
+            name=cpu_compute_target, size=instance_type, idle_time_before_scale_down=120, min_instances=0, max_instances=4
+        )
+        ml_client.compute.begin_create_or_update(compute).result()
+
+    return compute
 
 def get_sku_override():
     try:
@@ -101,6 +118,15 @@ def set_next_trigger_model(queue):
         logger.info(f'NEXT_MODEL={next_model}')
         print(f'NEXT_MODEL={next_model}', file=fh)
 
+@pipeline
+def model_import_pipeline(compute_name, update_existing_model, task_name):
+    import_model = registry_ml_client.components.get(
+        name="import_model_oss_test", label="latest")
+    import_model_job = import_model(model_id=test_model_name, compute=compute_name,
+                                    task_name=task_name, update_existing_model=update_existing_model)
+    # Set job to not continue on failure
+    import_model_job.settings.continue_on_step_failure = False
+    return {"model_registration_details": import_model_job.outputs.model_registration_details}
 
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -143,9 +169,48 @@ if __name__ == "__main__":
         resource_group=queue.resource_group,
         workspace_name=queue.workspace
     )
+    registry_ml_client = MLClient(
+        credential=credential,
+        registry_name=queue.registry
+    )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
-    # compute_target = create_or_get_compute_target(
-    #     workspace_ml_client, queue.compute)
+    compute_target = create_or_get_compute_target(
+        ml_client=workspace_ml_client, compute=queue.compute, instance_type=queue.instance_type)
+    task = HfTask(model_name=test_model_name).get_task()
+    logger.info(f"Task is this : {task} for the model : {test_model_name}")
+    timestamp = str(int(time.time()))
+    exp_model_name = test_model_name.replace('/', '-')
+    try:
+        pipeline_object = model_import_pipeline(
+            compute_name=queue.compute,
+            task_name=task,
+            update_existing_model=True,
+        )
+        pipeline_object.identity = UserIdentityConfiguration()
+        pipeline_object.settings.force_rerun = True
+        pipeline_object.settings.default_compute = queue.compute
+        schedule_huggingface_model_import = (
+            not huggingface_model_exists_in_registry
+            and test_model_name not in [None, "None"]
+            and len(test_model_name) > 1
+        )
+        logger.info(
+            f"Need to schedule run for importing {test_model_name}: {schedule_huggingface_model_import}")
+
+        huggingface_pipeline_job = None
+        # if schedule_huggingface_model_import:
+        # submit the pipeline job
+        huggingface_pipeline_job = workspace_ml_client.jobs.create_or_update(
+            pipeline_object, experiment_name=f"import-pipeline-{exp_model_name}-{timestamp}"
+        )
+        # wait for the pipeline job to complete
+        workspace_ml_client.jobs.stream(huggingface_pipeline_job.name)
+    except Exception as ex:
+        _, _, exc_tb = sys.exc_info()
+        logger.error(f"::error:: Not able to initiate job \n")
+        logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
+                     f" skipping the further process and the exception is this one : {ex}")
+        sys.exit(1)
     # environment_variables = {"AZUREML_ARTIFACTS_DEFAULT_TIMEOUT":600.0,"test_model_name": test_model_name}
     # env_list = workspace_ml_client.environments.list(name=queue.environment)
     # latest_version = 0
@@ -168,5 +233,6 @@ if __name__ == "__main__":
     )
     InferenceAndDeployment.model_infernce_and_deployment(
         instance_type=queue.instance_type,
-        compute=queue.compute
+        compute=queue.compute,
+        task = task
     )
