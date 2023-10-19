@@ -41,14 +41,15 @@ jobs:
       - name: Run Python Script from other folder to create README in main folder
         run: |
           cd dashboard/HuggingFace
-          python dummy.py
+          python dashboard.py
       - name: Add Generated File
         run: |
           git config user.email "${{ secrets.USER_EMAIL }}"
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
           cd dashboard/HuggingFace
-          git add README.md          
+          git add README.md     
+          
           # Attempt to commit changes and handle errors
           set +e
           git commit -m "Add README.md"
@@ -59,7 +60,23 @@ jobs:
           else
             echo "No changes to commit or there was an error. Skipping commit and push."
           fi
-          
+      - name: Add failed model list text file
+        run: |
+          git config user.email "${{ secrets.USER_EMAIL }}"
+          git config user.name "${{ secrets.USER_NAME }}"
+          git pull origin main  
+          cd tests/config
+          git add failed_models.txt
+          # Attempt to commit changes and handle errors
+          set +e
+          git commit -m "Add failed_models.txt"
+          commit_status=$?
+          set -e
+          if [ $commit_status -eq 0 ]; then
+            git push
+          else
+            echo "No changes to commit or there was an error. Skipping commit and push."
+          fi
       # - name: Add Generated File
       #   run: |
       #     git config user.email "${{ secrets.USER_EMAIL }}"
