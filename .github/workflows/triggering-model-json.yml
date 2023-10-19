@@ -1,43 +1,30 @@
-on: workflow_dispatch
+name: Your Python Script
+
+on:
+  push:
+    branches:
+      - main  # Or specify your branch
 
 jobs:
-  setup_azure_ml_env:
+  run-script:
     runs-on: ubuntu-latest
-    env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
-    - name: check-out-repo-step
+    - name: Check out code
       uses: actions/checkout@v2
-    - name: azure-login-step
-      uses: azure/login@v1
-      with:
-        creds: ${{secrets.AZURE_CREDENTIALS}}
-      
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-          python-version: 3.9
-      
-    - name: Install dependencies
-      run: |
-          python -m pip install --upgrade pip
-          pip install -r autoenv_requirements.txt
+        python-version: 3.8  # Choose the Python version you need
 
-    - name: Run the script
-      run: python triggering-model.py 
-      
-    - name: Add Generated File
+    - name: Run Python script
       run: |
-          git config user.email "${{ secrets.USER_EMAIL }}"
-          git config user.name "${{ secrets.USER_NAME }}"
-          git pull origin main
-          git add testing.md
-          set +e
-          git commit -m "Add testing.md"
-          commit_status=$?
-          set -e
-          if [ $commit_status -eq 0 ]; then
-            git push origin main
-          else
-            echo "No changes to commit or there was an error. Skipping commit and push."
-          fi
+        python Trigger-model.py > output.log  # Redirect output to a log file
+        cat output.log  # Display the log content
+
+    - name: Upload log file
+      uses: actions/upload-artifact@v2
+      with:
+        name: logs
+        path: output.log
