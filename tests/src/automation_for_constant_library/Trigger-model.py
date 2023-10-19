@@ -22,4 +22,4 @@ for json_file in json_files:
         if isinstance(data, list) and len(data) > 0:
             first_item = data[0]
             print(first_item)
-            trigger_model(first_item)
+            #trigger_model(first_item)
