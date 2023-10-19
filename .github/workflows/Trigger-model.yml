@@ -36,7 +36,7 @@ jobs:
       run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
-      run: python Batch_Endpoint.py
+      run: python Trigger-model.py
       working-directory: tests/src/automation_for_constant_library
 
     # - name: Capture job status
