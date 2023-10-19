@@ -184,13 +184,14 @@ class ModelBatchDeployment:
         # print("job_inputs:", {job_inputs})
         return folder_path
     def delete_endpoint(self, endpoint_name):
+        logger.info("Deleting the endpoint...")
         try:
             self.workspace_ml_client.batch_endpoints.begin_delete(name=endpoint_name).result()
         except Exception as ex:
             _, _, exc_tb = sys.exc_info()
             logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
-                         f" the exception is this one : {e}")
-            logger.error(f"::warning:: Could not delete endpoint: : \n{e}")
+                         f" the exception is this one : {ex}")
+            logger.error(f"::warning:: Could not delete endpoint: : \n{ex}")
             exit(0)
 
     def batch_deployment(self, compute):
