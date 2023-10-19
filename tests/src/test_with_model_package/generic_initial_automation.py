@@ -167,5 +167,6 @@ if __name__ == "__main__":
         registry=queue.registry
     )
     InferenceAndDeployment.model_infernce_and_deployment(
-        instance_type=queue.instance_type
+        instance_type=queue.instance_type,
+        compute=queue.compute
     )
