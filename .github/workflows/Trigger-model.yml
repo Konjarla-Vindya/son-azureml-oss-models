@@ -1,4 +1,4 @@
-name: Batch_Endpoint
+name: Trigger-model
 
 on: 
   workflow_dispatch:
