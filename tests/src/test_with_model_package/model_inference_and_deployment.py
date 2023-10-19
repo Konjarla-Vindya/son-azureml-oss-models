@@ -14,6 +14,7 @@ from azure.ai.ml.entities import (
 )
 from utils.logging import get_logger
 from fetch_task import HfTask
+from batch_deployment import BatchDeployment
 import mlflow
 from box import ConfigBox
 import re
@@ -190,7 +191,8 @@ class ModelInferenceAndDeployemnt:
                 latest_model.version,
                 package_config
             )
-            logger.info(f"Model Package is successfuly created : {model_package}")
+            logger.info(
+                f"Model Package is successfuly created : {model_package}")
         except Exception as e:
             _, _, exc_tb = sys.exc_info()
             logger.error(f"::error:: Could not create Model package: \n")
@@ -303,8 +305,8 @@ class ModelInferenceAndDeployemnt:
             exit(0)
 
     def get_task_specified_input(self, task):
-        #scoring_file = f"../../config/sample_inputs/{self.registry}/{task}.json"
-        scoring_file = f"sample_inputs/{task}.json"
+        scoring_file = f"../../config/sample_inputs/HuggingFace/{task}.json"
+        #scoring_file = f"sample_inputs/{task}.json"
         # check of scoring_file exists
         try:
             with open(scoring_file) as f:
@@ -330,7 +332,7 @@ class ModelInferenceAndDeployemnt:
         output = loaded_model_pipeline(scoring_input.input_data)
         print("My outupt is this : ", output)
 
-    def model_infernce_and_deployment(self, instance_type):
+    def model_infernce_and_deployment(self, instance_type, compute):
         expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
                                 "$", "%", "^", "&", "*", "<", ">", "?", "!", "~"]
         # Create the regular expression to ignore
@@ -384,3 +386,10 @@ class ModelInferenceAndDeployemnt:
             latest_model=latest_model
         )
         self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
+        batch_deployment = BatchDeployment(
+                           model=latest_model,
+                           workspace_ml_client=self.workspace_ml_client,
+                           task=task,
+                           model_name=self.test_model_name
+                           )
+        batch_deployment.batch_deployment(compute=compute)
