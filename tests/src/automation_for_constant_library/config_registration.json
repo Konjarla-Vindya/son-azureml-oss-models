@@ -7,14 +7,14 @@
     ],
     "models_directory": "/.github/workflows",
     "model_names": [
-        "t5-small",
-        "t5-small",
-        "t5-small",
-        "t5-small",
-        "t5-small",
-        "t5-small",
-        "t5-small",
-        "t5-small"
+        "t5_small",
+        "t5_small",
+        "t5_small",
+        "t5_small",
+        "t5_small",
+        "t5_small",
+        "t5_small",
+        "t5_small"
     ]
   }
   
