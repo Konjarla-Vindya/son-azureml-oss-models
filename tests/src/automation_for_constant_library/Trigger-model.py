@@ -31,26 +31,8 @@ for json_file in json_files:
             # GitHub Personal Access Token (PAT)
             token = "your-personal-access-token"
             # Create the API URL for fetching the file content
-            api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/contents/{file_path}"
-
-            # Create the headers with the Authorization token
-            headers = {
-               "Authorization": f"token {token}"
-                }
-            # Send a GET request to the GitHub API to fetch the file content
-            response = requests.get(api_url, headers=headers)
-            # Check if the request was successful
-           if response.status_code == 200:
-               # Decode the content from base64
-               content = response.json()["content"]
-               content = content.encode("utf-8")
-               content = content.decode("base64")
-               # Print the content (the YAML file)
-               print(content)
-           else:
-               print(f"Failed to fetch the file. Status code: {response.status_code}")
-               #trigger_model(first_item)
-           subprocess.run(['gh', 'workflow', 'run', file_path])
+            api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/{file_path}"
+            subprocess.run(['gh', 'workflow', 'run', file_path])
 
 
 
