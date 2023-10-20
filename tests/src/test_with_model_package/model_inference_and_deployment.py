@@ -15,6 +15,7 @@ from azure.ai.ml.entities import (
 from utils.logging import get_logger
 from fetch_task import HfTask
 from batch_deployment import ModelBatchDeployment
+from dynamic_installation import ModelDynamicInstallation
 import mlflow
 from box import ConfigBox
 import re
@@ -25,7 +26,6 @@ logger = get_logger(__name__)
 
 class ModelInferenceAndDeployemnt:
     def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
-        #self.model_name = model_name
         self.test_model_name = test_model_name
         self.workspace_ml_client = workspace_ml_client
         self.registry = registry
@@ -241,18 +241,7 @@ class ModelInferenceAndDeployemnt:
     def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type):
         logger.info("In create_online_deployment...")
         logger.info(f"latest_model.name is this : {latest_model.name}")
-        # # Expression need to be replaced with hyphen
-        # expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
-        #                         "$", "%", "^", "&", "*", "<", ">", "?", "!", "~", "_"]
-        # # Create the regular expression to ignore
-        # regx = re.compile('|'.join(map(re.escape, expression_to_ignore)))
-        # # Check the model_name contains any of there character
-        # expression_check = re.findall(regx, latest_model.name)
-        # if expression_check:
-        #     # Replace the expression with hyphen
-        #     latest_model_name = regx.sub("-", latest_model.name)
-        # else:
-        #     latest_model_name = latest_model.name
+        
         latest_model_name = self.get_model_name(
             latest_model_name=latest_model.name)
         # Check if the model name starts with a digit
@@ -317,21 +306,6 @@ class ModelInferenceAndDeployemnt:
                 f"::Error:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
         return scoring_file, scoring_input
 
-    def local_inference(self, task, latest_model, scoring_input):
-        model_sourceuri = latest_model.properties["mlflow.modelSourceUri"]
-        loaded_model_pipeline = mlflow.transformers.load_model(
-            model_uri=model_sourceuri)
-        print(
-            f"Latest model name : {latest_model.name} and latest model version : {latest_model.version}", )
-        if task == "fill-mask":
-            pipeline_tokenizer = loaded_model_pipeline.tokenizer
-            for index in range(len(scoring_input.input_data)):
-                scoring_input.input_data[index] = scoring_input.input_data[index].replace(
-                    "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
-
-        output = loaded_model_pipeline(scoring_input.input_data)
-        print("My outupt is this : ", output)
-
     def model_infernce_and_deployment(self, instance_type, compute, task):
         expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
                                 "$", "%", "^", "&", "*", "<", ">", "?", "!", "~"]
@@ -359,7 +333,7 @@ class ModelInferenceAndDeployemnt:
         logger.info(f"latest_model: {latest_model}")
         logger.info(f"Task is : {task}")
         scoring_file, scoring_input = self.get_task_specified_input(task=task)
-        # self.local_inference(task=task, latest_model=latest_model, scoring_input=scoring_input)
+        
         # endpoint names need to be unique in a region, hence using timestamp to create unique endpoint name
         timestamp = int(time.time())
         online_endpoint_name = task + str(timestamp)
@@ -386,10 +360,22 @@ class ModelInferenceAndDeployemnt:
             latest_model=latest_model
         )
         self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
+        dynamic_installation = ModelDynamicInstallation(
+            test_model_name=self.test_model_name,
+            workspace_ml_client=self.workspace_ml_client,
+            deployment_name=deployment_name,
+            task=task
+        )
+        dynamic_installation.model_infernce_and_deployment(
+            instance_type=instance_type,
+            latest_model=latest_model,
+            scoring_file=scoring_file,
+            scoring_input = scoring_input
+        )
         batch_deployment = ModelBatchDeployment(
-                           model=latest_model,
-                           workspace_ml_client=self.workspace_ml_client,
-                           task=task,
-                           model_name=self.test_model_name
-                           )
+            model=latest_model,
+            workspace_ml_client=self.workspace_ml_client,
+            task=task,
+            model_name=self.test_model_name
+        )
         batch_deployment.batch_deployment(compute=compute)
