@@ -220,10 +220,10 @@ class Dashboard():
             f.write(os.linesep)
             f.write(models_md)
          
-def write_failed_models_to_file(self):
-        with open("failed_models.txt", "w") as file:
-            for model in self.failed_models:
-                file.write(model + "\n")
+    def write_failed_models_to_file(self):
+            with open("failed_models.txt", "w") as file:
+                for model in self.failed_models:
+                    file.write(model + "\n")
 
  
 
@@ -234,13 +234,14 @@ def main():
         my_class.results(last_runs_dict)
         failed_models = my_class.failed_models
         data = my_class.data
-        # self.get_failed_models()  # Collect the failed models
-        self.write_failed_models_to_file()  # Write failed models to a file
+        self.get_failed_models()  # Collect the failed models
+        
       
    
 
 if __name__ == "__main__":
     main()
+    # self.write_failed_models_to_file()  # Write failed models to a file
     # my_class.main()
     # failed_models = my_class.failed_models  # Access the list of failed models
     # data = my_class.data
