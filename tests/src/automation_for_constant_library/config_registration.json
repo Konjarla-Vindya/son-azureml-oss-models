@@ -1,0 +1,20 @@
+{
+    "subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
+    "resource_group": "huggingface-registry-test1",
+    "workspace_names": [
+      "test-eastus", "test-southafricanorth", "test-japaneast", "test-southcentralus",
+      "test-koreacentral", "test-northcentralus", "test-northeurope", "test-norwayeast"
+    ],
+    "models_directory": "/.github/workflows",
+    "model_names": [
+        "baichuan-inc/Baichuan-13B-Chat",
+        "xverse/XVERSE-13B-Chat",
+        "anas-awadalla/mpt-7b",
+        "mosaicml/mpt-7b-instruct",
+        "mosaicml/mpt-7b",
+        "tiiuae/falcon-7b",
+        "NousResearch/Yarn-Llama-2-7b-64k",
+        "TheBloke/Llama-2-7B-32K-Instruct-GPTQ"
+    ]
+  }
+  
