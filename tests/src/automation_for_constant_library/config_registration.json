@@ -7,14 +7,14 @@
     ],
     "models_directory": "/.github/workflows",
     "model_names": [
-        "baichuan-inc/Baichuan-13B-Chat",
-        "xverse/XVERSE-13B-Chat",
-        "anas-awadalla/mpt-7b",
-        "mosaicml/mpt-7b-instruct",
-        "mosaicml/mpt-7b",
-        "tiiuae/falcon-7b",
-        "NousResearch/Yarn-Llama-2-7b-64k",
-        "TheBloke/Llama-2-7B-32K-Instruct-GPTQ"
+        "t5-small",
+        "t5-small",
+        "t5-small",
+        "t5-small",
+        "t5-small",
+        "t5-small",
+        "t5-small",
+        "t5-small"
     ]
   }
   
