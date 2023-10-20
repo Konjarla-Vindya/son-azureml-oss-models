@@ -20,11 +20,10 @@ class Dashboard():
             "updated_at": [], "status": [], "conclusion": [], "jobs_url": []
         }
         self.models_data = []  # Initialize models_data as an empty list
-        self.failed_models = []
 
     def get_all_workflow_names(self):
         # workflow_name = ["MLFlow-mosaicml/mpt-30b-instruct"]
-         file_path = "tests/config/modellist2.csv"  # Update this with the actual path
+         file_path = "tests/config/modellist.csv"  # Update this with the actual path
          try:
              url = f"https://raw.githubusercontent.com/{self.repo_full_name}/master/{file_path}"
              response = requests.get(url)
@@ -122,8 +121,7 @@ class Dashboard():
                 html_url = jobs_data["jobs"][0]["html_url"] if jobs_data.get("jobs") else ""
                 job_url = jobs_data["jobs"][0]["html_url"]
                 
-                if last_run["conclusion"] == "failure":
-                    self.failed_models.append(workflow_actual_name)
+
  
 
                 self.data["workflow_id"].append(last_run["workflow_id"])
@@ -169,6 +167,7 @@ class Dashboard():
     def results(self, last_runs_dict):
         results_dict = {"total": 0, "success": 0, "failure": 0, "cancelled": 0,"running":0, "not_tested": 0, "total_duration": 0}
         summary = []
+        failed_models = []
 
  
 
@@ -196,6 +195,7 @@ class Dashboard():
  
 
         models_df = pandas.DataFrame.from_dict(self.models_data)
+        failed_models_df = models_df[models_df['Status'] == '❌ FAIL']  # Filter only the failed models
         models_md = models_df.to_markdown()
 
  
@@ -205,6 +205,12 @@ class Dashboard():
     
         # Create a README file with the current datetime in the filename
         readme_filename = f"README_{current_date}.md"
+        if not failed_models_df.empty:
+            failed_models_list = failed_models_df['Model'].tolist()
+            
+            # Create a new file with the list of failed model names
+            with open("failed_models.txt", "w", encoding="utf-8") as f:
+                f.write("\n".join(failed_models_list))
 
  
 
@@ -219,11 +225,6 @@ class Dashboard():
             f.write(os.linesep)
             f.write(os.linesep)
             f.write(models_md)
-         
-    def write_failed_models_to_file(self):
-            with open("failed_models.txt", "w") as file:
-                for model in self.failed_models:
-                    file.write(model + "\n")
 
  
 
@@ -232,17 +233,6 @@ def main():
         my_class = Dashboard()
         last_runs_dict = my_class.workflow_last_run()
         my_class.results(last_runs_dict)
-        write_failed_models_to_file()
-        failed_models = my_class.failed_models
-        data = my_class.data
-          # Collect the failed models
-        
-      
-   
 
 if __name__ == "__main__":
     main()
-    # self.write_failed_models_to_file()  # Write failed models to a file
-    # my_class.main()
-    # failed_models = my_class.failed_models  # Access the list of failed models
-    # data = my_class.data
