@@ -13,7 +13,7 @@ class Dashboard():
         #self.github_token = "API_TOKEN"
         self.token = Auth.Token(self.github_token)
         self.auth = Github(auth=self.token)
-        self.repo = self.auth.get_repo("Konjarla-Vindya/son-azureml-oss-models")
+        self.repo = self.auth.get_repo("Azure/azure-ai-model-catalog")
         self.repo_full_name = self.repo.full_name
         self.data = {
             "workflow_id": [], "workflow_name": [], "last_runid": [], "created_at": [],
