@@ -232,9 +232,10 @@ def main():
         my_class = Dashboard()
         last_runs_dict = my_class.workflow_last_run()
         my_class.results(last_runs_dict)
+        get_failed_models()
         failed_models = my_class.failed_models
         data = my_class.data
-        self.get_failed_models()  # Collect the failed models
+          # Collect the failed models
         
       
    
