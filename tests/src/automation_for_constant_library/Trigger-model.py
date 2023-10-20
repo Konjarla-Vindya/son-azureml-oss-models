@@ -31,19 +31,13 @@ for json_file in json_files[:2]:
         file_path = ".github/workflows/data1.yml"  # Replace with the desired YAML file path
         api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/{file_path}"
         print(api_url)
-        response = requests.get(api_url) # headers=headers
-        if response.status_code == 200:
-            # Decode the content from base64
-            content = response.json()["content"]
-            content = content.encode("utf-8")
-            content = content.decode("base64")
-            
-            # Print the content (the YAML file)
-            print(content)
+        response = requests.post(api_url)  #, headers=headers, json=workflow_input)
+        
+        if response.status_code == 204:
+            print(f"Workflow '{data1}' has been triggered successfully.")
         else:
-            print(f"Failed to fetch the file. Status code: {response.status_code}")
-
-        #     subprocess.run(['gh', 'workflow', 'run', api_url])
+            print(f"Failed to trigger the workflow. Status code: {response.status_code}")
+            print(response.text)
 
 
 
