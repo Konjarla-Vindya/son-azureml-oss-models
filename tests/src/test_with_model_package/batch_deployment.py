@@ -119,7 +119,7 @@ class ModelBatchDeployment:
                          f" the exception is this one : {e}")
             sys.exit(1)
 
-    def process_input_for_fill_mask_task(file_path, mask_token):
+    def process_input_for_fill_mask_task(self, file_path, mask_token):
         try:
             with open(file_path, 'r') as file:
                 file_content = file.read()
