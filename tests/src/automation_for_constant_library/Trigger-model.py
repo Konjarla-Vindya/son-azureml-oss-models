@@ -21,14 +21,15 @@ def trigger_model(data):
 for json_file in json_files:
     with open(os.path.join(json_directory, json_file), 'r') as file:
         data = json.load(file)
-        if isinstance(data, list) and len(data) > 0:
-            first_item = data[0]
-            print(first_item)
-            repository_owner = "Konjarla-Vindya"
-            repository_name = "son-azureml-oss-models"
-            file_path = ".github/workflows/data[0].yml"  # Replace with the desired YAML file path
-            api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/{file_path}"
-            subprocess.run(['gh', 'workflow', 'run', api_url])
+        print(data["models"][0]
+        # if isinstance(data, list) and len(data) > 0:
+        #     first_item = data[0]
+        #     print(first_item)
+        #     repository_owner = "Konjarla-Vindya"
+        #     repository_name = "son-azureml-oss-models"
+        #     file_path = ".github/workflows/data[0].yml"  # Replace with the desired YAML file path
+        #     api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/{file_path}"
+        #     subprocess.run(['gh', 'workflow', 'run', api_url])
 
 
 
