@@ -24,8 +24,8 @@ logger = get_logger(__name__)
 
 
 class ModelInferenceAndDeployemnt:
-    def __init__(self, model_name, test_model_name, workspace_ml_client, registry) -> None:
-        self.model_name = model_name
+    def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
+        #self.model_name = model_name
         self.test_model_name = test_model_name
         self.workspace_ml_client = workspace_ml_client
         self.registry = registry
@@ -236,7 +236,7 @@ class ModelInferenceAndDeployemnt:
                 '', latest_model_name)
             latest_model_name = latest_model_name.lstrip("-")
 
-        return latest_model_name
+        return latest_model_name.lower()
 
     def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type):
         logger.info("In create_online_deployment...")
