@@ -18,7 +18,7 @@ def trigger_model(data):
     print("Model triggered with data:", data)
 
 # Iterate through JSON files
-for json_file in json_files:
+for json_file in json_files[:2]:
     with open(os.path.join(json_directory, json_file), 'r') as file:
         data = json.load(file)
         print(data["models"][0])
