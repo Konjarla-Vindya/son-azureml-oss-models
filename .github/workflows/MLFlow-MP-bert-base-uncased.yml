@@ -1,13 +1,13 @@
-name: MLFlow-MP-Jean-Baptiste/camembert-ner
+name: MLFlow-MP-bert-base-uncased
 
 on: 
   workflow_dispatch:
 
 env:
-  test_model_name: Jean-Baptiste/camembert-ner
+  test_model_name: bert-base-uncased
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-eastus-0
+  test_queue: test-northeurope-0
   test_set: huggingface-all
   test_keep_looping: false
 

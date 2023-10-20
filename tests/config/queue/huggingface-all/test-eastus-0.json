@@ -1,7 +1,7 @@
 {
     "queue_name": "test-eastus-0",
     "models": [
-        "MLFlow-MP-tiiuae/falcon-7b"
+        "MLFlow-MP-Jean-Baptiste/camembert-ner"
     ],
     "workspace": "test-eastus",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
