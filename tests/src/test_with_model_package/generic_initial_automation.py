@@ -226,7 +226,6 @@ if __name__ == "__main__":
     # create_and_get_job_studio_url(command_job, workspace_ml_client)
 
     InferenceAndDeployment = ModelInferenceAndDeployemnt(
-        #model_name = test_model_name,
         test_model_name=test_model_name,
         workspace_ml_client=workspace_ml_client,
         registry=queue.registry
