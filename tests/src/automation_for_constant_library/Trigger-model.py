@@ -24,13 +24,9 @@ for json_file in json_files:
         if isinstance(data, list) and len(data) > 0:
             first_item = data[0]
             print(first_item)
-            # GitHub repository and file information
             repository_owner = "Konjarla-Vindya"
             repository_name = "son-azureml-oss-models"
             file_path = ".github/workflows/data[0].yml"  # Replace with the desired YAML file path
-            # GitHub Personal Access Token (PAT)
-            token = "your-personal-access-token"
-            # Create the API URL for fetching the file content
             api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/{file_path}"
             subprocess.run(['gh', 'workflow', 'run', api_url])
 
