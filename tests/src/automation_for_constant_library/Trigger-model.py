@@ -32,7 +32,7 @@ for json_file in json_files:
             token = "your-personal-access-token"
             # Create the API URL for fetching the file content
             api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/{file_path}"
-            subprocess.run(['gh', 'workflow', 'run', file_path])
+            subprocess.run(['gh', 'workflow', 'run', api_url])
 
 
 
