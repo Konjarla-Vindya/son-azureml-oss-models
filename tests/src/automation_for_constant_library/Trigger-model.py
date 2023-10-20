@@ -21,7 +21,7 @@ def trigger_model(data):
 for json_file in json_files:
     with open(os.path.join(json_directory, json_file), 'r') as file:
         data = json.load(file)
-        print(data["models"][0]
+        print(data["models"][0])
         # if isinstance(data, list) and len(data) > 0:
         #     first_item = data[0]
         #     print(first_item)
