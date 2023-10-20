@@ -1,7 +1,7 @@
 {
     "queue_name": "test-northeurope-1",
     "models":[
-        "MLFlow-MP-gpt2"
+        "MLFlow-MP-t5-small"
     ],
     "workspace": "test-northeurope",
     "subscription": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
