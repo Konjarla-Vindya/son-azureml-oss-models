@@ -28,8 +28,8 @@ for json_file in json_files[:2]:
         #     print(first_item)
         repository_owner = "Konjarla-Vindya"
         repository_name = "son-azureml-oss-models"
-        file_path = ".github/workflows/data1.yml"  # Replace with the desired YAML file path
-        api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/{file_path}"
+        file_path = "data1.yml"  # Replace with the desired YAML file path
+        api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/.github/workflows/{file_path}"
         print(api_url)
         response = requests.post(api_url)  #, headers=headers, json=workflow_input)
         
