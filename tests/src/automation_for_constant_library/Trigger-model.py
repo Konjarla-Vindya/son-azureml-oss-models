@@ -30,7 +30,7 @@ for json_file in json_files[:2]:
         repository_name = "son-azureml-oss-models"
         file_path = ".github/workflows/data1.yml"  # Replace with the desired YAML file path
         api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/{file_path}"
-         print(api_url)
+        print(api_url)
         #     subprocess.run(['gh', 'workflow', 'run', api_url])
 
 
