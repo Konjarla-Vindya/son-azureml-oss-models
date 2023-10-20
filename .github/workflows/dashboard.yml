@@ -41,7 +41,7 @@ jobs:
       - name: Run Python Script from other folder to create README in main folder
         run: |
           cd dashboard/HuggingFace
-          python dashboard.py
+          python dummy2.py
       - name: Add Generated File
         run: |
           git config user.email "${{ secrets.USER_EMAIL }}"
