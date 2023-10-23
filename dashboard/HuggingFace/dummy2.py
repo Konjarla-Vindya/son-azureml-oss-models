@@ -145,10 +145,10 @@ class Dashboard():
                 HF_Link = f"https://huggingface.co/{workflow_actual_name}"
                 models_entry = {
                     "Model": workflow_actual_name,
-                    "HF_Link": f"[Link]({HF_Link})",
-                    "Status": f"{'✅ PASS' if last_run['conclusion'] == 'success' else '❌ FAIL' if last_run['conclusion'] == 'failure' else '🚫 CANCELLED' if last_run['conclusion'] == 'cancelled' else '⏳ RUNNING'}",
-                    "LastRunLink": f"[Link]({run_link})",
-                    "LastRunTimestamp": last_run["created_at"],
+                    # "HF_Link": f"[Link]({HF_Link})",
+                    # "Status": f"{'✅ PASS' if last_run['conclusion'] == 'success' else '❌ FAIL' if last_run['conclusion'] == 'failure' else '🚫 CANCELLED' if last_run['conclusion'] == 'cancelled' else '⏳ RUNNING'}",
+                    # "LastRunLink": f"[Link]({run_link})",
+                    # "LastRunTimestamp": last_run["created_at"],
                     
                 }
 
@@ -173,8 +173,8 @@ class Dashboard():
 
         df = pandas.DataFrame.from_dict(last_runs_dict)
         # df = df.sort_values(by=['status'], ascending=['failure' in df['status'].values])
-        results_dict["total"] = df["workflow_id"].count()
-        results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
+        # results_dict["total"] = df["workflow_id"].count()
+        # results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
         results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
         results_dict["cancelled"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled')]['workflow_id'].count()
         results_dict["running"] = df.loc[df['status'] == 'in_progress']['workflow_id'].count()  # Add running count
@@ -187,10 +187,10 @@ class Dashboard():
 
  
 
-        summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|⏳Running|")
-        summary.append("-----|-------|-------|-------|-------|")
-        summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|{results_dict['running']}|")
-        summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|{running_rate:.2f}%|")
+        # summary.append("🚀Total|✅Success|❌Failure|🚫Cancelled|⏳Running|")
+        # summary.append("-----|-------|-------|-------|-------|")
+        # summary.append(f"{results_dict['total']}|{results_dict['success']}|{results_dict['failure']}|{results_dict['cancelled']}|{results_dict['running']}|")
+        # summary.append(f"100.0%|{success_rate:.2f}%|{failure_rate:.2f}%|{cancel_rate:.2f}%|{running_rate:.2f}%|")
 
  
 
@@ -204,26 +204,26 @@ class Dashboard():
         current_date = datetime.now().strftime('%Y%m%d')
     
         # Create a README file with the current datetime in the filename
-        readme_filename = f"README_{current_date}.md"
-        if not failed_models_df.empty:
-            failed_models_list = failed_models_df['Model'].tolist()
+        # readme_filename = f"README_{current_date}.md"
+        # if not failed_models_df.empty:
+        #     failed_models_list = failed_models_df['Model'].tolist()
             
-            # Create a new file with the list of failed model names
-            with open("failed_models.txt", "w", encoding="utf-8") as f:
-                f.write("\n".join(failed_models_list))
+        #     # Create a new file with the list of failed model names
+        #     with open("failed_models.txt", "w", encoding="utf-8") as f:
+        #         f.write("\n".join(failed_models_list))
 
  
 
-        with open(readme_filename, "w", encoding="utf-8") as f:
-            f.write(summary_text)
-            f.write(os.linesep)
-            f.write(os.linesep)
-            f.write(models_md)
+        # with open(readme_filename, "w", encoding="utf-8") as f:
+        #     f.write(summary_text)
+        #     f.write(os.linesep)
+        #     f.write(os.linesep)
+        #     f.write(models_md)
 
         with open("README.md", "w", encoding="utf-8") as f:
-            f.write(summary_text)
-            f.write(os.linesep)
-            f.write(os.linesep)
+            # f.write(summary_text)
+            # f.write(os.linesep)
+            # f.write(os.linesep)
             f.write(models_md)
 
  
