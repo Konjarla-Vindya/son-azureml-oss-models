@@ -47,7 +47,7 @@ jobs:
           git config user.email "${{ secrets.USER_EMAIL }}"
           git config user.name "${{ secrets.USER_NAME }}"
           git pull origin main
-          cd dashboard/HuggingFace
+          cd tests/config
           git add failed_models.txt    
           
           # Attempt to commit changes and handle errors
