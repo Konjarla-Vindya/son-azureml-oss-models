@@ -31,7 +31,10 @@ for json_file in json_files[:2]:
         file_path = "data1.yml"  # Replace with the desired YAML file path
         api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/.github/workflows/{data1}.yml"
         print(api_url)
-        response = requests.post(api_url)  #, headers=headers, json=workflow_input)
+        headers = {
+           "Authorization": f"token {secrets.API_TOKEN}"}
+          #"Accept": "application/vnd.github.v3+json"
+        response = requests.post(api_url)  #, headers=headers)
         
         if response.status_code == 204:
             print(f"Workflow '{data1}' has been triggered successfully.")
