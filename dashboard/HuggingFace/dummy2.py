@@ -196,11 +196,12 @@ class Dashboard():
 
         models_df = pandas.DataFrame.from_dict(self.models_data)
         failed_models_df = models_df[models_df['Status'] == '❌ FAIL']  # Filter only the failed models
+        failed_models_list = failed_models_df['Model'].tolist()
         # models_md = failed_models_df.to_markdown()
         models_df = failed_models_df[['Model']]
 
         # Convert the filtered DataFrame to Markdown
-        models_md = failed_models_df.to_markdown(index=False)
+        models_md = models_df.to_markdown(index=False)
 
  
 
@@ -228,7 +229,7 @@ class Dashboard():
             # f.write(summary_text)
             # f.write(os.linesep)
             # f.write(os.linesep)
-            f.write(models_md)
+            f.write("\n".join(failed_models_list))
 
  
 
