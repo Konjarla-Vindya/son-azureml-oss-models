@@ -175,15 +175,15 @@ class Dashboard():
         # df = df.sort_values(by=['status'], ascending=['failure' in df['status'].values])
         # results_dict["total"] = df["workflow_id"].count()
         # results_dict["success"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'success')]['workflow_id'].count()
-        results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
-        results_dict["cancelled"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled')]['workflow_id'].count()
-        results_dict["running"] = df.loc[df['status'] == 'in_progress']['workflow_id'].count()  # Add running count
+        # results_dict["failure"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'failure')]['workflow_id'].count()
+        # results_dict["cancelled"] = df.loc[(df['status'] == 'completed') & (df['conclusion'] == 'cancelled')]['workflow_id'].count()
+        # results_dict["running"] = df.loc[df['status'] == 'in_progress']['workflow_id'].count()  # Add running count
 
 
-        success_rate = results_dict["success"]/results_dict["total"]*100.00
-        failure_rate = results_dict["failure"]/results_dict["total"]*100.00
-        cancel_rate = results_dict["cancelled"]/results_dict["total"]*100.00
-        running_rate = results_dict["running"] / results_dict["total"] * 100.00  # Calculate running rate
+        # success_rate = results_dict["success"]/results_dict["total"]*100.00
+        # failure_rate = results_dict["failure"]/results_dict["total"]*100.00
+        # cancel_rate = results_dict["cancelled"]/results_dict["total"]*100.00
+        # running_rate = results_dict["running"] / results_dict["total"] * 100.00  # Calculate running rate
 
  
 
