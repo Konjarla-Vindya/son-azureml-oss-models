@@ -38,7 +38,6 @@ jobs:
       id: deploy-model-step
       run: python Trigger-model.py
       working-directory: tests/src/automation_for_constant_library
-    - name: Set GITHUB_TOKEN environment variable
       env:
         GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
    #     #JOB_STATUS: ${{ steps.capture_job_status.outputs.job_status }}
