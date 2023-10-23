@@ -40,7 +40,7 @@ jobs:
       #     python new.py
       - name: Run Python Script from other folder to create README in main folder
         run: |
-          cd dashboard/HuggingFace
+          cd tests/config
           python dummy2.py
       - name: Add Generated File
         run: |
