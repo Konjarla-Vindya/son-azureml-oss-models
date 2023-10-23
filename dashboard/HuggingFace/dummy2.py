@@ -161,7 +161,7 @@ class Dashboard():
 
  
         # self.models_data.sort(key=lambda x: x["Status"])
-        self.models_data.sort(key=lambda x: (x["Status"] != "❌ FAIL", x["Status"]))
+        # self.models_data.sort(key=lambda x: (x["Status"] != "❌ FAIL", x["Status"]))
         return self.data
     
     def results(self, last_runs_dict):
@@ -220,7 +220,7 @@ class Dashboard():
         #     f.write(os.linesep)
         #     f.write(models_md)
 
-        with open("README.md", "w", encoding="utf-8") as f:
+        with open("failed_models.txt", "w", encoding="utf-8") as f:
             # f.write(summary_text)
             # f.write(os.linesep)
             # f.write(os.linesep)
