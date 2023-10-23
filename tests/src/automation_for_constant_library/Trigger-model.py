@@ -33,8 +33,9 @@ for json_file in json_files[:2]:
         api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/.github/workflows/{data1}.yml"
         print(api_url)
         headers = {
-           "Authorization": f"token {github_token}"}
-          #"Accept": "application/vnd.github.v3+json"
+           "Authorization": f"token {github_token}",
+          "Accept": "application/vnd.github.v3+json"
+        }
         response = requests.post(api_url, headers=headers)
         
         if response.status_code == 204:
