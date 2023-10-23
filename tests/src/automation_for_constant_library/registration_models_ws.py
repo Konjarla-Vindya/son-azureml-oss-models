@@ -1,10 +1,15 @@
+from azureml.core import Workspace, Environment
+from model_inference_and_deployment import ModelInferenceAndDeployemnt
+from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
+from azure.ai.ml.entities import AmlCompute
+from azure.ai.ml import command
+from azure.ai.ml import MLClient
+import mlflow
 import json
 import os
-import threading
-from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
-import mlflow.azureml
-from mlflow.azureml import Environment, Estimator
-from azureml.core import Workspace
+import sys
+from box import ConfigBox
+from mlflow.tracking.client import MlflowClient
 
 # Load configuration from the JSON file
 with open("config_registration.json", "r") as config_file:
