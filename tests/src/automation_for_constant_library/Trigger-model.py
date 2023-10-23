@@ -32,7 +32,7 @@ for json_file in json_files[:2]:
         api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/blob/main/.github/workflows/{data1}.yml"
         print(api_url)
         headers = {
-           "Authorization": f"token {secrets.API_TOKEN}"}
+           "Authorization": f"token {API_TOKEN}"}
           #"Accept": "application/vnd.github.v3+json"
         response = requests.post(api_url, headers=headers)
         
