@@ -146,7 +146,7 @@ class Dashboard():
                 models_entry = {
                     "Model": workflow_actual_name,
                     # "HF_Link": f"[Link]({HF_Link})",
-                    # "Status": f"{'✅ PASS' if last_run['conclusion'] == 'success' else '❌ FAIL' if last_run['conclusion'] == 'failure' else '🚫 CANCELLED' if last_run['conclusion'] == 'cancelled' else '⏳ RUNNING'}",
+                    "Status": f"{'✅ PASS' if last_run['conclusion'] == 'success' else '❌ FAIL' if last_run['conclusion'] == 'failure' else '🚫 CANCELLED' if last_run['conclusion'] == 'cancelled' else '⏳ RUNNING'}",
                     # "LastRunLink": f"[Link]({run_link})",
                     # "LastRunTimestamp": last_run["created_at"],
                     
@@ -196,7 +196,11 @@ class Dashboard():
 
         models_df = pandas.DataFrame.from_dict(self.models_data)
         failed_models_df = models_df[models_df['Status'] == '❌ FAIL']  # Filter only the failed models
-        models_md = models_df.to_markdown()
+        # models_md = failed_models_df.to_markdown()
+        models_df = failed_models_df[['Model']]
+
+        # Convert the filtered DataFrame to Markdown
+        models_md = failed_models_df.to_markdown(index=False)
 
  
 
