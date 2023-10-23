@@ -2,19 +2,12 @@
     "subscription_id": "80c77c76-74ba-4c8c-8229-4c3b2957990c",
     "resource_group": "huggingface-registry-test1",
     "workspace_names": [
-      "test-eastus", "test-southafricanorth", "test-japaneast", "test-southcentralus",
-      "test-koreacentral", "test-northcentralus", "test-northeurope", "test-norwayeast"
+      "test-eastus"
     ],
     "models_directory": "/.github/workflows",
     "model_names": [
-        "t5-small",
-        "cyberagent/open-calm-1b",
-        "explosion-testing/bert-test",
-        "tau/splinter-base",
-        "aubmindlab/bert-base-arabertv2",
-        "abeja/gpt-neox-japanese-2.7b",
-        "songlab/gpn-brassicales",
-        "uw-madison/yoso-4096"
+        "t5-small"
+       
     ]
   }
   
