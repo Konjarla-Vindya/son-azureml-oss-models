@@ -179,8 +179,8 @@ class ModelDynamicInstallation:
             instance_count=1,
             request_settings=OnlineRequestSettings(
                 max_concurrent_requests_per_instance=1,
-                request_timeout_ms=50000,
-                max_queue_wait_ms=500,
+                request_timeout_ms=500000,
+                max_queue_wait_ms=5000,
             )
         )
         try:
