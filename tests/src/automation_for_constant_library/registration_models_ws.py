@@ -1,8 +1,9 @@
 import json
-from azureml.core import Workspace, Model
 import os
 import threading
+from azureml.core import Workspace, Model
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
+import mlflow.azureml
 
 # Load configuration from the JSON file
 with open("config_registration.json", "r") as config_file:
@@ -11,11 +12,20 @@ with open("config_registration.json", "r") as config_file:
 # Function to register a model in a workspace
 def register_model(subscription_id, resource_group, workspace_name, model_name, model_path):
     try:
+        # Acquire Azure credentials
+        try:
+            # Try to use DefaultAzureCredential for authentication
+            credential = DefaultAzureCredential()
+            credential.get_token("https://management.azure.com/.default")
+        except Exception as ex:
+            # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential doesn't work
+            credential = InteractiveBrowserCredential()
+
         workspace = Workspace.get(name=workspace_name, subscription_id=subscription_id, resource_group=resource_group, auth=credential)
         if model_name not in registered_models:
-            model = Model.register(workspace, model_name, model_path)
+            mlflow.azureml.register(model_path, model_name, workspace_name)
             registered_models.add(model_name)
-            print(f"Registered {model.name} in {workspace.name}")
+            print(f"Registered {model_name} in {workspace.name}")
         else:
             print(f"Model {model_name} is already registered. Skipping registration in {workspace.name}.")
     except Exception as e:
@@ -29,15 +39,6 @@ model_names = config["model_names"]
 
 # Initialize a set to keep track of registered models
 registered_models = set()
-
-# Acquire Azure credentials
-try:
-    # Try to use DefaultAzureCredential for authentication
-    credential = DefaultAzureCredential()
-    credential.get_token("https://management.azure.com/.default")
-except Exception as ex:
-    # Fall back to InteractiveBrowserCredential in case DefaultAzureCredential doesn't work
-    credential = InteractiveBrowserCredential()
 
 for i, model_name in enumerate(model_names):
     workspace_name = workspace_names[i % workspace_count]
