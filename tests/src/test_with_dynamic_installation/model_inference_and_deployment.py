@@ -211,9 +211,9 @@ class ModelInferenceAndDeployemnt:
                 '', latest_model_name)
             latest_model_name = latest_model_name.lstrip("-")
 
-        return latest_model_name
+        return latest_model_name.lower()
 
-    def create_online_deployment(self, latest_model, online_endpoint_name, model_package, instance_type, endpoint):
+    def create_online_deployment(self, latest_model, online_endpoint_name, instance_type, endpoint):
         logger.info("In create_online_deployment...")
         logger.info(f"latest_model.name is this : {latest_model.name}")
         latest_model_name = self.get_model_name(
@@ -238,8 +238,8 @@ class ModelInferenceAndDeployemnt:
             instance_count=1,
             request_settings=OnlineRequestSettings(
                 max_concurrent_requests_per_instance=1,
-                request_timeout_ms=50000,
-                max_queue_wait_ms=500,
+                request_timeout_ms=500000,
+                max_queue_wait_ms=5000,
             )
         )
         try:
@@ -340,7 +340,6 @@ class ModelInferenceAndDeployemnt:
         deployment_name = self.create_online_deployment(
             latest_model=latest_model,
             online_endpoint_name=online_endpoint_name,
-            model_package=" ",
             instance_type=instance_type,
             endpoint=endpoint
         )

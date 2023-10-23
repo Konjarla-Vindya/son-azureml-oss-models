@@ -192,7 +192,7 @@ if __name__ == "__main__":
 
     foundation_model = ModelDetail(workspace_ml_client=workspace_ml_client).get_model_detail(test_model_name=test_model_name)
     InferenceAndDeployment = ModelInferenceAndDeployemnt(
-        test_model_name=test_model_name.lower(),
+        test_model_name=test_model_name,
         workspace_ml_client=workspace_ml_client,
         registry=queue.registry
     )
