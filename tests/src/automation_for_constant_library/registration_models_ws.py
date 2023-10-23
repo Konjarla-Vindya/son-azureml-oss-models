@@ -1,9 +1,10 @@
 import json
 import os
 import threading
-from azureml.core import Workspace, Model
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 import mlflow.azureml
+from mlflow.azureml import Environment, Estimator
+from azureml.core import Workspace
 
 # Load configuration from the JSON file
 with open("config_registration.json", "r") as config_file:
@@ -22,14 +23,11 @@ def register_model(subscription_id, resource_group, workspace_name, model_name, 
             credential = InteractiveBrowserCredential()
 
         workspace = Workspace.get(name=workspace_name, subscription_id=subscription_id, resource_group=resource_group, auth=credential)
-        if model_name not in registered_models:
-            mlflow.azureml.register(model_path, model_name, workspace_name)
-            registered_models.add(model_name)
-            print(f"Registered {model_name} in {workspace.name}")
-        else:
-            print(f"Model {model_name} is already registered. Skipping registration in {workspace.name}.")
+
+        registered_model = mlflow.register_model(model_path, model_name, workspace_name)
+        print(f"Registered {model_name} in {workspace_name}")
     except Exception as e:
-        print(f"An error occurred while working with {workspace.name}: {str(e)}")
+        print(f"An error occurred while working with {workspace_name}: {str(e)}")
 
 # Create and start threads for registration
 threads = []
