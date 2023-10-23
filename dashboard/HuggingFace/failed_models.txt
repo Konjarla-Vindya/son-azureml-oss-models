@@ -1,217 +1,215 @@
-| Model                                                             | Status   |
-|:------------------------------------------------------------------|:---------|
-| smallcloudai/Refact-1_6B-fim                                      | ❌ FAIL   |
-| shauray/Llava-Llama-2-7B-hf                                       | ❌ FAIL   |
-| infCapital/llama2-7b-chatvi                                       | ❌ FAIL   |
-| TheBloke/Mistral-7B-Instruct-v0.1-GGUF                            | ❌ FAIL   |
-| TheBloke/Mistral-7B-v0.1-GGUF                                     | ❌ FAIL   |
-| TheBloke/Mistral-7B-v0.1-AWQ                                      | ❌ FAIL   |
-| mistralai/Mistral-7B-v0.1                                         | ❌ FAIL   |
-| mistralai/Mistral-7B-Instruct-v0.1                                | ❌ FAIL   |
-| facebook/mbart-large-50-many-to-many-mmt                          | ❌ FAIL   |
-| ArnaudHureaux/Llama-2-70b-chat-hf-miniguanaco                     | ❌ FAIL   |
-| Faradaylab/ARIA-70B-V2                                            | ❌ FAIL   |
-| willyninja30/ARIA-70B-French                                      | ❌ FAIL   |
-| CyberPeace-Institute/Cybersecurity-Knowledge-Graph                | ❌ FAIL   |
-| sjrhuschlee/flan-t5-large-squad2                                  | ❌ FAIL   |
-| vietgpt/dama-2-7b-chat                                            | ❌ FAIL   |
-| HuggingFaceM4/idefics-80b-instruct                                | ❌ FAIL   |
-| HuggingFaceM4/idefics-9b-instruct                                 | ❌ FAIL   |
-| HuggingFaceM4/idefics-80b                                         | ❌ FAIL   |
-| HuggingFaceM4/idefics-9b                                          | ❌ FAIL   |
-| pipyp/qwenchatreup                                                | ❌ FAIL   |
-| Qwen/Qwen-7B-Chat-Int4                                            | ❌ FAIL   |
-| Qwen/Qwen-7B-Chat                                                 | ❌ FAIL   |
-| Qwen/Qwen-7B                                                      | ❌ FAIL   |
-| Qwen/Qwen-14B-Chat-Int4                                           | ❌ FAIL   |
-| Qwen/Qwen-14B-Chat                                                | ❌ FAIL   |
-| Qwen/Qwen-14B                                                     | ❌ FAIL   |
-| infCapital/llama2-7b-chat                                         | ❌ FAIL   |
-| xkianteb/kl_0.1_expert                                            | ❌ FAIL   |
-| pfnet/plamo-13b                                                   | ❌ FAIL   |
-| kyujinpy/CoT-llama-2k-7b                                          | ❌ FAIL   |
-| kyujinpy/KO-Platypus2-7B-ex                                       | ❌ FAIL   |
-| 42MARU/polyglot-ko-12.8b-instruct                                 | ❌ FAIL   |
-| microsoft/phi-1                                                   | ❌ FAIL   |
-| microsoft/phi-1_5                                                 | ❌ FAIL   |
-| kittn/mistral-7B-v0.1-hf                                          | ❌ FAIL   |
-| Trelis/Llama-2-13b-chat-hf-touch-rugby-rules                      | ❌ FAIL   |
-| TheBloke/Falcon-180B-GPTQ                                         | ❌ FAIL   |
-| TheBloke/Baichuan2-13B-Chat-GPTQ                                  | ❌ FAIL   |
-| TheBloke/Falcon-180B-Chat-GPTQ                                    | ❌ FAIL   |
-| TheBloke/fiction.live-Kimiko-V2-70B-fp16                          | ❌ FAIL   |
-| TheBloke/Kimiko-v2-13B-fp16                                       | ❌ FAIL   |
-| TheBloke/Marx-3b-GPTQ                                             | ❌ FAIL   |
-| TheBloke/scarlett-33B-GPTQ                                        | ❌ FAIL   |
-| TheBloke/OpenAssistant-Llama2-13B-Orca-v2-8K-3166-GPTQ            | ❌ FAIL   |
-| TheBloke/airoboros-33B-GPT4-m2.0-GPTQ                             | ❌ FAIL   |
-| TheBloke/OpenChat_v3.2-GPTQ                                       | ❌ FAIL   |
-| TheBloke/Kimiko-13B-fp16                                          | ❌ FAIL   |
-| TheBloke/Llama-2-70B-Chat-GGML                                    | ❌ FAIL   |
-| TheBloke/Llama-2-13B-chat-GGML                                    | ❌ FAIL   |
-| TheBloke/Llama-2-7B-Chat-GGML                                     | ❌ FAIL   |
-| TheBloke/Llama-2-7B-GGML                                          | ❌ FAIL   |
-| TheBloke/Llama-2-13B-GGML                                         | ❌ FAIL   |
-| TheBloke/storytime-13B-GPTQ                                       | ❌ FAIL   |
-| TheBloke/airoboros-l2-13B-2.2.1-GPTQ                              | ❌ FAIL   |
-| TheBloke/Airoboros-L2-70b-2.2.1-AWQ                               | ❌ FAIL   |
-| TheBloke/Xwin-LM-70B-V0.1-AWQ                                     | ❌ FAIL   |
-| TheBloke/Xwin-LM-70B-V0.1-GPTQ                                    | ❌ FAIL   |
-| TheBloke/Xwin-LM-7B-V0.1-GPTQ                                     | ❌ FAIL   |
-| TheBloke/Xwin-LM-13B-V0.1-AWQ                                     | ❌ FAIL   |
-| TheBloke/Xwin-LM-13B-V0.1-GPTQ                                    | ❌ FAIL   |
-| TheBloke/FashionGPT-70B-V1.1-GPTQ                                 | ❌ FAIL   |
-| TheBloke/Upstage-Llama-2-70B-instruct-v2-AWQ                      | ❌ FAIL   |
-| TheBloke/OpenAssistant-Llama2-13B-Orca-8K-3319-AWQ                | ❌ FAIL   |
-| TheBloke/OpenBuddy-Llama2-13B-v11.1-AWQ                           | ❌ FAIL   |
-| TheBloke/llama-2-70b-Guanaco-QLoRA-AWQ                            | ❌ FAIL   |
-| TheBloke/WizardLM-70B-V1.0-AWQ                                    | ❌ FAIL   |
-| TheBloke/WizardLM-13B-V1.2-AWQ                                    | ❌ FAIL   |
-| TheBloke/CodeLlama-34B-AWQ                                        | ❌ FAIL   |
-| TheBloke/Llama-2-70B-AWQ                                          | ❌ FAIL   |
-| TheBloke/Llama-2-70B-chat-AWQ                                     | ❌ FAIL   |
-| TheBloke/Llama-2-13B-chat-AWQ                                     | ❌ FAIL   |
-| TheBloke/Llama-2-13B-AWQ                                          | ❌ FAIL   |
-| TheBloke/Llama-2-7B-AWQ                                           | ❌ FAIL   |
-| TheBloke/Llama-2-7b-Chat-AWQ                                      | ❌ FAIL   |
-| TheBloke/WizardCoder-Python-7B-V1.0-GPTQ                          | ❌ FAIL   |
-| TheBloke/MLewd-L2-Chat-13B-GPTQ                                   | ❌ FAIL   |
-| TheBloke/Synthia-34B-v1.2-GPTQ                                    | ❌ FAIL   |
-| TheBloke/Chinese-Llama-2-7B-GPTQ                                  | ❌ FAIL   |
-| TheBloke/Chinese-Llama-2-13B-GPTQ                                 | ❌ FAIL   |
-| TheBloke/Marcoroni-70B-GPTQ                                       | ❌ FAIL   |
-| TheBloke/Llama-2-Coder-7B-GPTQ                                    | ❌ FAIL   |
-| TheBloke/Llama2-Chat-AYT-13B-GPTQ                                 | ❌ FAIL   |
-| TheBloke/Airoboros-L2-7B-2.2-GPTQ                                 | ❌ FAIL   |
-| TheBloke/Airoboros-L2-13B-2.2-GPTQ                                | ❌ FAIL   |
-| TheBloke/Spicyboros-70B-2.2-GPTQ                                  | ❌ FAIL   |
-| TheBloke/ORCA_LLaMA_70B_QLoRA-GPTQ                                | ❌ FAIL   |
-| TheBloke/Spicyboros-7B-2.2-GPTQ                                   | ❌ FAIL   |
-| TheBloke/Synthia-70B-v1.2-GPTQ                                    | ❌ FAIL   |
-| TheBloke/Upstage-Llama-2-70B-instruct-v2-GGUF                     | ❌ FAIL   |
-| TheBloke/Chronos-70B-v2-GPTQ                                      | ❌ FAIL   |
-| TheBloke/Mythalion-13B-GGUF                                       | ❌ FAIL   |
-| TheBloke/Mythalion-13B-GPTQ                                       | ❌ FAIL   |
-| TheBloke/Pygmalion-2-13B-GGUF                                     | ❌ FAIL   |
-| TheBloke/WizardLM-1.0-Uncensored-CodeLlama-34B-GPTQ               | ❌ FAIL   |
-| TheBloke/OpenBuddy-Llama2-70b-v10.1-GPTQ                          | ❌ FAIL   |
-| TheBloke/ReMM-SLERP-L2-13B-GPTQ                                   | ❌ FAIL   |
-| TheBloke/Llama-2-13B-GGUF                                         | ❌ FAIL   |
-| TheBloke/Llama-2-70B-chat-GGUF                                    | ❌ FAIL   |
-| TheBloke/Llama-2-13B-chat-GGUF                                    | ❌ FAIL   |
-| TheBloke/Llama-2-7B-GGUF                                          | ❌ FAIL   |
-| TheBloke/Llama-2-7b-Chat-GGUF                                     | ❌ FAIL   |
-| TheBloke/OpenBuddy-Llama2-13B-v11.1-GPTQ                          | ❌ FAIL   |
-| TheBloke/Speechless-Llama2-Hermes-Orca-Platypus-WizardLM-13B-GPTQ | ❌ FAIL   |
-| TheBloke/Stheno-L2-13B-GPTQ                                       | ❌ FAIL   |
-| TheBloke/Yarn-Llama-2-7B-128K-GPTQ                                | ❌ FAIL   |
-| TheBloke/Yarn-Llama-2-13B-64K-GPTQ                                | ❌ FAIL   |
-| TheBloke/Yarn-Llama-2-13B-128K-GPTQ                               | ❌ FAIL   |
-| TheBloke/Yarn-Llama-2-7B-64K-GPTQ                                 | ❌ FAIL   |
-| TheBloke/LoKuS-13B-GPTQ                                           | ❌ FAIL   |
-| TheBloke/llama-2-13B-chat-limarp-v2-merged-GPTQ                   | ❌ FAIL   |
-| TheBloke/Airoboros-L2-70B-2.1-Creative-GPTQ                       | ❌ FAIL   |
-| TheBloke/MythoMax-L2-Kimiko-v2-13B-GPTQ                           | ❌ FAIL   |
-| TheBloke/fiction.live-Kimiko-V2-70B-GPTQ                          | ❌ FAIL   |
-| TheBloke/Kimiko-v2-13B-GPTQ                                       | ❌ FAIL   |
-| TheBloke/Luban-13B-GPTQ                                           | ❌ FAIL   |
-| TheBloke/Athena-v1-GPTQ                                           | ❌ FAIL   |
-| TheBloke/model_007-70B-GPTQ                                       | ❌ FAIL   |
-| TheBloke/Lemur-70B-Chat-v1-GPTQ                                   | ❌ FAIL   |
-| TheBloke/Samantha-1.11-13B-GPTQ                                   | ❌ FAIL   |
-| TheBloke/Phind-CodeLlama-34B-v2-GPTQ                              | ❌ FAIL   |
-| TheBloke/Airoboros-L2-70B-2.1-GPTQ                                | ❌ FAIL   |
-| TheBloke/Airoboros-c34B-2.1-GPTQ                                  | ❌ FAIL   |
-| TheBloke/Llama-2-70B-Orca-200k-GPTQ                               | ❌ FAIL   |
-| TheBloke/Genz-70b-GPTQ                                            | ❌ FAIL   |
-| TheBloke/Phind-CodeLlama-34B-Python-v1-GPTQ                       | ❌ FAIL   |
-| TheBloke/Zarafusionex-1.1-L2-7B-GPTQ                              | ❌ FAIL   |
-| TheBloke/Llama2-70B-OASST-SFT-v10-GPTQ                            | ❌ FAIL   |
-| TheBloke/Samantha-1.11-CodeLlama-34B-GPTQ                         | ❌ FAIL   |
-| TheBloke/CodeLlama-34B-GPTQ                                       | ❌ FAIL   |
-| TheBloke/CodeLlama-34B-Instruct-GPTQ                              | ❌ FAIL   |
-| TheBloke/CodeLlama-34B-Python-GPTQ                                | ❌ FAIL   |
-| TheBloke/CodeLlama-13B-Python-GPTQ                                | ❌ FAIL   |
-| TheBloke/CodeLlama-7B-GPTQ                                        | ❌ FAIL   |
-| TheBloke/CodeLlama-34B-Instruct-GGUF                              | ❌ FAIL   |
-| TheBloke/CodeLlama-7B-Python-GPTQ                                 | ❌ FAIL   |
-| TheBloke/CodeLlama-7B-Instruct-GPTQ                               | ❌ FAIL   |
-| TheBloke/CodeLlama-13B-Instruct-GGUF                              | ❌ FAIL   |
-| TheBloke/CodeLlama-7B-Python-GGUF                                 | ❌ FAIL   |
-| TheBloke/CodeLlama-7B-GGUF                                        | ❌ FAIL   |
-| TheBloke/CodeLlama-7B-Instruct-GGUF                               | ❌ FAIL   |
-| TheBloke/Nous-Puffin-70B-GPTQ                                     | ❌ FAIL   |
-| TheBloke/Nous-Hermes-Llama2-70B-GPTQ                              | ❌ FAIL   |
-| TheBloke/EverythingLM-13b-V2-16K-GPTQ                             | ❌ FAIL   |
-| TheBloke/Llama-2-7B-32K-Instruct-GPTQ                             | ❌ FAIL   |
-| TheBloke/Zarablend-L2-7B-GPTQ                                     | ❌ FAIL   |
-| TheBloke/orca_mini_v3_70B-GPTQ                                    | ❌ FAIL   |
-| TheBloke/GodziLLa2-70B-GPTQ                                       | ❌ FAIL   |
-| TheBloke/LlongOrca-7B-16K-GPTQ                                    | ❌ FAIL   |
-| TheBloke/EverythingLM-13B-16K-GPTQ                                | ❌ FAIL   |
-| TheBloke/Llama-2-13B-German-Assistant-v4-GPTQ                     | ❌ FAIL   |
-| TheBloke/OpenOrca-Platypus2-13B-GPTQ                              | ❌ FAIL   |
-| TheBloke/WizardMath-13B-V1.0-GPTQ                                 | ❌ FAIL   |
-| TheBloke/WizardMath-7B-V1.0-GPTQ                                  | ❌ FAIL   |
-| TheBloke/Platypus2-70B-Instruct-GPTQ                              | ❌ FAIL   |
-| TheBloke/Stable-Platypus2-13B-GPTQ                                | ❌ FAIL   |
-| TheBloke/AlpacaCielo2-7B-8K-GPTQ                                  | ❌ FAIL   |
-| TheBloke/orca_mini_v3_7B-GPTQ                                     | ❌ FAIL   |
-| TheBloke/WizardLM-70B-V1.0-GPTQ                                   | ❌ FAIL   |
-| TheBloke/MythoMix-L2-13B-GPTQ                                     | ❌ FAIL   |
-| TheBloke/Dolphin-Llama2-7B-GPTQ                                   | ❌ FAIL   |
-| TheBloke/WizardLM-1.0-Uncensored-Llama2-13B-GPTQ                  | ❌ FAIL   |
-| TheBloke/Chronos-Beluga-v2-13B-GPTQ                               | ❌ FAIL   |
-| TheBloke/Llama-2-70B-OASST-1-200-GPTQ                             | ❌ FAIL   |
-| TheBloke/HermesLimaRP-L2-7B-GPTQ                                  | ❌ FAIL   |
-| TheBloke/Airoboros-L2-70B-GPT4-m2.0-GPTQ                          | ❌ FAIL   |
-| TheBloke/Vigogne-2-7B-Chat-GPTQ                                   | ❌ FAIL   |
-| TheBloke/llama2_70b_chat_uncensored-GPTQ                          | ❌ FAIL   |
-| TheBloke/vicuna-13B-v1.5-GPTQ                                     | ❌ FAIL   |
-| TheBloke/vicuna-7B-v1.5-GPTQ                                      | ❌ FAIL   |
-| TheBloke/vicuna-7B-v1.5-16K-GPTQ                                  | ❌ FAIL   |
-| TheBloke/OpenOrcaxOpenChat-Preview2-13B-GPTQ                      | ❌ FAIL   |
-| TheBloke/vicuna-13B-v1.5-16K-GPTQ                                 | ❌ FAIL   |
-| TheBloke/airoboros-l2-70B-GPT4-2.0-GPTQ                           | ❌ FAIL   |
-| TheBloke/airoboros-l2-7B-gpt4-m2.0-GPTQ                           | ❌ FAIL   |
-| TheBloke/CodeUp-Llama-2-13B-Chat-HF-GPTQ                          | ❌ FAIL   |
-| TheBloke/airoboros-l2-7B-gpt4-2.0-GPTQ                            | ❌ FAIL   |
-| TheBloke/airoboros-l2-13b-gpt4-m2.0-GPTQ                          | ❌ FAIL   |
-| TheBloke/Upstage-Llama-2-70B-instruct-v2-GPTQ                     | ❌ FAIL   |
-| TheBloke/airoboros-l2-13b-gpt4-2.0-GPTQ                           | ❌ FAIL   |
-| TheBloke/Vigogne-2-13B-Instruct-GPTQ                              | ❌ FAIL   |
-| TheBloke/StableBeluga-13B-GPTQ                                    | ❌ FAIL   |
-| TheBloke/OpenAssistant-Llama2-13B-Orca-8K-3319-GPTQ               | ❌ FAIL   |
-| TheBloke/WizardLM-13B-V1.2-GPTQ                                   | ❌ FAIL   |
-| TheBloke/airoboros-l2-70B-gpt4-1.4.1-GPTQ                         | ❌ FAIL   |
-| TheBloke/llama2-7b-chat-codeCherryPop-qLoRA-GPTQ                  | ❌ FAIL   |
-| TheBloke/llama-2-70b-Guanaco-QLoRA-GPTQ                           | ❌ FAIL   |
-| TheBloke/llama-2-13B-Guanaco-QLoRA-GPTQ                           | ❌ FAIL   |
-| TheBloke/llama-2-7B-Guanaco-QLoRA-GPTQ                            | ❌ FAIL   |
-| TheBloke/Luna-AI-Llama2-Uncensored-GPTQ                           | ❌ FAIL   |
-| TheBloke/Llama-2-70B-GPTQ                                         | ❌ FAIL   |
-| TheBloke/Llama-2-7B-GPTQ                                          | ❌ FAIL   |
-| TheBloke/airochronos-33B-GPTQ                                     | ❌ FAIL   |
-| TheBloke/WizardLM-33B-V1.0-Uncensored-GPTQ                        | ❌ FAIL   |
-| TheBloke/guanaco-65B-GPTQ                                         | ❌ FAIL   |
-| TheBloke/guanaco-33B-GPTQ                                         | ❌ FAIL   |
-| TheBloke/Wizard-Vicuna-7B-Uncensored-GPTQ                         | ❌ FAIL   |
-| hpcai-tech/Colossal-LLaMA-2-7b-base                               | ❌ FAIL   |
-| dicta-il/dictalm-7b-instruct                                      | ❌ FAIL   |
-| anzorq/m2m100_418M_ft_ru-kbd_44K                                  | ❌ FAIL   |
-| Sao10K/Euryale-L2-70B                                             | ❌ FAIL   |
-| TigerResearch/tigerbot-70b-chat                                   | ❌ FAIL   |
-| Qwen/Qwen-VL-Chat                                                 | ❌ FAIL   |
-| NousResearch/Nous-Puffin-70B                                      | ❌ FAIL   |
-| firqaaa/Madina-7b-chat-QLoRA-8k                                   | ❌ FAIL   |
-| openchat/openchat_v3.1                                            | ❌ FAIL   |
-| mosaicml/mpt-7b                                                   | ❌ FAIL   |
-| internlm/internlm-7b                                              | ❌ FAIL   |
-| internlm/internlm-chat-7b-v1_1                                    | ❌ FAIL   |
-| internlm/internlm-chat-7b-8k                                      | ❌ FAIL   |
-| internlm/internlm-chat-7b                                         | ❌ FAIL   |
-| cerebras/btlm-3b-8k-base                                          | ❌ FAIL   |
-| elliotthwang/Elliott-Chinese-LLaMa-GPTQ-V1.0                      | ❌ FAIL   |
-| Open-Orca/oo-phi-1_5                                              | ❌ FAIL   |
-| haoranxu/ALMA-7B                                                  | ❌ FAIL   |
-| haoranxu/ALMA-7B-Pretrain                                         | ❌ FAIL   |
+smallcloudai/Refact-1_6B-fim
+shauray/Llava-Llama-2-7B-hf
+infCapital/llama2-7b-chatvi
+TheBloke/Mistral-7B-Instruct-v0.1-GGUF
+TheBloke/Mistral-7B-v0.1-GGUF
+TheBloke/Mistral-7B-v0.1-AWQ
+mistralai/Mistral-7B-v0.1
+mistralai/Mistral-7B-Instruct-v0.1
+facebook/mbart-large-50-many-to-many-mmt
+ArnaudHureaux/Llama-2-70b-chat-hf-miniguanaco
+Faradaylab/ARIA-70B-V2
+willyninja30/ARIA-70B-French
+CyberPeace-Institute/Cybersecurity-Knowledge-Graph
+sjrhuschlee/flan-t5-large-squad2
+vietgpt/dama-2-7b-chat
+HuggingFaceM4/idefics-80b-instruct
+HuggingFaceM4/idefics-9b-instruct
+HuggingFaceM4/idefics-80b
+HuggingFaceM4/idefics-9b
+pipyp/qwenchatreup
+Qwen/Qwen-7B-Chat-Int4
+Qwen/Qwen-7B-Chat
+Qwen/Qwen-7B
+Qwen/Qwen-14B-Chat-Int4
+Qwen/Qwen-14B-Chat
+Qwen/Qwen-14B
+infCapital/llama2-7b-chat
+xkianteb/kl_0.1_expert
+pfnet/plamo-13b
+kyujinpy/CoT-llama-2k-7b
+kyujinpy/KO-Platypus2-7B-ex
+42MARU/polyglot-ko-12.8b-instruct
+microsoft/phi-1
+microsoft/phi-1_5
+kittn/mistral-7B-v0.1-hf
+Trelis/Llama-2-13b-chat-hf-touch-rugby-rules
+TheBloke/Falcon-180B-GPTQ
+TheBloke/Baichuan2-13B-Chat-GPTQ
+TheBloke/Falcon-180B-Chat-GPTQ
+TheBloke/fiction.live-Kimiko-V2-70B-fp16
+TheBloke/Kimiko-v2-13B-fp16
+TheBloke/Marx-3b-GPTQ
+TheBloke/scarlett-33B-GPTQ
+TheBloke/OpenAssistant-Llama2-13B-Orca-v2-8K-3166-GPTQ
+TheBloke/airoboros-33B-GPT4-m2.0-GPTQ
+TheBloke/OpenChat_v3.2-GPTQ
+TheBloke/Kimiko-13B-fp16
+TheBloke/Llama-2-70B-Chat-GGML
+TheBloke/Llama-2-13B-chat-GGML
+TheBloke/Llama-2-7B-Chat-GGML
+TheBloke/Llama-2-7B-GGML
+TheBloke/Llama-2-13B-GGML
+TheBloke/storytime-13B-GPTQ
+TheBloke/airoboros-l2-13B-2.2.1-GPTQ
+TheBloke/Airoboros-L2-70b-2.2.1-AWQ
+TheBloke/Xwin-LM-70B-V0.1-AWQ
+TheBloke/Xwin-LM-70B-V0.1-GPTQ
+TheBloke/Xwin-LM-7B-V0.1-GPTQ
+TheBloke/Xwin-LM-13B-V0.1-AWQ
+TheBloke/Xwin-LM-13B-V0.1-GPTQ
+TheBloke/FashionGPT-70B-V1.1-GPTQ
+TheBloke/Upstage-Llama-2-70B-instruct-v2-AWQ
+TheBloke/OpenAssistant-Llama2-13B-Orca-8K-3319-AWQ
+TheBloke/OpenBuddy-Llama2-13B-v11.1-AWQ
+TheBloke/llama-2-70b-Guanaco-QLoRA-AWQ
+TheBloke/WizardLM-70B-V1.0-AWQ
+TheBloke/WizardLM-13B-V1.2-AWQ
+TheBloke/CodeLlama-34B-AWQ
+TheBloke/Llama-2-70B-AWQ
+TheBloke/Llama-2-70B-chat-AWQ
+TheBloke/Llama-2-13B-chat-AWQ
+TheBloke/Llama-2-13B-AWQ
+TheBloke/Llama-2-7B-AWQ
+TheBloke/Llama-2-7b-Chat-AWQ
+TheBloke/WizardCoder-Python-7B-V1.0-GPTQ
+TheBloke/MLewd-L2-Chat-13B-GPTQ
+TheBloke/Synthia-34B-v1.2-GPTQ
+TheBloke/Chinese-Llama-2-7B-GPTQ
+TheBloke/Chinese-Llama-2-13B-GPTQ
+TheBloke/Marcoroni-70B-GPTQ
+TheBloke/Llama-2-Coder-7B-GPTQ
+TheBloke/Llama2-Chat-AYT-13B-GPTQ
+TheBloke/Airoboros-L2-7B-2.2-GPTQ
+TheBloke/Airoboros-L2-13B-2.2-GPTQ
+TheBloke/Spicyboros-70B-2.2-GPTQ
+TheBloke/ORCA_LLaMA_70B_QLoRA-GPTQ
+TheBloke/Spicyboros-7B-2.2-GPTQ
+TheBloke/Synthia-70B-v1.2-GPTQ
+TheBloke/Upstage-Llama-2-70B-instruct-v2-GGUF
+TheBloke/Chronos-70B-v2-GPTQ
+TheBloke/Mythalion-13B-GGUF
+TheBloke/Mythalion-13B-GPTQ
+TheBloke/Pygmalion-2-13B-GGUF
+TheBloke/WizardLM-1.0-Uncensored-CodeLlama-34B-GPTQ
+TheBloke/OpenBuddy-Llama2-70b-v10.1-GPTQ
+TheBloke/ReMM-SLERP-L2-13B-GPTQ
+TheBloke/Llama-2-13B-GGUF
+TheBloke/Llama-2-70B-chat-GGUF
+TheBloke/Llama-2-13B-chat-GGUF
+TheBloke/Llama-2-7B-GGUF
+TheBloke/Llama-2-7b-Chat-GGUF
+TheBloke/OpenBuddy-Llama2-13B-v11.1-GPTQ
+TheBloke/Speechless-Llama2-Hermes-Orca-Platypus-WizardLM-13B-GPTQ
+TheBloke/Stheno-L2-13B-GPTQ
+TheBloke/Yarn-Llama-2-7B-128K-GPTQ
+TheBloke/Yarn-Llama-2-13B-64K-GPTQ
+TheBloke/Yarn-Llama-2-13B-128K-GPTQ
+TheBloke/Yarn-Llama-2-7B-64K-GPTQ
+TheBloke/LoKuS-13B-GPTQ
+TheBloke/llama-2-13B-chat-limarp-v2-merged-GPTQ
+TheBloke/Airoboros-L2-70B-2.1-Creative-GPTQ
+TheBloke/MythoMax-L2-Kimiko-v2-13B-GPTQ
+TheBloke/fiction.live-Kimiko-V2-70B-GPTQ
+TheBloke/Kimiko-v2-13B-GPTQ
+TheBloke/Luban-13B-GPTQ
+TheBloke/Athena-v1-GPTQ
+TheBloke/model_007-70B-GPTQ
+TheBloke/Lemur-70B-Chat-v1-GPTQ
+TheBloke/Samantha-1.11-13B-GPTQ
+TheBloke/Phind-CodeLlama-34B-v2-GPTQ
+TheBloke/Airoboros-L2-70B-2.1-GPTQ
+TheBloke/Airoboros-c34B-2.1-GPTQ
+TheBloke/Llama-2-70B-Orca-200k-GPTQ
+TheBloke/Genz-70b-GPTQ
+TheBloke/Phind-CodeLlama-34B-Python-v1-GPTQ
+TheBloke/Zarafusionex-1.1-L2-7B-GPTQ
+TheBloke/Llama2-70B-OASST-SFT-v10-GPTQ
+TheBloke/Samantha-1.11-CodeLlama-34B-GPTQ
+TheBloke/CodeLlama-34B-GPTQ
+TheBloke/CodeLlama-34B-Instruct-GPTQ
+TheBloke/CodeLlama-34B-Python-GPTQ
+TheBloke/CodeLlama-13B-Python-GPTQ
+TheBloke/CodeLlama-7B-GPTQ
+TheBloke/CodeLlama-34B-Instruct-GGUF
+TheBloke/CodeLlama-7B-Python-GPTQ
+TheBloke/CodeLlama-7B-Instruct-GPTQ
+TheBloke/CodeLlama-13B-Instruct-GGUF
+TheBloke/CodeLlama-7B-Python-GGUF
+TheBloke/CodeLlama-7B-GGUF
+TheBloke/CodeLlama-7B-Instruct-GGUF
+TheBloke/Nous-Puffin-70B-GPTQ
+TheBloke/Nous-Hermes-Llama2-70B-GPTQ
+TheBloke/EverythingLM-13b-V2-16K-GPTQ
+TheBloke/Llama-2-7B-32K-Instruct-GPTQ
+TheBloke/Zarablend-L2-7B-GPTQ
+TheBloke/orca_mini_v3_70B-GPTQ
+TheBloke/GodziLLa2-70B-GPTQ
+TheBloke/LlongOrca-7B-16K-GPTQ
+TheBloke/EverythingLM-13B-16K-GPTQ
+TheBloke/Llama-2-13B-German-Assistant-v4-GPTQ
+TheBloke/OpenOrca-Platypus2-13B-GPTQ
+TheBloke/WizardMath-13B-V1.0-GPTQ
+TheBloke/WizardMath-7B-V1.0-GPTQ
+TheBloke/Platypus2-70B-Instruct-GPTQ
+TheBloke/Stable-Platypus2-13B-GPTQ
+TheBloke/AlpacaCielo2-7B-8K-GPTQ
+TheBloke/orca_mini_v3_7B-GPTQ
+TheBloke/WizardLM-70B-V1.0-GPTQ
+TheBloke/MythoMix-L2-13B-GPTQ
+TheBloke/Dolphin-Llama2-7B-GPTQ
+TheBloke/WizardLM-1.0-Uncensored-Llama2-13B-GPTQ
+TheBloke/Chronos-Beluga-v2-13B-GPTQ
+TheBloke/Llama-2-70B-OASST-1-200-GPTQ
+TheBloke/HermesLimaRP-L2-7B-GPTQ
+TheBloke/Airoboros-L2-70B-GPT4-m2.0-GPTQ
+TheBloke/Vigogne-2-7B-Chat-GPTQ
+TheBloke/llama2_70b_chat_uncensored-GPTQ
+TheBloke/vicuna-13B-v1.5-GPTQ
+TheBloke/vicuna-7B-v1.5-GPTQ
+TheBloke/vicuna-7B-v1.5-16K-GPTQ
+TheBloke/OpenOrcaxOpenChat-Preview2-13B-GPTQ
+TheBloke/vicuna-13B-v1.5-16K-GPTQ
+TheBloke/airoboros-l2-70B-GPT4-2.0-GPTQ
+TheBloke/airoboros-l2-7B-gpt4-m2.0-GPTQ
+TheBloke/CodeUp-Llama-2-13B-Chat-HF-GPTQ
+TheBloke/airoboros-l2-7B-gpt4-2.0-GPTQ
+TheBloke/airoboros-l2-13b-gpt4-m2.0-GPTQ
+TheBloke/Upstage-Llama-2-70B-instruct-v2-GPTQ
+TheBloke/airoboros-l2-13b-gpt4-2.0-GPTQ
+TheBloke/Vigogne-2-13B-Instruct-GPTQ
+TheBloke/StableBeluga-13B-GPTQ
+TheBloke/OpenAssistant-Llama2-13B-Orca-8K-3319-GPTQ
+TheBloke/WizardLM-13B-V1.2-GPTQ
+TheBloke/airoboros-l2-70B-gpt4-1.4.1-GPTQ
+TheBloke/llama2-7b-chat-codeCherryPop-qLoRA-GPTQ
+TheBloke/llama-2-70b-Guanaco-QLoRA-GPTQ
+TheBloke/llama-2-13B-Guanaco-QLoRA-GPTQ
+TheBloke/llama-2-7B-Guanaco-QLoRA-GPTQ
+TheBloke/Luna-AI-Llama2-Uncensored-GPTQ
+TheBloke/Llama-2-70B-GPTQ
+TheBloke/Llama-2-7B-GPTQ
+TheBloke/airochronos-33B-GPTQ
+TheBloke/WizardLM-33B-V1.0-Uncensored-GPTQ
+TheBloke/guanaco-65B-GPTQ
+TheBloke/guanaco-33B-GPTQ
+TheBloke/Wizard-Vicuna-7B-Uncensored-GPTQ
+hpcai-tech/Colossal-LLaMA-2-7b-base
+dicta-il/dictalm-7b-instruct
+anzorq/m2m100_418M_ft_ru-kbd_44K
+Sao10K/Euryale-L2-70B
+TigerResearch/tigerbot-70b-chat
+Qwen/Qwen-VL-Chat
+NousResearch/Nous-Puffin-70B
+firqaaa/Madina-7b-chat-QLoRA-8k
+openchat/openchat_v3.1
+mosaicml/mpt-7b
+internlm/internlm-7b
+internlm/internlm-chat-7b-v1_1
+internlm/internlm-chat-7b-8k
+internlm/internlm-chat-7b
+cerebras/btlm-3b-8k-base
+elliotthwang/Elliott-Chinese-LLaMa-GPTQ-V1.0
+Open-Orca/oo-phi-1_5
+haoranxu/ALMA-7B
+haoranxu/ALMA-7B-Pretrain
