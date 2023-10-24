@@ -36,7 +36,10 @@ for json_file in json_files[:2]:
            "Authorization": f"token {github_token}",
           "Accept": "application/vnd.github.v3+json"
         }
-        response = requests.post(api_url, headers=headers)
+        payload = {
+             "ref": "main"
+        }
+        response = requests.post(api_url, headers=headers,json=payload)
         
         if response.status_code == 204:
             print(f"Workflow '{data1}' has been triggered successfully.")
