@@ -39,7 +39,7 @@ def fetch_model_from_hf(model_name):
     return model_path
 
 # Fetch the model from Hugging Face
-model_name = config["model_name"]
+model_name = config["model_names"]
 model_path = fetch_model_from_hf(model_name)
 
 if model_path:
