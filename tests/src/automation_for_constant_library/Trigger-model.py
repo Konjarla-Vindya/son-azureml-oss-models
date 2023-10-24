@@ -30,7 +30,7 @@ for json_file in json_files[:2]:
         repository_name = "son-azureml-oss-models"
         github_token = "WORKFLOW_TOKEN"
         file_path = "data1.yml"  # Replace with the desired YAML file path
-        api_url = "https://github.com/Konjarla-Vindya/son-azureml-oss-models/actions/workflows/HELLO_WORLD.yml/dispatches" 
+        api_url = "https://github.com/Konjarla-Vindya/son-azureml-oss-models/blob/main/.github/workflows/HELLO_WORLD.yml" 
         print(api_url)
         headers = {
            "Authorization": f"token {github_token}",
