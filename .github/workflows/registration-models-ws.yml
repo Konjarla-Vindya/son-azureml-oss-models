@@ -11,32 +11,32 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{secrets.AZURE_CREDENTIALS}}
-    - name: pip-install-azure-ai-ml
-      run: pip install azure-ai-ml
-    - name: pip-install-azureml-core
-      run: pip install azureml-core
-    - name: pip-install-azureml-mlflow
-      run: pip install azureml-mlflow==1.53.0
-    - name: pip-install-transformers
-      run: pip install transformers
-    - name: pip-install-datasets
-      run: pip install datasets
-    - name: pip-install-transformers[torch]
-      run: pip install transformers[torch]
-    - name: pip-install-torchvision
-      run: pip install torchvision 
-    - name: pip-install-mlflow
-      run: pip install mlflow
-    - name: pip-install-python-box
-      run: pip install python-box
-    - name: pip-install-seqeval
-      run: pip install seqeval
-    - name: pip-install-sacremoses
-      run: pip install sacremoses
-    - name: pip-install-sentencepiece
-      run: pip install sentencepiece
-    - name: pip-install-fugashi[unidic-lite]
-      run: pip install fugashi[unidic-lite]
+    # - name: pip-install-azure-ai-ml
+    #   run: pip install azure-ai-ml
+    # - name: pip-install-azureml-core
+    #   run: pip install azureml-core
+    # - name: pip-install-azureml-mlflow
+    #   run: pip install azureml-mlflow==1.53.0
+    # - name: pip-install-transformers
+    #   run: pip install transformers
+    # - name: pip-install-datasets
+    #   run: pip install datasets
+    # - name: pip-install-transformers[torch]
+    #   run: pip install transformers[torch]
+    # - name: pip-install-torchvision
+    #   run: pip install torchvision 
+    # - name: pip-install-mlflow
+    #   run: pip install mlflow
+    # - name: pip-install-python-box
+    #   run: pip install python-box
+    # - name: pip-install-seqeval
+    #   run: pip install seqeval
+    # - name: pip-install-sacremoses
+    #   run: pip install sacremoses
+    # - name: pip-install-sentencepiece
+    #   run: pip install sentencepiece
+    # - name: pip-install-fugashi[unidic-lite]
+    #   run: pip install fugashi[unidic-lite]
     - name: Run Python Script for register models in the Workspace  
       run: python registration_models_ws.py
       working-directory: tests/src/automation_for_constant_library
