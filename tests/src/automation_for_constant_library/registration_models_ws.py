@@ -1,16 +1,16 @@
-from azureml.core import Workspace, Environment
-from model_inference_and_deployment import ModelInferenceAndDeployemnt
-from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
-from azure.ai.ml.entities import AmlCompute
-from azure.ai.ml import command
-from azure.ai.ml import MLClient
-import mlflow
-import json
-import os
-import sys
-import threading
-from box import ConfigBox
-from mlflow.tracking.client import MlflowClient
+# from azureml.core import Workspace, Environment
+# from model_inference_and_deployment import ModelInferenceAndDeployemnt
+# from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
+# from azure.ai.ml.entities import AmlCompute
+# from azure.ai.ml import command
+# from azure.ai.ml import MLClient
+# import mlflow
+# import json
+# import os
+# import sys
+# import threading
+# from box import ConfigBox
+# from mlflow.tracking.client import MlflowClient
 
 
 
