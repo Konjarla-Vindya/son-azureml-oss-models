@@ -34,14 +34,18 @@ def register_model(workspace, model_name, model_path):
 # Function to fetch a model from Hugging Face
 def fetch_model_from_hf(model_name):
     hf_api = HfApi()
-    model_path = hf_api.model_info(model_name).repo_id
+    model_info = hf_api.model_info(model_name)
+    model_path = model_info.repo_id if model_info and 'repo_id' in model_info else None
     return model_path
 
 # Fetch the model from Hugging Face
-model_name = config["model_names"]
+model_name = config["model_name"]
 model_path = fetch_model_from_hf(model_name)
 
-# Register the model in the Azure ML workspace
-workspace_name = config["workspace_name"]
-workspace = Workspace.get(name=workspace_name, subscription_id=config["subscription_id"], resource_group=config["resource_group"])
-register_model(workspace, model_name, model_path)
+if model_path:
+    # Register the model in the Azure ML workspace
+    workspace_name = config["workspace_name"]
+    workspace = Workspace.get(name=workspace_name, subscription_id=config["subscription_id"], resource_group=config["resource_group"])
+    register_model(workspace, model_name, model_path)
+else:
+    print(f"Failed to fetch model path for {model_name}.")
