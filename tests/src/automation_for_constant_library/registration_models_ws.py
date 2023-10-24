@@ -25,7 +25,7 @@ with open("config_registration.json", "r") as config_file:
 # Connect to the Azure ML workspace
 subscription_id = config["subscription_id"]
 resource_group = config["resource_group"]
-workspace_name = config["workspace_name"]
+workspace_name = config["workspace_names"]
 workspace = Workspace.get(subscription_id=subscription_id, resource_group=resource_group, name=workspace_name)
 
 # Define an environment for your model
