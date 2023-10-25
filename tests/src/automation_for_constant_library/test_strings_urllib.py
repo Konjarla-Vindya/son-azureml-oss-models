@@ -33,7 +33,7 @@ for json_file in json_files[:2]:
     github_token = "WORKFLOW_TOKEN"
     workflow_file_path = "data1.yml"  # Replace with the desired YAML file path
     print(workflow_file_path)
-    api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/actions/workflows/{data1}.yml"
+    api_url = "https://github.com/Konjarla-Vindya/son-azureml-oss-models/blob/main/.github/workflows/HELLO_WORLD.yml"
     print(api_url)
 
     # Trigger the GitHub Action workflow using the urllib library
