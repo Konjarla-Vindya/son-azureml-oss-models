@@ -33,7 +33,7 @@ for json_file in json_files[:2]:
         api_url = "https://github.com/Konjarla-Vindya/son-azureml-oss-models/blob/main/.github/workflows/HELLO_WORLD.yml" 
         print(api_url)
         headers = {
-           "Authorization": f"token {github_token}",
+           "Authorization": f"Bearer {github_token}",
           "Accept": "application/vnd.github.v3+json"
         }
         payload = {
