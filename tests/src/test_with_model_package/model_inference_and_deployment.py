@@ -5,14 +5,17 @@ from azure.ai.ml.constants import AssetTypes
 from azure.ai.ml.entities import (
     ManagedOnlineEndpoint,
     ManagedOnlineDeployment,
+    OnlineRequestSettings,
+    ProbeSettings,
+    Model,
     ModelConfiguration,
     ModelPackage,
     AzureMLOnlineInferencingServer
 )
 from utils.logging import get_logger
-# from fetch_task import HfTask
-# from batch_deployment import ModelBatchDeployment
-# from dynamic_installation import ModelDynamicInstallation
+from fetch_task import HfTask
+from batch_deployment import ModelBatchDeployment
+from dynamic_installation import ModelDynamicInstallation
 import mlflow
 from box import ConfigBox
 import re
@@ -357,22 +360,22 @@ class ModelInferenceAndDeployemnt:
             latest_model=latest_model
         )
         self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
-        # dynamic_installation = ModelDynamicInstallation(
-        #     test_model_name=self.test_model_name,
-        #     workspace_ml_client=self.workspace_ml_client,
-        #     deployment_name=deployment_name,
-        #     task=task
-        # )
-        # dynamic_installation.model_infernce_and_deployment(
-        #     instance_type=instance_type,
-        #     latest_model=latest_model,
-        #     scoring_file=scoring_file,
-        #     scoring_input = scoring_input
-        # )
-        # batch_deployment = ModelBatchDeployment(
-        #     model=latest_model,
-        #     workspace_ml_client=self.workspace_ml_client,
-        #     task=task,
-        #     model_name=self.test_model_name
-        # )
-        # batch_deployment.batch_deployment(compute=compute)
+        dynamic_installation = ModelDynamicInstallation(
+            test_model_name=self.test_model_name,
+            workspace_ml_client=self.workspace_ml_client,
+            deployment_name=deployment_name,
+            task=task
+        )
+        dynamic_installation.model_infernce_and_deployment(
+            instance_type=instance_type,
+            latest_model=latest_model,
+            scoring_file=scoring_file,
+            scoring_input = scoring_input
+        )
+        batch_deployment = ModelBatchDeployment(
+            model=latest_model,
+            workspace_ml_client=self.workspace_ml_client,
+            task=task,
+            model_name=self.test_model_name
+        )
+        batch_deployment.batch_deployment(compute=compute)
