@@ -9,8 +9,8 @@ import json
 import os
 import sys
 from box import ConfigBox
-#from utils.logging import get_logger
-from fetch_task import HfTask
+from utils.logging import get_logger
+#from fetch_task import HfTask
 from azure.ai.ml.dsl import pipeline
 from azure.core.exceptions import ResourceNotFoundError
 import time
@@ -113,7 +113,7 @@ if __name__ == "__main__":
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     model_list = list(queue.models)
     for model in model_list:
-        print(model)
+        logger.info(model)
     
     # InferenceAndDeployment = ModelInferenceAndDeployemnt(
     #     test_model_name=test_model_name,
