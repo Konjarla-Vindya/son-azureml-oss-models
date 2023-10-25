@@ -9,7 +9,7 @@ import json
 import os
 import sys
 from box import ConfigBox
-from utils.logging import get_logger
+#from utils.logging import get_logger
 from fetch_task import HfTask
 from azure.ai.ml.dsl import pipeline
 from azure.core.exceptions import ResourceNotFoundError
