@@ -20,7 +20,7 @@ def trigger_model(data):
 repository_owner = "Konjarla-Vindya"
 repository_name = "son-azureml-oss-models"
 github_token = "WORKFLOW_TOKEN"  
-workflow_file_path = "https://github.com/Konjarla-Vindya/son-azureml-oss-models/blob/main/.github/workflows/HELLO_WORLD.yml"  
+workflow_file_path = "HELLO_WORLD.yml"  
 branch_name = "main"  
 
 # Iterate through JSON files
