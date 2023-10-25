@@ -230,6 +230,7 @@ class ModelInferenceAndDeployemnt:
         else:
             deployment_name = latest_model_name
         logger.info(f"deployment name is this one : {deployment_name}")
+        logger.info("Doing deployment with latest setting")
         deployment_config = ManagedOnlineDeployment(
             name=deployment_name,
             model=latest_model.id,
@@ -240,6 +241,20 @@ class ModelInferenceAndDeployemnt:
                 max_concurrent_requests_per_instance=1,
                 request_timeout_ms=90000,
                 max_queue_wait_ms=600,
+            ),
+            liveness_probe=ProbeSettings(
+            failure_threshold=30,
+            success_threshold=1,
+            timeout=2,
+            period=10,
+            initial_delay=2000,
+            ),
+            readiness_probe=ProbeSettings(
+            failure_threshold=10,
+            success_threshold=1,
+            timeout=10,
+            period=10,
+            initial_delay=2000,
             )
         )
         try:
