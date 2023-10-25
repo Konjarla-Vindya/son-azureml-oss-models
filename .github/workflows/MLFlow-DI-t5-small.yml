@@ -27,12 +27,22 @@ jobs:
       run: pip install azureml-core
     - name: pip-install-azureml-mlflow
       run: pip install azureml-mlflow==1.53.0
-    
+    - name: pip-install-transformers
+      run: pip install transformers
+    - name: pip-install-transformers[torch]
+      run: pip install transformers[torch]
+    - name: pip-install-torchvision
+      run: pip install torchvision 
     - name: pip-install-mlflow
       run: pip install mlflow
     - name: pip-install-python-box
       run: pip install python-box 
-   
+    - name: pip-install-sacremoses
+      run: pip install sacremoses
+    - name: pip-install-sentencepiece
+      run: pip install sentencepiece
+    - name: pip-install-fugashi[unidic-lite]
+      run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
       run: python generic_automation.py
