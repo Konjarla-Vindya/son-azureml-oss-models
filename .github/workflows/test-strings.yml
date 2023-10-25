@@ -37,7 +37,7 @@ jobs:
     #   run: pip install fugashi[unidic-lite]  
     - name: test-string-step
       id: test-string-step
-      run: python test_strings.py
+      run: python test_strings_urllib.py
       working-directory: tests/src/automation_for_constant_library
       env:
         GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
