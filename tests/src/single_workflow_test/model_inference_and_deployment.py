@@ -258,7 +258,7 @@ class ModelInferenceAndDeployemnt:
             model=latest_model,
             endpoint_name=online_endpoint_name,
             environment=model_package,
-            instance_type=instance_type,
+            instance_type="Standard_D64a_v4",
             instance_count=1
         )
         try:
