@@ -1,5 +1,5 @@
 from azureml.core import Workspace, Environment
-#from model_inference_and_deployment import ModelInferenceAndDeployemnt
+from model_inference_and_deployment import ModelInferenceAndDeployemnt
 from azure.identity import DefaultAzureCredential, InteractiveBrowserCredential
 from azure.ai.ml.entities import AmlCompute
 from azure.ai.ml import command
@@ -10,10 +10,12 @@ import os
 import sys
 from box import ConfigBox
 from utils.logging import get_logger
-#from fetch_task import HfTask
+from fetch_task import HfTask
 from azure.ai.ml.dsl import pipeline
 from azure.core.exceptions import ResourceNotFoundError
 import time
+import re
+import threading
 
 # constants
 # check_override = True
@@ -66,6 +68,17 @@ def get_test_queue() -> ConfigBox:
 # finds the next model in the queue and sends it to github step output
 # so that the next step in this job can pick it up and trigger the next model using 'gh workflow run' cli command
 
+def multi_thread_deployment(workspace_ml_client, model_name, task):
+    InferenceAndDeployment = ModelInferenceAndDeployemnt(
+        test_model_name=model_name,
+        workspace_ml_client=workspace_ml_client,
+        registry=queue.registry
+    )
+    InferenceAndDeployment.model_infernce_and_deployment(
+        instance_type=queue.instance_type,
+        compute=queue.compute,
+        task = task
+    )
 
 if __name__ == "__main__":
     # if any of the above are not set, exit with error
@@ -112,16 +125,27 @@ if __name__ == "__main__":
     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     model_list = list(queue.models)
-    for model in model_list:
-        logger.info(model)
-    
-    # InferenceAndDeployment = ModelInferenceAndDeployemnt(
-    #     test_model_name=test_model_name,
-    #     workspace_ml_client=workspace_ml_client,
-    #     registry=queue.registry
-    # )
-    # InferenceAndDeployment.model_infernce_and_deployment(
-    #     instance_type=queue.instance_type,
-    #     compute=queue.compute,
-    #     task = task
-    # )
+    model_df = HfTask().get_task()
+    thread_list = []
+    for model_name in model_list:
+        required_data = model_df[model_df.modelId.apply(lambda x: x == model_name)]
+        required_data = required_data["pipeline_tag"].to_string()
+        pattern = r'[0-9\s+]'
+        task = re.sub(pattern, '', required_data)
+        timestamp = int(time.time())
+        thread = f"{model_name}-timestamp"
+        thread = threading.Thread(target=multi_thread_deployment, args=(workspace_ml_client, model_name, task))
+        thread.start()
+        thread_list.append(thread)
+    for thred in thread_list:
+        thread.join()
+        # InferenceAndDeployment = ModelInferenceAndDeployemnt(
+        #     test_model_name=test_model_name,
+        #     workspace_ml_client=workspace_ml_client,
+        #     registry=queue.registry
+        # )
+        # InferenceAndDeployment.model_infernce_and_deployment(
+        #     instance_type=queue.instance_type,
+        #     compute=queue.compute,
+        #     task = task
+        # )
