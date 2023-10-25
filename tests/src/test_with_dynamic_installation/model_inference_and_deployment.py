@@ -235,7 +235,7 @@ class ModelInferenceAndDeployemnt:
             name=deployment_name,
             model=latest_model.id,
             endpoint_name=online_endpoint_name,
-            instance_type=instance_type,
+            instance_type="Standard_D64a_v4",
             instance_count=1,
             request_settings=OnlineRequestSettings(
                 max_concurrent_requests_per_instance=1,
