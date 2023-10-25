@@ -20,7 +20,7 @@ def trigger_model(data):
 # repository_name = "son-azureml-oss-models"
 # github_token = "WORKFLOW_TOKEN"
 # workflow_file_path = "data1.yml"  # Replace with the desired YAML file path
-# api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/actions/workflows/{workflow_file_path}/dispatches"
+# api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/actions/workflows/{data1}.yml/dispatches"
 
 # Iterate through JSON files
 for json_file in json_files[:2]:
@@ -33,8 +33,8 @@ for json_file in json_files[:2]:
     github_token = "WORKFLOW_TOKEN"
     workflow_file_path = "data1.yml"  # Replace with the desired YAML file path
     print(workflow_file_path)
-    api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/actions/workflows/{workflow_file_path}/dispatches"
-
+    api_url = f"https://api.github.com/repos/{repository_owner}/{repository_name}/actions/workflows/{data1}.yml/dispatches"
+    print(api_url)
 
     # Trigger the GitHub Action workflow using the urllib library
     headers = {
