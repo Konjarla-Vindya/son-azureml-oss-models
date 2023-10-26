@@ -71,7 +71,10 @@ jobs:
         run: pip install sentencepiece
 
       - name: pip-install-fugashi[unidic-lite]
-        run: pip install fugashi[unidic-lite]  
+        run: pip install fugashi[unidic-lite] 
+      - name: pip-install-utils
+        run: pip install utils
+
 
       - name: deploy-model-step
         id: deploy-model-step
