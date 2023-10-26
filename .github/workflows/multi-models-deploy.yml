@@ -9,7 +9,7 @@ on:
 
 env:
   test_sku_type: cpu
-  test_queue: test-southcentralus-22
+  #test_queue: test-southcentralus-22
   test_set: huggingface-all
   test_keep_looping: false
   workspace: test-southcentralus
