@@ -11,6 +11,8 @@ from mlflow.tracking.client import MlflowClient
 from mlflow.store.artifact.models_artifact_repo import ModelsArtifactRepository
 from transformers import pipeline
 from huggingface_hub import HfApi
+from utils.logging import get_logger
+from huggingface_hub import login
 import pandas as pd
 import os
 import mlflow
@@ -27,11 +29,13 @@ COLUMNS_TO_READ = ["modelId", "pipeline_tag", "tags"]
 LIST_OF_COLUMNS = ['modelId', 'downloads',
                    'lastModified', 'tags', 'pipeline_tag']
 TASK_NAME = ['fill-mask', 'token-classification', 'question-answering',
-             'summarization', 'text-generation', 'text-classification', 'translation']
+             'summarization', 'text-generation', 'text-classification', 'translation','Automatic Speech Recognition']
 STRING_TO_CHECK = 'transformers'
 FILE_NAME = "task_and_library.json"
+ACCESS_TOKEN = "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"
 
 test_model_name = os.environ.get('test_model_name')
+logger = get_logger(__name__)
 
 
 class Model:
@@ -111,16 +115,16 @@ class Model:
         Returns:
             _type_: _description_
         """
-        #scoring_input = None 
         scoring_file = f"sample_inputs/{task}.json"
         # check of scoring_file exists
+        print("task:---------:",task)
         try:
             with open(scoring_file) as f:
                 scoring_input = ConfigBox(json.load(f))
-                print(f"scoring_input file:\n\n {scoring_input}\n\n")
+                logger.info(f"scoring_input file:\n\n {scoring_input}\n\n")
         except Exception as e:
-            print(
-                f"::warning:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
+            logger.error(
+                f"::Error:: Could not find scoring_file: {scoring_file}. Finishing without sample scoring: \n{e}")
 
         return scoring_input
 
@@ -136,10 +140,11 @@ class Model:
         try:
             with open(FILE_NAME) as f:
                 model_with_library = ConfigBox(json.load(f))
-                print(f"scoring_input file:\n\n {model_with_library}\n\n")
+                logger.info(
+                    f"Library name based on its task :\n\n {model_with_library}\n\n")
         except Exception as e:
-            print(
-                f"::warning:: Could not find scoring_file: {model_with_library}. Finishing without sample scoring: \n{e}")
+            logger.error(
+                f"::Error:: Could not find library from here :{model_with_library}.Here is the exception\n{e}")
         return model_with_library.get(task)
 
     def download_model_and_tokenizer(self, task: str) -> dict:
@@ -163,17 +168,30 @@ class Model:
 
         # Get the library name from this method from which we will load the model
         model_library_name = self.get_library_to_load_model(task=task)
-        print("Library name is this one : ", model_library_name)
-        # Load the library from the transformer
-        model_library = getattr(transformers, model_library_name)
-        # From the library load the model
-        model = model_library.from_pretrained(self.model_name)
-        tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+        logger.info(f"Library name is this one : {model_library_name}")
+        try:
+            # Load the library from the transformer
+            model_library = getattr(transformers, model_library_name)
+            login(token=ACCESS_TOKEN)
+            logger.info("Started loading the model from library")
+            # From the library load the model
+            # model = model_library.from_pretrained(self.model_name)
+            # tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+            model = model_library.from_pretrained(
+                self.model_name, trust_remote_code=True, use_auth_token=True)
+            tokenizer = AutoTokenizer.from_pretrained(
+                self.model_name, trust_remote_code=True, use_auth_token=True)
+        except Exception as ex:
+            logger.error(
+                f"::Error:: This model : {self.model_name} or related tokenizer can not downloaded from the AutoModel or Autotokenizer\n {ex}")
+            raise Exception(ex)
+            # model = model_library.from_pretrained(self.model_name, trust_remote_code=True, token=ACCESS_TOKEN)
+            # tokenizer = AutoTokenizer.from_pretrained(self.model_name, trust_remote_code=True, token=ACCESS_TOKEN)
         model_and_tokenizer = {"model": model, "tokenizer": tokenizer}
         return model_and_tokenizer
 
     def register_model_in_workspace(self, model_and_tokenizer: dict, scoring_input: ConfigBox, task: str, registered_model_name: str, client):
-        """ I will load the pipeline with the model name if its a fill mask task then it will get the 
+        """ It will load the pipeline with the model name if its a fill mask task then it will get the 
         masked token and convert the input to that model type . It will generate the model signature . 
         It will log and register the model with mlflow
 
@@ -192,22 +210,49 @@ class Model:
                 scoring_input.input_data[index] = scoring_input.input_data[index].replace(
                     "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
 
-        # Generate the transformer model output for that particular model
-        output = generate_signature_output(
-            model_pipeline, scoring_input.input_data)
-        # It will infer the signature directly from input and output
-        signature = infer_signature(scoring_input.input_data, output)
-
         artifact_path = registered_model_name + "-artifact"
-        # With the help of mlflow log and register the model in the workspace
-        mlflow.transformers.log_model(
-            transformers_model=model_pipeline,
-            task=task,
-            artifact_path=artifact_path,
-            registered_model_name=registered_model_name,
-            signature=signature,
-            input_example=scoring_input.input_data
-        )
+        try:
+            # Generate the transformer model output for that particular model
+            output = generate_signature_output(
+                model_pipeline, scoring_input.input_data)
+            # It will infer the signature directly from input and output
+            signature = infer_signature(scoring_input.input_data, output)
+
+            # With the help of mlflow log and register the model in the workspace
+            mlflow.transformers.log_model(
+                transformers_model=model_pipeline,
+                task=task,
+                artifact_path=artifact_path,
+                registered_model_name=registered_model_name,
+                signature=signature,
+                input_example=scoring_input.input_data
+            )
+            logger.info("MLFlow logging and registerring is completed")
+        except IndexError as ex:
+            logger.warning(
+                f"::warning::Reaching in the index error block as model is not compaitable with our input and the exception is : \n {ex}")
+            # Get the output from the pipeline to check which input is nor working
+            output_from_pipeline = model_pipeline(scoring_input.input_data)
+            for index in range(len(output_from_pipeline)):
+                if len(output_from_pipeline[index]) != 0:
+                    logger.info(f"This model is giving output in this index: {index}")
+                    # Generate the transformer model output for that particular model
+                    output = generate_signature_output(
+                        model_pipeline, scoring_input.input_data[index])
+                    # It will infer the signature directly from input and output
+                    signature = infer_signature(
+                        scoring_input.input_data[index], output)
+                    # With the help of mlflow log and register the model in the workspace
+                    mlflow.transformers.log_model(
+                            transformers_model=model_pipeline,
+                            task=task,
+                            artifact_path=artifact_path,
+                            registered_model_name=registered_model_name,
+                            signature=signature,
+                            input_example=scoring_input.input_data[index]
+                        )
+                    logger.info("MLFlow logging and registerring is completed")
+            
         registered_model_list = client.get_latest_versions(
             name=registered_model_name, stages=["None"])
         model_detail = registered_model_list[0]
@@ -241,12 +286,11 @@ class Model:
             scoring_input (_type_): _description_
             registered_model_name (_type_): _description_
         """
-        print("Registered Model : ",
-              client.get_registered_model(registered_model_name))
         registered_model_detail = client.get_latest_versions(
             name=registered_model_name, stages=["None"])
         model_detail = registered_model_detail[0]
-        print("Latest registered model version is : ", model_detail.version)
+        logger.info(
+            f"Latest registered model version is : {model_detail.version}")
         loaded_model_pipeline = mlflow.transformers.load_model(
             model_uri=model_detail.source, return_type="pipeline")
 
@@ -262,7 +306,7 @@ class Model:
                     "<mask>", pipeline_tokenizer.mask_token).replace("[MASK]", pipeline_tokenizer.mask_token)
 
         output = loaded_model_pipeline(scoring_input.input_data)
-        print("My outupt is this : ", output)
+        logger.info(f"My outupt is this : {output}")
 
 
 if __name__ == "__main__":
@@ -271,9 +315,20 @@ if __name__ == "__main__":
     task = model.get_task()
     # Get the sample input data
     scoring_input = model.get_sample_input_data(task=task)
-    print("This is the task associated to the model : ", task)
-    # If threr will be model namr with / then replace it
-    registered_model_name = test_model_name.replace("/", "-")
+    logger.info(f"This is the task associated to the model : {task}")
+    expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
+                            "$", "%", "^", "&", "*", "<", ">", "?", "!", "~"]
+    # Create the regular expression to ignore
+    regx_for_expression = re.compile(
+        '|'.join(map(re.escape, expression_to_ignore)))
+    # Check the model_name contains any of there character
+    expression_check = re.findall(regx_for_expression, test_model_name)
+    if expression_check:
+        # Replace the expression with hyphen
+        registered_model_name = regx_for_expression.sub("-", test_model_name.lower())
+    else:
+        # If threr will be model namr with / then replace it
+        registered_model_name = test_model_name.lower()
     client = MlflowClient()
     model.download_and_register_model(
         task=task, scoring_input=scoring_input, registered_model_name=registered_model_name, client=client)
