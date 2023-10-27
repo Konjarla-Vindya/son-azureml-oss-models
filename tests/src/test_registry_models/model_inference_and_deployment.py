@@ -29,6 +29,7 @@ class ModelInferenceAndDeployemnt:
         self.test_model_name = test_model_name
         self.workspace_ml_client = workspace_ml_client
         self.registry = registry
+        # self.registry_ml_client = registry_ml_client
 
     def get_error_messages(self):
         # load ../../config/errors.json into a dictionary

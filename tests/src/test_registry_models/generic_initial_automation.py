@@ -181,31 +181,32 @@ if __name__ == "__main__":
         ml_client=workspace_ml_client, compute=queue.compute, instance_type=queue.instance_type)
     task = HfTask(model_name=test_model_name).get_task()
     logger.info(f"Task is this : {task} for the model : {test_model_name}")
-    expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
-                                "$", "%", "^", "&", "*", "<", ">", "?", "!", "~"]
-    # Create the regular expression to ignore
-    regx_for_expression = re.compile(
-        '|'.join(map(re.escape, expression_to_ignore)))
-    # Check the model_name contains any of there character
-    expression_check = re.findall(
-        regx_for_expression, test_model_name)
-    if expression_check:
-        # Replace the expression with hyphen
-        model_name = regx_for_expression.sub("-", test_model_name)
-    else:
-        model_name = test_model_name
-    version_list = list(registry_ml_client.models.list(name = f"{model_name}-oss"))
-    version = version_list[0].version
-    ws_model = registry_ml_client.models.get(name = f"{model_name}-oss", version = version)
-    cloud_model = Model(
-        path=ws_model.path,
-        name=test_model_name,
-        type=AssetTypes.MLFLOW_MODEL,
-        description=ws_model.description,
-        properties=ws_model.properties,
-        tags=ws_model.tags
-    )
-    workspace_ml_client.models.create_or_update(cloud_model)
+    # expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
+    #                             "$", "%", "^", "&", "*", "<", ">", "?", "!", "~"]
+    # # Create the regular expression to ignore
+    # regx_for_expression = re.compile(
+    #     '|'.join(map(re.escape, expression_to_ignore)))
+    # # Check the model_name contains any of there character
+    # expression_check = re.findall(
+    #     regx_for_expression, test_model_name)
+    # if expression_check:
+    #     # Replace the expression with hyphen
+    #     model_name = regx_for_expression.sub("-", test_model_name)
+    # else:
+    #     model_name = test_model_name
+    # version_list = list(registry_ml_client.models.list(name = f"{model_name}-oss"))
+    # version = version_list[0].version
+    # ws_model = registry_ml_client.models.get(name = f"{model_name}-oss", version = version)
+    # cloud_model = Model(
+    #     path=ws_model.path,
+    #     name=test_model_name,
+    #     type=AssetTypes.MLFLOW_MODEL,
+    #     description=ws_model.description,
+    #     properties=ws_model.properties,
+    #     tags=ws_model.tags
+    # )
+    # workspace_ml_client.models.create_or_update(cloud_model)
+    
     # timestamp = str(int(time.time()))
     # exp_model_name = test_model_name.replace('/', '-')
     # try:
@@ -255,7 +256,7 @@ if __name__ == "__main__":
 
     InferenceAndDeployment = ModelInferenceAndDeployemnt(
         test_model_name=test_model_name,
-        workspace_ml_client=workspace_ml_client,
+        workspace_ml_client=registry_ml_client,
         registry=queue.registry
     )
     InferenceAndDeployment.model_infernce_and_deployment(
