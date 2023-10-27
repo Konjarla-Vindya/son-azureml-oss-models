@@ -46,7 +46,7 @@ jobs:
     - name: deploy-model-step
       id: deploy-model-step
       run: python generic_initial_automation.py
-      working-directory: tests/src/test_with_dynamic_installation
+      working-directory: tests/src/test_registry_models
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
