@@ -25,11 +25,11 @@ logger = get_logger(__name__)
 
 
 class ModelInferenceAndDeployemnt:
-    def __init__(self, test_model_name, workspace_ml_client, registry) -> None:
+    def __init__(self, test_model_name, workspace_ml_client, registry, registry_ml_client) -> None:
         self.test_model_name = test_model_name
         self.workspace_ml_client = workspace_ml_client
         self.registry = registry
-        # self.registry_ml_client = registry_ml_client
+        self.registry_ml_client = registry_ml_client
 
     def get_error_messages(self):
         # load ../../config/errors.json into a dictionary
@@ -322,7 +322,7 @@ class ModelInferenceAndDeployemnt:
         else:
             model_name = self.test_model_name
         latest_model = self.get_latest_model_version(
-            self.workspace_ml_client, model_name)
+            self.registry_ml_client, model_name)
         # try:
         #     # task = latest_model.flavors["transformers"]["task"]
         #     hfApi = HfTask(model_name=self.model_name)
