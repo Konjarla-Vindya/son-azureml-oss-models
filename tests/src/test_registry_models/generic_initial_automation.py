@@ -206,7 +206,7 @@ if __name__ == "__main__":
     #     tags=ws_model.tags
     # )
     # workspace_ml_client.models.create_or_update(cloud_model)
-    
+
     # timestamp = str(int(time.time()))
     # exp_model_name = test_model_name.replace('/', '-')
     # try:
@@ -257,7 +257,8 @@ if __name__ == "__main__":
     InferenceAndDeployment = ModelInferenceAndDeployemnt(
         test_model_name=test_model_name,
         workspace_ml_client=registry_ml_client,
-        registry=queue.registry
+        registry=queue.registry,
+        registry_ml_client= registry_ml_client
     )
     InferenceAndDeployment.model_infernce_and_deployment(
         instance_type=queue.instance_type,
