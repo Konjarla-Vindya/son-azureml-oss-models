@@ -194,7 +194,9 @@ if __name__ == "__main__":
         model_name = regx_for_expression.sub("-", test_model_name)
     else:
         model_name = test_model_name
-    ws_model = registry_ml_client.models.get(name = f"{model_name}-oss", version = "latest")
+    version_list = list(registry_ml_client.models.list(name = f"{model_name}-oss"))
+    version = version_list[0].version
+    ws_model = registry_ml_client.models.get(name = f"{model_name}-oss", version = version)
     cloud_model = Model(
         path=ws_model.path,
         name=test_model_name,
