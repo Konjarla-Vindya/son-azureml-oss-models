@@ -137,7 +137,7 @@ class ModelBatchDeployment:
 
     def get_task_specified_input(self):
         logger.info("pulling inputs")
-        folder_path = f"../../config/sample_inputs/HuggingFace/{self.task}/batch_inputs"
+        folder_path = f"sample_inputs/{self.task}/batch_inputs"
 
         # List all file names in the folder
         file_names = os.listdir(folder_path)
