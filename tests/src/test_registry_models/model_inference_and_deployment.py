@@ -256,29 +256,29 @@ class ModelInferenceAndDeployemnt:
             deployment_name = model_name.rstrip("-")
         else:
             deployment_name = latest_model_name
-        # logger.info(f"deployment name is this one : {deployment_name}")
-        # deployment_config = ManagedOnlineDeployment(
-        #     name=deployment_name,
-        #     model=latest_model,
-        #     endpoint_name=online_endpoint_name,
-        #     environment=model_package,
-        #     instance_type=instance_type,
-        #     instance_count=1
-        # )
-        # try:
-        #     deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(
-        #         deployment_config).result()
-        # except Exception as e:
-        #     _, _, exc_tb = sys.exc_info()
-        #     logger.error(f"::error:: Could not create deployment\n")
-        #     logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
-        #                  f" the exception is this one : {e}")
-        #     self.prase_logs(str(e))
-        #     self.get_online_endpoint_logs(
-        #         deployment_name, online_endpoint_name)
-        #     self.workspace_ml_client.online_endpoints.begin_delete(
-        #         name=online_endpoint_name).wait()
-        #     sys.exit(1)
+        logger.info(f"deployment name is this one : {deployment_name}")
+        deployment_config = ManagedOnlineDeployment(
+            name=deployment_name,
+            model=latest_model,
+            endpoint_name=online_endpoint_name,
+            environment=model_package,
+            instance_type=instance_type,
+            instance_count=1
+        )
+        try:
+            deployment = self.workspace_ml_client.online_deployments.begin_create_or_update(
+                deployment_config).result()
+        except Exception as e:
+            _, _, exc_tb = sys.exc_info()
+            logger.error(f"::error:: Could not create deployment\n")
+            logger.error(f"The exception occured at this line no : {exc_tb.tb_lineno}" +
+                         f" the exception is this one : {e}")
+            self.prase_logs(str(e))
+            self.get_online_endpoint_logs(
+                deployment_name, online_endpoint_name)
+            self.workspace_ml_client.online_endpoints.begin_delete(
+                name=online_endpoint_name).wait()
+            sys.exit(1)
 
         return deployment_name
 
@@ -322,7 +322,7 @@ class ModelInferenceAndDeployemnt:
         else:
             model_name = self.test_model_name
         latest_model = self.get_latest_model_version(
-            self.registry_ml_client, model_name)
+            self.workspace_ml_client, model_name)
         # try:
         #     # task = latest_model.flavors["transformers"]["task"]
         #     hfApi = HfTask(model_name=self.model_name)
@@ -340,28 +340,28 @@ class ModelInferenceAndDeployemnt:
         online_endpoint_name = task + str(timestamp)
         #online_endpoint_name = "Testing" + str(timestamp)
         logger.info(f"online_endpoint_name: {online_endpoint_name}")
-        # endpoint = ManagedOnlineEndpoint(
-        #     name=online_endpoint_name,
-        #     auth_mode="key",
-        # )
-        model_package=""
-        # model_package = self.create_model_package(
-        #     latest_model=latest_model, endpoint=endpoint)
+        endpoint = ManagedOnlineEndpoint(
+            name=online_endpoint_name,
+            auth_mode="key",
+        )
+        #model_package=""
+        model_package = self.create_model_package(
+            latest_model=latest_model, endpoint=endpoint)
         deployment_name = self.create_online_deployment(
             latest_model=latest_model,
             online_endpoint_name=online_endpoint_name,
             model_package=model_package,
             instance_type=instance_type
         )
-        # self.cloud_inference(
-        #     scoring_file=scoring_file,
-        #     scoring_input=scoring_input,
-        #     online_endpoint_name=online_endpoint_name,
-        #     deployment_name=deployment_name,
-        #     task=task,
-        #     latest_model=latest_model
-        # )
-        # self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
+        self.cloud_inference(
+            scoring_file=scoring_file,
+            scoring_input=scoring_input,
+            online_endpoint_name=online_endpoint_name,
+            deployment_name=deployment_name,
+            task=task,
+            latest_model=latest_model
+        )
+        self.delete_online_endpoint(online_endpoint_name=online_endpoint_name)
         dynamic_installation = ModelDynamicInstallation(
             test_model_name=self.test_model_name,
             workspace_ml_client=self.workspace_ml_client,
@@ -374,10 +374,10 @@ class ModelInferenceAndDeployemnt:
             scoring_file=scoring_file,
             scoring_input = scoring_input
         )
-        batch_deployment = ModelBatchDeployment(
-            model=latest_model,
-            workspace_ml_client=self.workspace_ml_client,
-            task=task,
-            model_name=self.test_model_name
-        )
-        batch_deployment.batch_deployment(compute=compute)
+        # batch_deployment = ModelBatchDeployment(
+        #     model=latest_model,
+        #     workspace_ml_client=self.workspace_ml_client,
+        #     task=task,
+        #     model_name=self.test_model_name
+        # )
+        # batch_deployment.batch_deployment(compute=compute)
