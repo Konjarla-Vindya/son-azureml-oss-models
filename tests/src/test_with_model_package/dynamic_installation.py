@@ -181,6 +181,20 @@ class ModelDynamicInstallation:
                 max_concurrent_requests_per_instance=1,
                 request_timeout_ms=90000,
                 max_queue_wait_ms=500,
+            ),
+            liveness_probe=ProbeSettings(
+            failure_threshold=30,
+            success_threshold=1,
+            timeout=2,
+            period=10,
+            initial_delay=2000,
+            ),
+            readiness_probe=ProbeSettings(
+            failure_threshold=10,
+            success_threshold=1,
+            timeout=10,
+            period=10,
+            initial_delay=2000,
             )
         )
         try:
