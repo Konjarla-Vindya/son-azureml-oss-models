@@ -298,7 +298,7 @@ def create_and_run_azure_ml_pipeline(
 ):
     # Fetch the pipeline component
     pipeline_component_func = registry_ml_client.components.get(
-        name="text_classification_pipeline", label="latest"
+        name="text_classification_pipeline_for_oss", label="latest"
     )
 
     # Define the pipeline job
