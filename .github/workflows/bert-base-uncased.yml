@@ -7,7 +7,7 @@ env:
   test_model_name: bert-base-uncased
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-southcentralus-0
+  test_queue: test-northeurope-26
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -45,7 +45,7 @@ jobs:
       run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
-      run: python FT_initial_automation.py
+      run: python FT_automate_question_answering_pc.py
       working-directory: tests/src/automation_for_constant_library
     - name: trigger-next-model-step
       env:
