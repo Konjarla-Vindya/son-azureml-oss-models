@@ -210,34 +210,34 @@ def create_or_get_aml_compute(workspace_ml_client, compute_cluster, compute_clus
 
 #Download dataset
 
-# def download_and_process_dataset():
-#     # Download the dataset using the helper script.
-#     exit_status = os.system("python ./download-dataset1.py --download_dir squad-dataset")
-#     if exit_status != 0:
-#         raise Exception("Error downloading dataset")
+def download_and_process_dataset():
+    # Download the dataset using the helper script.
+    exit_status = os.system("python ./download-dataset1.py --download_dir squad-dataset")
+    if exit_status != 0:
+        raise Exception("Error downloading dataset")
 
-#     # Load the train.jsonl, validation.jsonl, and test.jsonl files.
-#     train_df = pd.read_json("./squad-dataset/train.jsonl", lines=True)
-#     validation_df = pd.read_json("./squad-dataset/validation.jsonl", lines=True)
-#     #test_df = pd.read_json("./squad-dataset/test.jsonl", lines=True)
+    # Load the train.jsonl, validation.jsonl, and test.jsonl files.
+    train_df = pd.read_json("./squad-dataset/train.jsonl", lines=True)
+    validation_df = pd.read_json("./squad-dataset/validation.jsonl", lines=True)
+    #test_df = pd.read_json("./squad-dataset/test.jsonl", lines=True)
 
-#     # Set the fraction parameter to control the number of examples to be saved.
-#     frac = 1  # You can adjust this value as needed.
+    # Set the fraction parameter to control the number of examples to be saved.
+    frac = 1  # You can adjust this value as needed.
 
-#     # Save a fraction of the rows from the dataframes with a "small_" prefix in the ./wmt16-en-ro-dataset folder.
-#     train_df.sample(frac=frac).to_json("./squad-dataset/small_train.jsonl", orient="records", lines=True)
-#     validation_df, test_df = (
-#     validation_df[: len(validation_df) // 2],
-#     validation_df[len(validation_df) // 2 :],
-#     )
-#     validation_df.sample(frac=frac).to_json("./squad-dataset/small_validation.jsonl", orient="records", lines=True)
-#     test_df.sample(frac=frac).to_json("./squad-dataset/small_test.jsonl", orient="records", lines=True)
-#     train_df=train_df.iloc[:100,:]
-#     validation_df=validation_df.iloc[:100,:]
-#     test_df=test_df.iloc[:100,:]
+    # Save a fraction of the rows from the dataframes with a "small_" prefix in the ./wmt16-en-ro-dataset folder.
+    train_df.sample(frac=frac).to_json("./squad-dataset/small_train.jsonl", orient="records", lines=True)
+    validation_df, test_df = (
+    validation_df[: len(validation_df) // 2],
+    validation_df[len(validation_df) // 2 :],
+    )
+    validation_df.sample(frac=frac).to_json("./squad-dataset/small_validation.jsonl", orient="records", lines=True)
+    test_df.sample(frac=frac).to_json("./squad-dataset/small_test.jsonl", orient="records", lines=True)
+    train_df=train_df.iloc[:100,:]
+    validation_df=validation_df.iloc[:100,:]
+    test_df=test_df.iloc[:100,:]
 
-# # Example usage:
-# download_and_process_dataset()
+# Example usage:
+download_and_process_dataset()
 
 
 def create_and_run_azure_ml_pipeline(
