@@ -222,7 +222,7 @@ def download_and_process_dataset():
     #test_df = pd.read_json("./squad-dataset/test.jsonl", lines=True)
 
     # Set the fraction parameter to control the number of examples to be saved.
-    frac = 1  # You can adjust this value as needed.
+    frac = 0.1  # You can adjust this value as needed.
 
     # Save a fraction of the rows from the dataframes with a "small_" prefix in the ./wmt16-en-ro-dataset folder.
     train_df.sample(frac=frac).to_json("./squad-dataset/small_train.jsonl", orient="records", lines=True)
