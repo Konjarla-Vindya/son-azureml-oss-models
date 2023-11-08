@@ -272,7 +272,7 @@ def create_and_run_azure_ml_pipeline(
             # map the dataset splits to parameters
             type="uri_file", path="./news-summary-dataset/small_train.jsonl"
             ),
-           validation_file_path=Input(
+            validation_file_path=Input(
               type="uri_file", path="./news-summary-dataset/small_validation.jsonl"
             ),
            test_file_path=Input(
