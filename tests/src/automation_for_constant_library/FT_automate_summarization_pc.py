@@ -262,7 +262,7 @@ def create_and_run_azure_ml_pipeline(
     # Model Training and Pipeline Setup
     @pipeline()
     def create_pipeline():
-        question_answering_pipeline = pipeline_component_func(
+        summarization_pipeline = pipeline_component_func(
             mlflow_model_path=foundation_model.id,
             # huggingface_id = 't5-small', # if you want to use a huggingface model, uncomment this line and comment the above line
             compute_model_import=compute_cluster,
