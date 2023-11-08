@@ -270,24 +270,26 @@ def create_and_run_azure_ml_pipeline(
             compute_finetune=compute_cluster,
             compute_model_evaluation=compute_cluster,
             # map the dataset splits to parameters
+        train_file_path=Input(
             type="uri_file", path="./news-summary-dataset/small_train.jsonl"
-            ),
-            validation_file_path=Input(
-              type="uri_file", path="./news-summary-dataset/small_validation.jsonl"
-            ),
-           test_file_path=Input(
-              type="uri_file", path="./news-summary-dataset/small_test.jsonl"
-           ),
-           evaluation_config=Input(type="uri_file", path="./summarization-config.json"),
-            #evaluation_config=Input(type="uri_file", path="./translation-config.json"),
-            document_key="article",
-            # summary_key parameter maps to the "highlights" field in the news summary dataset
-            summary_key="highlights",
-            # training settings
-            number_of_gpu_to_use_finetuning=gpus_per_node,  # set to the number of GPUs available in the compute
-            **training_parameters,
-            **optimization_parameters
-          )
+        ),
+        validation_file_path=Input(
+            type="uri_file", path="./news-summary-dataset/small_validation.jsonl"
+        ),
+        test_file_path=Input(
+            type="uri_file", path="./news-summary-dataset/small_test.jsonl"
+        ),
+        evaluation_config=Input(type="uri_file", path="./summarization-config.json"),
+        document_key="article",
+        # summary_key parameter maps to the "highlights" field in the news summary dataset
+        summary_key="highlights",
+        # training settings
+        number_of_gpu_to_use_finetuning=gpus_per_node,  # set to the number of GPUs available in the compute
+        **training_parameters,
+        **optimization_parameters
+     )  
+          
+         
         return {
             # map the output of the fine tuning job to the output of the pipeline job so that we can easily register the fine tuned model
             # registering the model is required to deploy the model to an online or batch endpoint
