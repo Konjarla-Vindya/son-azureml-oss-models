@@ -212,7 +212,7 @@ def create_or_get_aml_compute(workspace_ml_client, compute_cluster, compute_clus
 
 def download_and_process_dataset():
     # Download the dataset using the helper script.
-    exit_status = os.system("python ./download-datasetn.py --dataset_subset generation --dataset truthful_qa --download_dir truthful_qa-dataset")
+    exit_status = os.system("python ./download_datasetn.py --dataset_subset generation --dataset truthful_qa --download_dir truthful_qa-dataset")
     if exit_status != 0:
         raise Exception("Error downloading dataset")
 
