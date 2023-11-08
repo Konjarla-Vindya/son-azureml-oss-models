@@ -50,7 +50,7 @@ jobs:
     - name: deploy-model-step
       id: deploy-model-step
       run: python FT_automate_summarization_pc.py
-      working-directory: tests/src/pipeline_component
+      working-directory: tests/src/automation_for_constant_library
     - name: trigger-next-model-step
       env:
         GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
