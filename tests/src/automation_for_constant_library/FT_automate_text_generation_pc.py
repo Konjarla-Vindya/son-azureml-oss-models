@@ -126,7 +126,7 @@ def get_training_and_optimization_parameters(foundation_model):
         "per_device_train_batch_size": 1,
         "per_device_eval_batch_size": 1,
         "learning_rate": 2e-1,
-        "metric_for_best_model": "exact",
+        # "metric_for_best_model": "exact",
     }
     print(f"The following training parameters are enabled - {training_parameters}")
     # Optimization parameters
