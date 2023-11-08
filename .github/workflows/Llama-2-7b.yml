@@ -27,6 +27,8 @@ jobs:
       run: pip install azureml-core
     - name: pip-install-azureml-mlflow
       run: pip install azureml-mlflow==1.53.0
+    - name: pip-install-datasets
+      run : pip install datasets
     - name: pip-install-transformers
       run: pip install transformers
     - name: pip-install-transformers[torch]
