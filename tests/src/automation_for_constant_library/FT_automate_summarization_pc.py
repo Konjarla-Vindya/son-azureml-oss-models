@@ -212,29 +212,36 @@ def create_or_get_aml_compute(workspace_ml_client, compute_cluster, compute_clus
 
 def download_and_process_dataset():
     # Download the dataset using the helper script.
-    exit_status = os.system("python ./download-dataset1.py --download_dir squad-dataset")
+    exit_status = os.system("python ./download-dataset-cnn.py --download_dir news-summary-dataset")
     if exit_status != 0:
         raise Exception("Error downloading dataset")
 
     # Load the train.jsonl, validation.jsonl, and test.jsonl files.
-    train_df = pd.read_json("./squad-dataset/train.jsonl", lines=True)
-    validation_df = pd.read_json("./squad-dataset/validation.jsonl", lines=True)
-    #test_df = pd.read_json("./squad-dataset/test.jsonl", lines=True)
+    train_df = pd.read_json("./news-summary-dataset/train.jsonl", lines=True)
+    validation_df = pd.read_json("./news-summary-dataset/validation.jsonl", lines=True)
+    # this dataset doesn't have test data, so split the validation_df into test_df and validation_df
+    test_df = validation_df.sample(frac=0.5, random_state=42)
+    validation_df.drop(test_df.index, inplace=True)
+    # drop the id column as it is not needed for fine tuning
+    train_df.drop(columns=["id"], inplace=True)
+    validation_df.drop(columns=["id"], inplace=True)
+    test_df.drop(columns=["id"], inplace=True)
 
     # Set the fraction parameter to control the number of examples to be saved.
     frac = 0.1  # You can adjust this value as needed.
 
-    # Save a fraction of the rows from the dataframes with a "small_" prefix in the ./wmt16-en-ro-dataset folder.
-    train_df.sample(frac=frac).to_json("./squad-dataset/small_train.jsonl", orient="records", lines=True)
-    validation_df, test_df = (
-    validation_df[: len(validation_df) // 2],
-    validation_df[len(validation_df) // 2 :],
+    train_df.sample(frac=frac).to_json(
+        "./news-summary-dataset/small_train.jsonl", orient="records", lines=True
     )
-    validation_df.sample(frac=frac).to_json("./squad-dataset/small_validation.jsonl", orient="records", lines=True)
-    test_df.sample(frac=frac).to_json("./squad-dataset/small_test.jsonl", orient="records", lines=True)
-    train_df=train_df.iloc[:100,:]
-    validation_df=validation_df.iloc[:100,:]
-    test_df=test_df.iloc[:100,:]
+    validation_df.sample(frac=frac).to_json(
+        "./news-summary-dataset/small_validation.jsonl", orient="records", lines=True
+    )
+    test_df.sample(frac=frac).to_json(
+        "./news-summary-dataset/small_test.jsonl", orient="records", lines=True
+    )
+    # train_df=train_df.iloc[:100,:]
+    # validation_df=validation_df.iloc[:100,:]
+    # test_df=test_df.iloc[:100,:]
 
 # Example usage:
 download_and_process_dataset()
@@ -250,7 +257,7 @@ def create_and_run_azure_ml_pipeline(
 ):
     # Fetch the pipeline component
     pipeline_component_func = registry_ml_client.components.get(
-        name="question_answering_pipeline_for_oss", label="latest"
+        name="summarization_pipeline_for_oss", label="latest"
     )
     # Model Training and Pipeline Setup
     @pipeline()
@@ -263,31 +270,28 @@ def create_and_run_azure_ml_pipeline(
             compute_finetune=compute_cluster,
             compute_model_evaluation=compute_cluster,
             # map the dataset splits to parameters
-            train_file_path=Input(
-            type="uri_file", path="./squad-dataset/small_train.jsonl"
+            type="uri_file", path="./news-summary-dataset/small_train.jsonl"
             ),
-            validation_file_path=Input(
-            type="uri_file", path="./squad-dataset/small_validation.jsonl"
+           validation_file_path=Input(
+              type="uri_file", path="./news-summary-dataset/small_validation.jsonl"
             ),
-           test_file_path=Input(type="uri_file", path="./squad-dataset/small_test.jsonl"),
-           evaluation_config=Input(
-            type="uri_file", path="./question-answering-config.json"
-            ),
+           test_file_path=Input(
+              type="uri_file", path="./news-summary-dataset/small_test.jsonl"
+           ),
+           evaluation_config=Input(type="uri_file", path="./summarization-config.json"),
             #evaluation_config=Input(type="uri_file", path="./translation-config.json"),
-           question_key="question",
-           context_key="context",
-           answers_key="answers",
-           answer_start_key="answer_start", 
-           answer_text_key="text",
+            document_key="article",
+            # summary_key parameter maps to the "highlights" field in the news summary dataset
+            summary_key="highlights",
             # training settings
-           number_of_gpu_to_use_finetuning=gpus_per_node,  # set to the number of GPUs available in the compute
+            number_of_gpu_to_use_finetuning=gpus_per_node,  # set to the number of GPUs available in the compute
             **training_parameters,
             **optimization_parameters
-        )
+          )
         return {
             # map the output of the fine tuning job to the output of the pipeline job so that we can easily register the fine tuned model
             # registering the model is required to deploy the model to an online or batch endpoint
-            "trained_model": question_answering_pipeline.outputs.mlflow_model_folder
+            "trained_model": summarization_pipeline.outputs.mlflow_model_folder
         }
     # Create the pipeline object
     pipeline_object = create_pipeline()
@@ -349,7 +353,7 @@ if __name__ == "__main__":
     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     registry_ml_client = MLClient(credential, registry_name="azureml-preview-test1")
-    experiment_name = "question-answering-extractive-qna"
+    experiment_name = "summarization-news-summary"
     # # generating a unique timestamp that can be used for names and versions that need to be unique
     # timestamp = str(int(time.time()))
 
