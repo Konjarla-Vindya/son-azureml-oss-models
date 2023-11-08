@@ -216,6 +216,12 @@ def download_and_process_dataset():
     if exit_status != 0:
         raise Exception("Error downloading dataset")
 
+    df = pd.read_json("./truthful_qa-dataset/validation.jsonl", lines=True)
+    num_samples = len(df)
+    train_df = df.iloc[: int(num_samples * 0.8)]
+    validation_df = df.iloc[int(num_samples * 0.8) : int(num_samples * 0.9)]
+    test_df = df.iloc[int(num_samples * 0.9) :]
+
     # Load the train.jsonl, validation.jsonl, and test.jsonl files.
     train_df.to_json("./truthful_qa-dataset/train.jsonl", orient="records", lines=True)
     validation_df.to_json("./truthful_qa-dataset/validation.jsonl", orient="records", lines=True)
