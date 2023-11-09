@@ -7,7 +7,7 @@ env:
   test_model_name: sshleifer/distilbart-cnn-12-6
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-japaneast-4
+  test_queue: sonata-ws-ae
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -29,6 +29,8 @@ jobs:
       run: pip install azureml-mlflow==1.53.0
     - name: pip-install-transformers
       run: pip install transformers
+    - name: pip-install-datasets
+      run: pip install datasets
     - name: pip-install-transformers[torch]
       run: pip install transformers[torch]
     - name: pip-install-torchvision
@@ -45,7 +47,7 @@ jobs:
       run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
-      run: python generic_initial_automation.py
+      run: python FT_automate_translation1_pc.py
       working-directory: tests/src/automation_for_constant_library
     - name: trigger-next-model-step
       env:
