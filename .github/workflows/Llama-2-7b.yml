@@ -7,7 +7,7 @@ env:
   test_model_name: meta-llama/Llama-2-7b
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-northeurope-27
+  test_queue: sonata-ws-ae-2
   test_set: huggingface-all
   test_keep_looping: false
 
