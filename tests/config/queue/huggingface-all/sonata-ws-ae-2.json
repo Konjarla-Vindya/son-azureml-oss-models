@@ -6,7 +6,7 @@
     "workspace": "sonata-ws-ae",
     "subscription": "ed2cab61-14cc-4fb3-ac23-d72609214cfd",
     "resource_group": "sonata-oss-testing-rg",
-    "registry": "azureml-preview-test1",
+    "registry": "azureml-meta",
     "environment": "automate-venv",
     "compute": "Standard-E64s-v3",
     "instance_type": "Standard_E64s_v3"
