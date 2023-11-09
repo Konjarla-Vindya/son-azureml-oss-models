@@ -1,5 +1,5 @@
 {
-    "queue_name": "test-northeurope-26",
+    "queue_name": "test-northeurope-27",
     "models": [
         "meta-llama/Llama-2-7b"
     ],
