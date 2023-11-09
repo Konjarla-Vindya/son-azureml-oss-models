@@ -23,6 +23,10 @@ jobs:
         creds: ${{secrets.TEST_WS_CRED}}
     - name: pip-install-azure-ai-ml
       run: pip install azure-ai-ml
+    - name: Install Azure CLI
+      run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      if: success()
     - name: pip-install-azureml-core
       run: pip install azureml-core
     - name: pip-install-azureml-mlflow
