@@ -415,6 +415,7 @@ if __name__ == "__main__":
     
     # compute = create_or_get_compute_target(workspace_ml_client, queue.compute)
     print("printing:",{compute})
+    
     env_list = workspace_ml_client.environments.list(name=queue.environment)
     latest_version = 0
     for env in env_list:
@@ -424,6 +425,18 @@ if __name__ == "__main__":
     latest_env = workspace_ml_client.environments.get(
         name=queue.environment, version=str(latest_version))
     print("Latest Environment :", latest_env)
+    expression_to_ignore = ["/", "\\", "|", "@", "#", ".",
+                            "$", "%", "^", "&", "*", "<", ">", "?", "!", "~"]
+    # Create the regular expression to ignore
+    regx_for_expression = re.compile(
+        '|'.join(map(re.escape, expression_to_ignore)))
+    # Check the model_name contains any of there character
+    expression_check = re.findall(regx_for_expression, test_model_name)
+    if expression_check:
+        # Replace the expression with hyphen
+        test_model_name  = regx_for_expression.sub("-", test_model_name)
+
+    print("model name replaced with - :", {test_model_name})
     version_list = list(workspace_ml_client.models.list(test_model_name))
 
     client = MlflowClient()
