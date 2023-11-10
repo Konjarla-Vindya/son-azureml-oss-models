@@ -322,7 +322,7 @@ def create_and_run_azure_ml_pipeline(
                 type="uri_file", path="./wmt16-en-ro-dataset/translation-config.json"
             ),
             source_lang="en",
-            target_lang="ro"
+            target_lang="ro",
             number_of_gpu_to_use_finetuning=gpus_per_node,
             **training_parameters,
             **optimization_parameters
