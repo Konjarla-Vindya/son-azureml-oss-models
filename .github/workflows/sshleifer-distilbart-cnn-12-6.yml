@@ -47,7 +47,7 @@ jobs:
       run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
-      run: python FT_automate_translation1_pc.py
+      run: python FT_P_TT.py
       working-directory: tests/src/automation_for_constant_library
     - name: trigger-next-model-step
       env:
