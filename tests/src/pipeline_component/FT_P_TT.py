@@ -173,11 +173,11 @@ def get_latest_model_version(workspace_ml_client, test_model_name):
 def get_training_and_optimization_parameters(foundation_model):
     # Training parameters
     training_parameters = {
-            "num_train_epochs"=3,
-            "per_device_train_batch_size"=1,
-            "per_device_eval_batch_size"=1,
-            "learning_rate"=2e-5,
-            "metric_for_best_model"="bleu",
+            "num_train_epochs":3,
+            "per_device_train_batch_size":1,
+            "per_device_eval_batch_size":1,
+            "learning_rate":2e-5,
+            "metric_for_best_model":"bleu",
         }
         print(f"The following training parameters are enabled - {training_parameters}")
         # Optimization parameters
