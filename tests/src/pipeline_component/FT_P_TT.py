@@ -19,6 +19,8 @@ from azure.ai.ml.dsl import pipeline
 from azure.ai.ml.entities import CommandComponent, PipelineComponent, Job, Component
 from azure.ai.ml import PyTorchDistribution, Input
 import ast
+import re
+
 # from azure.ai.ml.entities import MLClient
 
 check_override = True
