@@ -173,26 +173,25 @@ def get_latest_model_version(workspace_ml_client, test_model_name):
 def get_training_and_optimization_parameters(foundation_model):
     # Training parameters
     training_parameters = {
-        "num_train_epochs": 3,
-        "per_device_train_batch_size": 1,
-        "per_device_eval_batch_size": 1,
-        "learning_rate": 2e-5,
-        "metric_for_best_model": "f1_macro",
-    }
-    print(f"The following training parameters are enabled - {training_parameters}")
-
-    # Optimization parameters
-    if "model_specific_defaults" in foundation_model.tags:
-        optimization_parameters = ast.literal_eval(foundation_model.tags["model_specific_defaults"])
-    else:
-        optimization_parameters = {
-            "apply_lora": "true",
-            "apply_deepspeed": "true",
-            "apply_ort": "true",
+            "num_train_epochs": 1,
+            "per_device_train_batch_size": 1,
+            "per_device_eval_batch_size": 1,
+            "learning_rate": 2e-1,
+            "metric_for_best_model": "bleu",
         }
-    print(f"The following optimizations are enabled - {optimization_parameters}")
-
-    return training_parameters, optimization_parameters
+        print(f"The following training parameters are enabled - {training_parameters}")
+        # Optimization parameters
+        if "model_specific_defaults" in foundation_model.tags:
+            optimization_parameters = ast.literal_eval(foundation_model.tags["model_specific_defaults"])
+        else:
+            optimization_parameters = {
+                "apply_lora": "true",
+                "apply_deepspeed": "true",
+                "apply_ort": "true",
+            }
+        print(f"The following optimizations are enabled - {optimization_parameters}")
+    
+        return training_parameters, optimization_parameters
 
 
 # def find_gpus_in_compute(workspace_ml_client, compute):
@@ -298,29 +297,29 @@ def create_and_run_azure_ml_pipeline(
 ):
     # Fetch the pipeline component
     pipeline_component_func = registry_ml_client.components.get(
-        name="text_classification_pipeline_for_oss", label="latest"
+        name="translation_pipeline_for_oss", label="latest"
     )
 
     # Define the pipeline job
     @pipeline()
     def create_pipeline():
-        text_classification_pipeline = pipeline_component_func(
+        translation_pipeline = pipeline_component_func(
             mlflow_model_path=foundation_model.id,
             compute_model_import=compute_cluster,
             compute_preprocess=compute_cluster,
             compute_finetune=compute_cluster,
             compute_model_evaluation=compute_cluster,
             train_file_path=Input(
-                type="uri_file", path="./emotion-dataset/small_train.jsonl"
+                type="uri_file", path="./wmt16-en-ro-dataset/small_train.jsonl"
             ),
             validation_file_path=Input(
-                type="uri_file", path="./emotion-dataset/small_validation.jsonl"
+                type="uri_file", path="./wmt16-en-ro-dataset/small_validation.jsonl"
             ),
             test_file_path=Input(
-                type="uri_file", path="./emotion-dataset/small_test.jsonl"
+                type="uri_file", path="./wmt16-en-ro-dataset/small_test.jsonl"
             ),
             evaluation_config=Input(
-                type="uri_file", path="./emotion-dataset/text-classification-config.json"
+                type="uri_file", path="./wmt16-en-ro-dataset/translation-config.json"
             ),
             sentence1_key="text",
             label_key="label_string",
@@ -329,7 +328,7 @@ def create_and_run_azure_ml_pipeline(
             **optimization_parameters
         )
         return {
-            "trained_model": text_classification_pipeline.outputs.mlflow_model_folder
+            "trained_model": translation_pipeline.outputs.mlflow_model_folder
         }
 
     # Create the pipeline object
@@ -394,7 +393,7 @@ if __name__ == "__main__":
     )
     mlflow.set_tracking_uri(ws.get_mlflow_tracking_uri())
     registry_ml_client = MLClient(credential, registry_name="azureml-preview-test1")
-    experiment_name = "Auto_text-classification-emotion-detection"
+    experiment_name = "Auto_translation-wmt16"
 
     # # generating a unique timestamp that can be used for names and versions that need to be unique
     # timestamp = str(int(time.time()))
