@@ -179,19 +179,19 @@ def get_training_and_optimization_parameters(foundation_model):
         "learning_rate":2e-5,
         "metric_for_best_model":"bleu",
     }
-        print(f"The following training parameters are enabled - {training_parameters}")
-        # Optimization parameters
-        if "model_specific_defaults" in foundation_model.tags:
-            optimization_parameters = ast.literal_eval(foundation_model.tags["model_specific_defaults"])
-        else:
-            optimization_parameters = {
-                "apply_lora": "true",
-                "apply_deepspeed": "true",
-                "apply_ort": "true",
-            }
-        print(f"The following optimizations are enabled - {optimization_parameters}")
-    
-        return training_parameters, optimization_parameters
+    print(f"The following training parameters are enabled - {training_parameters}")
+    # Optimization parameters
+    if "model_specific_defaults" in foundation_model.tags:
+        optimization_parameters = ast.literal_eval(foundation_model.tags["model_specific_defaults"])
+    else:
+        optimization_parameters = {
+            "apply_lora": "true",
+            "apply_deepspeed": "true",
+            "apply_ort": "true",
+        }
+    print(f"The following optimizations are enabled - {optimization_parameters}")
+
+    return training_parameters, optimization_parameters
 
 
 # def find_gpus_in_compute(workspace_ml_client, compute):
