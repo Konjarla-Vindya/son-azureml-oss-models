@@ -42,10 +42,13 @@ def run_fine_tuning(primary_task):
 
     # Mapping of primary tasks to corresponding script names
     task_script_mapping = {
-        "text_classification": ["text_classification.py", "question_answering.py", "token_classification.py"],
+        "text_classification": ["FT_P_TC.py", "FT_P_QA.py"],
         "summarization": ["summarization.py", "translation.py"],
         "translation": ["translation.py", "summarization.py"],
-        # ... add more tasks and script names as needed
+        "fill-mask": ["text-classification.py", "question-answering.py", "token-classification"],
+        "question-answering": ["text-classification.py", "question-answering.py", "token-classification.py"],
+        "text-generation": ["text-classification.py", "token-classification.py"],
+        "token-classification": ["token-classification.py", "text-classification.py"]
     }
 
     # Get the script names based on the primary task
