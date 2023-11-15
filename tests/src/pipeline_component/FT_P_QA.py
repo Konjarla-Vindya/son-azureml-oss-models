@@ -304,7 +304,7 @@ def create_and_run_azure_ml_pipeline(
     # Define the pipeline job
     @pipeline()
     def create_pipeline():
-        question_answering_pipeline_pipeline = pipeline_component_func(
+        question_answering_pipeline = pipeline_component_func(
             mlflow_model_path=foundation_model.id,
             compute_model_import=compute_cluster,
             compute_preprocess=compute_cluster,
