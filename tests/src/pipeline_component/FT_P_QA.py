@@ -326,6 +326,7 @@ def create_and_run_azure_ml_pipeline(
             context_key="context",
             answers_key="answers",
             answer_start_key="answer_start",
+            answer_text_key="text",
             number_of_gpu_to_use_finetuning=gpus_per_node,
             **training_parameters,
             **optimization_parameters
