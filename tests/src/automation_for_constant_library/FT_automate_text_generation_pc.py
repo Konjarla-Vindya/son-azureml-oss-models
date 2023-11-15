@@ -278,7 +278,7 @@ def create_and_run_azure_ml_pipeline(
         return {
             # map the output of the fine tuning job to the output of the pipeline job so that we can easily register the fine tuned model
             # registering the model is required to deploy the model to an online or batch endpoint
-            "trained_model": text_generation_pipeline.outputs.mlflow_model_folder
+            "trained_model": text_generation_pipeline_for_oss.outputs.mlflow_model_folder
         }
     # Create the pipeline object
     pipeline_object = create_pipeline()
