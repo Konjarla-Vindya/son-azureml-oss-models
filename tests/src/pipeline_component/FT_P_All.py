@@ -64,12 +64,14 @@ def set_next_trigger_model(queue):
         
 
 def run_fine_tuning(primary_task):
+    print("entered function")
     # Import necessary modules
     import subprocess
+    print("picking task")
 
     # Mapping of primary tasks to corresponding script names
     task_script_mapping = {
-        "text_classification": ["FT_P_TC.py", "FT_P_QA.py"],
+        "text-classification": ["FT_P_TC.py", "FT_P_QA.py"],
         "summarization": ["summarization.py", "translation.py"],
         "translation": ["translation.py", "summarization.py"],
         "fill-mask": ["text-classification.py", "question-answering.py", "token-classification"],
