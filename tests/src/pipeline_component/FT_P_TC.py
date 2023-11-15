@@ -364,6 +364,7 @@ if __name__ == "__main__":
     if test_trigger_next_model == "true":
         set_next_trigger_model(queue)
     # print values of all above variables
+    print("Running for TC")
     print (f"test_subscription_id: {queue['subscription']}")
     print (f"test_resource_group: {queue['resource_group']}")
     print (f"test_workspace_name: {queue['workspace']}")
