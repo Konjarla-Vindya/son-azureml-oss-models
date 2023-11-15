@@ -217,10 +217,13 @@ def download_and_process_dataset():
         raise Exception("Error downloading dataset")
 
     df = pd.read_json("./truthful_qa-dataset/validation.jsonl", lines=True)
-    # num_samples = len(df)
-    # train_df = df.iloc[: int(num_samples * 0.8)]
-    # validation_df = df.iloc[int(num_samples * 0.8) : int(num_samples * 0.9)]
-    # test_df = df.iloc[int(num_samples * 0.9) :]
+    num_samples = len(df)
+    train_df = df.iloc[: int(num_samples * 0.8)]
+    validation_df = df.iloc[int(num_samples * 0.8) : int(num_samples * 0.9)]
+    test_df = df.iloc[int(num_samples * 0.9) :]
+    train_df.to_json("./truthful_qa-dataset/train.jsonl", orient="records", lines=True)
+    validation_df.to_json("./truthful_qa-dataset/validation.jsonl", orient="records", lines=True)
+    test_df.to_json("./truthful_qa-dataset/test.jsonl", orient="records", lines=True)
     def get_preprocessed_truthful_qa(df):
         prompt = f"Answer the question:\n{{}}\n---\nAnswer:\n"
     
