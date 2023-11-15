@@ -221,7 +221,21 @@ def download_and_process_dataset():
     train_df = df.iloc[: int(num_samples * 0.8)]
     validation_df = df.iloc[int(num_samples * 0.8) : int(num_samples * 0.9)]
     test_df = df.iloc[int(num_samples * 0.9) :]
-
+    def get_preprocessed_truthful_qa(df):
+        prompt = f"Answer the question:\n{{}}\n---\nAnswer:\n"
+    
+        df["text"] = df["question"].map(prompt.format)
+        df["answer"] = df["best_answer"]
+        df = df[["text", "answer"]]
+    
+        return df
+    test_df = pd.read_json("./truthful_qa-dataset/test.jsonl", lines=True)
+    train_df = pd.read_json("./truthful_qa-dataset/train.jsonl", lines=True)
+    validation_df = pd.read_json("./truthful_qa-dataset/validation.jsonl", lines=True)
+    # map the train, validation and test dataframes to preprocess function
+    train_df = get_preprocessed_truthful_qa(train_df)
+    validation_df = get_preprocessed_truthful_qa(validation_df)
+    test_df = get_preprocessed_truthful_qa(test_df)
     # Load the train.jsonl, validation.jsonl, and test.jsonl files.
     train_df.to_json("./truthful_qa-dataset/train.jsonl", orient="records", lines=True)
     validation_df.to_json("./truthful_qa-dataset/validation.jsonl", orient="records", lines=True)
