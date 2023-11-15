@@ -51,7 +51,7 @@ def run_script(script):
 
 def run_fine_tuning(primary_task):
     task_script_mapping = {
-        "text_classification": ["FT_P_TC.py", "FT_P_QA.py"],
+        "text-classification": ["FT_P_TC.py", "FT_P_QA.py"],
         "summarization": ["summarization.py", "translation.py"],
         # Add more tasks and scripts as needed
     }
