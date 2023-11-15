@@ -7,7 +7,7 @@ env:
   test_model_name: xlnet-large-cased
   test_sku_type: cpu
   test_trigger_next_model: true
-  test_queue: test-eastus-0
+  test_queue: test-northeurope-26
   test_set: huggingface-all
   test_keep_looping: false
 
@@ -33,6 +33,8 @@ jobs:
       run: pip install transformers[torch]
     - name: pip-install-torchvision
       run: pip install torchvision 
+    - name: pip-install-datasets
+      run: pip install datasets
     - name: pip-install-mlflow
       run: pip install mlflow
     - name: pip-install-python-box
@@ -45,7 +47,7 @@ jobs:
       run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
-      run: python generic_initial_automation.py
+      run: python FT_automate_text_generation_pc.py
       working-directory: tests/src/automation_for_constant_library
     - name: trigger-next-model-step
       env:
