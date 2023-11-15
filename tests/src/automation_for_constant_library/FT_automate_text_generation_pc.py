@@ -228,8 +228,8 @@ def download_and_process_dataset():
         prompt = f"Answer the question:\n{{}}\n---\nAnswer:\n"
     
         df["text"] = df["question"].map(prompt.format)
-        df["answer"] = df["best_answer"]
-        df = df[["text", "answer"]]
+        df["summary"] = df["best_answer"]
+        df = df[["text", "summary"]]
     
         return df
     test_df = pd.read_json("./truthful_qa-dataset/test.jsonl", lines=True)
