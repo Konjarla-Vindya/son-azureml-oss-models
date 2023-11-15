@@ -1,4 +1,4 @@
-from fetch_tasks import HfTask
+from fetch_task import HfTask
 import os
 from box import ConfigBox
 import json
