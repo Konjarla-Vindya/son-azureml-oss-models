@@ -134,7 +134,7 @@ def get_training_and_optimization_parameters(foundation_model):
         optimization_parameters = ast.literal_eval(foundation_model.tags["model_specific_defaults"])
     else:
         optimization_parameters = {
-            "apply_lora": "true",
+            "apply_lora": "false",
             "apply_deepspeed": "true",
             "apply_ort": "true",
         }
