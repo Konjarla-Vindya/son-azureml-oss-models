@@ -44,32 +44,59 @@ def set_next_trigger_model(queue):
         print(f'NEXT_MODEL={next_model}')
         print(f'NEXT_MODEL={next_model}', file=fh)
 
-def run_script(script):
-    command = f"python {script}"
-    return_code = os.system(command)
-    return script, return_code
+# def run_script(script):
+#     command = f"python {script}"
+#     return_code = os.system(command)
+#     return script, return_code
 
-def run_fine_tuning(primary_task):
+def run_script(script_name):
+    subprocess.run(["python", script_name])
+
+def run_fine_tuning_task(task):
     task_script_mapping = {
-        "text-classification": ["FT_P_TC.py", "FT_P_QA.py"],
-        "summarization": ["summarization.py", "translation.py"],
-        # Add more tasks and scripts as needed
+        "text-classification": "FT_P_TC.py",
+        "question-answering": "FT_P_QA.py",
+        # Add more mappings as needed
     }
 
-    scripts = task_script_mapping.get(primary_task, [])
-    if scripts:
-        with concurrent.futures.ProcessPoolExecutor() as executor:
-            futures = [executor.submit(run_script, script) for script in scripts]
-
-            for future in concurrent.futures.as_completed(futures):
-                try:
-                    result = future.result()
-                    script, return_code = result
-                    print(f"Script '{script}' completed with return code {return_code}")
-                except Exception as e:
-                    print(f"Error running script '{script}': {e}")
+    script_name = task_script_mapping.get(task)
+    if script_name:
+        run_script(script_name)
     else:
-        print(f"No scripts found for the primary task: {primary_task}")
+        print(f"No script found for the fine-tune task: {task}")
+
+def run_fine_tuning_tasks(fine_tune_tasks):
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        futures = [executor.submit(run_fine_tuning_task, task) for task in fine_tune_tasks]
+
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()
+            except Exception as e:
+                print(f"Error running fine-tuning task: {e}")
+
+
+# def run_fine_tuning(primary_task):
+#     task_script_mapping = {
+#         "text-classification": ["FT_P_TC.py", "FT_P_QA.py"],
+#         "summarization": ["summarization.py", "translation.py"],
+#         # Add more tasks and scripts as needed
+#     }
+
+#     scripts = task_script_mapping.get(primary_task, [])
+#     if scripts:
+#         with concurrent.futures.ProcessPoolExecutor() as executor:
+#             futures = [executor.submit(run_script, script) for script in scripts]
+
+#             for future in concurrent.futures.as_completed(futures):
+#                 try:
+#                     result = future.result()
+#                     script, return_code = result
+#                     print(f"Script '{script}' completed with return code {return_code}")
+#                 except Exception as e:
+#                     print(f"Error running script '{script}': {e}")
+#     else:
+#         print(f"No scripts found for the primary task: {primary_task}")
 
 if __name__ == "__main__":
     if test_model_name is None or test_sku_type is None or test_queue is None or test_set is None or test_trigger_next_model is None or test_keep_looping is None:
@@ -94,8 +121,22 @@ if __name__ == "__main__":
     primary_task = HfTask(model_name=test_model_name).get_task()
     print("Task is this: ", primary_task)
 
+
     if primary_task:
-        run_fine_tuning(primary_task)
+        # Fetch fine-tune tasks for the specified model
+        fine_tune_tasks = foundation_model.properties.get("finetune-recommended-sku", [])
+        print("finetune tasks from model card are:", {fine_tune_tasks})
+
+        if fine_tune_tasks:
+            # Run fine-tuning tasks in parallel
+            run_fine_tuning_tasks(fine_tune_tasks)
+        else:
+            print(f"No fine-tune tasks found for the model: {model_name}")
     else:
         print(f"No primary task found for the model: {model_name}")
+
+    # if primary_task:
+    #     run_fine_tuning(primary_task)
+    # else:
+    #     print(f"No primary task found for the model: {model_name}")
     
