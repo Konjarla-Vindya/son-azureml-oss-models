@@ -45,7 +45,7 @@ jobs:
       run: pip install fugashi[unidic-lite]  
     - name: deploy-model-step
       id: deploy-model-step
-      run: python FT_P_All.py
+      run: python sample.py
       working-directory: tests/src/pipeline_component
 
 
