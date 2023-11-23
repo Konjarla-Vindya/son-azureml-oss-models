@@ -92,7 +92,6 @@ from transformers import (
 # checkpoint = "bert-base-uncased"
 # model = AutoModelForSequenceClassification.from_pretrained(checkpoint)
 # tokenizer = AutoTokenizer.from_pretrained(checkpoint)
-#huggingface_hub.login( token = "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")
 #test_model_name = os.environ.get('test_model_name')
 print(test_model_name)
 model = AutoModelForSequenceClassification.from_pretrained(test_model_name)
