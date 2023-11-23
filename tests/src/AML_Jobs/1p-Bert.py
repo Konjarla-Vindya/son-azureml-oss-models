@@ -1,8 +1,5 @@
 print("py started")
 import os 
-# Set the Hugging Face token as an environment variable
-#os.environ["HF_TOKEN"] = os.environ.get('test_model_name')
-
 os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
 import mlflow
 import pandas as pd
