@@ -29,8 +29,13 @@ jobs:
           fi
         done
 
-        echo "Keywords check passed."
-
-        if [ ${#FOUND_KEYWORDS[@]} -gt 0 ]; then
+        if [ ${#FOUND_KEYWORDS[@]} -eq 0 ]; then
+          echo "No keyword found."
+        else
+          echo "Keywords check passed."
           echo "Found keywords: ${FOUND_KEYWORDS[@]}"
         fi
+
+        echo "All keywords: ${KEYWORDS[@]}"
+
+
