@@ -2,9 +2,6 @@ name: Check Keywords Workflow
 
 on:
    workflow_dispatch
-  # pull_request:
-  #   paths:
-  #     - 'dummy.txt'
 
 jobs:
   check-keywords:
@@ -14,9 +11,14 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v2
 
+    - name: Read Keywords from CSV
+      id: read-csv
+      run: |
+        KEYWORDS=($(cat tests/config/modellist.csv))
+        echo "KEYWORDS=${KEYWORDS[*]}" >> $GITHUB_ENV
+
     - name: Check Keywords
       run: |
-        KEYWORDS=("example" "important")
         FILE_PATH="dummy.txt"
 
         for keyword in "${KEYWORDS[@]}"; do
