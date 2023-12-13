@@ -1,7 +1,7 @@
 name: Check Keywords Workflow
 
 on:
-   workflow_dispatch
+  workflow_dispatch
 
 jobs:
   check-keywords:
@@ -20,11 +20,17 @@ jobs:
     - name: Check Keywords
       run: |
         FILE_PATH="dummy.txt"
+        FOUND_KEYWORDS=()
 
         for keyword in "${KEYWORDS[@]}"; do
           if grep -q "$keyword" "$FILE_PATH"; then
             echo "Keyword '$keyword' found in $FILE_PATH"
+            FOUND_KEYWORDS+=("$keyword")
           fi
         done
 
         echo "Keywords check passed."
+
+        if [ ${#FOUND_KEYWORDS[@]} -gt 0 ]; then
+          echo "Found keywords: ${FOUND_KEYWORDS[@]}"
+        fi
