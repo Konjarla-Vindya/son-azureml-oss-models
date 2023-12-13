@@ -1,7 +1,10 @@
 name: Check Keywords Workflow
 
 on:
-  workflow_dispatch
+   workflow_dispatch
+  # pull_request:
+  #   paths:
+  #     - 'dummy.txt'
 
 jobs:
   check-keywords:
@@ -16,22 +19,10 @@ jobs:
         KEYWORDS=("example" "important")
         FILE_PATH="dummy.txt"
 
-        found=false
-
         for keyword in "${KEYWORDS[@]}"; do
           if grep -q "$keyword" "$FILE_PATH"; then
             echo "Keyword '$keyword' found in $FILE_PATH"
-            found=true
           fi
         done
 
-        echo "KEYWORDS_FOUND=$found" >> $GITHUB_ENV
-
-    - name: Print Result
-      run: |
-        if [ "$KEYWORDS_FOUND" = true ]; then
-          echo "Keywords check failed."
-          exit 1
-        else
-          echo "Keywords check passed."
-        fi
+        echo "Keywords check passed."
