@@ -1,9 +1,7 @@
 name: Check Keywords Workflow
 
 on:
-  pull_request:
-    paths:
-      - 'dummy.txt'
+  workflow_dispatch
 
 jobs:
   check-keywords:
