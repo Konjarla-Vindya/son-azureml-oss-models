@@ -1,16 +1,13 @@
 name: Check Keywords Workflow
 
 on:
-  workflow_dispatch
+  pull_request:
+    paths:
+      - 'dummy.txt'
 
 jobs:
   check-keywords:
     runs-on: ubuntu-latest
-
-    env:
-      token: ${{ secrets.WORKFLOW_TOKEN }}
-      # GIT_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
 
     steps:
     - name: Checkout Repository
@@ -21,11 +18,18 @@ jobs:
         KEYWORDS=("example" "important")
         FILE_PATH="dummy.txt"
 
+        found=false
+
         for keyword in "${KEYWORDS[@]}"; do
           if grep -q "$keyword" "$FILE_PATH"; then
             echo "Keyword '$keyword' found in $FILE_PATH"
-            exit 1
+            found=true
           fi
         done
 
-        echo "Keywords check passed."
+        if [ "$found" = true ]; then
+          echo "Error: Keywords check failed."
+          exit 1
+        else
+          echo "Keywords check passed."
+        fi
