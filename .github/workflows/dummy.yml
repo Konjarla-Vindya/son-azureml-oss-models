@@ -25,8 +25,12 @@ jobs:
           fi
         done
 
-        if [ "$found" = true ]; then
-          echo "Error: Keywords check failed."
+        echo "KEYWORDS_FOUND=$found" >> $GITHUB_ENV
+
+    - name: Print Result
+      run: |
+        if [ "$KEYWORDS_FOUND" = true ]; then
+          echo "Keywords check failed."
           exit 1
         else
           echo "Keywords check passed."
